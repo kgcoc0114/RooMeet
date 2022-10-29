@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		43F0895A0D2EF93E66E808CB /* Pods_RooMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */; };
 		E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */; };
 		E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */; };
 		E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB42290D0E2900F4A767 /* ViewController.swift */; };
@@ -16,6 +17,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		572078A3C9F8A5A84AA3CAE9 /* Pods-RooMeet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RooMeet.release.xcconfig"; path = "Target Support Files/Pods-RooMeet/Pods-RooMeet.release.xcconfig"; sourceTree = "<group>"; };
+		69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RooMeet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE5A43F1B6AB4E753E5C2520 /* Pods-RooMeet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RooMeet.debug.xcconfig"; path = "Target Support Files/Pods-RooMeet/Pods-RooMeet.debug.xcconfig"; sourceTree = "<group>"; };
 		E5BDDB3B290D0E2900F4A767 /* RooMeet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RooMeet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -31,17 +35,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43F0895A0D2EF93E66E808CB /* Pods_RooMeet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4638587F451EB83409A04D66 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C8EB47FCE83D668C7712B265 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				BE5A43F1B6AB4E753E5C2520 /* Pods-RooMeet.debug.xcconfig */,
+				572078A3C9F8A5A84AA3CAE9 /* Pods-RooMeet.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		E5BDDB32290D0E2900F4A767 = {
 			isa = PBXGroup;
 			children = (
 				E5BDDB3D290D0E2900F4A767 /* RooMeet */,
 				E5BDDB3C290D0E2900F4A767 /* Products */,
+				C8EB47FCE83D668C7712B265 /* Pods */,
+				4638587F451EB83409A04D66 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,9 +98,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E5BDDB4F290D0E2D00F4A767 /* Build configuration list for PBXNativeTarget "RooMeet" */;
 			buildPhases = (
+				73ADE39C12D821C26D0E0018 /* [CP] Check Pods Manifest.lock */,
 				E5BDDB37290D0E2900F4A767 /* Sources */,
 				E5BDDB38290D0E2900F4A767 /* Frameworks */,
 				E5BDDB39290D0E2900F4A767 /* Resources */,
+				E55C095A290D30F000DBF21B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -132,6 +158,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		73ADE39C12D821C26D0E0018 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-RooMeet-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E55C095A290D30F000DBF21B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E5BDDB37290D0E2900F4A767 /* Sources */ = {
@@ -282,6 +350,7 @@
 		};
 		E5BDDB50290D0E2D00F4A767 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = BE5A43F1B6AB4E753E5C2520 /* Pods-RooMeet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -311,6 +380,7 @@
 		};
 		E5BDDB51290D0E2D00F4A767 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 572078A3C9F8A5A84AA3CAE9 /* Pods-RooMeet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
