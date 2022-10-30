@@ -8,18 +8,44 @@
 
 /* Begin PBXBuildFile section */
 		43F0895A0D2EF93E66E808CB /* Pods_RooMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */; };
+		E555DC2A290E61C60001F2D6 /* PostBasicInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E555DC28290E61C60001F2D6 /* PostBasicInfoTableViewCell.swift */; };
+		E555DC2B290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E555DC29290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib */; };
+		E55C095E290D51B800DBF21B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095D290D51B800DBF21B /* Room.swift */; };
+		E55C0960290D53F900DBF21B /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095F290D53F900DBF21B /* Gender.swift */; };
+		E55C0966290D5D5600DBF21B /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0964290D5D5600DBF21B /* PostViewController.swift */; };
+		E55C0967290D5D5600DBF21B /* PostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55C0965290D5D5600DBF21B /* PostViewController.xib */; };
+		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
+		E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33761290E71A600467404 /* NumberPickerView.swift */; };
 		E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */; };
 		E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */; };
 		E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB42290D0E2900F4A767 /* ViewController.swift */; };
 		E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5BDDB44290D0E2900F4A767 /* Main.storyboard */; };
 		E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5BDDB47290D0E2D00F4A767 /* Assets.xcassets */; };
 		E5BDDB4B290D0E2D00F4A767 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5BDDB49290D0E2D00F4A767 /* LaunchScreen.storyboard */; };
+		E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C75290D6E3100F07286 /* RMTabBarController.swift */; };
+		E5E64C81290E13E400F07286 /* RegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C7F290E13E400F07286 /* RegionPickerViewController.swift */; };
+		E5E64C84290E183F00F07286 /* RegionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C83290E183F00F07286 /* RegionService.swift */; };
+		E5E64C86290E185600F07286 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C85290E185600F07286 /* Region.swift */; };
+		E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C8B290E1AA700F07286 /* RegionPickerCell.swift */; };
+		E5E64C8E290E1AA700F07286 /* RegionPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E64C8C290E1AA700F07286 /* RegionPickerCell.xib */; };
+		E5E64C93290E3D3E00F07286 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5E64C92290E3D3E00F07286 /* Home.storyboard */; };
+		E5E64C96290E3E2600F07286 /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C95290E3E2600F07286 /* UIStoryboard+Extension.swift */; };
+		E5E64C98290E454E00F07286 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C97290E454E00F07286 /* HomeViewController.swift */; };
+		E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C99290E474200F07286 /* UIColor+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		572078A3C9F8A5A84AA3CAE9 /* Pods-RooMeet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RooMeet.release.xcconfig"; path = "Target Support Files/Pods-RooMeet/Pods-RooMeet.release.xcconfig"; sourceTree = "<group>"; };
 		69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RooMeet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE5A43F1B6AB4E753E5C2520 /* Pods-RooMeet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RooMeet.debug.xcconfig"; path = "Target Support Files/Pods-RooMeet/Pods-RooMeet.debug.xcconfig"; sourceTree = "<group>"; };
+		E555DC28290E61C60001F2D6 /* PostBasicInfoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBasicInfoTableViewCell.swift; sourceTree = "<group>"; };
+		E555DC29290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostBasicInfoTableViewCell.xib; sourceTree = "<group>"; };
+		E55C095D290D51B800DBF21B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
+		E55C095F290D53F900DBF21B /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
+		E55C0964290D5D5600DBF21B /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		E55C0965290D5D5600DBF21B /* PostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostViewController.xib; sourceTree = "<group>"; };
+		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E5B33761290E71A600467404 /* NumberPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPickerView.swift; sourceTree = "<group>"; };
 		E5BDDB3B290D0E2900F4A767 /* RooMeet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RooMeet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -28,6 +54,16 @@
 		E5BDDB47290D0E2D00F4A767 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E5BDDB4A290D0E2D00F4A767 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E5BDDB4C290D0E2D00F4A767 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5E64C75290D6E3100F07286 /* RMTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMTabBarController.swift; sourceTree = "<group>"; };
+		E5E64C7F290E13E400F07286 /* RegionPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerViewController.swift; sourceTree = "<group>"; };
+		E5E64C83290E183F00F07286 /* RegionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionService.swift; sourceTree = "<group>"; };
+		E5E64C85290E185600F07286 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		E5E64C8B290E1AA700F07286 /* RegionPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerCell.swift; sourceTree = "<group>"; };
+		E5E64C8C290E1AA700F07286 /* RegionPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegionPickerCell.xib; sourceTree = "<group>"; };
+		E5E64C92290E3D3E00F07286 /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
+		E5E64C95290E3E2600F07286 /* UIStoryboard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extension.swift"; sourceTree = "<group>"; };
+		E5E64C97290E454E00F07286 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		E5E64C99290E474200F07286 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,6 +95,54 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E55C095B290D4F5800DBF21B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E55C095D290D51B800DBF21B /* Room.swift */,
+				E55C095F290D53F900DBF21B /* Gender.swift */,
+				E5E64C83290E183F00F07286 /* RegionService.swift */,
+				E5E64C85290E185600F07286 /* Region.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E55C0961290D5BB700DBF21B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E55C0962290D5BF600DBF21B /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				E5E64C75290D6E3100F07286 /* RMTabBarController.swift */,
+				E5E64C97290E454E00F07286 /* HomeViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		E55C0963290D5C2D00DBF21B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E55C0964290D5D5600DBF21B /* PostViewController.swift */,
+				E55C0965290D5D5600DBF21B /* PostViewController.xib */,
+				E5E64C8F290E3B9300F07286 /* RegionPicker */,
+				E555DC28290E61C60001F2D6 /* PostBasicInfoTableViewCell.swift */,
+				E555DC29290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib */,
+				E5B33761290E71A600467404 /* NumberPickerView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E55C0970290D627000DBF21B /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				E55C0971290D628400DBF21B /* Constants.swift */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		E5BDDB32290D0E2900F4A767 = {
 			isa = PBXGroup;
 			children = (
@@ -80,6 +164,12 @@
 		E5BDDB3D290D0E2900F4A767 /* RooMeet */ = {
 			isa = PBXGroup;
 			children = (
+				E5E64C94290E3E0C00F07286 /* Extension */,
+				E55C0970290D627000DBF21B /* Resource */,
+				E55C0963290D5C2D00DBF21B /* View */,
+				E55C0962290D5BF600DBF21B /* Controller */,
+				E55C0961290D5BB700DBF21B /* ViewModel */,
+				E55C095B290D4F5800DBF21B /* Model */,
 				E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */,
 				E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */,
 				E5BDDB42290D0E2900F4A767 /* ViewController.swift */,
@@ -87,8 +177,28 @@
 				E5BDDB47290D0E2D00F4A767 /* Assets.xcassets */,
 				E5BDDB49290D0E2D00F4A767 /* LaunchScreen.storyboard */,
 				E5BDDB4C290D0E2D00F4A767 /* Info.plist */,
+				E5E64C92290E3D3E00F07286 /* Home.storyboard */,
 			);
 			path = RooMeet;
+			sourceTree = "<group>";
+		};
+		E5E64C8F290E3B9300F07286 /* RegionPicker */ = {
+			isa = PBXGroup;
+			children = (
+				E5E64C7F290E13E400F07286 /* RegionPickerViewController.swift */,
+				E5E64C8B290E1AA700F07286 /* RegionPickerCell.swift */,
+				E5E64C8C290E1AA700F07286 /* RegionPickerCell.xib */,
+			);
+			path = RegionPicker;
+			sourceTree = "<group>";
+		};
+		E5E64C94290E3E0C00F07286 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				E5E64C95290E3E2600F07286 /* UIStoryboard+Extension.swift */,
+				E5E64C99290E474200F07286 /* UIColor+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,9 +261,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E555DC2B290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib in Resources */,
+				E55C0967290D5D5600DBF21B /* PostViewController.xib in Resources */,
 				E5BDDB4B290D0E2D00F4A767 /* LaunchScreen.storyboard in Resources */,
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
 				E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */,
+				E5E64C8E290E1AA700F07286 /* RegionPickerCell.xib in Resources */,
+				E5E64C93290E3D3E00F07286 /* Home.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,9 +320,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E55C0966290D5D5600DBF21B /* PostViewController.swift in Sources */,
 				E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */,
+				E55C0960290D53F900DBF21B /* Gender.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
+				E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */,
+				E55C095E290D51B800DBF21B /* Room.swift in Sources */,
+				E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */,
+				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
+				E5E64C86290E185600F07286 /* Region.swift in Sources */,
 				E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */,
+				E5E64C84290E183F00F07286 /* RegionService.swift in Sources */,
+				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,
+				E5E64C98290E454E00F07286 /* HomeViewController.swift in Sources */,
+				E5E64C81290E13E400F07286 /* RegionPickerViewController.swift in Sources */,
+				E555DC2A290E61C60001F2D6 /* PostBasicInfoTableViewCell.swift in Sources */,
+				E55C0972290D628400DBF21B /* Constants.swift in Sources */,
+				E5E64C96290E3E2600F07286 /* UIStoryboard+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
