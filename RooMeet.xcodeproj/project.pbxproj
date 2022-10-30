@@ -16,6 +16,9 @@
 		E55C0967290D5D5600DBF21B /* PostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55C0965290D5D5600DBF21B /* PostViewController.xib */; };
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
 		E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33761290E71A600467404 /* NumberPickerView.swift */; };
+		E5B33765290EA29000467404 /* RoomSpecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33763290EA29000467404 /* RoomSpecTableViewCell.swift */; };
+		E5B33766290EA29000467404 /* RoomSpecTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B33764290EA29000467404 /* RoomSpecTableViewCell.xib */; };
+		E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33767290EA2FA00467404 /* RMBaseTextField.swift */; };
 		E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */; };
 		E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */; };
 		E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB42290D0E2900F4A767 /* ViewController.swift */; };
@@ -46,6 +49,9 @@
 		E55C0965290D5D5600DBF21B /* PostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostViewController.xib; sourceTree = "<group>"; };
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E5B33761290E71A600467404 /* NumberPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPickerView.swift; sourceTree = "<group>"; };
+		E5B33763290EA29000467404 /* RoomSpecTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpecTableViewCell.swift; sourceTree = "<group>"; };
+		E5B33764290EA29000467404 /* RoomSpecTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomSpecTableViewCell.xib; sourceTree = "<group>"; };
+		E5B33767290EA2FA00467404 /* RMBaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMBaseTextField.swift; sourceTree = "<group>"; };
 		E5BDDB3B290D0E2900F4A767 /* RooMeet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RooMeet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,6 +137,9 @@
 				E555DC28290E61C60001F2D6 /* PostBasicInfoTableViewCell.swift */,
 				E555DC29290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib */,
 				E5B33761290E71A600467404 /* NumberPickerView.swift */,
+				E5B33763290EA29000467404 /* RoomSpecTableViewCell.swift */,
+				E5B33764290EA29000467404 /* RoomSpecTableViewCell.xib */,
+				E5B33767290EA2FA00467404 /* RMBaseTextField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -266,6 +275,7 @@
 				E5BDDB4B290D0E2D00F4A767 /* LaunchScreen.storyboard in Resources */,
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
 				E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */,
+				E5B33766290EA29000467404 /* RoomSpecTableViewCell.xib in Resources */,
 				E5E64C8E290E1AA700F07286 /* RegionPickerCell.xib in Resources */,
 				E5E64C93290E3D3E00F07286 /* Home.storyboard in Resources */,
 			);
@@ -321,6 +331,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E55C0966290D5D5600DBF21B /* PostViewController.swift in Sources */,
+				E5B33765290EA29000467404 /* RoomSpecTableViewCell.swift in Sources */,
 				E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */,
 				E55C0960290D53F900DBF21B /* Gender.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
@@ -329,6 +340,7 @@
 				E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */,
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
 				E5E64C86290E185600F07286 /* Region.swift in Sources */,
+				E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */,
 				E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */,
 				E5E64C84290E183F00F07286 /* RegionService.swift in Sources */,
 				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,

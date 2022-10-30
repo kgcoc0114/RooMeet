@@ -29,11 +29,11 @@ struct Room: Codable {
 }
 
 struct RoomSpec: Codable {
-    let roomType: [Int]
-    let price: Int
-    let space: Double
-    let people: Int
-    let amenities: [String]
+    var roomType: [Int]?
+    var price: Int?
+    var space: Double?
+    var people: Int?
+    var amenities: [String]?
 }
 
 struct CurrentLivingInfo: Codable {

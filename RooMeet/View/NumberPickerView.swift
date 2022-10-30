@@ -9,8 +9,8 @@ import UIKit
 
 class NumberPickerView: UIView {
     private var maxNumber: Int = 5
-    lazy private var quantityField: NumberPickerField = {
-        let field = NumberPickerField()
+    lazy private var quantityField: RMBaseTextField = {
+        let field = RMBaseTextField()
         field.returnKeyType = .default
 
         let numberPicker = UIPickerView()
@@ -93,42 +93,5 @@ extension NumberPickerView: UIPickerViewDataSource, UIPickerViewDelegate {
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         quantityField.text = "\(row + 1)"
-    }
-}
-
-class NumberPickerField: UITextField {
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
-    }
-
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: .zero)
-        addUnderLine()
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        addUnderLine()
-    }
-
-    private func addUnderLine() {
-        let underline = UIView()
-
-        underline.translatesAutoresizingMaskIntoConstraints = false
-
-        addSubview(underline)
-
-        NSLayoutConstraint.activate([
-            leadingAnchor.constraint(equalTo: underline.leadingAnchor),
-            trailingAnchor.constraint(equalTo: underline.trailingAnchor),
-            bottomAnchor.constraint(equalTo: underline.bottomAnchor),
-            underline.heightAnchor.constraint(equalToConstant: 1.0)
-        ])
-
-        underline.backgroundColor = UIColor.hexColor(hex: "cccccc")
     }
 }
