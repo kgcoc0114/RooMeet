@@ -174,7 +174,7 @@
                 <outlet property="roomTypeStackView" destination="2QF-cW-Sne" id="M1W-jy-hkW"/>
                 <outlet property="spaceTextField" destination="SUx-LY-Eve" id="XHh-rk-rB1"/>
             </connections>
-            <point key="canvasLocation" x="394" y="89"/>
+            <point key="canvasLocation" x="392.75362318840581" y="88.392857142857139"/>
         </tableViewCell>
     </objects>
 </document>

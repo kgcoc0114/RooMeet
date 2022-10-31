@@ -19,7 +19,6 @@ class HomeViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
     @IBOutlet weak var addPostButton: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +40,11 @@ class HomeViewController: UIViewController {
     
     @IBAction func addRoomPost(_ sender: Any) {
         let postVC = PostViewController()
+//        postVC.initVC(pageType: .rule, selectedOptions: ["Cats OK", "Couples OK"])
+//        postVC.completion = { selectedItem in
+//            print(selectedItem)
+//
+//        }
         present(postVC, animated: true)
     }
 }

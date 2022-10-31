@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PostImageCell" customModule="RooMeet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="198" height="182"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="198" height="182"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gdr-mW-zmI">
+                        <rect key="frame" x="0.0" y="0.0" width="198" height="182"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="photo.artframe" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="K5K-Sm-A2y">
+                                <rect key="frame" x="29.5" y="28.5" width="139" height="124.5"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="K5K-Sm-A2y" firstAttribute="width" secondItem="Gdr-mW-zmI" secondAttribute="width" multiplier="0.7" id="HdG-aR-Ck4"/>
+                            <constraint firstItem="K5K-Sm-A2y" firstAttribute="height" secondItem="Gdr-mW-zmI" secondAttribute="height" multiplier="0.7" id="Sfh-Wf-KFr"/>
+                            <constraint firstItem="K5K-Sm-A2y" firstAttribute="centerY" secondItem="Gdr-mW-zmI" secondAttribute="centerY" id="beL-KD-2KL"/>
+                            <constraint firstItem="K5K-Sm-A2y" firstAttribute="centerX" secondItem="Gdr-mW-zmI" secondAttribute="centerX" id="kFk-hp-IvK"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="Z3E-Rz-Bbo"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="Gdr-mW-zmI" secondAttribute="trailing" id="D22-kb-j2L"/>
+                <constraint firstAttribute="bottom" secondItem="Gdr-mW-zmI" secondAttribute="bottom" id="FTZ-r7-ECf"/>
+                <constraint firstItem="Gdr-mW-zmI" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="HQw-zE-i8Q"/>
+                <constraint firstItem="Gdr-mW-zmI" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Z5y-lo-qwk"/>
+            </constraints>
+            <size key="customSize" width="198" height="182"/>
+            <connections>
+                <outlet property="imageView" destination="K5K-Sm-A2y" id="mUH-kb-6gL"/>
+            </connections>
+            <point key="canvasLocation" x="239.13043478260872" y="81.696428571428569"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="photo.artframe" catalog="system" width="128" height="93"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

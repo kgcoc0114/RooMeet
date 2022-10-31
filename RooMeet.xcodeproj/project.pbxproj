@@ -12,13 +12,37 @@
 		E555DC2B290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E555DC29290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib */; };
 		E55C095E290D51B800DBF21B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095D290D51B800DBF21B /* Room.swift */; };
 		E55C0960290D53F900DBF21B /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095F290D53F900DBF21B /* Gender.swift */; };
-		E55C0966290D5D5600DBF21B /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0964290D5D5600DBF21B /* PostViewController.swift */; };
-		E55C0967290D5D5600DBF21B /* PostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55C0965290D5D5600DBF21B /* PostViewController.xib */; };
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
+		E593EFF7290FCBDA00B35550 /* EditFeeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFF5290FCBDA00B35550 /* EditFeeController.swift */; };
+		E593EFF8290FCBDA00B35550 /* EditFeeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593EFF6290FCBDA00B35550 /* EditFeeController.xib */; };
+		E593EFFA290FCEB900B35550 /* View.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593EFF9290FCEB900B35550 /* View.xib */; };
+		E593EFFD290FEFF000B35550 /* MutlipleChooseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */; };
+		E593EFFE290FEFF000B35550 /* MutlipleChooseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */; };
+		E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */; };
+		E593F002290FF03900B35550 /* MultipleChooseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F000290FF03900B35550 /* MultipleChooseCell.xib */; };
+		E593F0052910016D00B35550 /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593F0032910016D00B35550 /* OptionCell.swift */; };
+		E593F0062910016D00B35550 /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F0042910016D00B35550 /* OptionCell.xib */; };
+		E593F0092910065C00B35550 /* RulesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593F0072910065C00B35550 /* RulesCell.swift */; };
+		E593F00A2910065C00B35550 /* RulesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F0082910065C00B35550 /* RulesCell.xib */; };
+		E593F00F29100DA100B35550 /* PostHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593F00D29100DA100B35550 /* PostHeaderView.swift */; };
+		E593F01029100DA100B35550 /* PostHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F00E29100DA100B35550 /* PostHeaderView.xib */; };
+		E593F013291012DF00B35550 /* RulesHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593F011291012DF00B35550 /* RulesHeaderCell.swift */; };
+		E593F014291012DF00B35550 /* RulesHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F012291012DF00B35550 /* RulesHeaderCell.xib */; };
 		E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33761290E71A600467404 /* NumberPickerView.swift */; };
 		E5B33765290EA29000467404 /* RoomSpecTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33763290EA29000467404 /* RoomSpecTableViewCell.swift */; };
 		E5B33766290EA29000467404 /* RoomSpecTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B33764290EA29000467404 /* RoomSpecTableViewCell.xib */; };
 		E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33767290EA2FA00467404 /* RMBaseTextField.swift */; };
+		E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B3376C290F64D800467404 /* RoomSpecCell.swift */; };
+		E5B3376F290F64D800467404 /* RoomSpecCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B3376D290F64D800467404 /* RoomSpecCell.xib */; };
+		E5B33772290F65D800467404 /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33770290F65D800467404 /* PostViewController.swift */; };
+		E5B33773290F65D800467404 /* PostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B33771290F65D800467404 /* PostViewController.xib */; };
+		E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33774290F668F00467404 /* PostBasicCell.swift */; };
+		E5B33777290F668F00467404 /* PostBasicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B33775290F668F00467404 /* PostBasicCell.xib */; };
+		E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B3377A290FAA4800467404 /* PostImageCell.swift */; };
+		E5B3377D290FAA4800467404 /* PostImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B3377B290FAA4800467404 /* PostImageCell.xib */; };
+		E5B33780290FB61900467404 /* OtherFeeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B3377E290FB61900467404 /* OtherFeeCell.swift */; };
+		E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B3377F290FB61900467404 /* OtherFeeCell.xib */; };
+		E5B33783290FBA0E00467404 /* OtherFeeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33782290FBA0E00467404 /* OtherFeeView.swift */; };
 		E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */; };
 		E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */; };
 		E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB42290D0E2900F4A767 /* ViewController.swift */; };
@@ -45,13 +69,37 @@
 		E555DC29290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostBasicInfoTableViewCell.xib; sourceTree = "<group>"; };
 		E55C095D290D51B800DBF21B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E55C095F290D53F900DBF21B /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
-		E55C0964290D5D5600DBF21B /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
-		E55C0965290D5D5600DBF21B /* PostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostViewController.xib; sourceTree = "<group>"; };
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E593EFF5290FCBDA00B35550 /* EditFeeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeeController.swift; sourceTree = "<group>"; };
+		E593EFF6290FCBDA00B35550 /* EditFeeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditFeeController.xib; sourceTree = "<group>"; };
+		E593EFF9290FCEB900B35550 /* View.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = View.xib; sourceTree = "<group>"; };
+		E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutlipleChooseController.swift; sourceTree = "<group>"; };
+		E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MutlipleChooseController.xib; sourceTree = "<group>"; };
+		E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChooseCell.swift; sourceTree = "<group>"; };
+		E593F000290FF03900B35550 /* MultipleChooseCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultipleChooseCell.xib; sourceTree = "<group>"; };
+		E593F0032910016D00B35550 /* OptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
+		E593F0042910016D00B35550 /* OptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionCell.xib; sourceTree = "<group>"; };
+		E593F0072910065C00B35550 /* RulesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesCell.swift; sourceTree = "<group>"; };
+		E593F0082910065C00B35550 /* RulesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RulesCell.xib; sourceTree = "<group>"; };
+		E593F00D29100DA100B35550 /* PostHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostHeaderView.swift; sourceTree = "<group>"; };
+		E593F00E29100DA100B35550 /* PostHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostHeaderView.xib; sourceTree = "<group>"; };
+		E593F011291012DF00B35550 /* RulesHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesHeaderCell.swift; sourceTree = "<group>"; };
+		E593F012291012DF00B35550 /* RulesHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RulesHeaderCell.xib; sourceTree = "<group>"; };
 		E5B33761290E71A600467404 /* NumberPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPickerView.swift; sourceTree = "<group>"; };
 		E5B33763290EA29000467404 /* RoomSpecTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpecTableViewCell.swift; sourceTree = "<group>"; };
 		E5B33764290EA29000467404 /* RoomSpecTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomSpecTableViewCell.xib; sourceTree = "<group>"; };
 		E5B33767290EA2FA00467404 /* RMBaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMBaseTextField.swift; sourceTree = "<group>"; };
+		E5B3376C290F64D800467404 /* RoomSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpecCell.swift; sourceTree = "<group>"; };
+		E5B3376D290F64D800467404 /* RoomSpecCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomSpecCell.xib; sourceTree = "<group>"; };
+		E5B33770290F65D800467404 /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
+		E5B33771290F65D800467404 /* PostViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostViewController.xib; sourceTree = "<group>"; };
+		E5B33774290F668F00467404 /* PostBasicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBasicCell.swift; sourceTree = "<group>"; };
+		E5B33775290F668F00467404 /* PostBasicCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostBasicCell.xib; sourceTree = "<group>"; };
+		E5B3377A290FAA4800467404 /* PostImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageCell.swift; sourceTree = "<group>"; };
+		E5B3377B290FAA4800467404 /* PostImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostImageCell.xib; sourceTree = "<group>"; };
+		E5B3377E290FB61900467404 /* OtherFeeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherFeeCell.swift; sourceTree = "<group>"; };
+		E5B3377F290FB61900467404 /* OtherFeeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherFeeCell.xib; sourceTree = "<group>"; };
+		E5B33782290FBA0E00467404 /* OtherFeeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherFeeView.swift; sourceTree = "<group>"; };
 		E5BDDB3B290D0E2900F4A767 /* RooMeet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RooMeet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -131,8 +179,7 @@
 		E55C0963290D5C2D00DBF21B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				E55C0964290D5D5600DBF21B /* PostViewController.swift */,
-				E55C0965290D5D5600DBF21B /* PostViewController.xib */,
+				E5B3376B290F639F00467404 /* AddRoom */,
 				E5E64C8F290E3B9300F07286 /* RegionPicker */,
 				E555DC28290E61C60001F2D6 /* PostBasicInfoTableViewCell.swift */,
 				E555DC29290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib */,
@@ -140,6 +187,18 @@
 				E5B33763290EA29000467404 /* RoomSpecTableViewCell.swift */,
 				E5B33764290EA29000467404 /* RoomSpecTableViewCell.xib */,
 				E5B33767290EA2FA00467404 /* RMBaseTextField.swift */,
+				E5B33770290F65D800467404 /* PostViewController.swift */,
+				E5B33771290F65D800467404 /* PostViewController.xib */,
+				E593EFF5290FCBDA00B35550 /* EditFeeController.swift */,
+				E593EFF6290FCBDA00B35550 /* EditFeeController.xib */,
+				E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */,
+				E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */,
+				E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */,
+				E593F000290FF03900B35550 /* MultipleChooseCell.xib */,
+				E593F0032910016D00B35550 /* OptionCell.swift */,
+				E593F0042910016D00B35550 /* OptionCell.xib */,
+				E593F00D29100DA100B35550 /* PostHeaderView.swift */,
+				E593F00E29100DA100B35550 /* PostHeaderView.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -150,6 +209,27 @@
 				E55C0971290D628400DBF21B /* Constants.swift */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		E5B3376B290F639F00467404 /* AddRoom */ = {
+			isa = PBXGroup;
+			children = (
+				E5B3376C290F64D800467404 /* RoomSpecCell.swift */,
+				E5B3376D290F64D800467404 /* RoomSpecCell.xib */,
+				E5B33774290F668F00467404 /* PostBasicCell.swift */,
+				E5B33775290F668F00467404 /* PostBasicCell.xib */,
+				E5B3377A290FAA4800467404 /* PostImageCell.swift */,
+				E5B3377B290FAA4800467404 /* PostImageCell.xib */,
+				E5B3377E290FB61900467404 /* OtherFeeCell.swift */,
+				E5B3377F290FB61900467404 /* OtherFeeCell.xib */,
+				E5B33782290FBA0E00467404 /* OtherFeeView.swift */,
+				E593EFF9290FCEB900B35550 /* View.xib */,
+				E593F0072910065C00B35550 /* RulesCell.swift */,
+				E593F0082910065C00B35550 /* RulesCell.xib */,
+				E593F011291012DF00B35550 /* RulesHeaderCell.swift */,
+				E593F012291012DF00B35550 /* RulesHeaderCell.xib */,
+			);
+			path = AddRoom;
 			sourceTree = "<group>";
 		};
 		E5BDDB32290D0E2900F4A767 = {
@@ -270,14 +350,26 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E593EFFA290FCEB900B35550 /* View.xib in Resources */,
+				E593EFFE290FEFF000B35550 /* MutlipleChooseController.xib in Resources */,
+				E5B33777290F668F00467404 /* PostBasicCell.xib in Resources */,
 				E555DC2B290E61C60001F2D6 /* PostBasicInfoTableViewCell.xib in Resources */,
-				E55C0967290D5D5600DBF21B /* PostViewController.xib in Resources */,
+				E593F002290FF03900B35550 /* MultipleChooseCell.xib in Resources */,
 				E5BDDB4B290D0E2D00F4A767 /* LaunchScreen.storyboard in Resources */,
+				E5B3377D290FAA4800467404 /* PostImageCell.xib in Resources */,
+				E5B33773290F65D800467404 /* PostViewController.xib in Resources */,
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
+				E593F01029100DA100B35550 /* PostHeaderView.xib in Resources */,
 				E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */,
+				E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */,
+				E593EFF8290FCBDA00B35550 /* EditFeeController.xib in Resources */,
 				E5B33766290EA29000467404 /* RoomSpecTableViewCell.xib in Resources */,
 				E5E64C8E290E1AA700F07286 /* RegionPickerCell.xib in Resources */,
 				E5E64C93290E3D3E00F07286 /* Home.storyboard in Resources */,
+				E593F014291012DF00B35550 /* RulesHeaderCell.xib in Resources */,
+				E593F00A2910065C00B35550 /* RulesCell.xib in Resources */,
+				E593F0062910016D00B35550 /* OptionCell.xib in Resources */,
+				E5B3376F290F64D800467404 /* RoomSpecCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,23 +422,35 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E55C0966290D5D5600DBF21B /* PostViewController.swift in Sources */,
+				E593EFFD290FEFF000B35550 /* MutlipleChooseController.swift in Sources */,
 				E5B33765290EA29000467404 /* RoomSpecTableViewCell.swift in Sources */,
 				E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */,
 				E55C0960290D53F900DBF21B /* Gender.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
+				E593F013291012DF00B35550 /* RulesHeaderCell.swift in Sources */,
+				E593F0092910065C00B35550 /* RulesCell.swift in Sources */,
+				E5B33772290F65D800467404 /* PostViewController.swift in Sources */,
+				E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */,
 				E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */,
 				E55C095E290D51B800DBF21B /* Room.swift in Sources */,
 				E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */,
+				E593F00F29100DA100B35550 /* PostHeaderView.swift in Sources */,
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
 				E5E64C86290E185600F07286 /* Region.swift in Sources */,
 				E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */,
 				E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */,
 				E5E64C84290E183F00F07286 /* RegionService.swift in Sources */,
+				E5B33780290FB61900467404 /* OtherFeeCell.swift in Sources */,
+				E593F0052910016D00B35550 /* OptionCell.swift in Sources */,
 				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,
+				E593EFF7290FCBDA00B35550 /* EditFeeController.swift in Sources */,
+				E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */,
 				E5E64C98290E454E00F07286 /* HomeViewController.swift in Sources */,
+				E5B33783290FBA0E00467404 /* OtherFeeView.swift in Sources */,
 				E5E64C81290E13E400F07286 /* RegionPickerViewController.swift in Sources */,
+				E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */,
 				E555DC2A290E61C60001F2D6 /* PostBasicInfoTableViewCell.swift in Sources */,
+				E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */,
 				E55C0972290D628400DBF21B /* Constants.swift in Sources */,
 				E5E64C96290E3E2600F07286 /* UIStoryboard+Extension.swift in Sources */,
 			);
