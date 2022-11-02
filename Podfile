@@ -7,5 +7,10 @@ target 'RooMeet' do
 
   # Pods for RooMeet
   pod 'SwiftLint'
+  pod 'IQKeyboardManagerSwift'
+  pod 'FirebaseFirestore'
+  pod 'FirebaseFirestoreSwift'
+  pod 'FirebaseStorage'
+  pod 'ProgressHUD'
 
 end

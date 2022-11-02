@@ -170,4 +170,4 @@ Dependencies/
 # End of https://www.toptal.com/developers/gitignore/api/xcode,swift,macos,objective-c
 
 ### plist ###
-GoogleService-Info.plist
+RooMeet/GoogleService-Info.plist
