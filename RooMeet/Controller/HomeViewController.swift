@@ -45,6 +45,6 @@ class HomeViewController: UIViewController {
 //            print(selectedItem)
 //
 //        }
-        present(postVC, animated: true)
+        navigationController?.pushViewController(postVC, animated: true)
     }
 }
