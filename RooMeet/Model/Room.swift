@@ -25,7 +25,7 @@ struct Room: Codable {
     var address: String
     var lat: Double?
     var long: Double?
-    var postalCode: Int?
+    var postalCode: String?
 //    var currentLivingInfo: CurrentLivingInfo
     var billInfo: BillInfo?
     var lease: Double
@@ -126,4 +126,8 @@ enum AffordType: String {
         case .share: return "費用均分"
         }
     }
+}
+
+struct RoomList: Codable {
+    let data: [Room]
 }

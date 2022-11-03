@@ -8,6 +8,9 @@
 import Foundation
 import MapKit
 
+
+var currentPosition: Position = Position(latitude: 25.03320617048529, longitude: 121.56449873729362)
+
 class LocationService {
     static let shared = LocationService()
 
@@ -57,7 +60,6 @@ class LocationService {
                 completion(nil, error)
                 return
             }
-            print(placemark.country)
             completion(placemark, nil)
         }
     }
@@ -68,21 +70,7 @@ class LocationService {
         }
         completion(nil)
     }
-    
-    func fetchPostalCode() {
-        if let path = Bundle.main.path(forResource: "", ofType: "json") {
-            do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
-                let jsonResult = try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
-                if let jsonResult = jsonResult as? Dictionary<String, AnyObject>, let person = jsonResult["person"] as? [Any] {
-                    // do stuffResource/Postal
-                }
-            } catch {
-                // handle error
-            }
-        }
-    }
-    
+
     func fetchPostalCode(filename: String = "PostalCode") -> [PostalCode]? {
         if let url = Bundle.main.url(forResource: filename, withExtension: "json") {
             do {

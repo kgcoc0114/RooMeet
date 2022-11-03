@@ -12,172 +12,150 @@ class ExploreViewController: UIViewController {
 
     @IBOutlet weak var roomExploreMap: MKMapView!
 
-    let loactions = [
-        "臺北市中正區新生南路一段90號",
-        "臺北市中正區廣州街10號",
-        "臺北市中正區延平南路15號",
-        "臺北市中正區杭州南路一段1號",
-        "臺北市大安區和平東路三段6號",
-        "臺北市大安區基隆路三段155巷57號"
-    ]
+    var rooms: [Room] = [] {
+        didSet {
+            if rooms.isEmpty {
+                roomExploreMap.removeAnnotations(geoCodes)
+            }
 
-    var geoCodes: [MKPointAnnotation] = []
-    
+            prevGeoCodes = geoCodes
+            geoCodes.removeAll()
+            rooms.forEach { room in
+                if let lat = room.lat,
+                   let long = room.long {
+                    let location = CLLocationCoordinate2D(latitude: lat, longitude: long)
+                    let annotation = RMAnnotation()
+                    annotation.coordinate = location
+                    annotation.room = room
+                    geoCodes.append(annotation)
+                    show()
+                }
+            }
+        }
+    }
+
+    var geoCodes: [RMAnnotation] = []
+    var geoCodesAddList: [RMAnnotation] = []
+    var geoCodesRemoveList: [RMAnnotation] = []
+    var prevGeoCodes: [RMAnnotation] = []
+
     var locationManger = CLLocationManager()
-    
+
     var postalCode: String?
+    var currentPostalCode: Int?
+
     var county: String?
     var town: String?
 
     override func viewDidLoad() {
-
         super.viewDidLoad()
-        print(LocationService.shared.fetchPostalCode(filename: "PostalCode"))
+
         locationManger.delegate = self
         roomExploreMap.delegate = self
-
-//        locationManger.requestLocation()
 
         locationManger.requestWhenInUseAuthorization()
         locationManger.delegate = self
         locationManger.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+
+        // get user current location
         locationManger.requestLocation()
-//        roomExploreMap.showsUserLocation = true
-//        let xxx = roomExploreMap.userLocation
-//        roomExploreMap.delegate = self
-////        LocationService.shared.
-//        LocationService.shared.getAddressFromGeoCode(location: roomExploreMap.userLocation.coordinate) { placemark, error in
-//            if error != nil {
-//                print(error?.localizedDescription)
-//            }
-//            print(placemark?.country, placemark?.region, placemark?.administrativeArea, placemark?.locality)
-//        }
-////        loactions.enumerated().forEach { index, location in
-////            LocationService.shared.getCoordinates(fullAddress: location) { [self] locationCoordinate in
-////                let annotation = MKPointAnnotation()
-////                annotation.coordinate = locationCoordinate
-////                annotation.title = "room \(index + 1)"
-////                geoCodes.append(annotation)
-////                show()
-////            }
-////        }
-////
-////        LocationService.shared.getCoordinates(handler: { [self] location in
-////            let region = MKCoordinateRegion(center: location, latitudinalMeters: 1000, longitudinalMeters: 1000)
-////            roomExploreMap.setRegion(region, animated: true)
-////        })
+        roomExploreMap.showsUserLocation = true
     }
 
     func show() {
-        if geoCodes.count == loactions.count {
+        if geoCodes.count == rooms.count {
             DispatchQueue.main.async { [self] in
+                roomExploreMap.removeAnnotations(prevGeoCodes)
                 roomExploreMap.addAnnotations(geoCodes)
             }
         }
     }
 }
+
 extension ExploreViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            print(location.coordinate.latitude)
-            print(location.coordinate.longitude)
+            getRoomForCurrentPosition(mapView: roomExploreMap)
 
-            LocationService.shared.getAddressFromGeoCode(location: location.coordinate) { [weak self] placemark, error in
-                if error != nil {
-                    print(error?.localizedDescription)
-                }
-                if let placemark = placemark {
-                    self?.postalCode = placemark.postalCode
-                    self?.county = placemark.administrativeArea
-                    self?.town = placemark.locality
+            // set current location in map
+            let region = MKCoordinateRegion(
+                center: location.coordinate,
+                latitudinalMeters: 1000,
+                longitudinalMeters: 1000
+            )
+            roomExploreMap.setRegion(region, animated: true)
+        }
+    }
+
+    private func fetchRoomData(placemark: CLPlacemark) {
+        if let postalCode = placemark.postalCode {
+            self.postalCode = postalCode.prefix(3).description
+            self.county = placemark.administrativeArea
+            self.town = placemark.locality
+
+            FirebaseService.shared.fetchRoomByArea(postalCode: self.postalCode!) { [weak self] rooms in
+                if let rooms = rooms {
+                    self?.rooms = rooms
+                } else {
+                    if let currentLocations = self?.geoCodes {
+                        self?.roomExploreMap.removeAnnotations(currentLocations)
+                    }
                 }
             }
+        }
+    }
+
+    private func getRoomForCurrentPosition(mapView: MKMapView) {
+        let northWestCoordinate = mapView.convert(CGPoint(x: 0, y: 0), toCoordinateFrom: mapView)
+        let southEastCoordinate = mapView.convert(
+            CGPoint(x: mapView.frame.size.width, y: mapView.frame.size.height),
+            toCoordinateFrom: mapView
+        )
+
+        FirebaseService.shared.fetchRoomByCoordinate(
+            northWest: northWestCoordinate,
+            southEast: southEastCoordinate
+        ) { [weak self] rooms in
+            guard let rooms = rooms else {
+                print("ERROR: fetch rooms error.")
+                return
+            }
+            self?.rooms = rooms
         }
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
         print(error.localizedDescription)
     }
-    
-    func setCenterPlace(placemark: CLPlacemark?, error: Error?) {
-        if error != nil {
-            print(error?.localizedDescription)
-        }
-        
-        if let placemark = placemark {
-            postalCode = placemark.postalCode
-            county = placemark.administrativeArea
-            town = placemark.locality
-            print(postalCode, county, town)
-        }
-    }
 }
 
 extension ExploreViewController: MKMapViewDelegate {
-    func mapView(_ mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-        var center = mapView.centerCoordinate
-        LocationService.shared.getAddressFromGeoCode(location: center) { [weak self] placemark, error in
-            self?.setCenterPlace(placemark: placemark, error: error)
-        }
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
+        getRoomForCurrentPosition(mapView: mapView)
     }
 
-//    func mapView(mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-//        print ("Here we are")
-//        var center = mapView.centerCoordinate
-//        print ("Center is \(center)")
-//    }
-    
-//    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-//        if annotation is MKUserLocation {
-//            return nil
-//        }
-//        var annotationView = mapView.de(
-//            withIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier,
-//            for: annotation)
-        
-//        annotationView.markerTintColor = .darkGray
-//        if annotationView == nil {
-////            annotationView = MKAnnotationView(
-////                annotation: annotation,
-////                reuseIdentifier: "custom"
-////            )
-//            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-//            let imageView = UIImageView(image: UIImage(systemName: "heart"))
-//            imageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-//            imageView.layer.cornerRadius = 3
-//            imageView.clipsToBounds = true
-//            annotationView.leftCalloutAccessoryView = imageView
-////            annotationView.tintColor = .darkGray
-//            let label = UILabel()
-//            label.text = annotation.title!
-//            annotationView.detailCalloutAccessoryView = label
-//
-////            annotationView.canShowCallout = true
-//        } else {
-//            annotationView.annotation = annotation
-//        }
-//        annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
-//        let imageView = UIImageView(image: UIImage(systemName: "heart"))
-//        imageView.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
-//        imageView.layer.cornerRadius = 3
-//        imageView.clipsToBounds = true
-//        annotationView.leftCalloutAccessoryView = imageView
-//        //            annotationView.tintColor = .darkGray
-//        let label = UILabel()
-//        label.text = annotation.title!
-//        annotationView.detailCalloutAccessoryView = label
-//        annotationView.image = UIImage(systemName: "heart")
-//        annotationView.clusteringIdentifier = "identifier"
-//
-//        return annotationView
-//    }
-    
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        print("select")
+        guard let roomMarker = view.annotation as? RMAnnotation else {
+            return
+        }
+
+        let roomDetailVC = RoomDetailViewController()
+        roomDetailVC.room = roomMarker.room
+        present(roomDetailVC, animated: true)
+    }
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation {
+            return nil
+        }
+
+        let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier, for: annotation)
+
+        annotationView.clusteringIdentifier = "identifier"
+        return annotationView
     }
 }
 
-
-class RMAnnotation : MKPointAnnotation {
-    var room : String?
+class RMAnnotation: MKPointAnnotation {
+    var room: Room?
 }

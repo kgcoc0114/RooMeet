@@ -59,7 +59,7 @@ class PostViewController: UIViewController {
     var otherDescriction: String?
     var latitude: Double?
     var longitude: Double?
-    var postalCode: Int?
+    var postalCode: String?
 
     var roommateGender: Int?
     @IBOutlet weak var collectionView: UICollectionView!

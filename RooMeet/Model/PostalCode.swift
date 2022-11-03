@@ -8,7 +8,7 @@
 import Foundation
 
 struct PostalCode: Codable {
-    let zip: Int
+    let zip: String
     let city: String
     let area: String
 }
@@ -17,3 +17,7 @@ struct PostalCodeData: Codable {
     let data: [PostalCode]
 }
 
+struct Position: Codable {
+    let latitude: Double
+    let longitude: Double
+}
