@@ -9,35 +9,35 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Home View Controller-->
+        <!--Explore View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" customClass="HomeViewController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Y6W-OH-hqX" customClass="ExploreViewController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VrT-Qz-voh">
-                                <rect key="frame" x="182" y="433" width="50" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Add"/>
-                                <connections>
-                                    <action selector="addRoomPost:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="dD0-rk-SaV"/>
-                                </connections>
-                            </button>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="OF1-Fu-DU6">
+                                <rect key="frame" x="20" y="104" width="374" height="690"/>
+                            </mapView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="OF1-Fu-DU6" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="60" id="9H3-Ii-Maa"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="OF1-Fu-DU6" secondAttribute="trailing" constant="20" id="gDr-rC-HCL"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="OF1-Fu-DU6" secondAttribute="bottom" constant="68" id="poJ-ow-aU5"/>
+                            <constraint firstItem="OF1-Fu-DU6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="t9j-aS-k5u"/>
+                        </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="u2R-6z-T2R"/>
+                    <navigationItem key="navigationItem" id="fCg-Z0-sTj"/>
                     <connections>
-                        <outlet property="addPostButton" destination="VrT-Qz-voh" id="BxE-qi-fnH"/>
+                        <outlet property="roomExploreMap" destination="OF1-Fu-DU6" id="SyY-nU-7Kc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1011.5942028985507" y="99.776785714285708"/>
+            <point key="canvasLocation" x="265" y="33"/>
         </scene>
     </scenes>
     <resources>

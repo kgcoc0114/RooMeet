@@ -20,7 +20,12 @@ struct Room: Codable {
     var roommateGender: Int // (0: male, 1: female, 2: nonBinary, 3: all)
     var rules: [String]
     var publicAmenities: [String]
-    var address: Address
+    var town: String
+    var county: String
+    var address: String
+    var lat: Double?
+    var long: Double?
+    var postalCode: String?
 //    var currentLivingInfo: CurrentLivingInfo
     var billInfo: BillInfo?
     var lease: Double
@@ -121,4 +126,8 @@ enum AffordType: String {
         case .share: return "費用均分"
         }
     }
+}
+
+struct RoomList: Codable {
+    let data: [Room]
 }

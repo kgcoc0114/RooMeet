@@ -57,6 +57,10 @@ class PostViewController: UIViewController {
     var roomImages: [UIImage] = []
 
     var otherDescriction: String?
+    var latitude: Double?
+    var longitude: Double?
+    var postalCode: String?
+
     var roommateGender: Int?
     @IBOutlet weak var collectionView: UICollectionView!
 //    let locs = Locations()
@@ -93,12 +97,13 @@ class PostViewController: UIViewController {
             UINib(nibName: FeeDetailCell.reuseIdentifier, bundle: nil),
             forCellWithReuseIdentifier: FeeDetailCell.reuseIdentifier
         )
-        LocationService.shared.getCoordinates { coords in
-            print("\(coords.latitude), \(coords.longitude)")
-        }
+//        LocationService.shared.getCoordinates { coords in
+//            print("\(coords.latitude), \(coords.longitude), \()")
+//        }
     }
 
     @IBAction func submitAction(_ sender: Any) {
+        
         uploadImages(images: roomImages)
     }
 }
@@ -141,16 +146,6 @@ extension PostViewController: UICollectionViewDataSource {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OtherFeeCell.reuseIdentifier, for: indexPath) as? OtherFeeCell else {
                 fatalError("PostBasicCell Error")
             }
-//            cell.completion = { _ in
-//                let regionPickerVC = RegionPickerViewController()
-//                regionPickerVC.completion = { county, town in
-//                    cell.county = county
-//                    cell.town = town
-//                }
-//                present(regionPickerVC, animated: true)
-//
-//            }
-//            cell.delegate = self
             return cell
         case .other:
             return UICollectionViewCell()
@@ -318,6 +313,21 @@ extension PostViewController {
 extension PostViewController: PostBasicCellDelegate {
     func passData(cell: PostBasicCell, data: PostBasicData) {
         postBasicData = data
+        
+        if let county = postBasicData?.county,
+           let town = postBasicData?.town {
+            postalCode = LocationService.shared.postalCodeList?.filter({ postal in
+                postal.city == county && postal.area == town
+            })[0].zip
+            if let address = postBasicData?.address,
+               address != "" {
+                LocationService.shared.getCoordinates(
+                    fullAddress: "\(county)\(town)\(address)") { [weak self] location in
+                        self?.latitude = location.latitude
+                        self?.longitude = location.longitude
+                    }
+            }
+        }
     }
 
     func showRegionPickerView(cell: PostBasicCell) {
@@ -454,12 +464,12 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                             roommateGender: (postBasicData?.gender)!,
                             rules: ruleSelection,
                             publicAmenities: amenitiesSelection,
-                            address: Address(
-                                town: (postBasicData?.town)!,
-                                county: (postBasicData?.county)!,
-                                address: (postBasicData?.address)!,
-                                lat: 25.066742,
-                                long: 121.536942),
+                            town: (postBasicData?.town)!,
+                            county: (postBasicData?.county)!,
+                            address: (postBasicData?.address)!,
+                            lat: latitude,
+                            long: longitude,
+                            postalCode: postalCode,
                             billInfo: billInfo,
                             lease: Double((postBasicData?.lease)!),
                             movinDate: (postBasicData?.movinDate)!,
