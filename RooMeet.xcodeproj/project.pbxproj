@@ -11,6 +11,10 @@
 		E55C095E290D51B800DBF21B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095D290D51B800DBF21B /* Room.swift */; };
 		E55C0960290D53F900DBF21B /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095F290D53F900DBF21B /* Gender.swift */; };
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
+		E55E6FC52914BDAB00CBB0EB /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E6FC32914BDAB00CBB0EB /* MessageCell.swift */; };
+		E55E6FC62914BDAB00CBB0EB /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55E6FC42914BDAB00CBB0EB /* MessageCell.xib */; };
+		E55E6FCB2914CA3000CBB0EB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */; };
+		E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */; };
 		E593EFFD290FEFF000B35550 /* MutlipleChooseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */; };
 		E593EFFE290FEFF000B35550 /* MutlipleChooseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */; };
 		E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */; };
@@ -61,12 +65,20 @@
 		E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C99290E474200F07286 /* UIColor+Extension.swift */; };
 		E5EEE1F8291214C300CAAE84 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE1F7291214C300CAAE84 /* Explore.storyboard */; };
 		E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE1F9291218F300CAAE84 /* ExploreViewController.swift */; };
-		E5EEE1FC29125FAA00CAAE84 /* RoomAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE1FB29125FAA00CAAE84 /* RoomAnnotationView.swift */; };
 		E5EEE20329129C6000CAAE84 /* PostalCode.json in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE20229129C6000CAAE84 /* PostalCode.json */; };
 		E5EEE20529129F6700CAAE84 /* PostalCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE20429129F6700CAAE84 /* PostalCode.swift */; };
 		E5EEE2072912AE3B00CAAE84 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2062912AE3B00CAAE84 /* FirebaseService.swift */; };
 		E5EEE20A2912BCC700CAAE84 /* RoomDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2082912BCC600CAAE84 /* RoomDetailViewController.swift */; };
 		E5EEE20B2912BCC700CAAE84 /* RoomDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE2092912BCC600CAAE84 /* RoomDetailViewController.xib */; };
+		E5EEE20D2913A8C900CAAE84 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE20C2913A8C900CAAE84 /* Chat.storyboard */; };
+		E5EEE2132913B02600CAAE84 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2122913B02600CAAE84 /* User.swift */; };
+		E5EEE2152913B26B00CAAE84 /* ChatRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2142913B26B00CAAE84 /* ChatRoom.swift */; };
+		E5EEE2172913B2B800CAAE84 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2162913B2B800CAAE84 /* Message.swift */; };
+		E5EEE2192913B4D000CAAE84 /* ChatRoomListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2182913B4D000CAAE84 /* ChatRoomListViewController.swift */; };
+		E5EEE21D2913B4F900CAAE84 /* ChatRoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE21B2913B4F900CAAE84 /* ChatRoomCell.swift */; };
+		E5EEE21E2913B4F900CAAE84 /* ChatRoomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE21C2913B4F900CAAE84 /* ChatRoomCell.xib */; };
+		E5EEE2832913F97800CAAE84 /* KingfisherWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2822913F97800CAAE84 /* KingfisherWrapper.swift */; };
+		E5EEE2852913FA3E00CAAE84 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2842913FA3E00CAAE84 /* UIImageView+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +88,10 @@
 		E55C095D290D51B800DBF21B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E55C095F290D53F900DBF21B /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		E55E6FC32914BDAB00CBB0EB /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		E55E6FC42914BDAB00CBB0EB /* MessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
+		E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
 		E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutlipleChooseController.swift; sourceTree = "<group>"; };
 		E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MutlipleChooseController.xib; sourceTree = "<group>"; };
 		E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChooseCell.swift; sourceTree = "<group>"; };
@@ -128,12 +144,20 @@
 		E5E64C99290E474200F07286 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E5EEE1F7291214C300CAAE84 /* Explore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		E5EEE1F9291218F300CAAE84 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
-		E5EEE1FB29125FAA00CAAE84 /* RoomAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomAnnotationView.swift; sourceTree = "<group>"; };
 		E5EEE20229129C6000CAAE84 /* PostalCode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PostalCode.json; sourceTree = "<group>"; };
 		E5EEE20429129F6700CAAE84 /* PostalCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostalCode.swift; sourceTree = "<group>"; };
 		E5EEE2062912AE3B00CAAE84 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		E5EEE2082912BCC600CAAE84 /* RoomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewController.swift; sourceTree = "<group>"; };
 		E5EEE2092912BCC600CAAE84 /* RoomDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDetailViewController.xib; sourceTree = "<group>"; };
+		E5EEE20C2913A8C900CAAE84 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
+		E5EEE2122913B02600CAAE84 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E5EEE2142913B26B00CAAE84 /* ChatRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoom.swift; sourceTree = "<group>"; };
+		E5EEE2162913B2B800CAAE84 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		E5EEE2182913B4D000CAAE84 /* ChatRoomListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomListViewController.swift; sourceTree = "<group>"; };
+		E5EEE21B2913B4F900CAAE84 /* ChatRoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatRoomCell.swift; sourceTree = "<group>"; };
+		E5EEE21C2913B4F900CAAE84 /* ChatRoomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatRoomCell.xib; sourceTree = "<group>"; };
+		E5EEE2822913F97800CAAE84 /* KingfisherWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingfisherWrapper.swift; sourceTree = "<group>"; };
+		E5EEE2842913FA3E00CAAE84 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -168,6 +192,8 @@
 		E55C095B290D4F5800DBF21B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E5EEE2112913B00400CAAE84 /* User */,
+				E5EEE20E2913AFA300CAAE84 /* Chat */,
 				E55C095D290D51B800DBF21B /* Room.swift */,
 				E55C095F290D53F900DBF21B /* Gender.swift */,
 				E5E64C83290E183F00F07286 /* RegionService.swift */,
@@ -192,6 +218,9 @@
 				E5EEE1F9291218F300CAAE84 /* ExploreViewController.swift */,
 				E5EEE2082912BCC600CAAE84 /* RoomDetailViewController.swift */,
 				E5EEE2092912BCC600CAAE84 /* RoomDetailViewController.xib */,
+				E5EEE2182913B4D000CAAE84 /* ChatRoomListViewController.swift */,
+				E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */,
+				E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -199,9 +228,9 @@
 		E55C0963290D5C2D00DBF21B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E5EEE21A2913B4DB00CAAE84 /* Chat */,
 				E5DC0FED29120CCA00EB57FD /* Component */,
 				E5B3376B290F639F00467404 /* AddRoom */,
-				E5EEE1FB29125FAA00CAAE84 /* RoomAnnotationView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -262,6 +291,7 @@
 		E5BDDB3D290D0E2900F4A767 /* RooMeet */ = {
 			isa = PBXGroup;
 			children = (
+				E5EEE2812913F94600CAAE84 /* ThirdPartyWrapper */,
 				E55C0963290D5C2D00DBF21B /* View */,
 				E5DC0FE12911FF2700EB57FD /* Service */,
 				E5E64C94290E3E0C00F07286 /* Extension */,
@@ -280,6 +310,7 @@
 				E5E64C92290E3D3E00F07286 /* Home.storyboard */,
 				E5A12A622910B8C4006907D9 /* NibLoadble.swift */,
 				E5EEE1F7291214C300CAAE84 /* Explore.storyboard */,
+				E5EEE20C2913A8C900CAAE84 /* Chat.storyboard */,
 			);
 			path = RooMeet;
 			sourceTree = "<group>";
@@ -398,8 +429,45 @@
 				E5E64C95290E3E2600F07286 /* UIStoryboard+Extension.swift */,
 				E5E64C99290E474200F07286 /* UIColor+Extension.swift */,
 				E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */,
+				E5EEE2842913FA3E00CAAE84 /* UIImageView+Extension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		E5EEE20E2913AFA300CAAE84 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				E5EEE2142913B26B00CAAE84 /* ChatRoom.swift */,
+				E5EEE2162913B2B800CAAE84 /* Message.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		E5EEE2112913B00400CAAE84 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				E5EEE2122913B02600CAAE84 /* User.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		E5EEE21A2913B4DB00CAAE84 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				E5EEE21B2913B4F900CAAE84 /* ChatRoomCell.swift */,
+				E5EEE21C2913B4F900CAAE84 /* ChatRoomCell.xib */,
+				E55E6FC32914BDAB00CBB0EB /* MessageCell.swift */,
+				E55E6FC42914BDAB00CBB0EB /* MessageCell.xib */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		E5EEE2812913F94600CAAE84 /* ThirdPartyWrapper */ = {
+			isa = PBXGroup;
+			children = (
+				E5EEE2822913F97800CAAE84 /* KingfisherWrapper.swift */,
+			);
+			path = ThirdPartyWrapper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -473,13 +541,17 @@
 				E5B3377D290FAA4800467404 /* PostImageCell.xib in Resources */,
 				E5B33773290F65D800467404 /* PostViewController.xib in Resources */,
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
+				E55E6FC62914BDAB00CBB0EB /* MessageCell.xib in Resources */,
+				E5EEE20D2913A8C900CAAE84 /* Chat.storyboard in Resources */,
 				E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */,
 				E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */,
 				E5E64C8E290E1AA700F07286 /* RegionPickerCell.xib in Resources */,
+				E5EEE21E2913B4F900CAAE84 /* ChatRoomCell.xib in Resources */,
 				E5E64C93290E3D3E00F07286 /* Home.storyboard in Resources */,
 				E5EEE1F8291214C300CAAE84 /* Explore.storyboard in Resources */,
 				E593F014291012DF00B35550 /* RulesHeaderCell.xib in Resources */,
 				E593F00A2910065C00B35550 /* RulesCell.xib in Resources */,
+				E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */,
 				E593F0062910016D00B35550 /* OptionCell.xib in Resources */,
 				E5C5FE872910CB8000DA91DF /* FeeInfoCell.xib in Resources */,
 				E5B3376F290F64D800467404 /* RoomSpecCell.xib in Resources */,
@@ -558,7 +630,7 @@
 				E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */,
 				E55C0960290D53F900DBF21B /* Gender.swift in Sources */,
 				E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */,
-				E5EEE1FC29125FAA00CAAE84 /* RoomAnnotationView.swift in Sources */,
+				E5EEE21D2913B4F900CAAE84 /* ChatRoomCell.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
 				E593F013291012DF00B35550 /* RulesHeaderCell.swift in Sources */,
 				E593F0092910065C00B35550 /* RulesCell.swift in Sources */,
@@ -567,8 +639,11 @@
 				E5B33772290F65D800467404 /* PostViewController.swift in Sources */,
 				E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */,
 				E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */,
+				E5EEE2172913B2B800CAAE84 /* Message.swift in Sources */,
 				E55C095E290D51B800DBF21B /* Room.swift in Sources */,
 				E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */,
+				E5EEE2192913B4D000CAAE84 /* ChatRoomListViewController.swift in Sources */,
+				E5EEE2852913FA3E00CAAE84 /* UIImageView+Extension.swift in Sources */,
 				E5C5FE8A2910EF9E00DA91DF /* FeeDetailCell.swift in Sources */,
 				E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */,
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
@@ -576,10 +651,13 @@
 				E5EEE20529129F6700CAAE84 /* PostalCode.swift in Sources */,
 				E5E64C86290E185600F07286 /* Region.swift in Sources */,
 				E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */,
+				E55E6FC52914BDAB00CBB0EB /* MessageCell.swift in Sources */,
 				E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */,
 				E5EEE2072912AE3B00CAAE84 /* FirebaseService.swift in Sources */,
 				E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */,
+				E5EEE2132913B02600CAAE84 /* User.swift in Sources */,
 				E5E64C84290E183F00F07286 /* RegionService.swift in Sources */,
+				E5EEE2832913F97800CAAE84 /* KingfisherWrapper.swift in Sources */,
 				E5B33780290FB61900467404 /* OtherFeeCell.swift in Sources */,
 				E593F0052910016D00B35550 /* OptionCell.swift in Sources */,
 				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,
@@ -590,6 +668,8 @@
 				E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */,
 				E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */,
 				E55C0972290D628400DBF21B /* Constants.swift in Sources */,
+				E5EEE2152913B26B00CAAE84 /* ChatRoom.swift in Sources */,
+				E55E6FCB2914CA3000CBB0EB /* ChatViewController.swift in Sources */,
 				E5E64C96290E3E2600F07286 /* UIStoryboard+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
