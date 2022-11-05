@@ -24,4 +24,8 @@ extension UIImageView {
             .resume()
         }
     }
+
+    func setCornerRadius(cornerRadius: CGFloat) {
+        self.layer.cornerRadius = cornerRadius
+    }
 }

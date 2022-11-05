@@ -9,7 +9,7 @@ import Foundation
 import MapKit
 
 
-var currentPosition: Position = Position(latitude: 25.03320617048529, longitude: 121.56449873729362)
+
 
 class LocationService {
     static let shared = LocationService()
@@ -85,3 +85,4 @@ class LocationService {
         return nil
     }
 }
+

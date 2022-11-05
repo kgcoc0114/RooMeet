@@ -313,7 +313,6 @@ extension PostViewController {
 extension PostViewController: PostBasicCellDelegate {
     func passData(cell: PostBasicCell, data: PostBasicData) {
         postBasicData = data
-        
         if let county = postBasicData?.county,
            let town = postBasicData?.town {
             postalCode = LocationService.shared.postalCodeList?.filter({ postal in
@@ -355,8 +354,12 @@ extension PostViewController: PostImageCellDelegate {
         waitForUpdateImageCell = cell
         let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
-   
-        let imagePickerAlertController = UIAlertController(title: "上傳圖片", message: "請選擇要上傳的圖片", preferredStyle: .actionSheet)
+
+        let imagePickerAlertController = UIAlertController(
+            title: "上傳圖片",
+            message: "請選擇要上傳的圖片",
+            preferredStyle: .actionSheet
+        )
 
         let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { _ in
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
@@ -389,8 +392,10 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         picker.dismiss(animated: true)
     }
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        print("===", #function)
+    func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
+    ) {
         var selectedImageFromPicker: UIImage?
 
         // 取得從 UIImagePickerController 選擇的檔案
@@ -399,8 +404,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             selectedImageFromPicker = pickedImage
             self.insertRoomImages(cell: (self.waitForUpdateImageCell)!, image: pickedImage)
         }
-        
-        
+
         picker.dismiss(animated: true)
     }
     
@@ -455,7 +459,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             let docRef = Firestore.firestore().collection("Room").document()
             print("docRef")
             let room = Room(roomID: docRef.documentID,
-                            userID: "kgcoc0114",
+                            userID: gCurrentUser.id,
                             createdTime: Timestamp(),
                             modifiedTime: Timestamp(),
                             title: (postBasicData?.title)!,

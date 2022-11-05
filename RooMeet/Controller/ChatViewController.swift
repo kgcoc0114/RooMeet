@@ -23,7 +23,7 @@ class ChatViewController: UIViewController {
 
     var chatRoom: ChatRoom?
     var otherData: ChatMember?
-    var currentUserData = ChatMember(id: User.mockUser.id, profilePhoto: User.mockUser.profilePhoto, name: User.mockUser.name)
+    var currentUserData = ChatMember(id: gCurrentUser.id, profilePhoto: gCurrentUser.profilePhoto, name: gCurrentUser.name)
     var messages: [Message] = [] {
         didSet {
             updateDataSource()
@@ -98,7 +98,7 @@ class ChatViewController: UIViewController {
             let message = Message(
                 id: messageRef.documentID,
                 messageType: 0,
-                sendBy: User.mockUser.id,
+                sendBy: gCurrentUser.id,
                 content: content,
                 createdTime: Timestamp()
             )

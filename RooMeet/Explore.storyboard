@@ -18,16 +18,16 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="OF1-Fu-DU6">
-                                <rect key="frame" x="20" y="104" width="374" height="690"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                             </mapView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="OF1-Fu-DU6" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="60" id="9H3-Ii-Maa"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="OF1-Fu-DU6" secondAttribute="trailing" constant="20" id="gDr-rC-HCL"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="OF1-Fu-DU6" secondAttribute="bottom" constant="68" id="poJ-ow-aU5"/>
-                            <constraint firstItem="OF1-Fu-DU6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="t9j-aS-k5u"/>
+                            <constraint firstItem="OF1-Fu-DU6" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" id="9H3-Ii-Maa"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="OF1-Fu-DU6" secondAttribute="trailing" id="gDr-rC-HCL"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="OF1-Fu-DU6" secondAttribute="bottom" id="poJ-ow-aU5"/>
+                            <constraint firstItem="OF1-Fu-DU6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="t9j-aS-k5u"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="fCg-Z0-sTj"/>

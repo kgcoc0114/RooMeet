@@ -86,7 +86,7 @@ class FirebaseService {
     }
 
     func fetchChatRoomsByUserID(userID: String, completion: @escaping (([ChatRoom]) -> Void)) {
-        let query = FirestoreEndpoint.chatRoom.docRef.whereField("members", arrayContains: User.mockUser.id)
+        let query = FirestoreEndpoint.chatRoom.docRef.whereField("members", arrayContains: gCurrentUser.id)
 
         getDocuments(query) { (chatRooms: [ChatRoom]) in
             completion(chatRooms)
@@ -122,7 +122,7 @@ class FirebaseService {
         chatRooms.enumerated().forEach { index, roomResult in
             var chatRoom = roomResult
             let memberID = chatRoom.members.filter { member in
-                member != User.mockUser.id
+                member != gCurrentUser.id
             }[0]
             group.enter()
             self.fetchUserByID(userID: memberID, index: index) { user, index in
@@ -170,8 +170,38 @@ class FirebaseService {
             }
     }
 
-    func fetchMessagesbyRoomID(roomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
-        let query = FirestoreEndpoint.chatRoom.docRef.document(roomID).collection("Message")
+    // FIXME: add offset for paginate
+    func fetchRooms(county: String? = nil, completion: @escaping (([Room]) -> Void)) {
+        var query: Query
+        if let county = county {
+            query = FirestoreEndpoint.room.docRef.whereField("county", isEqualTo: county)
+        } else {
+            query = FirestoreEndpoint.room.docRef
+        }
+
+        query = query.order(by: "createdTime", descending: true)
+
+        let group = DispatchGroup()
+        getDocuments(query) { (rooms: [Room]) in
+            var rooms = rooms
+            rooms.enumerated().forEach { index, roomResult in
+                let ownerID = roomResult.userID
+                group.enter()
+                self.fetchUserByID(userID: ownerID, index: index) { user, index in
+                    if let user = user {
+                        rooms[index!].userData = user
+                    }
+                    group.leave()
+                }
+            }
+            group.notify(queue: DispatchQueue.main) {
+                completion(rooms)
+            }
+        }
+    }
+
+    func fetchMessagesbyChatRoomID(chatRoomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
+        let query = FirestoreEndpoint.chatRoom.docRef.document(chatRoomID).collection("Message")
 
         query.getDocuments(completion: { querySnapshot, error in
             if let error = error {
@@ -243,10 +273,9 @@ class FirebaseService {
             })
     }
 
-
     func listenToChatRoomUpdate(completion: @escaping (([ChatRoom]?, Error?) -> Void)) {
         FirestoreEndpoint.chatRoom.docRef
-            .whereField("members", arrayContains: User.mockUser.id)
+            .whereField("members", arrayContains: gCurrentUser.id)
             .order(by: "lastUpdated", descending: true)
             .addSnapshotListener({ querySnapshot, error in
                 if let error = error {
