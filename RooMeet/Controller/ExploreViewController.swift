@@ -4,7 +4,6 @@
 //
 //  Created by kgcoc on 2022/11/2.
 //
-
 import UIKit
 import MapKit
 
@@ -87,24 +86,6 @@ extension ExploreViewController: CLLocationManagerDelegate {
         }
     }
 
-    private func fetchRoomData(placemark: CLPlacemark) {
-        if let postalCode = placemark.postalCode {
-            self.postalCode = postalCode.prefix(3).description
-            self.county = placemark.administrativeArea
-            self.town = placemark.locality
-
-            FirebaseService.shared.fetchRoomByArea(postalCode: self.postalCode!) { [weak self] rooms in
-                if let rooms = rooms {
-                    self?.rooms = rooms
-                } else {
-                    if let currentLocations = self?.geoCodes {
-                        self?.roomExploreMap.removeAnnotations(currentLocations)
-                    }
-                }
-            }
-        }
-    }
-
     private func getRoomForCurrentPosition(mapView: MKMapView) {
         let northWestCoordinate = mapView.convert(CGPoint(x: 0, y: 0), toCoordinateFrom: mapView)
         let southEastCoordinate = mapView.convert(
@@ -149,7 +130,9 @@ extension ExploreViewController: MKMapViewDelegate {
             return nil
         }
 
-        let annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier, for: annotation)
+        let annotationView = mapView.dequeueReusableAnnotationView(
+            withIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier,
+            for: annotation)
 
         annotationView.clusteringIdentifier = "identifier"
         return annotationView

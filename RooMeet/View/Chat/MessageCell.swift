@@ -7,10 +7,10 @@
 
 import UIKit
 
-enum MsgType {
-    case currentUser
-    case other
-}
+//enum MsgType {
+//    case currentUser
+//    case other
+//}
 
 class MessageCell: UITableViewCell {
     static let reuseIdentifier = "\(MessageCell.self)"
@@ -52,7 +52,7 @@ class MessageCell: UITableViewCell {
     }
     
     func configureLayout() {
-        print(message?.content)
+        print(message?.content, msgType)
 
         if let message = message {
             contentLabel.text = message.content
@@ -68,6 +68,11 @@ class MessageCell: UITableViewCell {
         case .other:
             otherMsgType()
         }
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        configureLayout()
     }
 }
 

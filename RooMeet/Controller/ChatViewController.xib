@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
                 <outlet property="contentTextField" destination="UDU-vp-0jE" id="4iN-8y-EWV"/>
+                <outlet property="otherFunctionButton" destination="Hcq-sk-zXe" id="cQe-hV-0kd"/>
                 <outlet property="tableView" destination="0H5-Gx-yal" id="hFS-O0-C05"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -23,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="0H5-Gx-yal">
-                    <rect key="frame" x="10" y="54" width="394" height="743"/>
+                    <rect key="frame" x="0.0" y="43" width="414" height="754"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </tableView>
                 <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="f7e-EG-BLX">
@@ -58,13 +59,13 @@
             <constraints>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="f7e-EG-BLX" secondAttribute="trailing" constant="10" id="7ky-2y-fUr"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="f7e-EG-BLX" secondAttribute="bottom" constant="10" id="Api-35-HSh"/>
-                <constraint firstItem="0H5-Gx-yal" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="10" id="Ca4-U7-hR3"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0H5-Gx-yal" secondAttribute="trailing" constant="10" id="D9z-xP-eas"/>
+                <constraint firstItem="0H5-Gx-yal" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-1" id="Ca4-U7-hR3"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0H5-Gx-yal" secondAttribute="trailing" id="D9z-xP-eas"/>
                 <constraint firstItem="f7e-EG-BLX" firstAttribute="top" secondItem="0H5-Gx-yal" secondAttribute="bottom" constant="10" id="kYm-fe-4xG"/>
                 <constraint firstItem="f7e-EG-BLX" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="odn-lq-ptk"/>
-                <constraint firstItem="0H5-Gx-yal" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="rbB-dL-xBd"/>
+                <constraint firstItem="0H5-Gx-yal" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="rbB-dL-xBd"/>
             </constraints>
-            <point key="canvasLocation" x="132" y="96"/>
+            <point key="canvasLocation" x="131.8840579710145" y="95.758928571428569"/>
         </view>
     </objects>
     <resources>

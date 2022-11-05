@@ -31,8 +31,13 @@ class ChatRoomListViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
+            tableView.separatorStyle = .none
+            tableView.showsVerticalScrollIndicator = false
             tableView.delegate = self
-            tableView.register(UINib(nibName: ChatRoomCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: ChatRoomCell.reuseIdentifier)
+            tableView.register(
+                UINib(nibName: ChatRoomCell.reuseIdentifier, bundle: nil),
+                forCellReuseIdentifier: ChatRoomCell.reuseIdentifier
+            )
         }
     }
 
@@ -49,14 +54,32 @@ class ChatRoomListViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        startListener()
+
+        FirebaseService.shared.listenToChatRoomUpdate {[weak self] chatRooms, error in
+            if let error = error {
+                print(
+                    "ERROR: FirebaseService listenToChatRoomUpdate",
+                    error.localizedDescription
+                )
+            }
+
+            if let chatRooms = chatRooms {
+                DispatchQueue.main.async {
+                    self?.chatRooms = chatRooms
+                }
+            }
+        }
     }
 }
 
 extension ChatRoomListViewController {
     private func configureDataSource() {
-        dataSource = DataSource(tableView: tableView, cellProvider: { [unowned self] tableView, indexPath, itemIdentifier in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: ChatRoomCell.reuseIdentifier, for: indexPath) as? ChatRoomCell else {
+        dataSource = DataSource(tableView: tableView,
+                                cellProvider: { [unowned self] tableView, indexPath, itemIdentifier in
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: ChatRoomCell.reuseIdentifier,
+                for: indexPath
+            ) as? ChatRoomCell else {
                 return UITableViewCell()
             }
             let chatRoom = self.chatRooms[indexPath.item]
@@ -77,48 +100,9 @@ extension ChatRoomListViewController {
 
 extension ChatRoomListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("eeeeeee")
         let chatRoom = chatRooms[indexPath.item]
         let detailVC = ChatViewController()
         detailVC.setup(chatRoom: chatRoom)
-        navigationController?.pushViewController(detailVC, animated: true)
-    }
-}
-
-extension ChatRoomListViewController {
-    private func startListener() {
-        listener = FirebaseService.shared.database.collection("ChatRoom").whereField("members", arrayContains: User.mockUser.id).order(by: "lastUpdated", descending: true)
-            .addSnapshotListener({ querySnapshot, error in
-                if let error = error {
-                    print("Error getting documents: \(error)")
-                }
-                var chatRooms: [ChatRoom] = []
-                if let querySnapshot = querySnapshot {
-                    querySnapshot.documents.forEach { document in
-                        do {
-                            let item = try document.data(as: ChatRoom.self)
-                            chatRooms.append(item)
-                        } catch let DecodingError.dataCorrupted(context) {
-                            print(context)
-                        } catch let DecodingError.keyNotFound(key, context) {
-                            print("Key '\(key)' not found:", context.debugDescription)
-                            print("codingPath:", context.codingPath)
-                        } catch let DecodingError.valueNotFound(value, context) {
-                            print("Value '\(value)' not found:", context.debugDescription)
-                            print("codingPath:", context.codingPath)
-                        } catch let DecodingError.typeMismatch(type, context)  {
-                            print("Type '\(type)' mismatch:", context.debugDescription)
-                            print("codingPath:", context.codingPath)
-                        } catch {
-                            print("error: ", error)
-                        }
-
-                        //                    catch {
-                        //                        print("DEBUG: Error decoding \(ChatRoom.self) data -", error.localizedDescription)
-                        //                    }
-                    }
-                    self.chatRooms = chatRooms
-                }
-            })
+        navigationController?.pushViewController(detailVC, animated: false)
     }
 }

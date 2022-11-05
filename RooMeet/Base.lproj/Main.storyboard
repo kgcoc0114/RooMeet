@@ -4,8 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,28 +16,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dSs-KU-wYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2870" y="-464"/>
-        </scene>
-        <!--Item-->
-        <scene sceneID="ysN-iB-avK">
-            <objects>
-                <viewController id="UyM-1Y-on7" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ZZl-x6-Czs">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="house" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="yVx-oa-D0z">
-                                <rect key="frame" x="66" y="210" width="240" height="128"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="5Hh-Hj-sPj"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="0AQ-3c-juI"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="10Y-Rv-iZT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="541" y="717"/>
         </scene>
         <!--Chat-->
         <scene sceneID="4dH-J4-OjO">
@@ -73,21 +49,20 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="mM7-U2-zVB" kind="relationship" relationship="viewControllers" id="Kuf-2p-fmK"/>
                         <segue destination="fYg-EL-xGZ" kind="relationship" relationship="viewControllers" id="qVL-kJ-azh"/>
                         <segue destination="qmS-0x-fbG" kind="relationship" relationship="viewControllers" id="W7O-Tz-NGh"/>
-                        <segue destination="UyM-1Y-on7" kind="relationship" relationship="viewControllers" id="90B-8M-n01"/>
+                        <segue destination="mM7-U2-zVB" kind="relationship" relationship="viewControllers" id="Kuf-2p-fmK"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iaO-Qc-t6J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="947.82608695652186" y="-8.7053571428571423"/>
         </scene>
-        <!--Item-->
+        <!--Home-->
         <scene sceneID="w6N-oe-nPi">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fYg-EL-xGZ" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="Var-RT-90B"/>
+                    <tabBarItem key="tabBarItem" title="Home" image="house" catalog="system" selectedImage="house.fill" id="Var-RT-90B"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="rD6-PU-Yqu">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -102,11 +77,11 @@
             </objects>
             <point key="canvasLocation" x="2133" y="-571"/>
         </scene>
-        <!--Item-->
+        <!--Explore-->
         <scene sceneID="rXg-Ph-Llb">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qmS-0x-fbG" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="KiF-h2-weC"/>
+                    <tabBarItem key="tabBarItem" title="Explore" image="map" catalog="system" selectedImage="map.fill" id="KiF-h2-weC"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JYh-h7-9eV">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -119,13 +94,13 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="36K-4X-Whs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2786.9565217391305" y="237.72321428571428"/>
+            <point key="canvasLocation" x="2564" y="69"/>
         </scene>
-        <!--Item-->
+        <!--Chat-->
         <scene sceneID="6hX-6V-fUV">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mM7-U2-zVB" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="zf2-DM-Yq7"/>
+                    <tabBarItem key="tabBarItem" title="Chat" image="message" catalog="system" selectedImage="message.fill" id="zf2-DM-Yq7"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ur0-6U-08i">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
@@ -138,13 +113,15 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="279-dL-cdr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1709" y="635"/>
+            <point key="canvasLocation" x="1826" y="570"/>
         </scene>
     </scenes>
     <resources>
         <image name="house" catalog="system" width="128" height="106"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="house.fill" catalog="system" width="128" height="106"/>
+        <image name="map" catalog="system" width="128" height="110"/>
+        <image name="map.fill" catalog="system" width="128" height="110"/>
+        <image name="message" catalog="system" width="128" height="113"/>
+        <image name="message.fill" catalog="system" width="128" height="113"/>
     </resources>
 </document>

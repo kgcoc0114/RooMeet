@@ -57,7 +57,7 @@ class FeeInfoCell: UITableViewCell {
 
     var feeType: FeeType?
     var affordType: AffordType?
-    var feeDetail: FeeDetail = FeeDetail() {
+    var feeDetail = FeeDetail() {
         didSet {
             feeDetail.paid = true
         }
@@ -107,8 +107,6 @@ class FeeInfoCell: UITableViewCell {
     }
 
     @IBAction func tapShareButton(_ sender: Any) {
-        print("=======")
-        print(#function)
         if affordType == .share && shareButton.isSelected == true {
             shareButton.isSelected.toggle()
         } else {
@@ -123,8 +121,6 @@ class FeeInfoCell: UITableViewCell {
     }
 
     @IBAction func tapGovTypeButton(_ sender: Any) {
-        print("=======")
-        print(#function)
         govTypeButton.isSelected.toggle()
         feeDetail.isGov = govTypeButton.isSelected
         delegate?.passData(self)

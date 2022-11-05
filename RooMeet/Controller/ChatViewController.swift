@@ -23,22 +23,35 @@ class ChatViewController: UIViewController {
 
     var chatRoom: ChatRoom?
     var otherData: ChatMember?
-    @IBOutlet weak var contentTextField: UITextField!
     var currentUserData = ChatMember(id: User.mockUser.id, profilePhoto: User.mockUser.profilePhoto, name: User.mockUser.name)
     var messages: [Message] = [] {
         didSet {
-            print(messages)
             updateDataSource()
+            scrollToButtom(animated: false)
+        }
+    }
+    @IBOutlet weak var otherFunctionButton: UIButton! {
+        didSet {
+            otherFunctionButton.setTitle("", for: .normal)
         }
     }
 
     private var listener: ListenerRegistration?
 
+    @IBOutlet weak var contentTextField: UITextField!
+
     @IBOutlet weak var tableView: UITableView! {
         didSet {
+            tableView.separatorStyle = .none
+            tableView.showsVerticalScrollIndicator = false
             tableView.register(
-                UINib(nibName: MessageCell.reuseIdentifier, bundle: nil),
-                forCellReuseIdentifier: MessageCell.reuseIdentifier
+                UINib(nibName: OtherUserMsgCell.reuseIdentifier, bundle: nil),
+                forCellReuseIdentifier: OtherUserMsgCell.reuseIdentifier
+            )
+
+            tableView.register(
+                UINib(nibName: CurrentUserMsgCell.reuseIdentifier, bundle: nil),
+                forCellReuseIdentifier: CurrentUserMsgCell.reuseIdentifier
             )
         }
     }
@@ -48,6 +61,16 @@ class ChatViewController: UIViewController {
         configureDataSource()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+    }
+
     func setup(chatRoom: ChatRoom) {
         self.chatRoom = chatRoom
 
@@ -55,16 +78,14 @@ class ChatViewController: UIViewController {
 
         navigationItem.title = otherData?.name
 
-        startListener()
-
-//        FirebaseService.shared.fetchMessagesbyRoomID(roomID: chatRoom.id) { messages, error in
-//            if let error = error {
-//                print("Error getting documents: \(error)")
-//            }
-//            self.messages = messages ?? []
-//            self.startListener()
-//        }
+        FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { messages, error in
+            if let error = error {
+                print("Error getting documents: \(error)")
+            }
+            self.messages = messages ?? []
+        }
     }
+
     @IBAction func sendMessage(_ sender: Any) {
         if let content = contentTextField.text,
            !content.isEmpty {
@@ -101,30 +122,54 @@ class ChatViewController: UIViewController {
             ])
         }
     }
+
+    private func scrollToButtom(animated: Bool = true) {
+        tableView.scrollToButtom(at: .bottom, animated: animated)
+    }
 }
 
 extension ChatViewController {
     private func configureDataSource() {
         dataSource = DataSource(tableView: tableView, cellProvider: { [unowned self] tableView, indexPath, _ in
-            guard let cell = tableView.dequeueReusableCell(
-                withIdentifier: MessageCell.reuseIdentifier,
-                for: indexPath
-            ) as? MessageCell else {
-                return UITableViewCell()
-            }
-
             let message = self.messages[indexPath.item]
             if message.sendBy == currentUserData.id {
-                cell.msgType = .currentUser
-                cell.sendBy = currentUserData
+                return configureCurrentUserCell(tableView: tableView, indexPath: indexPath)
             } else {
-                cell.msgType = .other
-                cell.sendBy = otherData
+                return configureOtherUserCell(tableView: tableView, indexPath: indexPath)
             }
-            cell.message = message
-            cell.configureLayout()
-            return cell
         })
+    }
+
+    private func configureCurrentUserCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CurrentUserMsgCell.reuseIdentifier,
+            for: indexPath
+        ) as? CurrentUserMsgCell else {
+            return UITableViewCell()
+        }
+        let message = self.messages[indexPath.item]
+
+        cell.msgType = .currentUser
+        cell.sendBy = currentUserData
+        cell.message = message
+        cell.configureLayout()
+        return cell
+    }
+
+    private func configureOtherUserCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: OtherUserMsgCell.reuseIdentifier,
+            for: indexPath
+        ) as? OtherUserMsgCell else {
+            return UITableViewCell()
+        }
+        let message = self.messages[indexPath.item]
+
+        cell.msgType = .other
+        cell.sendBy = otherData
+        cell.message = message
+        cell.configureLayout()
+        return cell
     }
 }
 
@@ -136,40 +181,3 @@ extension ChatViewController {
         dataSource.apply(newSnapshot, animatingDifferences: true)
     }
 }
-
-extension ChatViewController {
-    private func startListener() {
-        listener = Firestore.firestore().collection("ChatRoom").document(chatRoom!.id)
-            .collection("Message").order(by: "createdTime", descending: false)
-            .addSnapshotListener({ querySnapshot, error in
-                guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshot results: \(error!)")
-                    return
-                }
-
-                var messages: [Message] = []
-
-                snapshot.documents.forEach { document in
-                    do {
-                        let item = try document.data(as: Message.self)
-                        messages.append(item)
-                    } catch let DecodingError.dataCorrupted(context) {
-                        print(context)
-                    } catch let DecodingError.keyNotFound(key, context) {
-                        print("Key '\(key)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.valueNotFound(value, context) {
-                        print("Value '\(value)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.typeMismatch(type, context)  {
-                        print("Type '\(type)' mismatch:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch {
-                        print("error: ", error)
-                    }
-                }
-                self.messages = messages
-            })
-    }
-}
-
