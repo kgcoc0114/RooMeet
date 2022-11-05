@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="Xdb-rx-Tz5" id="sXl-3b-pJS"/>
+                <outlet property="submitButton" destination="PI8-Cm-ohC" id="3Ag-VN-adx"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

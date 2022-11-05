@@ -12,14 +12,18 @@ class RoomItemsCell: UICollectionViewCell {
 
     var item: String?
 
+    @IBOutlet weak var itemBackgroundView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        itemBackgroundView.layer.cornerRadius = 10
+        titleLabel.tintColor = .white
     }
 
-    func configureCell(item: String) {
+    func configureCell(item: String, type: String = "rules") {
         titleLabel.text = item
+        itemBackgroundView.backgroundColor = type == "rules" ? .green : .orange
     }
 
 }

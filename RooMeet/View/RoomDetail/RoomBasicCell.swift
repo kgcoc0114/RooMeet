@@ -10,6 +10,14 @@ import UIKit
 class RoomBasicCell: UICollectionViewCell {
     static let reuseIdentifier = "\(RoomBasicCell.self)"
 
+    @IBOutlet weak var otherDescTextView: UITextView! {
+        didSet {
+            otherDescTextView.isEditable = false
+            otherDescTextView.isScrollEnabled = false
+            otherDescTextView.backgroundColor = .systemGray6
+        }
+    }
+
     @IBOutlet weak var areaLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
@@ -18,10 +26,16 @@ class RoomBasicCell: UICollectionViewCell {
         // Initialization code
     }
 
-    func configureCell(area: String, roomSpecs: [RoomSpec], title: String) {
+    func configureCell(area: String, roomSpecs: [RoomSpec], title: String, otherDesc: String?) {
         priceLabel.text = genPriceString(roomSpecs: roomSpecs)
         areaLabel.text = area
         titleLabel.text = title
+        
+        if let otherDesc = otherDesc {
+            otherDescTextView.text = otherDesc
+        } else {
+            otherDescTextView.isHidden = true
+        }
     }
 
     func genPriceString(roomSpecs: [RoomSpec]) -> String {

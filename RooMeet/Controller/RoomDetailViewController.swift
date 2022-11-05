@@ -51,7 +51,6 @@ class RoomDetailViewController: UIViewController {
                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                 withReuseIdentifier: RoomDetailHeaderView.reuseIdentifier)
             collectionView.dataSource = self
-            collectionView.delegate = self
             collectionView.collectionViewLayout = createLayout()
         }
     }
@@ -153,8 +152,10 @@ extension RoomDetailViewController: UICollectionViewDataSource {
             cell.configureCell(
                 area: "\(room.county)\(room.town)",
                 roomSpecs: room.rooms,
-                title: room.title
+                title: room.title,
+                otherDesc: room.otherDescriction
             )
+
             return cell
         case .amenities, .rules:
             guard let cell = collectionView.dequeueReusableCell(
@@ -168,7 +169,7 @@ extension RoomDetailViewController: UICollectionViewDataSource {
             if Section.allCases[indexPath.section] == .rules {
                 cell.configureCell(item: room.rules[indexPath.item])
             } else {
-                cell.configureCell(item: room.publicAmenities[indexPath.item])
+                cell.configureCell(item: room.publicAmenities[indexPath.item], type: "amenities")
             }
             return cell
         case .feeDetail:
@@ -189,32 +190,26 @@ extension RoomDetailViewController: UICollectionViewDataSource {
 
 }
 
-// MARK: Snapshot
-//extension RoomDetailViewController {
-//    private func updateDataSource() {
-//        var newSnapshot = Snapshot()
-//        newSnapshot.appendSections(Section.allCases)
-//        if let room = room {
-//            newSnapshot.appendItems([.basicInfo(room)], toSection: .basicInfo)
-//        }
-//        dataSource.apply(newSnapshot, animatingDifferences: true)
-//    }
-//}
-extension RoomDetailViewController: UICollectionViewDelegate {
-
-}
 // MARK: Layout
 extension RoomDetailViewController {
     func createBasicInfoSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3)), subitems: [item])
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(1.0)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(0.3)), subitems: [item])
 
         return NSCollectionLayoutSection(group: group)
     }
 
     func createItemsSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.1)), subitems: [item])
+        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
+            widthDimension: .estimated(20),
+            heightDimension: .fractionalHeight(1.0)))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
+            widthDimension: .estimated(20),
+            heightDimension: .estimated(50)), subitems: [item])
 
         return NSCollectionLayoutSection(group: group)
     }
@@ -227,7 +222,9 @@ extension RoomDetailViewController {
             )
         )
 
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3)), subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalHeight(0.3)), subitems: [item])
 
         return NSCollectionLayoutSection(group: group)
     }
@@ -280,6 +277,5 @@ extension RoomDetailViewController: RoomImagesCellDelegate {
                 }
             }
         }
-        print(gCurrentUser.like)
     }
 }

@@ -41,6 +41,7 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addRoomPost))
 
         // get User Location
         locationManger.delegate = self
@@ -63,7 +64,7 @@ class HomeViewController: UIViewController {
         }
     }
 
-    @IBAction func addRoomPost(_ sender: Any) {
+    @objc private func addRoomPost(_ sender: Any) {
         let postVC = PostViewController()
         navigationController?.pushViewController(postVC, animated: true)
     }

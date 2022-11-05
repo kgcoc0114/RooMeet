@@ -37,7 +37,7 @@ struct Room: Codable, Hashable {
 }
 
 struct RoomSpec: Codable, Hashable {
-    var roomType: [Int]?
+    var roomType: String?
     var price: Int?
     var space: Double?
     var people: Int?

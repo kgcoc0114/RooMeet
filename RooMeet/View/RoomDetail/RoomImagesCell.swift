@@ -21,6 +21,7 @@ class RoomImagesCell: UICollectionViewCell {
             likeButton.backgroundColor = .clear
             likeButton.setTitle("", for: .normal)
             likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            likeButton.tintColor = .white
         }
     }
 

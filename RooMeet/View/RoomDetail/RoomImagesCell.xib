@@ -25,13 +25,13 @@
                                 <rect key="frame" x="117" y="0.0" width="240" height="207"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="69J-IB-F9V">
-                                        <rect key="frame" x="20" y="0.0" width="200" height="178"/>
+                                        <rect key="frame" x="20" y="0.0" width="200" height="207"/>
                                     </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="69J-IB-F9V" firstAttribute="top" secondItem="W4L-sW-LdO" secondAttribute="top" id="5RS-Bx-oGd"/>
                                     <constraint firstItem="69J-IB-F9V" firstAttribute="trailing" secondItem="W4L-sW-LdO" secondAttribute="trailing" id="7im-ZI-2Ac"/>
-                                    <constraint firstItem="69J-IB-F9V" firstAttribute="height" secondItem="gXT-00-MdA" secondAttribute="height" multiplier="0.859375" id="ENO-kE-m0o"/>
+                                    <constraint firstItem="69J-IB-F9V" firstAttribute="height" secondItem="gXT-00-MdA" secondAttribute="height" id="ENO-kE-m0o"/>
                                     <constraint firstItem="69J-IB-F9V" firstAttribute="bottom" secondItem="W4L-sW-LdO" secondAttribute="bottom" id="TOq-Fb-pWt"/>
                                     <constraint firstItem="69J-IB-F9V" firstAttribute="leading" secondItem="W4L-sW-LdO" secondAttribute="leading" id="xt2-Pz-0RK"/>
                                 </constraints>
