@@ -9,9 +9,10 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-struct Room: Codable {
+struct Room: Codable, Hashable {
     var roomID: String
     var userID: String
+    var userData: User?
     var createdTime: Timestamp
     var modifiedTime: Timestamp
     var title: String
@@ -35,7 +36,7 @@ struct Room: Codable {
     var isDeleted: Bool
 }
 
-struct RoomSpec: Codable {
+struct RoomSpec: Codable, Hashable {
     var roomType: [Int]?
     var price: Int?
     var space: Double?
@@ -63,7 +64,7 @@ struct Transportation: Codable {
     let site: String
 }
 
-struct BillInfo: Codable {
+struct BillInfo: Codable, Hashable {
     var water: FeeDetail
     var electricity: FeeDetail
     var cable: FeeDetail
@@ -90,7 +91,7 @@ struct BillInfo: Codable {
         return desc
     }
 
-    var description : String {
+    var description: String {
         return """
 電費：\(self.genString(data: electricity, type: .electricity))\n
 水費：\(self.genString(data: water, type: .water))\n
@@ -101,12 +102,12 @@ struct BillInfo: Codable {
     }
 }
 
-struct FeeDetail: Codable {
+struct FeeDetail: Codable, Hashable {
     var paid: Bool? = false
     var fee: Double?
     var isGov: Bool?
     var affordType: String?
-    
+
     var description : String {
         if paid == false {
             return "無須支付"
@@ -116,10 +117,10 @@ struct FeeDetail: Codable {
     }
 }
 
-enum AffordType: String {
+enum AffordType: String, Hashable {
     case sperate = "sperate"
     case share = "share"
-    
+
     var description : String {
         switch self {
         case .sperate: return "獨立量表"

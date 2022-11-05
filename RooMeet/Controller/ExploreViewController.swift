@@ -48,6 +48,8 @@ class ExploreViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // set title
+        navigationItem.title = "Explore"
 
         locationManger.delegate = self
         roomExploreMap.delegate = self
@@ -58,6 +60,7 @@ class ExploreViewController: UIViewController {
 
         // get user current location
         locationManger.requestLocation()
+
         roomExploreMap.showsUserLocation = true
     }
 

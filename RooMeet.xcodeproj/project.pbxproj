@@ -33,6 +33,9 @@
 		E5B018AE2915692600A09788 /* OtherUserMsgCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018AC2915692600A09788 /* OtherUserMsgCell.swift */; };
 		E5B018AF2915692600A09788 /* OtherUserMsgCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018AD2915692600A09788 /* OtherUserMsgCell.xib */; };
 		E5B018B12915E12300A09788 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018B02915E12300A09788 /* UITableView+Extension.swift */; };
+		E5B018B52915F20C00A09788 /* RoomCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018B32915F20C00A09788 /* RoomCardCell.swift */; };
+		E5B018B62915F20C00A09788 /* RoomCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018B42915F20C00A09788 /* RoomCardCell.xib */; };
+		E5B018B82915F21E00A09788 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018B72915F21E00A09788 /* CardView.swift */; };
 		E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33761290E71A600467404 /* NumberPickerView.swift */; };
 		E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33767290EA2FA00467404 /* RMBaseTextField.swift */; };
 		E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B3376C290F64D800467404 /* RoomSpecCell.swift */; };
@@ -115,6 +118,9 @@
 		E5B018AC2915692600A09788 /* OtherUserMsgCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserMsgCell.swift; sourceTree = "<group>"; };
 		E5B018AD2915692600A09788 /* OtherUserMsgCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherUserMsgCell.xib; sourceTree = "<group>"; };
 		E5B018B02915E12300A09788 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		E5B018B32915F20C00A09788 /* RoomCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCardCell.swift; sourceTree = "<group>"; };
+		E5B018B42915F20C00A09788 /* RoomCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCardCell.xib; sourceTree = "<group>"; };
+		E5B018B72915F21E00A09788 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		E5B33761290E71A600467404 /* NumberPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPickerView.swift; sourceTree = "<group>"; };
 		E5B33767290EA2FA00467404 /* RMBaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMBaseTextField.swift; sourceTree = "<group>"; };
 		E5B3376C290F64D800467404 /* RoomSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpecCell.swift; sourceTree = "<group>"; };
@@ -238,6 +244,7 @@
 		E55C0963290D5C2D00DBF21B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E5B018B22915F1C100A09788 /* Home */,
 				E5EEE21A2913B4DB00CAAE84 /* Chat */,
 				E5DC0FED29120CCA00EB57FD /* Component */,
 				E5B3376B290F639F00467404 /* AddRoom */,
@@ -265,6 +272,15 @@
 				E5DC0FEB29120C9300EB57FD /* RuleCell */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		E5B018B22915F1C100A09788 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				E5B018B32915F20C00A09788 /* RoomCardCell.swift */,
+				E5B018B42915F20C00A09788 /* RoomCardCell.xib */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		E5B3376B290F639F00467404 /* AddRoom */ = {
@@ -399,6 +415,7 @@
 			children = (
 				E5B33761290E71A600467404 /* NumberPickerView.swift */,
 				E5B33767290EA2FA00467404 /* RMBaseTextField.swift */,
+				E5B018B72915F21E00A09788 /* CardView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -572,6 +589,7 @@
 				E593F0062910016D00B35550 /* OptionCell.xib in Resources */,
 				E5C5FE872910CB8000DA91DF /* FeeInfoCell.xib in Resources */,
 				E5B3376F290F64D800467404 /* RoomSpecCell.xib in Resources */,
+				E5B018B62915F20C00A09788 /* RoomCardCell.xib in Resources */,
 				E5C5FE8B2910EF9E00DA91DF /* FeeDetailCell.xib in Resources */,
 				E5DC0FE02911528000EB57FD /* GoogleService-Info.plist in Resources */,
 			);
@@ -657,6 +675,7 @@
 				E5B33772290F65D800467404 /* PostViewController.swift in Sources */,
 				E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */,
 				E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */,
+				E5B018B82915F21E00A09788 /* CardView.swift in Sources */,
 				E5EEE2172913B2B800CAAE84 /* Message.swift in Sources */,
 				E5B018AA2915690C00A09788 /* CurrentUserMsgCell.swift in Sources */,
 				E55C095E290D51B800DBF21B /* Room.swift in Sources */,
@@ -685,6 +704,7 @@
 				E5A12A632910B8C4006907D9 /* NibLoadble.swift in Sources */,
 				E5E64C81290E13E400F07286 /* RegionPickerViewController.swift in Sources */,
 				E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */,
+				E5B018B52915F20C00A09788 /* RoomCardCell.swift in Sources */,
 				E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */,
 				E55C0972290D628400DBF21B /* Constants.swift in Sources */,
 				E5EEE2152913B26B00CAAE84 /* ChatRoom.swift in Sources */,

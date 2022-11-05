@@ -6,7 +6,7 @@
 //
 
 import Foundation
-struct User: Codable {
+struct User: Codable, Hashable {
     var id: String
     var email: String
     var birthday: Date
@@ -17,6 +17,9 @@ struct User: Codable {
     var like: [Room]?
     var reservations: [String]?
     var chatRooms: [String]?
+    var age: Int {
+        return Calendar.current.dateComponents([.year], from: birthday, to: Date()).year!
+    }
 }
 
 extension User {
