@@ -12,5 +12,5 @@ target 'RooMeet' do
   pod 'FirebaseFirestoreSwift'
   pod 'FirebaseStorage'
   pod 'ProgressHUD'
-
+  pod 'Kingfisher'
 end

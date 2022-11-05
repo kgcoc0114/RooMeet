@@ -8,15 +8,16 @@
 import UIKit
 
 class RoomDetailViewController: UIViewController {
-    var room: Room?
     
+    var room: Room?
+    var chatMembers: [ChatMember]?
+
     @IBOutlet weak var testLabel: UILabel!
     override func viewDidLoad() {
         super.viewDidLoad()
         if room != nil {
             testLabel.text = room?.roomID
         }
-        // Do any additional setup after loading the view.
     }
 
 

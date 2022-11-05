@@ -50,7 +50,6 @@ class NumberPickerView: UIView {
 
     // MARK: - Lifecycle
     required init(maxNumber: Int) {
-        print("maxNumber")
         self.maxNumber = maxNumber
         super.init(frame: .zero)
         configureHierarchy()

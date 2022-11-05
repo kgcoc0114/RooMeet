@@ -11,5 +11,4 @@ struct BillConstant {
     static let shared = BillConstant()
     let cancal = "取消"
     let submit = "確認"
-
 }
