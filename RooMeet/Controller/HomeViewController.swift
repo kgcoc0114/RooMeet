@@ -31,6 +31,7 @@ class HomeViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
+            collectionView.delegate = self
             collectionView.register(
                 UINib(nibName: RoomCardCell.reuseIdentifier, bundle: nil),
                 forCellWithReuseIdentifier: RoomCardCell.reuseIdentifier
@@ -122,6 +123,9 @@ extension HomeViewController {
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let roomDetailVC = RoomDetailViewController()
+        roomDetailVC.room = rooms[indexPath.item]
+        print(rooms[indexPath.item])
+//        roomDetailVC.setup()
         navigationController?.pushViewController(roomDetailVC, animated: false)
     }
 }

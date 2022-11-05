@@ -17,7 +17,7 @@ enum FirestoreEndpoint {
     case chatRoom
     case user
 
-    var docRef: CollectionReference {
+    var colRef: CollectionReference {
         let database = Firestore.firestore()
 
         switch self {
@@ -62,14 +62,14 @@ class FirebaseService {
     }
 
     func fetchRoomByArea(postalCode: String, completion: @escaping (([Room]) -> Void)) {
-        let query = FirestoreEndpoint.room.docRef.whereField("postalCode", isEqualTo: postalCode)
+        let query = FirestoreEndpoint.room.colRef.whereField("postalCode", isEqualTo: postalCode)
         self.getDocuments(query) { (rooms: [Room]) in
             completion(rooms)
         }
     }
 
     func fetchUserByID(userID: String, index: Int? = nil, completion: @escaping ((User?, Int?) -> Void)) {
-        let docRef = FirestoreEndpoint.user.docRef.document(userID)
+        let docRef = FirestoreEndpoint.user.colRef.document(userID)
         
         docRef.getDocument { document, error in
             if let document = document, document.exists {
@@ -86,10 +86,44 @@ class FirebaseService {
     }
 
     func fetchChatRoomsByUserID(userID: String, completion: @escaping (([ChatRoom]) -> Void)) {
-        let query = FirestoreEndpoint.chatRoom.docRef.whereField("members", arrayContains: gCurrentUser.id)
+        let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", arrayContains: gCurrentUser.id)
 
         getDocuments(query) { (chatRooms: [ChatRoom]) in
             completion(chatRooms)
+        }
+    }
+
+    func upsertChatRoomByUserID(userA: String, userB: String, completion: @escaping ((ChatRoom) -> Void)) {
+        let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", isEqualTo: [userA, userB])
+
+        getDocuments(query) { [weak self] (chatRooms: [ChatRoom]) in
+            if chatRooms.isEmpty {
+                self?.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
+                    if let chatRoom = chatRoom {
+                        self?.fetchRoomMemberData(chatRooms: [chatRoom], completion: { chatRooms in
+                            completion(chatRooms.first!)
+                        })
+                    }
+                }
+            } else {
+                self?.fetchRoomMemberData(chatRooms: chatRooms, completion: { chatRooms in
+                    completion(chatRooms.first!)
+                })
+            }
+        }
+    }
+
+    func insertNewChatRoom(userA: String, userB: String, completion: @escaping ((ChatRoom?, Error?) -> Void)) {
+        let colRef = FirestoreEndpoint.chatRoom.colRef
+        let docRef = colRef.document()
+        let chatroom = ChatRoom(id: docRef.documentID, members: [userA, userB], messages: nil, messagesContent: nil, lastMessage: nil, lastUpdated: nil)
+
+        do {
+            try docRef.setData(from: chatroom)
+            completion(chatroom, nil)
+        } catch let error {
+            print(error.localizedDescription)
+            completion(nil, error)
         }
     }
 
@@ -127,7 +161,11 @@ class FirebaseService {
             group.enter()
             self.fetchUserByID(userID: memberID, index: index) { user, index in
                 if let user = user {
-                    chatRooms[index!].member = ChatMember(id: memberID, profilePhoto: user.profilePhoto, name: user.name)
+                    chatRooms[index!].member = ChatMember(
+                        id: memberID,
+                        profilePhoto: user.profilePhoto,
+                        name: user.name
+                    )
                 }
                 group.leave()
             }
@@ -143,7 +181,7 @@ class FirebaseService {
         southEast: CLLocationCoordinate2D,
         completion: @escaping (([Room]?) -> Void)
     ) {
-        FirestoreEndpoint.room.docRef
+        FirestoreEndpoint.room.colRef
             .whereField("lat", isLessThanOrEqualTo: northWest.latitude)
             .whereField("lat", isGreaterThanOrEqualTo: southEast.latitude)
             .getDocuments() { querySnapshot, error in
@@ -174,9 +212,9 @@ class FirebaseService {
     func fetchRooms(county: String? = nil, completion: @escaping (([Room]) -> Void)) {
         var query: Query
         if let county = county {
-            query = FirestoreEndpoint.room.docRef.whereField("county", isEqualTo: county)
+            query = FirestoreEndpoint.room.colRef.whereField("county", isEqualTo: county)
         } else {
-            query = FirestoreEndpoint.room.docRef
+            query = FirestoreEndpoint.room.colRef
         }
 
         query = query.order(by: "createdTime", descending: true)
@@ -201,7 +239,7 @@ class FirebaseService {
     }
 
     func fetchMessagesbyChatRoomID(chatRoomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
-        let query = FirestoreEndpoint.chatRoom.docRef.document(chatRoomID).collection("Message")
+        let query = FirestoreEndpoint.chatRoom.colRef.document(chatRoomID).collection("Message")
 
         query.getDocuments(completion: { querySnapshot, error in
             if let error = error {
@@ -236,7 +274,7 @@ class FirebaseService {
     }
 
     func listenToMessageUpdate(roomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
-        FirestoreEndpoint.chatRoom.docRef
+        FirestoreEndpoint.chatRoom.colRef
             .document(roomID)
             .collection("Message")
             .order(by: "createdTime", descending: false)
@@ -274,7 +312,7 @@ class FirebaseService {
     }
 
     func listenToChatRoomUpdate(completion: @escaping (([ChatRoom]?, Error?) -> Void)) {
-        FirestoreEndpoint.chatRoom.docRef
+        FirestoreEndpoint.chatRoom.colRef
             .whereField("members", arrayContains: gCurrentUser.id)
             .order(by: "lastUpdated", descending: true)
             .addSnapshotListener({ querySnapshot, error in
@@ -310,5 +348,14 @@ class FirebaseService {
                     }
                 }
             })
+    }
+
+    // MARK: - Room Detail Page - Like
+    func updateUserLikeData() {
+        let query = FirestoreEndpoint.user.colRef.document(gCurrentUser.id)
+
+        query.updateData([
+            "like": gCurrentUser.like
+        ])
     }
 }

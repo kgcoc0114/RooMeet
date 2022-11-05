@@ -132,3 +132,53 @@ enum AffordType: String, Hashable {
 struct RoomList: Codable {
     let data: [Room]
 }
+
+enum BillType: CaseIterable {
+    case water
+    case electricity
+
+    var image: UIImage {
+        switch self {
+        case .water:
+            return UIImage(systemName: "drop")!
+        case .electricity:
+            return UIImage(systemName: "bolt.circle")!
+        }
+    }
+
+    var unitString: String {
+        switch self {
+        case .water:
+            return ""
+        case .electricity:
+            return "per degree"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .water:
+            return "水"
+        case .electricity:
+            return "電"
+        }
+    }
+
+    var sperateString: String {
+        switch self {
+        case .water:
+            return "個別支付"
+        case .electricity:
+            return "獨立電表"
+        }
+    }
+
+    func feeDetail(billInfo: BillInfo) -> FeeDetail {
+        switch self {
+        case .water:
+            return billInfo.water
+        case .electricity:
+            return billInfo.electricity
+        }
+    }
+}

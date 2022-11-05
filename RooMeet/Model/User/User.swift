@@ -14,7 +14,7 @@ struct User: Codable, Hashable {
     var profilePhoto: String
     var habit: [String]?
     var hobby: [String]?
-    var like: [Room]?
+    var like: [String]? = []
     var reservations: [String]?
     var chatRooms: [String]?
     var age: Int {

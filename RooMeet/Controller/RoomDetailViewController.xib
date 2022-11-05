@@ -11,6 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RoomDetailViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
+                <outlet property="chatButton" destination="S4q-yG-jyE" id="kHj-eA-pmh"/>
+                <outlet property="collectionView" destination="PBa-7D-EYM" id="beV-Su-MTH"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="PBa-7D-EYM">
-                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <rect key="frame" x="0.0" y="44" width="414" height="762"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ruK-c6-DLM">
                         <size key="itemSize" width="128" height="128"/>
@@ -29,16 +31,40 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iCj-6q-Kkl">
+                    <rect key="frame" x="0.0" y="806" width="414" height="90"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S4q-yG-jyE">
+                            <rect key="frame" x="20" y="15" width="374" height="60"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            <connections>
+                                <action selector="chatWithOwner:" destination="-1" eventType="touchUpInside" id="58u-9d-qgv"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="90" id="18F-i4-76v"/>
+                        <constraint firstItem="S4q-yG-jyE" firstAttribute="top" secondItem="iCj-6q-Kkl" secondAttribute="top" constant="15" id="Dg5-aJ-b7n"/>
+                        <constraint firstItem="S4q-yG-jyE" firstAttribute="leading" secondItem="iCj-6q-Kkl" secondAttribute="leading" constant="20" id="GWu-fA-23B"/>
+                        <constraint firstAttribute="trailing" secondItem="S4q-yG-jyE" secondAttribute="trailing" constant="20" id="ZPr-Gr-VUn"/>
+                        <constraint firstAttribute="bottom" secondItem="S4q-yG-jyE" secondAttribute="bottom" constant="15" id="jnE-W0-k7h"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="iCj-6q-Kkl" firstAttribute="top" secondItem="PBa-7D-EYM" secondAttribute="bottom" id="3r1-tx-rMY"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="PBa-7D-EYM" secondAttribute="trailing" id="9vB-7t-8Ro"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="PBa-7D-EYM" secondAttribute="bottom" id="ZlK-ji-iep"/>
+                <constraint firstItem="iCj-6q-Kkl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="HVp-dU-dmL"/>
+                <constraint firstAttribute="bottom" secondItem="iCj-6q-Kkl" secondAttribute="bottom" id="VmD-cs-ohm"/>
                 <constraint firstItem="PBa-7D-EYM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="dfE-g6-eLd"/>
                 <constraint firstItem="PBa-7D-EYM" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="hsT-Y1-X1y"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="iCj-6q-Kkl" secondAttribute="trailing" id="tNb-ko-gHr"/>
             </constraints>
-            <point key="canvasLocation" x="591" y="-69"/>
+            <point key="canvasLocation" x="589.85507246376812" y="-69.642857142857139"/>
         </view>
     </objects>
     <resources>
