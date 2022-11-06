@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="RoomImagesCell" id="gTV-IL-0wX" customClass="RoomImagesCell" customModule="RooMeet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="474" height="207"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="474" height="207"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LgU-fD-1Yu">
+                        <rect key="frame" x="0.0" y="0.0" width="474" height="207"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HiY-jZ-Cl9">
+                                <rect key="frame" x="117" y="0.0" width="240" height="207"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="69J-IB-F9V">
+                                        <rect key="frame" x="20" y="0.0" width="200" height="207"/>
+                                    </stackView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="69J-IB-F9V" firstAttribute="top" secondItem="W4L-sW-LdO" secondAttribute="top" id="5RS-Bx-oGd"/>
+                                    <constraint firstItem="69J-IB-F9V" firstAttribute="trailing" secondItem="W4L-sW-LdO" secondAttribute="trailing" id="7im-ZI-2Ac"/>
+                                    <constraint firstItem="69J-IB-F9V" firstAttribute="height" secondItem="gXT-00-MdA" secondAttribute="height" id="ENO-kE-m0o"/>
+                                    <constraint firstItem="69J-IB-F9V" firstAttribute="bottom" secondItem="W4L-sW-LdO" secondAttribute="bottom" id="TOq-Fb-pWt"/>
+                                    <constraint firstItem="69J-IB-F9V" firstAttribute="leading" secondItem="W4L-sW-LdO" secondAttribute="leading" id="xt2-Pz-0RK"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="W4L-sW-LdO"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="gXT-00-MdA"/>
+                            </scrollView>
+                            <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="1l5-eg-yk9">
+                                <rect key="frame" x="179" y="8" width="116" height="26"/>
+                            </pageControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l8R-OG-W17">
+                                <rect key="frame" x="397" y="166" width="67" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                <connections>
+                                    <action selector="likeAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="MDA-63-bbs"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="HiY-jZ-Cl9" secondAttribute="bottom" id="0Eb-N5-tIW"/>
+                            <constraint firstItem="HiY-jZ-Cl9" firstAttribute="leading" secondItem="LgU-fD-1Yu" secondAttribute="leading" id="I1P-Fu-RhL"/>
+                            <constraint firstAttribute="top" secondItem="1l5-eg-yk9" secondAttribute="top" constant="-8" id="Ryp-0F-4eJ"/>
+                            <constraint firstAttribute="bottom" secondItem="l8R-OG-W17" secondAttribute="bottom" constant="10" id="b3c-sW-y6Y"/>
+                            <constraint firstItem="1l5-eg-yk9" firstAttribute="centerX" secondItem="LgU-fD-1Yu" secondAttribute="centerX" id="fZi-T2-hkb"/>
+                            <constraint firstAttribute="trailing" secondItem="HiY-jZ-Cl9" secondAttribute="trailing" id="ffg-8C-ni5"/>
+                            <constraint firstItem="HiY-jZ-Cl9" firstAttribute="top" secondItem="LgU-fD-1Yu" secondAttribute="top" id="pUX-rb-2Oo"/>
+                            <constraint firstAttribute="trailing" secondItem="l8R-OG-W17" secondAttribute="trailing" constant="10" id="suc-bF-Pop"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="LgU-fD-1Yu" secondAttribute="bottom" id="KHK-Rl-vid"/>
+                <constraint firstAttribute="trailing" secondItem="LgU-fD-1Yu" secondAttribute="trailing" id="SiO-uS-fqq"/>
+                <constraint firstItem="LgU-fD-1Yu" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="k0b-hd-HOZ"/>
+                <constraint firstItem="LgU-fD-1Yu" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="zmt-oR-ftC"/>
+            </constraints>
+            <size key="customSize" width="474" height="207"/>
+            <connections>
+                <outlet property="likeButton" destination="l8R-OG-W17" id="uBp-TT-YCK"/>
+                <outlet property="pageControl" destination="1l5-eg-yk9" id="0KV-Ns-7ML"/>
+                <outlet property="scrollView" destination="HiY-jZ-Cl9" id="30M-ZY-9iN"/>
+                <outlet property="stackView" destination="69J-IB-F9V" id="RLJ-81-BCu"/>
+            </connections>
+            <point key="canvasLocation" x="8.6956521739130448" y="69.308035714285708"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
