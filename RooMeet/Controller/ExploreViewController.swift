@@ -20,8 +20,9 @@ class ExploreViewController: UIViewController {
             prevGeoCodes = geoCodes
             geoCodes.removeAll()
             rooms.forEach { room in
-                if let lat = room.lat,
-                   let long = room.long {
+                if
+                    let lat = room.lat,
+                    let long = room.long {
                     let location = CLLocationCoordinate2D(latitude: lat, longitude: long)
                     let annotation = RMAnnotation()
                     annotation.coordinate = location
@@ -51,7 +52,6 @@ class ExploreViewController: UIViewController {
         // set title
         navigationItem.title = "Explore"
 
-        locationManger.delegate = self
         roomExploreMap.delegate = self
 
         locationManger.requestWhenInUseAuthorization()
@@ -60,8 +60,19 @@ class ExploreViewController: UIViewController {
 
         // get user current location
         locationManger.requestLocation()
-
         roomExploreMap.showsUserLocation = true
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        LocationService.shared.setCenterRegion(position: gCurrentPosition, mapView: roomExploreMap)
+        getRoomForCurrentPosition(mapView: roomExploreMap)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        let all = roomExploreMap.annotations
+        roomExploreMap.removeAnnotations(all)
     }
 
     func show() {
@@ -78,14 +89,7 @@ extension ExploreViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             getRoomForCurrentPosition(mapView: roomExploreMap)
-
-            // set current location in map
-            let region = MKCoordinateRegion(
-                center: location.coordinate,
-                latitudinalMeters: 1000,
-                longitudinalMeters: 1000
-            )
-            roomExploreMap.setRegion(region, animated: true)
+            LocationService.shared.setCenterRegion(position: location.coordinate, mapView: roomExploreMap)
         }
     }
 
@@ -125,7 +129,7 @@ extension ExploreViewController: MKMapViewDelegate {
 
         let roomDetailVC = RoomDetailViewController()
         roomDetailVC.room = roomMarker.room
-        present(roomDetailVC, animated: true)
+        self.navigationController?.pushViewController(roomDetailVC, animated: true)
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

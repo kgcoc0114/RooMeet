@@ -34,37 +34,43 @@ class RoomDetailViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            collectionView.register(
-                UINib(nibName: RoomBasicCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: RoomBasicCell.reuseIdentifier)
-            collectionView.register(
-                UINib(nibName: RoomItemsCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: RoomItemsCell.reuseIdentifier)
-            collectionView.register(
-                UINib(nibName: RoomFeeCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: RoomFeeCell.reuseIdentifier)
-            collectionView.register(
-                UINib(nibName: RoomImagesCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: RoomImagesCell.reuseIdentifier)
-            collectionView.register(
-                UINib(nibName: RoomDetailHeaderView.reuseIdentifier, bundle: nil),
-                forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-                withReuseIdentifier: RoomDetailHeaderView.reuseIdentifier)
-            collectionView.dataSource = self
-            collectionView.collectionViewLayout = createLayout()
+
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        collectionView.register(
+            UINib(nibName: RoomBasicCell.reuseIdentifier, bundle: nil),
+            forCellWithReuseIdentifier: RoomBasicCell.reuseIdentifier)
+        collectionView.register(
+            UINib(nibName: RoomItemsCell.reuseIdentifier, bundle: nil),
+            forCellWithReuseIdentifier: RoomItemsCell.reuseIdentifier)
+        collectionView.register(
+            UINib(nibName: RoomFeeCell.reuseIdentifier, bundle: nil),
+            forCellWithReuseIdentifier: RoomFeeCell.reuseIdentifier)
+        collectionView.register(
+            UINib(nibName: RoomImagesCell.reuseIdentifier, bundle: nil),
+            forCellWithReuseIdentifier: RoomImagesCell.reuseIdentifier)
+        collectionView.register(
+            UINib(nibName: RoomDetailHeaderView.reuseIdentifier, bundle: nil),
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: RoomDetailHeaderView.reuseIdentifier)
+
+        collectionView.dataSource = self
+        collectionView.collectionViewLayout = createLayout()
     }
+
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if let room = room,
-           let userData = room.userData {
+            let userData = room.userData {
             chatButton.setTitle("Chat with \(userData.name ?? "Owner")", for: .normal)
         }
         self.tabBarController?.tabBar.isHidden = true
     }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         FirebaseService.shared.updateUserLikeData()
@@ -99,7 +105,13 @@ extension RoomDetailViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: RoomDetailHeaderView.reuseIdentifier, for: indexPath) as? RoomDetailHeaderView else {
+        guard
+            let headerView = collectionView.dequeueReusableSupplementaryView(
+                ofKind: kind,
+                withReuseIdentifier: RoomDetailHeaderView.reuseIdentifier,
+                for: indexPath
+            ) as? RoomDetailHeaderView
+        else {
             fatalError("Cannot create RoomDetailHeaderView")
         }
 
@@ -122,11 +134,13 @@ extension RoomDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch Section.allCases[indexPath.section] {
         case .images:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoomImagesCell.reuseIdentifier,
-                for: indexPath
-            ) as? RoomImagesCell,
-                  let room = room else {
+            guard
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: RoomImagesCell.reuseIdentifier,
+                    for: indexPath
+                ) as? RoomImagesCell,
+                let room = room
+            else {
                 return UICollectionViewCell()
             }
 
@@ -187,7 +201,6 @@ extension RoomDetailViewController: UICollectionViewDataSource {
             return cell
         }
     }
-
 }
 
 // MARK: Layout
@@ -195,10 +208,10 @@ extension RoomDetailViewController {
     func createBasicInfoSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(1.0)))
+            heightDimension: .estimated(150)))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(0.3)), subitems: [item])
+            heightDimension: .estimated(150)), subitems: [item])
 
         return NSCollectionLayoutSection(group: group)
     }
@@ -267,7 +280,6 @@ extension RoomDetailViewController {
 
 extension RoomDetailViewController: RoomImagesCellDelegate {
     func didClickedLike(like: Bool) {
-        print("like", like)
         if let roomID = room?.roomID {
             if like == true {
                 gCurrentUser.like?.append(roomID)

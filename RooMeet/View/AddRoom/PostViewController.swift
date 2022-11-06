@@ -106,6 +106,7 @@ class PostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.keyboardDismissMode = .interactive
         navigationItem.title = "Add Room Post"
     }
 
@@ -121,7 +122,7 @@ class PostViewController: UIViewController {
 
     @IBAction func submitAction(_ sender: Any) {
         uploadImages(images: roomImages)
-        dismiss(animated: true)
+
     }
 }
 
@@ -150,7 +151,9 @@ extension PostViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         switch PostSection.allCases[indexPath.section] {
         case .basic:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PostBasicCell.reuseIdentifier, for: indexPath) as? PostBasicCell else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: PostBasicCell.reuseIdentifier,
+                for: indexPath) as? PostBasicCell else {
                 fatalError("PostBasicCell Error")
             }
             cell.delegate = self
@@ -160,7 +163,9 @@ extension PostViewController: UICollectionViewDataSource {
         case .images:
             return makePostImageCell(collectionView: collectionView, indexPath: indexPath)
         case .rules:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RulesCell.reuseIdentifier, for: indexPath) as? RulesCell else {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: RulesCell.reuseIdentifier,
+                for: indexPath) as? RulesCell else {
                 fatalError("RulesCell Error")
             }
             let title = ruleSelection[indexPath.item]
@@ -272,7 +277,7 @@ extension PostViewController: UICollectionViewDelegate {
             let pageType: MutlipleChooseType = postSection == .rulesHeader ? .rule : .amenities
             let selectedOptions = postSection == .rulesHeader ? ruleSelection : amenitiesSelection
 
-            mutlipleChooseVC.initVC(pageType: pageType, selectedOptions: selectedOptions)
+            mutlipleChooseVC.setup(pageType: pageType, selectedOptions: selectedOptions)
             mutlipleChooseVC.completion = { [self] selectedItem in
                 if postSection == .rulesHeader {
                     ruleSelection = selectedItem
@@ -296,7 +301,7 @@ extension PostViewController: UICollectionViewDelegate {
 
 extension PostViewController {
     private func configureLayout() -> UICollectionViewCompositionalLayout {
-        UICollectionViewCompositionalLayout{ sectionIndex, _ in
+        UICollectionViewCompositionalLayout { sectionIndex, _ in
             switch PostSection.allCases[sectionIndex] {
             case .images:
                 let itemSize = NSCollectionLayoutSize(
@@ -358,12 +363,14 @@ extension PostViewController: PostBasicCellDelegate {
             postalCode = LocationService.shared.postalCodeList?.filter({ postal in
                 postal.city == county && postal.area == town
             })[0].zip
-            if let address = postBasicData?.address,
-               address != "" {
+            if let address = postBasicData?.address, !address.isEmpty {
+                print("\(county)\(town)\(address)")
                 LocationService.shared.getCoordinates(
                     fullAddress: "\(county)\(town)\(address)") { [weak self] location in
                         self?.latitude = location.latitude
                         self?.longitude = location.longitude
+                        print("\(location.latitude),\(location.longitude)")
+
                     }
             }
         }
@@ -465,7 +472,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
 
         DispatchQueue.global().async {
             images.forEach { image in
-                // 可以自動產生一組獨一無二的 ID 號碼，方便等一下上傳圖片的命名
+                
                 let uniqueString = NSUUID().uuidString
                 let storageRef = Storage.storage().reference(withPath: "RoomImages").child("\(uniqueString).png")
                 if let uploadData = image.scale(scaleFactor: 0.1).jpegData(compressionQuality: 0.1) {
@@ -519,8 +526,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                             movinDate: (postBasicData?.movinDate)!,
                             otherDescriction: otherDescriction,
                             isDeleted: false)
-            print("docRef 1111")
-            
+
             do {
                 try docRef.setData(from: room, completion: { error in
                     if let _ = error {
@@ -529,10 +535,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                         ProgressHUD.showSuccess()
                     }
                 })
-                dismiss(animated: true)
-
-                print("docRef 1111")
-                
+                self.navigationController?.popViewController(animated: true)
             } catch {
                 print("error")
             }

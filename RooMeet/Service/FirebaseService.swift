@@ -155,19 +155,23 @@ class FirebaseService {
         var chatRooms = rooms
         chatRooms.enumerated().forEach { index, roomResult in
             var chatRoom = roomResult
-            let memberID = chatRoom.members.filter { member in
+            let members = chatRoom.members.filter { member in
                 member != gCurrentUser.id
-            }[0]
-            group.enter()
-            self.fetchUserByID(userID: memberID, index: index) { user, index in
-                if let user = user {
-                    chatRooms[index!].member = ChatMember(
-                        id: memberID,
-                        profilePhoto: user.profilePhoto,
-                        name: user.name
-                    )
+            }
+
+            if !members.isEmpty {
+                let memberID = members[0]
+                group.enter()
+                self.fetchUserByID(userID: memberID, index: index) { user, index in
+                    if let user = user {
+                        chatRooms[index!].member = ChatMember(
+                            id: memberID,
+                            profilePhoto: user.profilePhoto,
+                            name: user.name
+                        )
+                    }
+                    group.leave()
                 }
-                group.leave()
             }
         }
 
@@ -176,6 +180,7 @@ class FirebaseService {
         }
     }
 
+    // MARK: - Explore Page
     func fetchRoomByCoordinate(
         northWest: CLLocationCoordinate2D,
         southEast: CLLocationCoordinate2D,
@@ -184,26 +189,44 @@ class FirebaseService {
         FirestoreEndpoint.room.colRef
             .whereField("lat", isLessThanOrEqualTo: northWest.latitude)
             .whereField("lat", isGreaterThanOrEqualTo: southEast.latitude)
-            .getDocuments() { querySnapshot, error in
+            .getDocuments() {
+                querySnapshot, error in
                 if let error = error {
                     print("Error getting documents: \(error.localizedDescription)")
                 }
 
-                var rooms: [Room] = []
+                var roomsWithoutOwnerData: [Room] = []
                 if let querySnapshot = querySnapshot {
                     querySnapshot.documents.forEach { document in
                         do {
                             let item = try document.data(as: Room.self)
                             if let long = item.long {
                                 if long >= northWest.longitude && long <= southEast.longitude {
-                                    rooms.append(item)
+                                    roomsWithoutOwnerData.append(item)
                                 }
                             }
                         } catch {
                             print("DEBUG: Error decoding \(Room.self) data -", error.localizedDescription)
                         }
                     }
-                    completion(rooms)
+
+                    let group = DispatchGroup()
+
+                    var rooms = roomsWithoutOwnerData
+                    rooms.enumerated().forEach { index, roomResult in
+                        let ownerID = roomResult.userID
+                        group.enter()
+                        self.fetchUserByID(userID: ownerID, index: index) { user, index in
+                            if let user = user {
+                                rooms[index!].userData = user
+                            }
+                            group.leave()
+                        }
+                    }
+                    group.notify(queue: DispatchQueue.main) {
+                        completion(rooms)
+                    }
+//                    completion(rooms)
                 }
             }
     }
@@ -238,6 +261,7 @@ class FirebaseService {
         }
     }
 
+    // MARK: - Chat Room
     func fetchMessagesbyChatRoomID(chatRoomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
         let query = FirestoreEndpoint.chatRoom.colRef.document(chatRoomID).collection("Message")
 

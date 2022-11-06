@@ -23,7 +23,10 @@ class HomeViewController: UIViewController {
 
     var rooms: [Room] = [] {
         didSet {
-            updateDataSource()
+            DispatchQueue.main.async {
+                self.collectionView.stopPullToRefresh()
+                self.updateDataSource()
+            }
         }
     }
 
@@ -31,17 +34,17 @@ class HomeViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            collectionView.delegate = self
-            collectionView.register(
-                UINib(nibName: RoomCardCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: RoomCardCell.reuseIdentifier
-            )
+
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(addRoomPost))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "plus"),
+            style: .plain,
+            target: self,
+            action: #selector(addRoomPost))
 
         // get User Location
         locationManger.delegate = self
@@ -54,10 +57,24 @@ class HomeViewController: UIViewController {
         navigationItem.title = "RooMeet"
 
         // set data source & layout
+        collectionView.register(
+            UINib(nibName: RoomCardCell.reuseIdentifier, bundle: nil),
+            forCellWithReuseIdentifier: RoomCardCell.reuseIdentifier
+        )
+        collectionView.delegate = self
+
         configureDataSource()
         collectionView.setCollectionViewLayout(createLayout(), animated: false)
 
         // fetch room to display
+        fetchRooms()
+
+        collectionView.addPullToRefresh {[weak self] in
+            self?.fetchRooms()
+        }
+    }
+
+    func fetchRooms() {
         FirebaseService.shared.fetchRooms { [weak self] rooms in
             guard let `self` = self else { return }
             self.rooms = rooms
@@ -73,9 +90,13 @@ class HomeViewController: UIViewController {
 // MARK: Data Source
 extension HomeViewController {
     private func configureDataSource() {
-        dataSource = DataSource(collectionView: collectionView, cellProvider: { [unowned self] collectionView, indexPath, itemIdentifier in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RoomCardCell.reuseIdentifier, for: indexPath) as? RoomCardCell else {
-                return UICollectionViewCell()
+        dataSource = DataSource(collectionView: collectionView,
+                                cellProvider: { [unowned self] collectionView, indexPath, itemIdentifier in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: RoomCardCell.reuseIdentifier,
+                for: indexPath) as? RoomCardCell else {
+                print("ERROR: RoomCardCell Issue")
+                fatalError()
             }
             if !self.rooms.isEmpty {
                 let room = rooms[indexPath.item]
@@ -99,8 +120,15 @@ extension HomeViewController {
 // MARK: Layout
 extension HomeViewController {
     func createRoomsSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3)), subitems: [item])
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)))
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(0.3)),
+            subitems: [item])
 
         return NSCollectionLayoutSection(group: group)
     }
@@ -126,7 +154,6 @@ extension HomeViewController: UICollectionViewDelegate {
         let roomDetailVC = RoomDetailViewController()
         roomDetailVC.room = rooms[indexPath.item]
         print(rooms[indexPath.item])
-//        roomDetailVC.setup()
         navigationController?.pushViewController(roomDetailVC, animated: false)
     }
 }

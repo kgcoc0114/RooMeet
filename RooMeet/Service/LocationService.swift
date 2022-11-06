@@ -84,5 +84,15 @@ class LocationService {
         }
         return nil
     }
+
+    func setCenterRegion(position: CLLocationCoordinate2D, mapView: MKMapView) {
+        // set current location in map
+        let region = MKCoordinateRegion(
+            center: position,
+            latitudinalMeters: 1000,
+            longitudinalMeters: 1000
+        )
+        mapView.setRegion(region, animated: true)
+    }
 }
 

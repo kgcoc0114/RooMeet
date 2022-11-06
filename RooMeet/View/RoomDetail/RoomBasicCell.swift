@@ -20,7 +20,11 @@ class RoomBasicCell: UICollectionViewCell {
 
     @IBOutlet weak var areaLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.numberOfLines = 0
+        }
+    }
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

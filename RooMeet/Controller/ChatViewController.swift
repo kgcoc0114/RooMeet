@@ -64,6 +64,19 @@ class ChatViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+
+        // listen
+        guard let chatRoom = chatRoom else {
+            print("ERROR: chatRoom is not exist.")
+            return
+        }
+
+        FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { messages, error in
+            if let error = error {
+                print("Error getting documents: \(error)")
+            }
+            self.messages = messages ?? []
+        }
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -77,21 +90,19 @@ class ChatViewController: UIViewController {
         otherData = chatRoom.member ?? ChatMember(id: "test", profilePhoto: "", name: "test")
 
         navigationItem.title = otherData?.name
-
-        FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { messages, error in
-            if let error = error {
-                print("Error getting documents: \(error)")
-            }
-            self.messages = messages ?? []
-        }
     }
 
     @IBAction func sendMessage(_ sender: Any) {
         if let content = contentTextField.text,
-           !content.isEmpty {
+            !content.isEmpty {
+            guard let room = chatRoom else {
+                print("ERROR: chatRoom is not exist.")
+                return
+            }
+
             let messageRef = Firestore.firestore()
                 .collection("ChatRoom")
-                .document(chatRoom!.id)
+                .document(room.id)
                 .collection("Message")
                 .document()
 
@@ -130,14 +141,17 @@ class ChatViewController: UIViewController {
 
 extension ChatViewController {
     private func configureDataSource() {
-        dataSource = DataSource(tableView: tableView, cellProvider: { [unowned self] tableView, indexPath, _ in
-            let message = self.messages[indexPath.item]
-            if message.sendBy == currentUserData.id {
-                return configureCurrentUserCell(tableView: tableView, indexPath: indexPath)
-            } else {
-                return configureOtherUserCell(tableView: tableView, indexPath: indexPath)
-            }
-        })
+        dataSource = DataSource(
+            tableView: tableView,
+            cellProvider: {[unowned self] tableView, indexPath, _ in
+                let message = self.messages[indexPath.item]
+
+                if message.sendBy == currentUserData.id {
+                    return configureCurrentUserCell(tableView: tableView, indexPath: indexPath)
+                } else {
+                    return configureOtherUserCell(tableView: tableView, indexPath: indexPath)
+                }
+            })
     }
 
     private func configureCurrentUserCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {

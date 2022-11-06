@@ -49,6 +49,7 @@
 		E5B018D629166A4000A09788 /* RoomDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018D429166A3F00A09788 /* RoomDetailHeaderView.swift */; };
 		E5B018D729166A4000A09788 /* RoomDetailHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018D529166A4000A09788 /* RoomDetailHeaderView.xib */; };
 		E5B018D9291695CA00A09788 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5B018D8291695CA00A09788 /* Profile.storyboard */; };
+		E5B018DB29174CAB00A09788 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018DA29174CAB00A09788 /* UICollectionView+Extension.swift */; };
 		E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33761290E71A600467404 /* NumberPickerView.swift */; };
 		E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33767290EA2FA00467404 /* RMBaseTextField.swift */; };
 		E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B3376C290F64D800467404 /* RoomSpecCell.swift */; };
@@ -147,6 +148,7 @@
 		E5B018D429166A3F00A09788 /* RoomDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailHeaderView.swift; sourceTree = "<group>"; };
 		E5B018D529166A4000A09788 /* RoomDetailHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDetailHeaderView.xib; sourceTree = "<group>"; };
 		E5B018D8291695CA00A09788 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		E5B018DA29174CAB00A09788 /* UICollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extension.swift"; sourceTree = "<group>"; };
 		E5B33761290E71A600467404 /* NumberPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPickerView.swift; sourceTree = "<group>"; };
 		E5B33767290EA2FA00467404 /* RMBaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMBaseTextField.swift; sourceTree = "<group>"; };
 		E5B3376C290F64D800467404 /* RoomSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpecCell.swift; sourceTree = "<group>"; };
@@ -505,6 +507,7 @@
 				E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */,
 				E5EEE2842913FA3E00CAAE84 /* UIImageView+Extension.swift */,
 				E5B018B02915E12300A09788 /* UITableView+Extension.swift */,
+				E5B018DA29174CAB00A09788 /* UICollectionView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -769,6 +772,7 @@
 				E5EEE2152913B26B00CAAE84 /* ChatRoom.swift in Sources */,
 				E55E6FCB2914CA3000CBB0EB /* ChatViewController.swift in Sources */,
 				E5B018C62916354600A09788 /* RoomBasicCell.swift in Sources */,
+				E5B018DB29174CAB00A09788 /* UICollectionView+Extension.swift in Sources */,
 				E5E64C96290E3E2600F07286 /* UIStoryboard+Extension.swift in Sources */,
 				E5B018B12915E12300A09788 /* UITableView+Extension.swift in Sources */,
 			);
@@ -921,7 +925,8 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要使用定位資訊";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) 需要使用相機";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) 需要使用定位資訊";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -952,7 +957,8 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要使用定位資訊";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) 需要使用相機";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) 需要使用定位資訊";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
