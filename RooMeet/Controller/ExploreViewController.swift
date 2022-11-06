@@ -8,7 +8,6 @@ import UIKit
 import MapKit
 
 class ExploreViewController: UIViewController {
-
     @IBOutlet weak var roomExploreMap: MKMapView!
 
     var rooms: [Room] = [] {
@@ -51,6 +50,11 @@ class ExploreViewController: UIViewController {
         super.viewDidLoad()
         // set title
         navigationItem.title = "Explore"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "slider.horizontal.3"),
+            style: .plain,
+            target: self,
+            action: #selector(showFilterPage))
 
         roomExploreMap.delegate = self
 
@@ -82,6 +86,21 @@ class ExploreViewController: UIViewController {
                 roomExploreMap.addAnnotations(geoCodes)
             }
         }
+    }
+
+    // FIXME: 條件與滑動經緯度同時成立
+    @objc private func showFilterPage() {
+        guard let filterVC = UIStoryboard.home.instantiateViewController(
+            withIdentifier: "FilterViewController") as? FilterViewController else {
+            print("ERROR: FilterViewController Error")
+            return
+        }
+        filterVC.completion = { query in
+            FirebaseService.shared.fetchRoomDatabyQuery(query: query) { rooms in
+                self.rooms = rooms
+            }
+        }
+        present(filterVC, animated: true)
     }
 }
 
@@ -123,13 +142,12 @@ extension ExploreViewController: MKMapViewDelegate {
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard let roomMarker = view.annotation as? RMAnnotation else {
+        guard let roomMarker = view.annotation as? RMAnnotation,
+        let room = roomMarker.room else {
             return
         }
-
-        let roomDetailVC = RoomDetailViewController()
-        roomDetailVC.room = roomMarker.room
-        self.navigationController?.pushViewController(roomDetailVC, animated: true)
+        let detailViewController = RoomDetailViewController(room: room)
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

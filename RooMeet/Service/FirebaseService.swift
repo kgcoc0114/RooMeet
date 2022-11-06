@@ -70,7 +70,7 @@ class FirebaseService {
 
     func fetchUserByID(userID: String, index: Int? = nil, completion: @escaping ((User?, Int?) -> Void)) {
         let docRef = FirestoreEndpoint.user.colRef.document(userID)
-        
+
         docRef.getDocument { document, error in
             if let document = document, document.exists {
                 do {
@@ -101,13 +101,17 @@ class FirebaseService {
                 self?.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
                     if let chatRoom = chatRoom {
                         self?.fetchRoomMemberData(chatRooms: [chatRoom], completion: { chatRooms in
-                            completion(chatRooms.first!)
+                            if let returnChatRoom = chatRooms.first {
+                                completion(returnChatRoom)
+                            }
                         })
                     }
                 }
             } else {
                 self?.fetchRoomMemberData(chatRooms: chatRooms, completion: { chatRooms in
-                    completion(chatRooms.first!)
+                    if let returnChatRoom = chatRooms.first {
+                        completion(returnChatRoom)
+                    }
                 })
             }
         }
@@ -133,19 +137,44 @@ class FirebaseService {
             var chatRooms = roomsResult
             chatRooms.enumerated().forEach { index, roomResult in
                 var chatRoom = roomResult
-                let memberID = chatRoom.members.filter { member in
-                    member != userID
-                }[0]
+                let members = chatRoom.members.filter { member in
+                    member != gCurrentUser.id
+                }
+
+                if !members.isEmpty {
+                    let memberID = members[0]
+                    group.enter()
+                    self?.fetchUserByID(userID: memberID, index: index) { user, index in
+                        if let user = user {
+                            chatRooms[index!].member = ChatMember(id: memberID, profilePhoto: user.profilePhoto, name: user.name)
+                        }
+                        group.leave()
+                    }
+                }
+            }
+            group.notify(queue: DispatchQueue.main) {
+                completion(chatRooms)
+            }
+        }
+    }
+
+    func fetchRoomDatabyQuery(query: Query, completion: @escaping (([Room]) -> Void)) {
+        let group = DispatchGroup()
+        getDocuments(query) { (rooms: [Room]) in
+            var rooms = rooms
+            rooms.enumerated().forEach { index, roomResult in
+                let ownerID = roomResult.userID
                 group.enter()
-                self?.fetchUserByID(userID: memberID, index: index) { user, index in
-                    if let user = user {
-                        chatRooms[index!].member = ChatMember(id: memberID, profilePhoto: user.profilePhoto, name: user.name)
+                self.fetchUserByID(userID: ownerID, index: index) { user, index in
+                    if let user = user,
+                       let index = index {
+                        rooms[index].userData = user
                     }
                     group.leave()
                 }
             }
             group.notify(queue: DispatchQueue.main) {
-                completion(chatRooms)
+                completion(rooms)
             }
         }
     }
@@ -163,8 +192,9 @@ class FirebaseService {
                 let memberID = members[0]
                 group.enter()
                 self.fetchUserByID(userID: memberID, index: index) { user, index in
-                    if let user = user {
-                        chatRooms[index!].member = ChatMember(
+                    if let user = user,
+                        let index = index {
+                        chatRooms[index].member = ChatMember(
                             id: memberID,
                             profilePhoto: user.profilePhoto,
                             name: user.name
@@ -226,7 +256,6 @@ class FirebaseService {
                     group.notify(queue: DispatchQueue.main) {
                         completion(rooms)
                     }
-//                    completion(rooms)
                 }
             }
     }
@@ -249,8 +278,9 @@ class FirebaseService {
                 let ownerID = roomResult.userID
                 group.enter()
                 self.fetchUserByID(userID: ownerID, index: index) { user, index in
-                    if let user = user {
-                        rooms[index!].userData = user
+                    if let user = user,
+                       let index = index {
+                        rooms[index].userData = user
                     }
                     group.leave()
                 }
@@ -350,7 +380,9 @@ class FirebaseService {
                     querySnapshot.documents.forEach { document in
                         do {
                             let item = try document.data(as: ChatRoom.self)
-                            chatRooms.append(item)
+                            if item.members[0] != item.members[1] {
+                                chatRooms.append(item)
+                            }
                         } catch let DecodingError.dataCorrupted(context) {
                             print(context)
                         } catch let DecodingError.keyNotFound(key, context) {

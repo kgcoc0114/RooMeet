@@ -132,6 +132,8 @@ class ChatViewController: UIViewController {
                 "lastUpdated": lastMessage.createdTime
             ])
         }
+
+        contentTextField.text = ""
     }
 
     private func scrollToButtom(animated: Bool = true) {

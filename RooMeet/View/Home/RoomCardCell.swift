@@ -8,7 +8,7 @@
 import UIKit
 
 class RoomCardCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(RoomCardCell.self)"
+    static let identifier = "\(RoomCardCell.self)"
 
     var room: Room?
 

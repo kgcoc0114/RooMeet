@@ -12,7 +12,7 @@ protocol RoomImagesCellDelegate: AnyObject {
 }
 
 class RoomImagesCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(RoomImagesCell.self)"
+    static let identifier = "RoomImagesCell"
 
     weak var delegate: RoomImagesCellDelegate?
 
@@ -25,9 +25,9 @@ class RoomImagesCell: UICollectionViewCell {
         }
     }
 
-    var islike: Bool = false {
+    var isLike: Bool = false {
         didSet {
-            if islike == true {
+            if isLike == true {
                 likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
             } else {
                 likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
@@ -48,8 +48,8 @@ class RoomImagesCell: UICollectionViewCell {
         scrollView.delegate = self
     }
     @IBAction func likeAction(_ sender: Any) {
-        islike.toggle()
-        delegate?.didClickedLike(like: islike)
+        isLike.toggle()
+        delegate?.didClickedLike(like: isLike)
     }
 }
 

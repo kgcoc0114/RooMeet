@@ -17,8 +17,16 @@ class RoomDetailViewController: UIViewController {
     }
 
     enum Item: Hashable {
+        case images(Room)
         case basicInfo(Room)
+        case amenities(String)
+        case rules(String)
+        case feeDetail(BillInfo)
     }
+
+    typealias DetailDataSource = UICollectionViewDiffableDataSource<Section, Item>
+    typealias DetailSnapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    private var dataSource: DetailDataSource!
 
     var room: Room?
 
@@ -32,34 +40,23 @@ class RoomDetailViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var collectionView: UICollectionView! {
-        didSet {
+    @IBOutlet weak var collectionView: UICollectionView!
 
-        }
+    init(room: Room) {
+        super.init(nibName: "RoomDetailViewController", bundle: nil)
+
+        self.room = room
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        collectionView.register(
-            UINib(nibName: RoomBasicCell.reuseIdentifier, bundle: nil),
-            forCellWithReuseIdentifier: RoomBasicCell.reuseIdentifier)
-        collectionView.register(
-            UINib(nibName: RoomItemsCell.reuseIdentifier, bundle: nil),
-            forCellWithReuseIdentifier: RoomItemsCell.reuseIdentifier)
-        collectionView.register(
-            UINib(nibName: RoomFeeCell.reuseIdentifier, bundle: nil),
-            forCellWithReuseIdentifier: RoomFeeCell.reuseIdentifier)
-        collectionView.register(
-            UINib(nibName: RoomImagesCell.reuseIdentifier, bundle: nil),
-            forCellWithReuseIdentifier: RoomImagesCell.reuseIdentifier)
-        collectionView.register(
-            UINib(nibName: RoomDetailHeaderView.reuseIdentifier, bundle: nil),
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: RoomDetailHeaderView.reuseIdentifier)
-
-        collectionView.dataSource = self
+        configureCollectionView()
         collectionView.collectionViewLayout = createLayout()
+        updateDataSource()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -77,6 +74,7 @@ class RoomDetailViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
 
+
     @IBAction func chatWithOwner(_ sender: Any) {
         FirebaseService.shared.upsertChatRoomByUserID(userA: gCurrentUser.id, userB: room!.userID) { [weak self] chatRoom in
             let detailVC = ChatViewController()
@@ -85,121 +83,85 @@ class RoomDetailViewController: UIViewController {
         }
     }
 }
-extension RoomDetailViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let room = room else {
-            return 0
-        }
-        switch Section.allCases[section] {
-        case .basicInfo, .feeDetail, .images:
-            return 1
-        case .amenities:
-            return room.publicAmenities.count
-        case .rules:
-            return room.rules.count
-        }
-    }
 
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        Section.allCases.count
-    }
+extension RoomDetailViewController {
+    private func configureCollectionView() {
+        collectionView.register(
+            UINib(nibName: "RoomImagesCell", bundle: nil),
+            forCellWithReuseIdentifier: RoomImagesCell.identifier)
+        collectionView.register(
+            UINib(nibName: "RoomBasicCell", bundle: nil),
+            forCellWithReuseIdentifier: RoomBasicCell.identifier)
+        collectionView.register(
+            UINib(nibName: "RoomItemsCell", bundle: nil),
+            forCellWithReuseIdentifier: RoomItemsCell.identifier)
+        collectionView.register(
+            UINib(nibName: "RoomFeeCell", bundle: nil),
+            forCellWithReuseIdentifier: RoomFeeCell.identifier)
 
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        guard
-            let headerView = collectionView.dequeueReusableSupplementaryView(
-                ofKind: kind,
-                withReuseIdentifier: RoomDetailHeaderView.reuseIdentifier,
-                for: indexPath
-            ) as? RoomDetailHeaderView
-        else {
-            fatalError("Cannot create RoomDetailHeaderView")
-        }
-
-        let title = Section.allCases[indexPath.section].rawValue
-        switch Section.allCases[indexPath.section] {
-        case .images:
-            print("")
-        case .basicInfo:
-            print("")
-        case .amenities:
-            headerView.configureView(title: "設備")
-        case .rules:
-            headerView.configureView(title: "其他")
-        case .feeDetail:
-            headerView.configureView(title: "詳細訊息")
-        }
-        return headerView
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        switch Section.allCases[indexPath.section] {
-        case .images:
-            guard
-                let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RoomImagesCell.reuseIdentifier,
-                    for: indexPath
-                ) as? RoomImagesCell,
-                let room = room
-            else {
-                return UICollectionViewCell()
-            }
-
-            cell.configureCell(images: room.roomImages)
-            cell.delegate = self
-            if let likeRooms = gCurrentUser.like {
-                if likeRooms.contains(room.roomID) {
-                    cell.islike = true
+        dataSource = DetailDataSource(collectionView: collectionView) { collectionView, indexPath, item in
+            switch item {
+            case .images(let data):
+                guard
+                    let cell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: RoomImagesCell.identifier,
+                        for: indexPath
+                    ) as? RoomImagesCell
+                else {
+                    return UICollectionViewCell()
                 }
-            } else {
-                cell.islike = false
-            }
-            return cell
-        case .basicInfo:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoomBasicCell.reuseIdentifier,
-                for: indexPath
-            ) as? RoomBasicCell,
-                  let room = room else {
-                return UICollectionViewCell()
-            }
 
-            cell.configureCell(
-                area: "\(room.county)\(room.town)",
-                roomSpecs: room.rooms,
-                title: room.title,
-                otherDesc: room.otherDescriction
-            )
+                cell.configureCell(images: data.roomImages)
+                cell.delegate = self
+                if let likeRooms = gCurrentUser.like {
+                    if likeRooms.contains(data.roomID) {
+                        cell.isLike = true
+                    }
+                } else {
+                    cell.isLike = false
+                }
+                return cell
 
-            return cell
-        case .amenities, .rules:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoomItemsCell.reuseIdentifier,
-                for: indexPath
-            ) as? RoomItemsCell,
-                  let room = room else {
-                return UICollectionViewCell()
+            case .basicInfo(let data):
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: RoomBasicCell.identifier,
+                    for: indexPath
+                ) as? RoomBasicCell else {
+                    return UICollectionViewCell()
+                }
+                cell.configureCell(data: data)
+                return cell
+            case .rules(let data):
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: RoomItemsCell.identifier,
+                    for: indexPath
+                ) as? RoomItemsCell else {
+                    return UICollectionViewCell()
+                }
+                cell.configureCell(data: data)
+                return cell
+            case .amenities(let data):
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: RoomItemsCell.identifier,
+                    for: indexPath
+                ) as? RoomItemsCell else {
+                    return UICollectionViewCell()
+                }
+                cell.configureCell(data: data, itemType: "amenities")
+                return cell
+            case .feeDetail(let data):
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: RoomFeeCell.identifier,
+                    for: indexPath
+                ) as? RoomFeeCell else {
+                    return UICollectionViewCell()
+                }
+                cell.configureCell(data: data)
+                return cell
             }
-
-            if Section.allCases[indexPath.section] == .rules {
-                cell.configureCell(item: room.rules[indexPath.item])
-            } else {
-                cell.configureCell(item: room.publicAmenities[indexPath.item], type: "amenities")
-            }
-            return cell
-        case .feeDetail:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoomFeeCell.reuseIdentifier,
-                for: indexPath
-            ) as? RoomFeeCell,
-                  let room = room,
-                  let billInfo = room.billInfo
-            else {
-                return UICollectionViewCell()
-            }
-
-            cell.configureCell(billInfo: billInfo)
-            return cell
         }
+
+        collectionView.collectionViewLayout = createLayout()
     }
 }
 
@@ -209,22 +171,26 @@ extension RoomDetailViewController {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .estimated(150)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(150)), subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(150)), subitems: [item])
 
         return NSCollectionLayoutSection(group: group)
     }
 
     func createItemsSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
-            widthDimension: .estimated(20),
-            heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
-            widthDimension: .estimated(20),
-            heightDimension: .estimated(50)), subitems: [item])
-
-        return NSCollectionLayoutSection(group: group)
+        let item = NSCollectionLayoutItem(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .estimated(20),
+                heightDimension: .fractionalHeight(1.0)))
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .estimated(20),
+                heightDimension: .estimated(50)), subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 0)
+        return section
     }
 
     func createFeeDetailSection() -> NSCollectionLayoutSection {
@@ -235,9 +201,10 @@ extension RoomDetailViewController {
             )
         )
 
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalHeight(0.3)), subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(0.3)), subitems: [item])
 
         return NSCollectionLayoutSection(group: group)
     }
@@ -250,7 +217,11 @@ extension RoomDetailViewController {
             )
         )
 
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(300)), subitems: [item])
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(300)),
+            subitems: [item])
 
         return NSCollectionLayoutSection(group: group)
     }
@@ -289,5 +260,24 @@ extension RoomDetailViewController: RoomImagesCellDelegate {
                 }
             }
         }
+    }
+}
+
+// MARK: - Snapshot
+extension RoomDetailViewController {
+    private func updateDataSource() {
+        var newSnapshot = DetailSnapshot()
+        guard let room = room else {
+            return
+        }
+        newSnapshot.appendSections([.images, .basicInfo, .rules, .amenities, .feeDetail])
+        newSnapshot.appendItems([.images(room)], toSection: .images)
+        newSnapshot.appendItems(room.rules.map({ Item.rules($0) }), toSection: .rules)
+        newSnapshot.appendItems(room.publicAmenities.map({ Item.amenities($0) }), toSection: .amenities)
+        newSnapshot.appendItems([.basicInfo(room)], toSection: .basicInfo)
+        if let billInfo = room.billInfo {
+            newSnapshot.appendItems([.feeDetail(billInfo)], toSection: .feeDetail)
+        }
+        dataSource.apply(newSnapshot)
     }
 }

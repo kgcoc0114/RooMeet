@@ -8,9 +8,9 @@
 import UIKit
 
 class RoomItemsCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(RoomItemsCell.self)"
+    static let identifier = "RoomItemsCell"
 
-    var item: String?
+    var itemType: String?
 
     @IBOutlet weak var itemBackgroundView: UIView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -21,9 +21,8 @@ class RoomItemsCell: UICollectionViewCell {
         titleLabel.tintColor = .white
     }
 
-    func configureCell(item: String, type: String = "rules") {
-        titleLabel.text = item
-        itemBackgroundView.backgroundColor = type == "rules" ? .green : .orange
+    func configureCell(data: String, itemType: String = "rules") {
+        titleLabel.text = data
+        itemBackgroundView.backgroundColor = itemType == "rules" ? .green : .orange
     }
-
 }

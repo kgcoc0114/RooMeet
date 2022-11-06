@@ -2,49 +2,46 @@
 //  HomeViewController.swift
 //  RooMeet
 //
-//  Created by kgcoc on 2022/10/30.
+//  Created by kgcoc on 2022/11/6.
 //
 
 import UIKit
 import MapKit
 
 class HomeViewController: UIViewController {
-    enum Section: CaseIterable {
-        case rooms
+    enum Section {
+        case main
     }
 
-    enum Item: Hashable {
-        case chatRoom(ChatRoom)
-    }
+    typealias HomeDataSource = UICollectionViewDiffableDataSource<Section, Room>
+    typealias HomeSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
+    private var dataSource: HomeDataSource!
 
-    typealias DataSource = UICollectionViewDiffableDataSource<Section, Room>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Room>
-    private var dataSource: DataSource!
-
+    let locationManger = LocationService.shared.locationManger
     var rooms: [Room] = [] {
         didSet {
-            DispatchQueue.main.async {
-                self.collectionView.stopPullToRefresh()
-                self.updateDataSource()
+            DispatchQueue.main.async { [weak self] in
+                self?.collectionView.stopPullToRefresh()
+                self?.updateDataSource()
             }
         }
     }
 
-    let locationManger = LocationService.shared.locationManger
-
-    @IBOutlet weak var collectionView: UICollectionView! {
-        didSet {
-
-        }
-    }
-
+    @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus"),
             style: .plain,
             target: self,
             action: #selector(addRoomPost))
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "slider.horizontal.3"),
+            style: .plain,
+            target: self,
+            action: #selector(showFilterPage))
 
         // get User Location
         locationManger.delegate = self
@@ -56,25 +53,37 @@ class HomeViewController: UIViewController {
         // set title
         navigationItem.title = "RooMeet"
 
-        // set data source & layout
-        collectionView.register(
-            UINib(nibName: RoomCardCell.reuseIdentifier, bundle: nil),
-            forCellWithReuseIdentifier: RoomCardCell.reuseIdentifier
-        )
         collectionView.delegate = self
 
-        configureDataSource()
-        collectionView.setCollectionViewLayout(createLayout(), animated: false)
+        configureCollectionView()
 
         // fetch room to display
         fetchRooms()
+    }
+
+    private func configureCollectionView() {
+        collectionView.register(
+            UINib(nibName: "RoomDisplayCell", bundle: nil),
+            forCellWithReuseIdentifier: RoomDisplayCell.identifier)
+
+        dataSource = HomeDataSource(collectionView: collectionView) { collectionView, indexPath, room in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: RoomDisplayCell.identifier,
+                for: indexPath) as? RoomDisplayCell else {
+                return UICollectionViewCell()
+            }
+            cell.configureCell(data: room)
+            return cell
+        }
+
+        collectionView.collectionViewLayout = createLayout()
 
         collectionView.addPullToRefresh {[weak self] in
             self?.fetchRooms()
         }
     }
 
-    func fetchRooms() {
+    private func fetchRooms() {
         FirebaseService.shared.fetchRooms { [weak self] rooms in
             guard let `self` = self else { return }
             self.rooms = rooms
@@ -85,85 +94,69 @@ class HomeViewController: UIViewController {
         let postVC = PostViewController()
         navigationController?.pushViewController(postVC, animated: true)
     }
-}
 
-// MARK: Data Source
-extension HomeViewController {
-    private func configureDataSource() {
-        dataSource = DataSource(collectionView: collectionView,
-                                cellProvider: { [unowned self] collectionView, indexPath, itemIdentifier in
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoomCardCell.reuseIdentifier,
-                for: indexPath) as? RoomCardCell else {
-                print("ERROR: RoomCardCell Issue")
-                fatalError()
+    @objc private func showFilterPage() {
+        guard let filterVC = storyboard?.instantiateViewController(
+            withIdentifier: "FilterViewController") as? FilterViewController else {
+            print("ERROR: FilterViewController Error")
+            return
+        }
+
+        filterVC.completion = { query in
+            FirebaseService.shared.fetchRoomDatabyQuery(query: query) { rooms in
+                self.rooms = rooms
             }
-            if !self.rooms.isEmpty {
-                let room = rooms[indexPath.item]
-                cell.configureCell(room: room)
-            }
-            return cell
-        })
+        }
+        present(filterVC, animated: true)
     }
 }
 
-// MARK: Snapshot
+// MARK: - Layout
+extension HomeViewController {
+    private func createLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalWidth(0.3))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .fractionalWidth(1.0),
+            heightDimension: .fractionalWidth(0.3))
+        let group = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [item])
+        let section = NSCollectionLayoutSection(group: group)
+
+        return UICollectionViewCompositionalLayout(section: section)
+    }
+}
+
+// MARK: - Snapshot
 extension HomeViewController {
     private func updateDataSource() {
-        var newSnapshot = Snapshot()
-        newSnapshot.appendSections(Section.allCases)
-        newSnapshot.appendItems(rooms.map({ $0 }), toSection: .rooms)
-        dataSource.apply(newSnapshot, animatingDifferences: true)
+        var newSnapshot = HomeSnapshot()
+        newSnapshot.appendSections([Section.main])
+        newSnapshot.appendItems(rooms.map { $0 }, toSection: .main)
+        dataSource.apply(newSnapshot)
     }
 }
 
-// MARK: Layout
-extension HomeViewController {
-    func createRoomsSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)))
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(0.3)),
-            subitems: [item])
-
-        return NSCollectionLayoutSection(group: group)
-    }
-
-    func sectionFor(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
-        let section = dataSource.snapshot().sectionIdentifiers[index]
-
-        switch section {
-        case .rooms:
-            return createRoomsSection()
-        }
-    }
-
-    func createLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { [unowned self] index, env in
-            return self.sectionFor(index: index, environment: env)
-        }
-    }
-}
-
+// MARK: - UICollectionViewDelegate
 extension HomeViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let roomDetailVC = RoomDetailViewController()
-        roomDetailVC.room = rooms[indexPath.item]
-        print(rooms[indexPath.item])
-        navigationController?.pushViewController(roomDetailVC, animated: false)
+        guard
+            let room = dataSource.itemIdentifier(for: indexPath)
+        else { return }
+        let detailViewController = RoomDetailViewController(room: room)
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 
+// MARK: - CLLocationManagerDelegate
 extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            print(gCurrentPosition)
             gCurrentPosition = location.coordinate
-            print(gCurrentPosition)
         }
     }
 

@@ -8,7 +8,7 @@
 import UIKit
 
 class RoomBasicCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(RoomBasicCell.self)"
+    static let identifier = "RoomBasicCell"
 
     @IBOutlet weak var otherDescTextView: UITextView! {
         didSet {
@@ -30,12 +30,11 @@ class RoomBasicCell: UICollectionViewCell {
         // Initialization code
     }
 
-    func configureCell(area: String, roomSpecs: [RoomSpec], title: String, otherDesc: String?) {
-        priceLabel.text = genPriceString(roomSpecs: roomSpecs)
-        areaLabel.text = area
-        titleLabel.text = title
-        
-        if let otherDesc = otherDesc {
+    func configureCell(data: Room) {
+        priceLabel.text = genPriceString(roomSpecs: data.rooms)
+        areaLabel.text = "\(data.county)\(data.town)"
+        titleLabel.text = data.title
+        if let otherDesc = data.otherDescriction {
             otherDescTextView.text = otherDesc
         } else {
             otherDescTextView.isHidden = true

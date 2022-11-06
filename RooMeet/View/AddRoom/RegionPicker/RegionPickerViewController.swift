@@ -8,6 +8,14 @@
 import UIKit
 
 class RegionPickerViewController: UIViewController {
+    lazy var titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "選擇地區"
+        label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
     lazy var countyTableView: UITableView = {
         let tableView = UITableView()
         tableView.dataSource = self
@@ -46,6 +54,7 @@ class RegionPickerViewController: UIViewController {
     }
 
     private func configureHierarchy() {
+        view.addSubview(titleLabel)
         view.addSubview(countyTableView)
         view.addSubview(townTableView)
         viewLayout()
@@ -53,12 +62,15 @@ class RegionPickerViewController: UIViewController {
 
     private func  viewLayout() {
         NSLayoutConstraint.activate([
-            countyTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            countyTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             countyTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             countyTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             countyTableView.widthAnchor.constraint(equalToConstant: 100),
 
-            townTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            townTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
             townTableView.leadingAnchor.constraint(equalTo: countyTableView.trailingAnchor),
             townTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             townTableView.widthAnchor.constraint(equalToConstant: 100)

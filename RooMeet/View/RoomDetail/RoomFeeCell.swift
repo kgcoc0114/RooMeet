@@ -8,7 +8,7 @@
 import UIKit
 
 class RoomFeeCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(RoomFeeCell.self)"
+    static let identifier = "RoomFeeCell"
 
     var billInfo: BillInfo?
 
@@ -27,8 +27,8 @@ class RoomFeeCell: UICollectionViewCell {
         // Initialization code
     }
 
-    func configureCell(billInfo inputData: BillInfo) {
-        self.billInfo = inputData
+    func configureCell(data: BillInfo) {
+        self.billInfo = data
 
         if let billInfo = self.billInfo {
             BillType.allCases.forEach { billType in

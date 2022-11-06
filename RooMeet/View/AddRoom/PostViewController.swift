@@ -505,7 +505,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         if roomImagesUrl.count == roomImages.count {
             let docRef = Firestore.firestore().collection("Room").document()
             print("docRef")
-            let room = Room(roomID: docRef.documentID,
+            var room = Room(roomID: docRef.documentID,
                             userID: gCurrentUser.id,
                             createdTime: Timestamp(),
                             modifiedTime: Timestamp(),
@@ -526,6 +526,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                             movinDate: (postBasicData?.movinDate)!,
                             otherDescriction: otherDescriction,
                             isDeleted: false)
+            room.roomMinPrice = room.getRoomMinPrice()
 
             do {
                 try docRef.setData(from: room, completion: { error in
@@ -542,5 +543,4 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         }
     }
 }
-
 

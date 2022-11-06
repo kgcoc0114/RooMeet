@@ -34,6 +34,23 @@ struct Room: Codable, Hashable {
     var otherDescriction: String?
 //    var status: String
     var isDeleted: Bool
+
+    var roomMinPrice: Int?
+//    {
+//        let minRoom = rooms.min { $0.price! > $1.price! }
+//        if let minRoom = minRoom {
+//            return minRoom.price
+//        }
+//        return nil
+//    }
+
+    func getRoomMinPrice() -> Int? {
+        let minRoom = rooms.min { $0.price! > $1.price! }
+        if let minRoom = minRoom {
+            return minRoom.price
+        }
+        return nil
+    }
 }
 
 struct RoomSpec: Codable, Hashable {
