@@ -8,7 +8,6 @@ import UIKit
 import MapKit
 
 class ExploreViewController: UIViewController {
-
     @IBOutlet weak var roomExploreMap: MKMapView!
 
     var rooms: [Room] = [] {
@@ -20,8 +19,9 @@ class ExploreViewController: UIViewController {
             prevGeoCodes = geoCodes
             geoCodes.removeAll()
             rooms.forEach { room in
-                if let lat = room.lat,
-                   let long = room.long {
+                if
+                    let lat = room.lat,
+                    let long = room.long {
                     let location = CLLocationCoordinate2D(latitude: lat, longitude: long)
                     let annotation = RMAnnotation()
                     annotation.coordinate = location
@@ -48,8 +48,14 @@ class ExploreViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        // set title
+        navigationItem.title = "Explore"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "slider.horizontal.3"),
+            style: .plain,
+            target: self,
+            action: #selector(showFilterPage))
 
-        locationManger.delegate = self
         roomExploreMap.delegate = self
 
         locationManger.requestWhenInUseAuthorization()
@@ -61,6 +67,18 @@ class ExploreViewController: UIViewController {
         roomExploreMap.showsUserLocation = true
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        LocationService.shared.setCenterRegion(position: gCurrentPosition, mapView: roomExploreMap)
+        getRoomForCurrentPosition(mapView: roomExploreMap)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        let all = roomExploreMap.annotations
+        roomExploreMap.removeAnnotations(all)
+    }
+
     func show() {
         if geoCodes.count == rooms.count {
             DispatchQueue.main.async { [self] in
@@ -69,20 +87,28 @@ class ExploreViewController: UIViewController {
             }
         }
     }
+
+    // FIXME: 條件與滑動經緯度同時成立
+    @objc private func showFilterPage() {
+        guard let filterVC = UIStoryboard.home.instantiateViewController(
+            withIdentifier: "FilterViewController") as? FilterViewController else {
+            print("ERROR: FilterViewController Error")
+            return
+        }
+        filterVC.completion = { query in
+            FirebaseService.shared.fetchRoomDatabyQuery(query: query) { rooms in
+                self.rooms = rooms
+            }
+        }
+        present(filterVC, animated: true)
+    }
 }
 
 extension ExploreViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
             getRoomForCurrentPosition(mapView: roomExploreMap)
-
-            // set current location in map
-            let region = MKCoordinateRegion(
-                center: location.coordinate,
-                latitudinalMeters: 1000,
-                longitudinalMeters: 1000
-            )
-            roomExploreMap.setRegion(region, animated: true)
+            LocationService.shared.setCenterRegion(position: location.coordinate, mapView: roomExploreMap)
         }
     }
 
@@ -116,13 +142,12 @@ extension ExploreViewController: MKMapViewDelegate {
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
-        guard let roomMarker = view.annotation as? RMAnnotation else {
+        guard let roomMarker = view.annotation as? RMAnnotation,
+        let room = roomMarker.room else {
             return
         }
-
-        let roomDetailVC = RoomDetailViewController()
-        roomDetailVC.room = roomMarker.room
-        present(roomDetailVC, animated: true)
+        let detailViewController = RoomDetailViewController(room: room)
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {

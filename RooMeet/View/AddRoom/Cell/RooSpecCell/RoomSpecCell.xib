@@ -43,21 +43,14 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dej-yt-bvU" userLabel="RoomType">
                                                 <rect key="frame" x="64" y="0.0" width="205.5" height="99"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1qa-Jw-Mk0">
-                                                        <rect key="frame" x="0.0" y="0.0" width="68.5" height="99"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="套房"/>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ez-sD-XJu">
-                                                        <rect key="frame" x="68.5" y="0.0" width="68.5" height="99"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="雅房"/>
-                                                    </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="duw-54-3Zz">
-                                                        <rect key="frame" x="137" y="0.0" width="68.5" height="99"/>
-                                                        <state key="normal" title="Button"/>
-                                                        <buttonConfiguration key="configuration" style="plain" title="整層"/>
-                                                    </button>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="vuh-uF-lUK">
+                                                        <rect key="frame" x="0.0" y="0.0" width="205.5" height="100"/>
+                                                        <segments>
+                                                            <segment title="套房"/>
+                                                            <segment title="雅房"/>
+                                                            <segment title="整層"/>
+                                                        </segments>
+                                                    </segmentedControl>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
@@ -155,6 +148,7 @@
                 <outlet property="peopleTextField" destination="rZw-DR-Km9" id="sDm-es-aB3"/>
                 <outlet property="priceTextField" destination="OlE-RI-fFz" id="vhp-Uk-4Y3"/>
                 <outlet property="spaceTextField" destination="vx5-jr-vgJ" id="f1k-fT-CIg"/>
+                <outlet property="typeSegmentControl" destination="vuh-uF-lUK" id="SjF-sW-1Fk"/>
             </connections>
             <point key="canvasLocation" x="261.59420289855075" y="-9.0401785714285712"/>
         </collectionViewCell>

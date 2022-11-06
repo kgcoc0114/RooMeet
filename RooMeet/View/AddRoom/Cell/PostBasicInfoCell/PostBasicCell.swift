@@ -29,25 +29,29 @@ class PostBasicCell: UICollectionViewCell {
     var county: String? {
         didSet {
             postBasicData.county = county
-            if county != nil && town != nil {
-                regionSelectView.text = "\(county!)\(town!)"
+            if let county = county,
+                let town = town {
+                regionSelectView.text = "\(county)\(town)"
             }
             delegate?.passData(cell: self, data: postBasicData)
         }
     }
 
-    var town: String?  {
+    var town: String? {
         didSet {
             postBasicData.town = town
-            if county != nil && town != nil {
-                regionSelectView.text = "\(county!)\(town!)"
+            if let county = county,
+                let town = town {
+                regionSelectView.text = "\(county)\(town)"
             }
             delegate?.passData(cell: self, data: postBasicData)
         }
     }
+
     private var postBasicData = PostBasicData()
 
     weak var delegate: PostBasicCellDelegate?
+
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var movinDatePicker: UIDatePicker! {
@@ -55,7 +59,7 @@ class PostBasicCell: UICollectionViewCell {
             postBasicData.movinDate = movinDatePicker.date
         }
     }
-    @IBOutlet weak var genderTextField: UITextField!
+
     @IBOutlet weak var regionSelectView: UITextField!
     @IBOutlet weak var leaseTextField: UITextField!
     @IBOutlet weak var parlorCountView: NumberPickerView! {
@@ -68,6 +72,11 @@ class PostBasicCell: UICollectionViewCell {
             postBasicData.room = 0
         }
     }
+    @IBOutlet weak var genderSegmentControl: UISegmentedControl! {
+        didSet {
+            postBasicData.gender = genderSegmentControl.selectedSegmentIndex
+        }
+    }
     private var parlor: Int = 0
     private var room: Int = 0
 
@@ -77,7 +86,6 @@ class PostBasicCell: UICollectionViewCell {
         parlorCountView.configurateLayout(placeholder: "Parlor")
         regionSelectView.delegate = self
         titleTextField.delegate = self
-        genderTextField.delegate = self
         leaseTextField.delegate = self
         addressTextField.delegate = self
         parlorCountView.delegate = self
@@ -97,22 +105,17 @@ extension PostBasicCell: UITextFieldDelegate {
             delegate?.showRegionPickerView(cell: self)
         }
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         postBasicData.title = titleTextField.text
         postBasicData.address = addressTextField.text
-        postBasicData.gender = Int(genderTextField.text!)
 
-        if leaseTextField.hasText {
-            postBasicData.lease = Double(leaseTextField.text!)
+        if leaseTextField.hasText,
+            let leaseText = leaseTextField.text {
+            postBasicData.lease = Double(leaseText)
         }
 
         delegate?.passData(cell: self, data: postBasicData)
-    }
-    
-    func tecc(_ textField: UITextField) {
-        print(textField)
-        delegate?.showRegionPickerView(cell: self)
     }
 }
 
@@ -129,4 +132,3 @@ extension PostBasicCell: NumberPickerViewDelegate {
         }
     }
 }
-

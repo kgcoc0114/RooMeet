@@ -9,7 +9,7 @@ import Foundation
 import MapKit
 
 
-var currentPosition: Position = Position(latitude: 25.03320617048529, longitude: 121.56449873729362)
+
 
 class LocationService {
     static let shared = LocationService()
@@ -84,4 +84,15 @@ class LocationService {
         }
         return nil
     }
+
+    func setCenterRegion(position: CLLocationCoordinate2D, mapView: MKMapView) {
+        // set current location in map
+        let region = MKCoordinateRegion(
+            center: position,
+            latitudinalMeters: 1000,
+            longitudinalMeters: 1000
+        )
+        mapView.setRegion(region, animated: true)
+    }
 }
+

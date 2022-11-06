@@ -8,17 +8,28 @@
 import Foundation
 
 // (0: male, 1: female, 2: nonBinary, 3: all)
-enum Gender: String {
+enum Gender: String, CaseIterable {
     case male = "Male"
     case female = "Female"
     case nonBinary = "Non Binary"
     case all = "All"
 }
 
-enum RoomType: String {
-    case male = "Male"
-    case female = "Female"
-//    case nonBinary = "Non Binary"\
+enum RoomType: String, CaseIterable {
+    case studio = "套房"
+    case privateRoom = "雅房"
+    case entirePlace = "整層"
+
+    var desc: String {
+        switch self {
+        case .studio:
+            return "studio"
+        case .privateRoom:
+            return "privateRoom"
+        case .entirePlace:
+            return "entirePlace"
+        }
+    }
 }
 
 

@@ -24,7 +24,6 @@ class ChatRoomListViewController: UIViewController {
 
     var chatRooms: [ChatRoom] = [] {
         didSet {
-            print(updateDataSource)
             updateDataSource()
         }
     }
@@ -43,13 +42,13 @@ class ChatRoomListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "聊天列表"
+        navigationItem.title = "Chat Chat"
         print(User.mockUser.id)
         configureDataSource()
-        FirebaseService.shared.fetchChatRoomDataWithMemberData(userID: User.mockUser.id) { [weak self] chatRooms in
-            self?.chatRooms = chatRooms
-        }
-        updateDataSource()
+//        FirebaseService.shared.fetchChatRoomDataWithMemberData(userID: gCurrentUser.id) { [weak self] chatRooms in
+//            self?.chatRooms = chatRooms
+//        }
+//        updateDataSource()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -83,7 +82,7 @@ extension ChatRoomListViewController {
                 return UITableViewCell()
             }
             let chatRoom = self.chatRooms[indexPath.item]
-            cell.layoutCell(User.mockUser.id, chatRoom: chatRoom)
+            cell.layoutCell(gCurrentUser.id, chatRoom: chatRoom)
             return cell
         })
     }

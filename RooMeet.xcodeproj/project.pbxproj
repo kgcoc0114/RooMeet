@@ -15,6 +15,9 @@
 		E55E6FC62914BDAB00CBB0EB /* MessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55E6FC42914BDAB00CBB0EB /* MessageCell.xib */; };
 		E55E6FCB2914CA3000CBB0EB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */; };
 		E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */; };
+		E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7129178B1F007AE655 /* HomeViewController.swift */; };
+		E5604F7A29179539007AE655 /* RoomDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7829179539007AE655 /* RoomDisplayCell.swift */; };
+		E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5604F7929179539007AE655 /* RoomDisplayCell.xib */; };
 		E593EFFD290FEFF000B35550 /* MutlipleChooseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */; };
 		E593EFFE290FEFF000B35550 /* MutlipleChooseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */; };
 		E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */; };
@@ -33,6 +36,24 @@
 		E5B018AE2915692600A09788 /* OtherUserMsgCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018AC2915692600A09788 /* OtherUserMsgCell.swift */; };
 		E5B018AF2915692600A09788 /* OtherUserMsgCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018AD2915692600A09788 /* OtherUserMsgCell.xib */; };
 		E5B018B12915E12300A09788 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018B02915E12300A09788 /* UITableView+Extension.swift */; };
+		E5B018B52915F20C00A09788 /* RoomCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018B32915F20C00A09788 /* RoomCardCell.swift */; };
+		E5B018B62915F20C00A09788 /* RoomCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018B42915F20C00A09788 /* RoomCardCell.xib */; };
+		E5B018B82915F21E00A09788 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018B72915F21E00A09788 /* CardView.swift */; };
+		E5B018C02916351300A09788 /* RoomImagesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018BE2916351300A09788 /* RoomImagesCell.swift */; };
+		E5B018C12916351300A09788 /* RoomImagesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018BF2916351300A09788 /* RoomImagesCell.xib */; };
+		E5B018C62916354600A09788 /* RoomBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018C42916354600A09788 /* RoomBasicCell.swift */; };
+		E5B018C72916354600A09788 /* RoomBasicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018C52916354600A09788 /* RoomBasicCell.xib */; };
+		E5B018CA2916355900A09788 /* RoomFeeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018C82916355900A09788 /* RoomFeeCell.swift */; };
+		E5B018CB2916355900A09788 /* RoomFeeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018C92916355900A09788 /* RoomFeeCell.xib */; };
+		E5B018CE2916475000A09788 /* RoomItemsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018CC2916475000A09788 /* RoomItemsCell.swift */; };
+		E5B018CF2916475100A09788 /* RoomItemsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018CD2916475000A09788 /* RoomItemsCell.xib */; };
+		E5B018D22916698900A09788 /* SectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018D02916698900A09788 /* SectionHeaderView.swift */; };
+		E5B018D32916698900A09788 /* SectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018D12916698900A09788 /* SectionHeaderView.xib */; };
+		E5B018D629166A4000A09788 /* RoomDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018D429166A3F00A09788 /* RoomDetailHeaderView.swift */; };
+		E5B018D729166A4000A09788 /* RoomDetailHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018D529166A4000A09788 /* RoomDetailHeaderView.xib */; };
+		E5B018D9291695CA00A09788 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5B018D8291695CA00A09788 /* Profile.storyboard */; };
+		E5B018DB29174CAB00A09788 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018DA29174CAB00A09788 /* UICollectionView+Extension.swift */; };
+		E5B018DD29175B7100A09788 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018DC29175B7100A09788 /* FilterViewController.swift */; };
 		E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33761290E71A600467404 /* NumberPickerView.swift */; };
 		E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33767290EA2FA00467404 /* RMBaseTextField.swift */; };
 		E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B3376C290F64D800467404 /* RoomSpecCell.swift */; };
@@ -66,7 +87,6 @@
 		E5E64C8E290E1AA700F07286 /* RegionPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E64C8C290E1AA700F07286 /* RegionPickerCell.xib */; };
 		E5E64C93290E3D3E00F07286 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5E64C92290E3D3E00F07286 /* Home.storyboard */; };
 		E5E64C96290E3E2600F07286 /* UIStoryboard+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C95290E3E2600F07286 /* UIStoryboard+Extension.swift */; };
-		E5E64C98290E454E00F07286 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C97290E454E00F07286 /* HomeViewController.swift */; };
 		E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C99290E474200F07286 /* UIColor+Extension.swift */; };
 		E5EEE1F8291214C300CAAE84 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE1F7291214C300CAAE84 /* Explore.storyboard */; };
 		E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE1F9291218F300CAAE84 /* ExploreViewController.swift */; };
@@ -97,6 +117,9 @@
 		E55E6FC42914BDAB00CBB0EB /* MessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MessageCell.xib; sourceTree = "<group>"; };
 		E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
+		E5604F7129178B1F007AE655 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		E5604F7829179539007AE655 /* RoomDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDisplayCell.swift; sourceTree = "<group>"; };
+		E5604F7929179539007AE655 /* RoomDisplayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDisplayCell.xib; sourceTree = "<group>"; };
 		E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutlipleChooseController.swift; sourceTree = "<group>"; };
 		E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MutlipleChooseController.xib; sourceTree = "<group>"; };
 		E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChooseCell.swift; sourceTree = "<group>"; };
@@ -115,6 +138,24 @@
 		E5B018AC2915692600A09788 /* OtherUserMsgCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserMsgCell.swift; sourceTree = "<group>"; };
 		E5B018AD2915692600A09788 /* OtherUserMsgCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherUserMsgCell.xib; sourceTree = "<group>"; };
 		E5B018B02915E12300A09788 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
+		E5B018B32915F20C00A09788 /* RoomCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCardCell.swift; sourceTree = "<group>"; };
+		E5B018B42915F20C00A09788 /* RoomCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCardCell.xib; sourceTree = "<group>"; };
+		E5B018B72915F21E00A09788 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		E5B018BE2916351300A09788 /* RoomImagesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomImagesCell.swift; sourceTree = "<group>"; };
+		E5B018BF2916351300A09788 /* RoomImagesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomImagesCell.xib; sourceTree = "<group>"; };
+		E5B018C42916354600A09788 /* RoomBasicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBasicCell.swift; sourceTree = "<group>"; };
+		E5B018C52916354600A09788 /* RoomBasicCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomBasicCell.xib; sourceTree = "<group>"; };
+		E5B018C82916355900A09788 /* RoomFeeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomFeeCell.swift; sourceTree = "<group>"; };
+		E5B018C92916355900A09788 /* RoomFeeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomFeeCell.xib; sourceTree = "<group>"; };
+		E5B018CC2916475000A09788 /* RoomItemsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomItemsCell.swift; sourceTree = "<group>"; };
+		E5B018CD2916475000A09788 /* RoomItemsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomItemsCell.xib; sourceTree = "<group>"; };
+		E5B018D02916698900A09788 /* SectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionHeaderView.swift; sourceTree = "<group>"; };
+		E5B018D12916698900A09788 /* SectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SectionHeaderView.xib; sourceTree = "<group>"; };
+		E5B018D429166A3F00A09788 /* RoomDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailHeaderView.swift; sourceTree = "<group>"; };
+		E5B018D529166A4000A09788 /* RoomDetailHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDetailHeaderView.xib; sourceTree = "<group>"; };
+		E5B018D8291695CA00A09788 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		E5B018DA29174CAB00A09788 /* UICollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extension.swift"; sourceTree = "<group>"; };
+		E5B018DC29175B7100A09788 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		E5B33761290E71A600467404 /* NumberPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPickerView.swift; sourceTree = "<group>"; };
 		E5B33767290EA2FA00467404 /* RMBaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMBaseTextField.swift; sourceTree = "<group>"; };
 		E5B3376C290F64D800467404 /* RoomSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpecCell.swift; sourceTree = "<group>"; };
@@ -150,7 +191,6 @@
 		E5E64C8C290E1AA700F07286 /* RegionPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegionPickerCell.xib; sourceTree = "<group>"; };
 		E5E64C92290E3D3E00F07286 /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		E5E64C95290E3E2600F07286 /* UIStoryboard+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extension.swift"; sourceTree = "<group>"; };
-		E5E64C97290E454E00F07286 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E5E64C99290E474200F07286 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		E5EEE1F7291214C300CAAE84 /* Explore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		E5EEE1F9291218F300CAAE84 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
@@ -224,13 +264,14 @@
 			isa = PBXGroup;
 			children = (
 				E5E64C75290D6E3100F07286 /* RMTabBarController.swift */,
-				E5E64C97290E454E00F07286 /* HomeViewController.swift */,
 				E5EEE1F9291218F300CAAE84 /* ExploreViewController.swift */,
 				E5EEE2082912BCC600CAAE84 /* RoomDetailViewController.swift */,
 				E5EEE2092912BCC600CAAE84 /* RoomDetailViewController.xib */,
 				E5EEE2182913B4D000CAAE84 /* ChatRoomListViewController.swift */,
 				E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */,
 				E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */,
+				E5B018DC29175B7100A09788 /* FilterViewController.swift */,
+				E5604F7129178B1F007AE655 /* HomeViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -238,6 +279,8 @@
 		E55C0963290D5C2D00DBF21B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E5B018B9291631B400A09788 /* RoomDetail */,
+				E5B018B22915F1C100A09788 /* Home */,
 				E5EEE21A2913B4DB00CAAE84 /* Chat */,
 				E5DC0FED29120CCA00EB57FD /* Component */,
 				E5B3376B290F639F00467404 /* AddRoom */,
@@ -265,6 +308,36 @@
 				E5DC0FEB29120C9300EB57FD /* RuleCell */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		E5B018B22915F1C100A09788 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				E5B018B32915F20C00A09788 /* RoomCardCell.swift */,
+				E5B018B42915F20C00A09788 /* RoomCardCell.xib */,
+				E5604F7829179539007AE655 /* RoomDisplayCell.swift */,
+				E5604F7929179539007AE655 /* RoomDisplayCell.xib */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		E5B018B9291631B400A09788 /* RoomDetail */ = {
+			isa = PBXGroup;
+			children = (
+				E5B018BE2916351300A09788 /* RoomImagesCell.swift */,
+				E5B018BF2916351300A09788 /* RoomImagesCell.xib */,
+				E5B018C42916354600A09788 /* RoomBasicCell.swift */,
+				E5B018C52916354600A09788 /* RoomBasicCell.xib */,
+				E5B018C82916355900A09788 /* RoomFeeCell.swift */,
+				E5B018C92916355900A09788 /* RoomFeeCell.xib */,
+				E5B018CC2916475000A09788 /* RoomItemsCell.swift */,
+				E5B018CD2916475000A09788 /* RoomItemsCell.xib */,
+				E5B018D02916698900A09788 /* SectionHeaderView.swift */,
+				E5B018D12916698900A09788 /* SectionHeaderView.xib */,
+				E5B018D429166A3F00A09788 /* RoomDetailHeaderView.swift */,
+				E5B018D529166A4000A09788 /* RoomDetailHeaderView.xib */,
+			);
+			path = RoomDetail;
 			sourceTree = "<group>";
 		};
 		E5B3376B290F639F00467404 /* AddRoom */ = {
@@ -321,6 +394,7 @@
 				E5A12A622910B8C4006907D9 /* NibLoadble.swift */,
 				E5EEE1F7291214C300CAAE84 /* Explore.storyboard */,
 				E5EEE20C2913A8C900CAAE84 /* Chat.storyboard */,
+				E5B018D8291695CA00A09788 /* Profile.storyboard */,
 			);
 			path = RooMeet;
 			sourceTree = "<group>";
@@ -399,6 +473,7 @@
 			children = (
 				E5B33761290E71A600467404 /* NumberPickerView.swift */,
 				E5B33767290EA2FA00467404 /* RMBaseTextField.swift */,
+				E5B018B72915F21E00A09788 /* CardView.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -441,6 +516,7 @@
 				E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */,
 				E5EEE2842913FA3E00CAAE84 /* UIImageView+Extension.swift */,
 				E5B018B02915E12300A09788 /* UITableView+Extension.swift */,
+				E5B018DA29174CAB00A09788 /* UICollectionView+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -548,20 +624,27 @@
 			files = (
 				E593EFFE290FEFF000B35550 /* MutlipleChooseController.xib in Resources */,
 				E5B33777290F668F00467404 /* PostBasicCell.xib in Resources */,
+				E5B018D729166A4000A09788 /* RoomDetailHeaderView.xib in Resources */,
+				E5B018C12916351300A09788 /* RoomImagesCell.xib in Resources */,
 				E5A12A672910C7BF006907D9 /* EditFeeController.xib in Resources */,
 				E5EEE20329129C6000CAAE84 /* PostalCode.json in Resources */,
+				E5B018D9291695CA00A09788 /* Profile.storyboard in Resources */,
 				E5EEE20B2912BCC700CAAE84 /* RoomDetailViewController.xib in Resources */,
 				E593F002290FF03900B35550 /* MultipleChooseCell.xib in Resources */,
 				E5B018AB2915690C00A09788 /* CurrentUserMsgCell.xib in Resources */,
 				E5BDDB4B290D0E2D00F4A767 /* LaunchScreen.storyboard in Resources */,
 				E5B3377D290FAA4800467404 /* PostImageCell.xib in Resources */,
 				E5B33773290F65D800467404 /* PostViewController.xib in Resources */,
+				E5B018C72916354600A09788 /* RoomBasicCell.xib in Resources */,
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
+				E5B018CB2916355900A09788 /* RoomFeeCell.xib in Resources */,
 				E55E6FC62914BDAB00CBB0EB /* MessageCell.xib in Resources */,
 				E5EEE20D2913A8C900CAAE84 /* Chat.storyboard in Resources */,
 				E5B018AF2915692600A09788 /* OtherUserMsgCell.xib in Resources */,
 				E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */,
 				E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */,
+				E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */,
+				E5B018D32916698900A09788 /* SectionHeaderView.xib in Resources */,
 				E5E64C8E290E1AA700F07286 /* RegionPickerCell.xib in Resources */,
 				E5EEE21E2913B4F900CAAE84 /* ChatRoomCell.xib in Resources */,
 				E5E64C93290E3D3E00F07286 /* Home.storyboard in Resources */,
@@ -571,7 +654,9 @@
 				E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */,
 				E593F0062910016D00B35550 /* OptionCell.xib in Resources */,
 				E5C5FE872910CB8000DA91DF /* FeeInfoCell.xib in Resources */,
+				E5B018CF2916475100A09788 /* RoomItemsCell.xib in Resources */,
 				E5B3376F290F64D800467404 /* RoomSpecCell.xib in Resources */,
+				E5B018B62915F20C00A09788 /* RoomCardCell.xib in Resources */,
 				E5C5FE8B2910EF9E00DA91DF /* FeeDetailCell.xib in Resources */,
 				E5DC0FE02911528000EB57FD /* GoogleService-Info.plist in Resources */,
 			);
@@ -649,19 +734,27 @@
 				E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */,
 				E5EEE21D2913B4F900CAAE84 /* ChatRoomCell.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
+				E5B018C02916351300A09788 /* RoomImagesCell.swift in Sources */,
 				E593F013291012DF00B35550 /* RulesHeaderCell.swift in Sources */,
 				E593F0092910065C00B35550 /* RulesCell.swift in Sources */,
 				E5C5FE862910CB8000DA91DF /* FeeInfoCell.swift in Sources */,
 				E5B018AE2915692600A09788 /* OtherUserMsgCell.swift in Sources */,
+				E5B018CE2916475000A09788 /* RoomItemsCell.swift in Sources */,
 				E5DC0FE32911FFB300EB57FD /* LocationService.swift in Sources */,
 				E5B33772290F65D800467404 /* PostViewController.swift in Sources */,
 				E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */,
 				E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */,
+				E5B018DD29175B7100A09788 /* FilterViewController.swift in Sources */,
+				E5B018B82915F21E00A09788 /* CardView.swift in Sources */,
+				E5B018D629166A4000A09788 /* RoomDetailHeaderView.swift in Sources */,
+				E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */,
 				E5EEE2172913B2B800CAAE84 /* Message.swift in Sources */,
 				E5B018AA2915690C00A09788 /* CurrentUserMsgCell.swift in Sources */,
 				E55C095E290D51B800DBF21B /* Room.swift in Sources */,
 				E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */,
 				E5EEE2192913B4D000CAAE84 /* ChatRoomListViewController.swift in Sources */,
+				E5B018D22916698900A09788 /* SectionHeaderView.swift in Sources */,
+				E5B018CA2916355900A09788 /* RoomFeeCell.swift in Sources */,
 				E5EEE2852913FA3E00CAAE84 /* UIImageView+Extension.swift in Sources */,
 				E5C5FE8A2910EF9E00DA91DF /* FeeDetailCell.swift in Sources */,
 				E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */,
@@ -681,14 +774,17 @@
 				E593F0052910016D00B35550 /* OptionCell.swift in Sources */,
 				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,
 				E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */,
-				E5E64C98290E454E00F07286 /* HomeViewController.swift in Sources */,
 				E5A12A632910B8C4006907D9 /* NibLoadble.swift in Sources */,
 				E5E64C81290E13E400F07286 /* RegionPickerViewController.swift in Sources */,
 				E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */,
+				E5B018B52915F20C00A09788 /* RoomCardCell.swift in Sources */,
 				E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */,
 				E55C0972290D628400DBF21B /* Constants.swift in Sources */,
 				E5EEE2152913B26B00CAAE84 /* ChatRoom.swift in Sources */,
+				E5604F7A29179539007AE655 /* RoomDisplayCell.swift in Sources */,
 				E55E6FCB2914CA3000CBB0EB /* ChatViewController.swift in Sources */,
+				E5B018C62916354600A09788 /* RoomBasicCell.swift in Sources */,
+				E5B018DB29174CAB00A09788 /* UICollectionView+Extension.swift in Sources */,
 				E5E64C96290E3E2600F07286 /* UIStoryboard+Extension.swift in Sources */,
 				E5B018B12915E12300A09788 /* UITableView+Extension.swift in Sources */,
 			);
@@ -841,7 +937,8 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要使用定位資訊";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) 需要使用相機";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) 需要使用定位資訊";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -872,7 +969,8 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要使用定位資訊";
+				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) 需要使用相機";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) 需要使用定位資訊";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

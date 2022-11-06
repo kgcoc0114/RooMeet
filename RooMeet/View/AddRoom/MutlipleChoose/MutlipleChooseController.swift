@@ -28,14 +28,24 @@ enum Rules: String, CaseIterable {
 }
 
 enum Amenities: String, CaseIterable {
-    case noSmoking = "No Smoking"
-    case noPets = "No Pets"
-    case noDrinking = "No Drinking"
+    case wiFiIncluded = "Wi-Fi"
+    case utilitiesIncluded = "附家電"
+    case doorman = "管理員"
+    case tv = "電視"
 }
 
 enum MutlipleChooseType {
     case rule
     case amenities
+
+    var desc: String {
+        switch self {
+        case .rule:
+            return "其他條件"
+        case .amenities:
+            return "設備"
+        }
+    }
 }
 
 struct MutlipleChooseOption {
@@ -51,7 +61,7 @@ class MutlipleChooseController: UIViewController {
         }
         return rulesItems
     }()
-    
+
     lazy var amenities: [MutlipleChooseOption] = {
         let items = Amenities.allCases
         let rulesItems = items.map { rule in
@@ -77,24 +87,38 @@ class MutlipleChooseController: UIViewController {
 
     var completion: (([String]) -> Void)?
 
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        }
+    }
     @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(UINib(nibName: OptionCell.reuseIdentifier, bundle: nil), forCellReuseIdentifier: OptionCell.reuseIdentifier)
+        tableView.register(
+            UINib(nibName: OptionCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: OptionCell.reuseIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
     }
 
-    func initVC(pageType: MutlipleChooseType, selectedOptions: [String] = []) {
+    override func viewWillAppear(_ animated: Bool) {
+        if let pageType = pageType{
+            titleLabel.text = pageType.desc
+        }
+    }
+
+    func setup(pageType: MutlipleChooseType, selectedOptions: [String] = []) {
         self.pageType = pageType
 
         if !selectedOptions.isEmpty {
             genOptions(selectedOptions)
         }
     }
-    
+
+
     private func genOptions(_ selectedOptions: [String]) {
         switch pageType {
         case .rule:
@@ -114,17 +138,15 @@ class MutlipleChooseController: UIViewController {
         }
     }
     @IBAction func confirmAction(_ sender: Any) {
-//        self.completion?(options.filter({ option in
-//            option.isSelected = true
-//        }))
-        let selectedItem = options.filter({ option in
-            option.isSelected == true
-        }).map { option in
+        let selectedItem = options
+            .filter({ option in
+                option.isSelected == true
+            })
+            .map { option in
             option.item
         }
         self.completion?(selectedItem)
         dismiss(animated: true)
-//        navigationController?.popViewController(animated: true)
     }
 }
 

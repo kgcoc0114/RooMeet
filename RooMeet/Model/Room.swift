@@ -9,9 +9,10 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-struct Room: Codable {
+struct Room: Codable, Hashable {
     var roomID: String
     var userID: String
+    var userData: User?
     var createdTime: Timestamp
     var modifiedTime: Timestamp
     var title: String
@@ -33,10 +34,27 @@ struct Room: Codable {
     var otherDescriction: String?
 //    var status: String
     var isDeleted: Bool
+
+    var roomMinPrice: Int?
+//    {
+//        let minRoom = rooms.min { $0.price! > $1.price! }
+//        if let minRoom = minRoom {
+//            return minRoom.price
+//        }
+//        return nil
+//    }
+
+    func getRoomMinPrice() -> Int? {
+        let minRoom = rooms.min { $0.price! > $1.price! }
+        if let minRoom = minRoom {
+            return minRoom.price
+        }
+        return nil
+    }
 }
 
-struct RoomSpec: Codable {
-    var roomType: [Int]?
+struct RoomSpec: Codable, Hashable {
+    var roomType: String?
     var price: Int?
     var space: Double?
     var people: Int?
@@ -63,7 +81,7 @@ struct Transportation: Codable {
     let site: String
 }
 
-struct BillInfo: Codable {
+struct BillInfo: Codable, Hashable {
     var water: FeeDetail
     var electricity: FeeDetail
     var cable: FeeDetail
@@ -90,7 +108,7 @@ struct BillInfo: Codable {
         return desc
     }
 
-    var description : String {
+    var description: String {
         return """
 電費：\(self.genString(data: electricity, type: .electricity))\n
 水費：\(self.genString(data: water, type: .water))\n
@@ -101,12 +119,12 @@ struct BillInfo: Codable {
     }
 }
 
-struct FeeDetail: Codable {
+struct FeeDetail: Codable, Hashable {
     var paid: Bool? = false
     var fee: Double?
     var isGov: Bool?
     var affordType: String?
-    
+
     var description : String {
         if paid == false {
             return "無須支付"
@@ -116,10 +134,10 @@ struct FeeDetail: Codable {
     }
 }
 
-enum AffordType: String {
+enum AffordType: String, Hashable {
     case sperate = "sperate"
     case share = "share"
-    
+
     var description : String {
         switch self {
         case .sperate: return "獨立量表"
@@ -130,4 +148,54 @@ enum AffordType: String {
 
 struct RoomList: Codable {
     let data: [Room]
+}
+
+enum BillType: CaseIterable {
+    case water
+    case electricity
+
+    var image: UIImage {
+        switch self {
+        case .water:
+            return UIImage(systemName: "drop")!
+        case .electricity:
+            return UIImage(systemName: "bolt.circle")!
+        }
+    }
+
+    var unitString: String {
+        switch self {
+        case .water:
+            return ""
+        case .electricity:
+            return "per degree"
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .water:
+            return "水"
+        case .electricity:
+            return "電"
+        }
+    }
+
+    var sperateString: String {
+        switch self {
+        case .water:
+            return "個別支付"
+        case .electricity:
+            return "獨立電表"
+        }
+    }
+
+    func feeDetail(billInfo: BillInfo) -> FeeDetail {
+        switch self {
+        case .water:
+            return billInfo.water
+        case .electricity:
+            return billInfo.electricity
+        }
+    }
 }

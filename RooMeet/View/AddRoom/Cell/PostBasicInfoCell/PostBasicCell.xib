@@ -73,7 +73,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Re9-0c-DVB">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="年" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Re9-0c-DVB">
                                         <rect key="frame" x="0.0" y="260.5" width="273" height="31"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -84,18 +84,21 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2DS-tC-Grh">
-                                        <rect key="frame" x="0.0" y="364.5" width="273" height="31.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iS8-iT-hnX">
+                                        <rect key="frame" x="0.0" y="364.5" width="273" height="32.5"/>
+                                        <segments>
+                                            <segment title="Male"/>
+                                            <segment title="Female"/>
+                                            <segment title="不限"/>
+                                        </segments>
+                                    </segmentedControl>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最快可搬入時間" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kh9-QP-UsI" userLabel="最快可搬入時間">
                                         <rect key="frame" x="0.0" y="417" width="273" height="31"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="AOe-IE-TXO">
+                                    <datePicker contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="AOe-IE-TXO">
                                         <rect key="frame" x="0.0" y="469" width="273" height="31"/>
                                     </datePicker>
                                 </subviews>
@@ -121,7 +124,7 @@
             <size key="customSize" width="333" height="530"/>
             <connections>
                 <outlet property="addressTextField" destination="YkL-Iu-Hoo" id="gsT-rl-qcC"/>
-                <outlet property="genderTextField" destination="2DS-tC-Grh" id="ivT-OG-0eP"/>
+                <outlet property="genderSegmentControl" destination="iS8-iT-hnX" id="OhO-pM-q3d"/>
                 <outlet property="leaseTextField" destination="Re9-0c-DVB" id="EiO-6Y-9Je"/>
                 <outlet property="movinDatePicker" destination="AOe-IE-TXO" id="Clc-ZY-PKM"/>
                 <outlet property="parlorCountView" destination="VOg-de-FNd" id="sXW-LH-86j"/>

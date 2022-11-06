@@ -19,16 +19,15 @@ class FeeDetailCell: UICollectionViewCell {
                 UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneButtonAction))
             ]
             toolbar.sizeToFit()
-            
-            self.translatesAutoresizingMaskIntoConstraints = false
-            //        otherDescTextView.rightView = button
-            //        otherDescTextView.rightViewMode = .always
+
+            otherDescTextView.translatesAutoresizingMaskIntoConstraints = false
+            otherDescTextView.backgroundColor = .systemGray6
+            otherDescTextView.text = ""
             otherDescTextView.inputAccessoryView = toolbar
-            //        otherDescTextView.
             self.completion?(otherDescTextView.text)
         }
     }
-    
+
     var completion: ((String) -> Void)?
 
     @IBOutlet weak var feeDetailLabel: UILabel!
@@ -37,8 +36,8 @@ class FeeDetailCell: UICollectionViewCell {
         otherDescTextView.delegate = self
     }
 
-    @objc func doneButtonAction(){
-        self.resignFirstResponder()
+    @objc func doneButtonAction() {
+        otherDescTextView.resignFirstResponder()
     }
 }
 
