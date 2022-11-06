@@ -26,7 +26,7 @@
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </tableView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fuv-UB-0MZ">
-                    <rect key="frame" x="169" y="821" width="76" height="31"/>
+                    <rect key="frame" x="10" y="821" width="394" height="31"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Confirm"/>
                     <connections>
@@ -44,14 +44,14 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="zyl-mD-dCW" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="5bX-3D-khN"/>
-                <constraint firstItem="fuv-UB-0MZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="169" id="EwO-L3-gjy"/>
+                <constraint firstItem="fuv-UB-0MZ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="EwO-L3-gjy"/>
                 <constraint firstItem="8wG-Vg-4TG" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="20" id="J8C-oi-fjn"/>
                 <constraint firstItem="8wG-Vg-4TG" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="KnZ-OQ-WbA"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="fuv-UB-0MZ" secondAttribute="bottom" constant="10" id="R5M-r1-VY5"/>
                 <constraint firstItem="zyl-mD-dCW" firstAttribute="top" secondItem="8wG-Vg-4TG" secondAttribute="bottom" constant="20" id="TQt-vJ-axY"/>
                 <constraint firstItem="fuv-UB-0MZ" firstAttribute="top" secondItem="zyl-mD-dCW" secondAttribute="bottom" constant="20" id="UtN-Ic-Yv8"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="zyl-mD-dCW" secondAttribute="trailing" id="WTC-mT-9fL"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fuv-UB-0MZ" secondAttribute="trailing" constant="169" id="zYM-vc-RjM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fuv-UB-0MZ" secondAttribute="trailing" constant="10" id="zYM-vc-RjM"/>
             </constraints>
             <point key="canvasLocation" x="131.8840579710145" y="97.767857142857139"/>
         </view>
