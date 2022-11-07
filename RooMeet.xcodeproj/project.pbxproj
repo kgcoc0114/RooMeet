@@ -18,6 +18,10 @@
 		E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7129178B1F007AE655 /* HomeViewController.swift */; };
 		E5604F7A29179539007AE655 /* RoomDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7829179539007AE655 /* RoomDisplayCell.swift */; };
 		E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5604F7929179539007AE655 /* RoomDisplayCell.xib */; };
+		E5604FE12918D037007AE655 /* BookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE02918D037007AE655 /* BookingView.swift */; };
+		E5604FE32918EC22007AE655 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE22918EC22007AE655 /* WebRTCClient.swift */; };
+		E5604FE52918EDD3007AE655 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE42918EDD3007AE655 /* Config.swift */; };
+		E5604FE92918F03F007AE655 /* Candidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE82918F03F007AE655 /* Candidate.swift */; };
 		E593EFFD290FEFF000B35550 /* MutlipleChooseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */; };
 		E593EFFE290FEFF000B35550 /* MutlipleChooseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */; };
 		E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */; };
@@ -28,6 +32,8 @@
 		E593F00A2910065C00B35550 /* RulesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F0082910065C00B35550 /* RulesCell.xib */; };
 		E593F013291012DF00B35550 /* RulesHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593F011291012DF00B35550 /* RulesHeaderCell.swift */; };
 		E593F014291012DF00B35550 /* RulesHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F012291012DF00B35550 /* RulesHeaderCell.xib */; };
+		E59B82F22919117300F02CEC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B82F02919117300F02CEC /* CallViewController.swift */; };
+		E59B82F32919117300F02CEC /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E59B82F12919117300F02CEC /* CallViewController.xib */; };
 		E5A12A632910B8C4006907D9 /* NibLoadble.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A12A622910B8C4006907D9 /* NibLoadble.swift */; };
 		E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A12A642910C7BF006907D9 /* EditFeeController.swift */; };
 		E5A12A672910C7BF006907D9 /* EditFeeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5A12A652910C7BF006907D9 /* EditFeeController.xib */; };
@@ -120,6 +126,10 @@
 		E5604F7129178B1F007AE655 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E5604F7829179539007AE655 /* RoomDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDisplayCell.swift; sourceTree = "<group>"; };
 		E5604F7929179539007AE655 /* RoomDisplayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDisplayCell.xib; sourceTree = "<group>"; };
+		E5604FE02918D037007AE655 /* BookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingView.swift; sourceTree = "<group>"; };
+		E5604FE22918EC22007AE655 /* WebRTCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
+		E5604FE42918EDD3007AE655 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		E5604FE82918F03F007AE655 /* Candidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Candidate.swift; sourceTree = "<group>"; };
 		E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutlipleChooseController.swift; sourceTree = "<group>"; };
 		E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MutlipleChooseController.xib; sourceTree = "<group>"; };
 		E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChooseCell.swift; sourceTree = "<group>"; };
@@ -130,6 +140,8 @@
 		E593F0082910065C00B35550 /* RulesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RulesCell.xib; sourceTree = "<group>"; };
 		E593F011291012DF00B35550 /* RulesHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesHeaderCell.swift; sourceTree = "<group>"; };
 		E593F012291012DF00B35550 /* RulesHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RulesHeaderCell.xib; sourceTree = "<group>"; };
+		E59B82F02919117300F02CEC /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
+		E59B82F12919117300F02CEC /* CallViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		E5A12A622910B8C4006907D9 /* NibLoadble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoadble.swift; sourceTree = "<group>"; };
 		E5A12A642910C7BF006907D9 /* EditFeeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeeController.swift; sourceTree = "<group>"; };
 		E5A12A652910C7BF006907D9 /* EditFeeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditFeeController.xib; sourceTree = "<group>"; };
@@ -242,6 +254,7 @@
 		E55C095B290D4F5800DBF21B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E5604FE62918F028007AE655 /* WebRTC */,
 				E5EEE2112913B00400CAAE84 /* User */,
 				E5EEE20E2913AFA300CAAE84 /* Chat */,
 				E55C095D290D51B800DBF21B /* Room.swift */,
@@ -272,6 +285,8 @@
 				E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */,
 				E5B018DC29175B7100A09788 /* FilterViewController.swift */,
 				E5604F7129178B1F007AE655 /* HomeViewController.swift */,
+				E59B82F02919117300F02CEC /* CallViewController.swift */,
+				E59B82F12919117300F02CEC /* CallViewController.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -279,6 +294,7 @@
 		E55C0963290D5C2D00DBF21B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E5604FDF2918CF9C007AE655 /* Revervation */,
 				E5B018B9291631B400A09788 /* RoomDetail */,
 				E5B018B22915F1C100A09788 /* Home */,
 				E5EEE21A2913B4DB00CAAE84 /* Chat */,
@@ -293,8 +309,24 @@
 			children = (
 				E5EEE20229129C6000CAAE84 /* PostalCode.json */,
 				E55C0971290D628400DBF21B /* Constants.swift */,
+				E5604FE42918EDD3007AE655 /* Config.swift */,
 			);
 			path = Resource;
+			sourceTree = "<group>";
+		};
+		E5604FDF2918CF9C007AE655 /* Revervation */ = {
+			isa = PBXGroup;
+			children = (
+				E5604FE02918D037007AE655 /* BookingView.swift */,
+			);
+			path = Revervation;
+			sourceTree = "<group>";
+		};
+		E5604FE62918F028007AE655 /* WebRTC */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = WebRTC;
 			sourceTree = "<group>";
 		};
 		E593F0152910ADC700B35550 /* Cell */ = {
@@ -404,6 +436,7 @@
 			children = (
 				E5DC0FE22911FFB300EB57FD /* LocationService.swift */,
 				E5EEE2062912AE3B00CAAE84 /* FirebaseService.swift */,
+				E5604FE22918EC22007AE655 /* WebRTCClient.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -524,6 +557,7 @@
 		E5EEE20E2913AFA300CAAE84 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
+				E5604FE82918F03F007AE655 /* Candidate.swift */,
 				E5EEE2142913B26B00CAAE84 /* ChatRoom.swift */,
 				E5EEE2162913B2B800CAAE84 /* Message.swift */,
 			);
@@ -638,6 +672,7 @@
 				E5B018C72916354600A09788 /* RoomBasicCell.xib in Resources */,
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
 				E5B018CB2916355900A09788 /* RoomFeeCell.xib in Resources */,
+				E59B82F32919117300F02CEC /* CallViewController.xib in Resources */,
 				E55E6FC62914BDAB00CBB0EB /* MessageCell.xib in Resources */,
 				E5EEE20D2913A8C900CAAE84 /* Chat.storyboard in Resources */,
 				E5B018AF2915692600A09788 /* OtherUserMsgCell.xib in Resources */,
@@ -733,6 +768,7 @@
 				E55C0960290D53F900DBF21B /* Gender.swift in Sources */,
 				E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */,
 				E5EEE21D2913B4F900CAAE84 /* ChatRoomCell.swift in Sources */,
+				E5604FE32918EC22007AE655 /* WebRTCClient.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
 				E5B018C02916351300A09788 /* RoomImagesCell.swift in Sources */,
 				E593F013291012DF00B35550 /* RulesHeaderCell.swift in Sources */,
@@ -752,6 +788,7 @@
 				E5B018AA2915690C00A09788 /* CurrentUserMsgCell.swift in Sources */,
 				E55C095E290D51B800DBF21B /* Room.swift in Sources */,
 				E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */,
+				E5604FE12918D037007AE655 /* BookingView.swift in Sources */,
 				E5EEE2192913B4D000CAAE84 /* ChatRoomListViewController.swift in Sources */,
 				E5B018D22916698900A09788 /* SectionHeaderView.swift in Sources */,
 				E5B018CA2916355900A09788 /* RoomFeeCell.swift in Sources */,
@@ -759,6 +796,7 @@
 				E5C5FE8A2910EF9E00DA91DF /* FeeDetailCell.swift in Sources */,
 				E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */,
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
+				E5604FE52918EDD3007AE655 /* Config.swift in Sources */,
 				E5EEE20A2912BCC700CAAE84 /* RoomDetailViewController.swift in Sources */,
 				E5EEE20529129F6700CAAE84 /* PostalCode.swift in Sources */,
 				E5E64C86290E185600F07286 /* Region.swift in Sources */,
@@ -771,6 +809,7 @@
 				E5E64C84290E183F00F07286 /* RegionService.swift in Sources */,
 				E5EEE2832913F97800CAAE84 /* KingfisherWrapper.swift in Sources */,
 				E5B33780290FB61900467404 /* OtherFeeCell.swift in Sources */,
+				E59B82F22919117300F02CEC /* CallViewController.swift in Sources */,
 				E593F0052910016D00B35550 /* OptionCell.swift in Sources */,
 				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,
 				E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */,
@@ -785,6 +824,7 @@
 				E55E6FCB2914CA3000CBB0EB /* ChatViewController.swift in Sources */,
 				E5B018C62916354600A09788 /* RoomBasicCell.swift in Sources */,
 				E5B018DB29174CAB00A09788 /* UICollectionView+Extension.swift in Sources */,
+				E5604FE92918F03F007AE655 /* Candidate.swift in Sources */,
 				E5E64C96290E3E2600F07286 /* UIStoryboard+Extension.swift in Sources */,
 				E5B018B12915E12300A09788 /* UITableView+Extension.swift in Sources */,
 			);
@@ -846,6 +886,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -906,6 +947,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -939,6 +981,7 @@
 				INFOPLIST_FILE = RooMeet/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) 需要使用相機";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) 需要使用定位資訊";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "$(PRODUCT_NAME) Requires microphone access in order to capture and transmit audio";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -971,6 +1014,7 @@
 				INFOPLIST_FILE = RooMeet/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) 需要使用相機";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) 需要使用定位資訊";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "$(PRODUCT_NAME) Requires microphone access in order to capture and transmit audio";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

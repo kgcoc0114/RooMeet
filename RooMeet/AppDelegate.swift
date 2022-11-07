@@ -8,6 +8,7 @@
 import UIKit
 import IQKeyboardManagerSwift
 import FirebaseCore
+import WebRTC
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -15,6 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         IQKeyboardManager.shared.enable = true
 
         FirebaseApp.configure()
+
+        RTCInitializeSSL()
+
+//        self.callManager = CallManager()
 
         return true
     }
