@@ -218,10 +218,6 @@ final class WebRTCClient: NSObject {
     func closeConnection() {
         self.peerConnection.close()
     }
-
-//    func closeConnection() {
-//        self.peerConnection.
-//    }
 }
 
 extension WebRTCClient: RTCPeerConnectionDelegate {
@@ -251,7 +247,6 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
     }
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
-        print("==didDiscoverLocalCandidate==")
         if candidate.sdpMid !=  nil {
             self.delegate?.webRTCClient(self, didDiscoverLocalCandidate: candidate)
         } else {

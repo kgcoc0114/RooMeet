@@ -16,6 +16,7 @@ enum FirestoreEndpoint {
     case room
     case chatRoom
     case user
+    case call
 
     var colRef: CollectionReference {
         let database = Firestore.firestore()
@@ -23,6 +24,8 @@ enum FirestoreEndpoint {
         switch self {
         case .room:
             return database.collection("Room")
+        case .call:
+            return database.collection("Call")
         case .chatRoom:
             return database.collection("ChatRoom")
         case .user:

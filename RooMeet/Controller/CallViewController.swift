@@ -18,6 +18,12 @@ class CallViewController: UIViewController {
 
     var chatRoom: ChatRoom?
     var otherUserData: ChatMember?
+    var currentUserData: ChatMember?
+
+    var callRoomId: String?
+    var callerData: ChatMember?
+    var calleeData: ChatMember?
+
     var callType: CallType = .offer // offer: 自己主動播 answer: 對方播
     var roomId: String?
 
@@ -38,10 +44,19 @@ class CallViewController: UIViewController {
 
     private var listener: ListenerRegistration?
 
-    init(chatRoom: ChatRoom, callType: CallType) {
+    init(callRoomId: String, callType: CallType, callerData: ChatMember, calleeData: ChatMember) {
         super.init(nibName: "CallViewController", bundle: nil)
-        self.chatRoom = chatRoom
+
+        self.callRoomId = callRoomId
         self.callType = callType
+        self.callerData = callerData
+        self.calleeData = calleeData
+
+        if callerData.id != gCurrentUser.id {
+            otherUserData = callerData
+        } else {
+            otherUserData = calleeData
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -70,7 +85,7 @@ class CallViewController: UIViewController {
     }
 
     func listenCall() {
-        Firestore.firestore().collection("Call").document(chatRoom!.id)
+        Firestore.firestore().collection("Call").document(callRoomId!)
             .addSnapshotListener { [weak self] documentSnapshot, error in
                 guard let document = documentSnapshot else {
                     print("Error fetching document: \(error!)")
@@ -97,7 +112,6 @@ class CallViewController: UIViewController {
                         self?.callTimeLabel.isHidden = false
                         self?.hangUpButton.isHidden = false
                         self?.answerButton.isHidden = true
-
                         status = "開始通話中"
 
                     case "offer":
@@ -139,62 +153,24 @@ class CallViewController: UIViewController {
             }
     }
 
-    private func dealWithHangUp(first: Bool) {
-        if first == true {
-            webRTCClient.closeConnection()
-            endTime = Timestamp()
-            guard let sTime = startTime,
-                  let eTime = endTime else {
-                return
-            }
-            let callTime = DateFormatter.shared.getTimeIntervalString(startTimestamp: sTime, endTimestamp: eTime)
-
-            print("callTime", callTime)
-
-            let docRef = Firestore.firestore().collection("Call").document(chatRoom!.id)
-            docRef.updateData([
-                "status": "close",
-                "endTime": endTime as Any,
-                "callTime": callTime as Any
-            ])
-
-            let messageRef = Firestore.firestore()
-                .collection("ChatRoom")
-                .document(chatRoom!.id)
-                .collection("Message")
-                .document()
-
-            let content = callTime
-            let message = Message(
-                id: messageRef.documentID,
-                messageType: MessageType.call.rawValue,
-                sendBy: gCurrentUser.id,
-                content: callTime ?? "",
-                createdTime: Timestamp()
-            )
-
-            do {
-                try messageRef.setData(from: message)
-            } catch let error {
-                print("Error writing Message to Firestore: \(error)")
-            }
-
-            guard let chatRoom = chatRoom else {
-                return
-            }
-
-            let chatRoomRef = Firestore.firestore().collection("ChatRoom").document(chatRoom.id)
-            let lastMessage = LastMessage(
-                id: messageRef.documentID,
-                content: "通話時間 \(callTime ?? "")",
-                createdTime: message.createdTime
-            )
-
-            chatRoomRef.updateData([
-                "lastMessage": lastMessage.toDict,
-                "lastUpdated": lastMessage.createdTime
-            ])
+    private func dealWithHangUp() {
+//        guard
+//            let callRoomId = self.callRoomId,
+//            let callerData = self.callerData
+//        else { return }
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.webRTCClient.closeConnection()
         }
+
+        endTime = Timestamp()
+        guard
+            let sTime = startTime,
+            let eTime = endTime else {
+            return
+        }
+        callTime = DateFormatter.shared.getTimeIntervalString(startTimestamp: sTime, endTimestamp: eTime)
+        print(callTime)
+        updateCallData(status: "close", content: callTime ?? "")
     }
 
     @IBAction func answer(_ sender: Any) {
@@ -202,119 +178,106 @@ class CallViewController: UIViewController {
     }
 
     @IBAction func hangUp(_ sender: Any) {
+        guard
+            let callRoomId = self.callRoomId,
+            let callerData = self.callerData
+        else { return }
+
         if state == .closed || state == .failed {
             print("被掛電話")
         } else {
             // 自播自己取消
             if callStatus == "offer" && callType == .offer {
                 print("======== 自播自己取消")
-
-                webRTCClient.closeConnection()
-                let docRef = Firestore.firestore().collection("Call").document(chatRoom!.id)
-                docRef.updateData([
-                    "status": "cancel",
-                    "endTime": endTime as Any,
-                ])
-
-                let messageRef = Firestore.firestore()
-                    .collection("ChatRoom")
-                    .document(chatRoom!.id)
-                    .collection("Message")
-                    .document()
-
-                let content = "通話已取消"
-                let message = Message(
-                    id: messageRef.documentID,
-                    messageType: MessageType.call.rawValue,
-                    sendBy: gCurrentUser.id,
-                    content: content,
-                    createdTime: Timestamp()
-                )
-
-                do {
-                    try messageRef.setData(from: message)
-                } catch let error {
-                    print("Error writing Message to Firestore: \(error)")
+                DispatchQueue.global(qos: .background).async { [weak self] in
+                    self?.webRTCClient.closeConnection()
                 }
 
-                guard let chatRoom = chatRoom else {
-                    return
-                }
-
-                let chatRoomRef = Firestore.firestore().collection("ChatRoom").document(chatRoom.id)
-                let lastMessage = LastMessage(
-                    id: messageRef.documentID,
-                    content: "通話已取消",
-                    createdTime: message.createdTime
-                )
-
-                chatRoomRef.updateData([
-                    "lastMessage": lastMessage.toDict,
-                    "lastUpdated": lastMessage.createdTime
-                ])
-
-                
+                updateCallData(status: "cancel", content: "通話已取消")
 
                 dismiss(animated: true)
 
                 // 掛對方來電
             } else if callStatus == "offer" && callType == .answer {
                 print("======== 掛對方來電")
-                webRTCClient.closeConnection()
-                let docRef = Firestore.firestore().collection("Call").document(chatRoom!.id)
-                docRef.updateData([
-                    "status": "cancel",
-                    "endTime": endTime as Any,
-                ])
-
-                let messageRef = Firestore.firestore()
-                    .collection("ChatRoom")
-                    .document(chatRoom!.id)
-                    .collection("Message")
-                    .document()
-
-                let content = callTime
-                let message = Message(
-                    id: messageRef.documentID,
-                    messageType: MessageType.call.rawValue,
-                    sendBy: gCurrentUser.id,
-                    content: "通話已取消",
-                    createdTime: Timestamp()
-                )
-
-                do {
-                    try messageRef.setData(from: message)
-                } catch let error {
-                    print("Error writing Message to Firestore: \(error)")
+                DispatchQueue.global(qos: .background).async { [weak self] in
+                    self?.webRTCClient.closeConnection()
                 }
 
-                guard let chatRoom = chatRoom else {
-                    return
-                }
-
-                let chatRoomRef = Firestore.firestore().collection("ChatRoom").document(chatRoom.id)
-                let lastMessage = LastMessage(
-                    id: messageRef.documentID,
-                    content: "通話已取消",
-                    createdTime: message.createdTime
-                )
-
-                chatRoomRef.updateData([
-                    "lastMessage": lastMessage.toDict,
-                    "lastUpdated": lastMessage.createdTime
-                ])
+                updateCallData(status: "cancel", content: "通話已取消")
 
                 dismiss(animated: true)
             } else {
                 // 正常通話結束
-                dealWithHangUp(first: true)
+                if callStatus != "close" {
+                    dealWithHangUp()
+                }
                 dismiss(animated: true)
             }
         }
     }
 
+    func updateCallData(status: String, content: String) {
+        guard
+            let callRoomId = self.callRoomId,
+            let callerData = self.callerData
+        else { return }
+
+        let docRef = Firestore.firestore().collection("Call").document(callRoomId)
+        var updateData: [AnyHashable : Any]
+        if status == "close" {
+            updateData = [
+                "status": status,
+                "endTime": endTime as Any,
+                "callTime": callTime as Any
+            ]
+        } else {
+            updateData = [
+                "status": status,
+                "endTime": endTime as Any
+            ]
+        }
+        docRef.updateData(updateData)
+
+        let messageRef = Firestore.firestore()
+            .collection("ChatRoom")
+            .document(callRoomId)
+            .collection("Message")
+            .document()
+
+        let message = Message(
+            id: messageRef.documentID,
+            messageType: MessageType.call.rawValue,
+            sendBy: callerData.id,
+            content: content,
+            createdTime: Timestamp()
+        )
+
+        do {
+            try messageRef.setData(from: message)
+        } catch let error {
+            print("Error writing Message to Firestore: \(error)")
+        }
+
+        let chatRoomRef = Firestore.firestore().collection("ChatRoom").document(callRoomId)
+        let lastMessage = LastMessage(
+            id: messageRef.documentID,
+            content: status == "close" ? "通話時間 \(content)" : content,
+            createdTime: message.createdTime
+        )
+
+        chatRoomRef.updateData([
+            "lastMessage": lastMessage.toDict,
+            "lastUpdated": lastMessage.createdTime
+        ])
+    }
+
     func delete() {
-        Firestore.firestore().collection("Call").document(chatRoom!.id).delete() { err in
+        guard
+            let callRoomId = self.callRoomId
+        else { return }
+
+        Firestore.firestore().collection("Call").document(callRoomId).delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
             } else {
@@ -328,65 +291,95 @@ class CallViewController: UIViewController {
 extension CallViewController {
     // MARK: - create phone call
     private func offerDidTap() {
-        self.webRTCClient.offer { [weak self] (offer) in
-            guard let `self` = self else { return }
-            self.hasLocalSdp = true
-            let roomWithOffer = [
-                "offer": [
-                    "type": offer.value(forKey: "type"),
-                    "sdp": offer.value(forKey: "sdp")
-                ],
-                "members": self.chatRoom?.members as Any,
-                "caller": gCurrentUser.id,
-                "status": "offer"
-            ] as [String : Any]
+        DispatchQueue.global(qos: .background).async {
+            self.webRTCClient.offer { [weak self] offer in
+                guard
+                    let `self` = self,
+                    let callRoomId = self.callRoomId,
+                    let calleeData = self.calleeData,
+                    let callerData = self.callerData
+                else { return }
 
-            let roomRef = Firestore.firestore().collection("Call").document(self.chatRoom!.id)
-            roomRef.setData(roomWithOffer)
-            let answerCandidates = roomRef.collection("answerCandidates")
-            let offerCandidates = roomRef.collection("offerCandidates")
-            self.roomId = roomRef.documentID
-            print("Current room is \(self.roomId!) - You are the caller!")
-            self.listenRoom()
-            self.listenAnswerCandidates()
+                self.hasLocalSdp = true
+
+                let roomWithOffer = [
+                    "id": callRoomId,
+                    "offer": [
+                        "type": offer.value(forKey: "type"),
+                        "sdp": offer.value(forKey: "sdp")
+                    ],
+                    "members": [calleeData.id, callerData.id],
+                    "caller": callerData.id,
+                    "callee": calleeData.id,
+                    "callerData": [
+                        "id": callerData.id,
+                        "profilePhoto": callerData.profilePhoto,
+                        "name": callerData.name
+                    ],
+                    "calleeData": [
+                        "id": calleeData.id,
+                        "profilePhoto": calleeData.profilePhoto,
+                        "name": calleeData.name
+                    ],
+                    "status": "offer"
+                ] as [String: Any]
+
+                let roomRef = Firestore.firestore().collection("Call").document(callRoomId)
+                roomRef.setData(roomWithOffer)
+                //            let answerCandidates = roomRef.collection("answerCandidates")
+                //            let offerCandidates = roomRef.collection("offerCandidates")
+                self.roomId = roomRef.documentID
+                print("Current room is \(self.roomId!) - You are the caller!")
+                self.listenRoom()
+                self.listenAnswerCandidates()
+            }
         }
     }
 
     private func listenRoom() {
-        listener = Firestore.firestore().collection("Call").document(chatRoom!.id).addSnapshotListener({ querySnapshot, error in
+        guard
+            let callRoomId = self.callRoomId
+        else { return }
+
+        listener = Firestore.firestore().collection("Call").document(callRoomId).addSnapshotListener({ querySnapshot, error in
             guard let snapshot = querySnapshot else {
                 print("Error fetching snapshot results: \(error!)")
                 return
             }
             do {
                 let data = try snapshot.data(as: Call.self)
-                if ((data.answer) != nil) {
-                    let answer = RTCSessionDescription(type: RTCSdpType.answer, sdp: data.answer!.sdp)
+                if let dataAnswer = data.answer,
+                   data.status != "close" {
+                    let answer = RTCSessionDescription(type: RTCSdpType.answer, sdp: dataAnswer.sdp)
                     self.webRTCClient.set(remoteSdp: answer) { error in
                         print(error)
                     }
                 }
-            } catch  {
-                print("")
+            } catch {
+                print(error.localizedDescription)
             }
         })
     }
 
     private func listenAnswerCandidates() {
+        guard
+            let callRoomId = self.callRoomId
+        else { return }
+
         listener = Firestore.firestore()
-            .collection("Call").document(chatRoom!.id)
+            .collection("Call")
+            .document(callRoomId)
             .collection("answerCandidates").addSnapshotListener({ [weak self] querySnapshot, error in
                 guard let snapshot = querySnapshot else {
                     print("Error fetching snapshot results: \(error!)")
                     return
                 }
 
-                snapshot.documentChanges.forEach({ (documentChange) in
+                snapshot.documentChanges.forEach({ documentChange in
                     do {
                         let candidateChange = try documentChange.document.data(as: Candidate.self)
                         switch documentChange.type {
                         case .added:
-                            let data = documentChange.document.data()
                             let remoteCandidate = RTCIceCandidate(
                                 sdp: candidateChange.candidate,
                                 sdpMLineIndex: Int32(candidateChange.sdpMLineIndex),
@@ -409,57 +402,70 @@ extension CallViewController {
 
     // MARK: - answer phone call
     private func joinARoom() {
+        guard
+            let callRoomId = self.callRoomId
+        else { return }
         callType = .answer
-        let docRef = Firestore.firestore().collection("Call").document(chatRoom!.id)
-        docRef.getDocument { (document, error) in
-            if let document = document, document.exists {
-                let offer = try! document.data(as: Call.self).offer
-                let offerSdp = RTCSessionDescription(type: RTCSdpType.offer, sdp: offer.sdp)
-                self.webRTCClient.set(remoteSdp: offerSdp) { error in
-                    print(error?.localizedDescription)
-                }
 
-                self.startTime = Timestamp()
-                self.webRTCClient.answer { [weak self] sdp in
-                    let roomWithAnswer = [
-                        "answer": [
-                            "type": sdp.value(forKey: "type"),
-                            "sdp": sdp.value(forKey: "sdp")
-                        ],
-                        "status": "answer",
-                        "startTime": self?.startTime ?? Timestamp()
-                    ] as [String : Any]
-                    docRef.updateData(roomWithAnswer)
-                    self?.listenOfferCandidates()
+        DispatchQueue.global(qos: .background).async {
+            let docRef = Firestore.firestore().collection("Call").document(callRoomId)
+            docRef.getDocument { document, error in
+                if let document = document, document.exists {
+                    let offer = try! document.data(as: Call.self).offer
+                    let offerSdp = RTCSessionDescription(type: RTCSdpType.offer, sdp: offer.sdp)
+                    self.webRTCClient.set(remoteSdp: offerSdp) { error in
+                        print(error?.localizedDescription)
+                    }
 
+                    self.startTime = Timestamp()
+                    self.webRTCClient.answer { [weak self] sdp in
+                        let roomWithAnswer = [
+                            "answer": [
+                                "type": sdp.value(forKey: "type"),
+                                "sdp": sdp.value(forKey: "sdp")
+                            ],
+                            "status": "answer",
+                            "startTime": self?.startTime ?? Timestamp()
+                        ] as [String: Any]
+                        docRef.updateData(roomWithAnswer)
+                        self?.listenOfferCandidates()
+                    }
+                } else {
+                    print("Document does not exist")
                 }
-            } else {
-                print("Document does not exist")
             }
         }
     }
 
     private func listenOfferCandidates() {
+        guard
+            let callRoomId = self.callRoomId
+        else { return }
+
         listener = Firestore.firestore()
-            .collection("Call").document(chatRoom!.id)
-            .collection("offerCandidates").addSnapshotListener({ [weak self] querySnapshot, error in
+            .collection("Call")
+            .document(callRoomId)
+            .collection("offerCandidates")
+            .addSnapshotListener({ [weak self] querySnapshot, error in
                 guard let snapshot = querySnapshot else {
                     print("Error fetching snapshot results: \(error!)")
                     return
                 }
-                snapshot.documentChanges.forEach({ (documentChange) in
+                snapshot.documentChanges.forEach({ documentChange in
                     do {
                         let candidateChange = try documentChange.document.data(as: Candidate.self)
                         switch documentChange.type {
                         case .added:
-                            let data = documentChange.document.data()
+//                            let data = documentChange.document.data()
                             let remoteCandidate = RTCIceCandidate(
                                 sdp: candidateChange.candidate,
                                 sdpMLineIndex: Int32(candidateChange.sdpMLineIndex),
                                 sdpMid: candidateChange.sdpMid
                             )
-                            self?.webRTCClient.set(remoteCandidate: remoteCandidate) { error in
-                                print(error?.localizedDescription)
+                            DispatchQueue.global(qos: .background).async {
+                                self?.webRTCClient.set(remoteCandidate: remoteCandidate) { error in
+                                    print(error?.localizedDescription)
+                                }
                             }
                         case .modified:
                             break
@@ -476,23 +482,28 @@ extension CallViewController {
 
 extension CallViewController: WebRTCClientDelegate {
     func webRTCClient(_ client: WebRTCClient, didDiscoverLocalCandidate candidate: RTCIceCandidate) {
-        let docRef = Firestore.firestore().collection("Call").document(chatRoom!.id)
+        guard
+            let callRoomId = callRoomId,
+            let sdpMid = candidate.sdpMid
+        else { return }
+
+        let docRef = Firestore.firestore().collection("Call").document(callRoomId)
 
         switch callType {
         case .offer:
             let offCandidate = [
                 "candidate": candidate.sdp,
                 "sdpMLineIndex": candidate.sdpMLineIndex,
-                "sdpMid": candidate.sdpMid!
-            ] as [String : Any]
+                "sdpMid": sdpMid
+            ] as [String: Any]
             let offerCandidates = docRef.collection("offerCandidates")
             offerCandidates.addDocument(data: offCandidate)
         case .answer:
             let ansCandidate = [
                 "candidate": candidate.sdp,
                 "sdpMLineIndex": candidate.sdpMLineIndex,
-                "sdpMid": candidate.sdpMid!
-            ] as [String : Any]
+                "sdpMid": sdpMid
+            ] as [String: Any]
             let answerCandidates = docRef.collection("answerCandidates")
             answerCandidates.addDocument(data: ansCandidate)
         }
