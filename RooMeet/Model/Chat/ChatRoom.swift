@@ -29,7 +29,6 @@ struct LastMessage: Codable, Hashable {
     }
 }
 
-
 struct ChatRoom: Codable, Hashable {
     let id: String
     let members: [String]    // userID

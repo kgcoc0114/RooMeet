@@ -42,8 +42,8 @@ class ChatRoomListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = "Chat Chat"
-        print(User.mockUser.id)
+        navigationItem.title = "Chat"
+        print("Chat ===", gCurrentUser.id)
         configureDataSource()
 //        FirebaseService.shared.fetchChatRoomDataWithMemberData(userID: gCurrentUser.id) { [weak self] chatRooms in
 //            self?.chatRooms = chatRooms

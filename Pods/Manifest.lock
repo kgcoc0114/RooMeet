@@ -643,6 +643,7 @@ PODS:
   - GoogleUtilities/Logger (7.8.0):
     - GoogleUtilities/Environment
   - "GoogleUtilities/NSData+zlib (7.8.0)"
+  - GoogleWebRTC (1.1.31999)
   - "gRPC-C++ (1.44.0)":
     - "gRPC-C++/Implementation (= 1.44.0)"
     - "gRPC-C++/Interface (= 1.44.0)"
@@ -718,6 +719,7 @@ DEPENDENCIES:
   - FirebaseFirestore
   - FirebaseFirestoreSwift
   - FirebaseStorage
+  - GoogleWebRTC
   - IQKeyboardManagerSwift
   - Kingfisher
   - ProgressHUD
@@ -738,6 +740,7 @@ SPEC REPOS:
     - FirebaseSharedSwift
     - FirebaseStorage
     - GoogleUtilities
+    - GoogleWebRTC
     - "gRPC-C++"
     - gRPC-Core
     - GTMSessionFetcher
@@ -764,6 +767,7 @@ SPEC CHECKSUMS:
   FirebaseSharedSwift: eae0978bbb46dbfc21975e88a79654f614822ce4
   FirebaseStorage: 132c10c4d2f8ed8afbfa918eb35d19a87f383d59
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
+  GoogleWebRTC: b39a78c4f5cc6b0323415b9233db03a2faa7b0f0
   "gRPC-C++": 9675f953ace2b3de7c506039d77be1f2e77a8db2
   gRPC-Core: 943e491cb0d45598b0b0eb9e910c88080369290b
   GTMSessionFetcher: ffbb25ec00ebcb5201adab0a56d808f6f1902d9f
@@ -776,6 +780,6 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
 
-PODFILE CHECKSUM: 7e3cf16f257830bfd193a02ad5058bbe1ae6c03d
+PODFILE CHECKSUM: e5f37ba2f1e81d41ac1c49982179da11e9c0e61c
 
 COCOAPODS: 1.11.3

@@ -13,6 +13,7 @@ target 'RooMeet' do
   pod 'FirebaseStorage'
   pod 'ProgressHUD'
   pod 'Kingfisher'
-  pod "ESPullToRefresh"
+  pod 'ESPullToRefresh'
+  pod 'GoogleWebRTC'
 
 end
