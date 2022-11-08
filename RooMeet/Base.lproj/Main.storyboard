@@ -40,7 +40,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="r5D-Jv-gb5">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="1aS-Mo-4r6" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="1aS-Mo-4r6" customClass="RMTabBarController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9W4-Vw-cAP">

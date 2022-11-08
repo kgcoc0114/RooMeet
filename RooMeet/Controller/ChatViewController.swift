@@ -59,23 +59,17 @@ class ChatViewController: UIViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
 
-
         // listen
         guard let chatRoom = chatRoom else {
             print("ERROR: chatRoom is not exist.")
             return
         }
-
-
-
         FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { messages, error in
             if let error = error {
                 print("Error getting documents: \(error)")
             }
             self.messages = messages ?? []
         }
-        print("===listenCall()")
-        listenCall()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -140,12 +134,11 @@ class ChatViewController: UIViewController {
     }
 
     @IBAction func call(_ sender: Any) {
-
-
-
         guard let chatRoom = chatRoom else {
             return
         }
+
+        // 清空通話資料
         Firestore.firestore().collection("Call").document(chatRoom.id).delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
@@ -153,50 +146,16 @@ class ChatViewController: UIViewController {
                 print("Document successfully removed!")
             }
         }
-        let callViewController = CallViewController(chatRoom: chatRoom, callType: .offer)
+
+        let callViewController = CallViewController(
+            callRoomId: chatRoom.id,
+            callType: .offer,
+            callerData: currentUserData,
+            calleeData: otherData!
+        )
         callViewController.otherUserData = otherData
+        callViewController.currentUserData = currentUserData
         present(callViewController, animated: true)
-    }
-
-    func listenCall() {
-        Firestore.firestore().collection("Call").document(chatRoom!.id)
-            .addSnapshotListener { [weak self] documentSnapshot, error in
-                guard let document = documentSnapshot else {
-                    print("Error fetching document: \(error!)")
-                    return
-                }
-                guard let data = document.data() else {
-                    print("Document data was empty.")
-                    return
-                }
-                do {
-                    print("====",123)
-                    let call = try document.data(as: Call.self)
-                    if call.caller != gCurrentUser.id && call.status == "offer" {
-                        print("需要接電話")
-                        guard let chatRoom = self?.chatRoom else {
-                            return
-                        }
-
-                        let callViewController = CallViewController(chatRoom: chatRoom, callType: .answer)
-                        callViewController.otherUserData = self?.otherData
-                        self?.present(callViewController, animated: true)
-                    }
-                } catch let DecodingError.dataCorrupted(context) {
-                    print(context)
-                } catch let DecodingError.keyNotFound(key, context) {
-                    print("Key '\(key)' not found:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch let DecodingError.valueNotFound(value, context) {
-                    print("Value '\(value)' not found:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch let DecodingError.typeMismatch(type, context) {
-                    print("Type '\(type)' mismatch:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch {
-                    print("error: ", error)
-                }
-            }
     }
 }
 
@@ -217,9 +176,8 @@ extension ChatViewController {
             forCellReuseIdentifier: CallCell.reuseIdentifier
         )
 
-        dataSource = DataSource(
-            tableView: tableView,
-            cellProvider: {[unowned self] tableView, indexPath, item in
+        dataSource = DataSource(tableView: tableView,
+                                cellProvider: {[unowned self] tableView, indexPath, item in
                 switch item {
                 case .message(let data):
                     let message = data

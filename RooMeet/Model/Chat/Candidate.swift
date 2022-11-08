@@ -16,10 +16,14 @@ struct Candidate: Codable {
 }
 
 struct Call: Codable {
+    var id: String
     var offer: Offer
     var answer: Offer?
     var members: [String]
     var caller: String
+    var callerData: ChatMember
+    var callee: String
+    var calleeData: ChatMember
     var status: String
     var startTime: Timestamp?
     var endTime: Timestamp?
