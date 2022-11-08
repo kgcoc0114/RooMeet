@@ -16,7 +16,6 @@ protocol WebRTCClientDelegate: AnyObject {
 }
 
 final class WebRTCClient: NSObject {
-
     // The `RTCPeerConnectionFactory` is in charge of creating new RTCPeerConnection instances.
     // A new RTCPeerConnection should be created every new call, but the factory is shared.
     private static let factory: RTCPeerConnectionFactory = {
@@ -58,7 +57,8 @@ final class WebRTCClient: NSObject {
         // Define media constraints. DtlsSrtpKeyAgreement is required to be true to be able to connect with web browsers.
         let constraints = RTCMediaConstraints(
             mandatoryConstraints: nil,
-            optionalConstraints: ["DtlsSrtpKeyAgreement":kRTCMediaConstraintsValueTrue])
+            optionalConstraints: ["DtlsSrtpKeyAgreement": kRTCMediaConstraintsValueTrue]
+        )
 
         let peerConnection =
         WebRTCClient.factory.peerConnection(with: config, constraints: constraints, delegate: nil)
@@ -73,8 +73,11 @@ final class WebRTCClient: NSObject {
 
     // MARK: Signaling
     func offer(completion: @escaping (_ sdp: RTCSessionDescription) -> Void) {
-        let constrains = RTCMediaConstraints(mandatoryConstraints: self.mediaConstrains,
-                                             optionalConstraints: nil)
+        let constrains = RTCMediaConstraints(
+            mandatoryConstraints: self.mediaConstrains,
+            optionalConstraints: nil
+        )
+
         self.peerConnection.offer(for: constrains) { (sdp, error) in
             guard let sdp = sdp else {
                 return
@@ -88,8 +91,11 @@ final class WebRTCClient: NSObject {
     }
 
     func answer(completion: @escaping (_ sdp: RTCSessionDescription) -> Void)  {
-        let constrains = RTCMediaConstraints(mandatoryConstraints: self.mediaConstrains,
-                                             optionalConstraints: nil)
+        let constrains = RTCMediaConstraints(
+            mandatoryConstraints: self.mediaConstrains,
+            optionalConstraints: nil
+        )
+
         self.peerConnection.answer(for: constrains) { (sdp, error) in
             guard let sdp = sdp else {
                 return
@@ -121,20 +127,20 @@ final class WebRTCClient: NSObject {
             let frontCamera = (RTCCameraVideoCapturer.captureDevices().first { $0.position == .front }),
 
                 // choose highest res
-            let format = (RTCCameraVideoCapturer.supportedFormats(for: frontCamera).sorted { (f1, f2) -> Bool in
-                let width1 = CMVideoFormatDescriptionGetDimensions(f1.formatDescription).width
-                let width2 = CMVideoFormatDescriptionGetDimensions(f2.formatDescription).width
+            let format = (RTCCameraVideoCapturer.supportedFormats(for: frontCamera).sorted { (f1Camera, f2Camera) -> Bool in
+                let width1 = CMVideoFormatDescriptionGetDimensions(f1Camera.formatDescription).width
+                let width2 = CMVideoFormatDescriptionGetDimensions(f2Camera.formatDescription).width
                 return width1 < width2
             }).last,
 
                 // choose highest fps
-            let fps = (format.videoSupportedFrameRateRanges.sorted { return $0.maxFrameRate < $1.maxFrameRate }.last) else {
-            return
-        }
+            let fps = (format.videoSupportedFrameRateRanges.sorted { return $0.maxFrameRate < $1.maxFrameRate }.last) else { return }
 
-        capturer.startCapture(with: frontCamera,
-                              format: format,
-                              fps: Int(fps.maxFrameRate))
+        capturer.startCapture(
+            with: frontCamera,
+            format: format,
+            fps: Int(fps.maxFrameRate)
+        )
 
         self.localVideoTrack?.add(renderer)
     }
@@ -212,10 +218,13 @@ final class WebRTCClient: NSObject {
     func closeConnection() {
         self.peerConnection.close()
     }
+
+//    func closeConnection() {
+//        self.peerConnection.
+//    }
 }
 
 extension WebRTCClient: RTCPeerConnectionDelegate {
-
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange stateChanged: RTCSignalingState) {
         debugPrint("peerConnection new signaling state: \(stateChanged)")
     }
@@ -245,11 +254,9 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
         print("==didDiscoverLocalCandidate==")
         if candidate.sdpMid !=  nil {
             self.delegate?.webRTCClient(self, didDiscoverLocalCandidate: candidate)
-
         } else {
             print("empty ice event")
         }
-        //        print(candidate)
     }
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didRemove candidates: [RTCIceCandidate]) {
@@ -262,7 +269,6 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
     }
     func peerConnection(_ peerConnection: RTCPeerConnection, didChange newState: RTCPeerConnectionState) {
         switch newState {
-
         case .new:
             print("peerConnection newState new")
         case .connecting:

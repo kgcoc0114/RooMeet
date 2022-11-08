@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct Candidate: Codable {
     let candidate: String
@@ -19,6 +21,9 @@ struct Call: Codable {
     var members: [String]
     var caller: String
     var status: String
+    var startTime: Timestamp?
+    var endTime: Timestamp?
+    var callTime: String?
 }
 
 struct Offer: Codable {
@@ -26,7 +31,14 @@ struct Offer: Codable {
     var type: Int
 }
 
-enum CallType: String {
-    case offer = "offer"
-    case answer = "answer"
+enum CallType {
+    case offer
+    case answer
+
+    var description: String {
+        switch self {
+        case .offer: return "offer"
+        case .answer: return "answer"
+        }
+    }
 }

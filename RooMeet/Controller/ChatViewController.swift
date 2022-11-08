@@ -11,14 +11,16 @@ import FirebaseFirestore
 class ChatViewController: UIViewController {
     enum Section: CaseIterable {
         case message
+//        case call
     }
 
     enum Item: Hashable {
         case message(Message)
+//        case call(Message)
     }
 
-    typealias DataSource = UITableViewDiffableDataSource<Section, Message>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Message>
+    typealias DataSource = UITableViewDiffableDataSource<Section, Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     private var dataSource: DataSource!
 
     var chatRoom: ChatRoom?
@@ -44,15 +46,7 @@ class ChatViewController: UIViewController {
         didSet {
             tableView.separatorStyle = .none
             tableView.showsVerticalScrollIndicator = false
-            tableView.register(
-                UINib(nibName: OtherUserMsgCell.reuseIdentifier, bundle: nil),
-                forCellReuseIdentifier: OtherUserMsgCell.reuseIdentifier
-            )
 
-            tableView.register(
-                UINib(nibName: CurrentUserMsgCell.reuseIdentifier, bundle: nil),
-                forCellReuseIdentifier: CurrentUserMsgCell.reuseIdentifier
-            )
         }
     }
 
@@ -65,11 +59,14 @@ class ChatViewController: UIViewController {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
 
+
         // listen
         guard let chatRoom = chatRoom else {
             print("ERROR: chatRoom is not exist.")
             return
         }
+
+
 
         FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { messages, error in
             if let error = error {
@@ -143,15 +140,24 @@ class ChatViewController: UIViewController {
     }
 
     @IBAction func call(_ sender: Any) {
+
+
+
         guard let chatRoom = chatRoom else {
             return
         }
-
+        Firestore.firestore().collection("Call").document(chatRoom.id).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
         let callViewController = CallViewController(chatRoom: chatRoom, callType: .offer)
+        callViewController.otherUserData = otherData
         present(callViewController, animated: true)
-
     }
-    
+
     func listenCall() {
         Firestore.firestore().collection("Call").document(chatRoom!.id)
             .addSnapshotListener { [weak self] documentSnapshot, error in
@@ -166,13 +172,14 @@ class ChatViewController: UIViewController {
                 do {
                     print("====",123)
                     let call = try document.data(as: Call.self)
-                    if call.caller != gCurrentUser.id {
+                    if call.caller != gCurrentUser.id && call.status == "offer" {
                         print("需要接電話")
                         guard let chatRoom = self?.chatRoom else {
                             return
                         }
 
                         let callViewController = CallViewController(chatRoom: chatRoom, callType: .answer)
+                        callViewController.otherUserData = self?.otherData
                         self?.present(callViewController, animated: true)
                     }
                 } catch let DecodingError.dataCorrupted(context) {
@@ -189,34 +196,73 @@ class ChatViewController: UIViewController {
                 } catch {
                     print("error: ", error)
                 }
-//                print("Current data: \(data)")
             }
     }
 }
 
 extension ChatViewController {
     private func configureDataSource() {
+        tableView.register(
+            UINib(nibName: OtherUserMsgCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: OtherUserMsgCell.reuseIdentifier
+        )
+
+        tableView.register(
+            UINib(nibName: CurrentUserMsgCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: CurrentUserMsgCell.reuseIdentifier
+        )
+
+        tableView.register(
+            UINib(nibName: CallCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: CallCell.reuseIdentifier
+        )
+
         dataSource = DataSource(
             tableView: tableView,
-            cellProvider: {[unowned self] tableView, indexPath, _ in
-                let message = self.messages[indexPath.item]
+            cellProvider: {[unowned self] tableView, indexPath, item in
+                switch item {
+                case .message(let data):
+                    let message = data
+                    let messageType = MessageType.allCases[message.messageType]
+                    let sendByMe = message.sendBy == currentUserData.id
 
-                if message.sendBy == currentUserData.id {
-                    return configureCurrentUserCell(tableView: tableView, indexPath: indexPath)
-                } else {
-                    return configureOtherUserCell(tableView: tableView, indexPath: indexPath)
+                    switch messageType {
+                    case .text:
+                        if sendByMe {
+                            return configureCurrentUserCell(tableView: tableView, indexPath: indexPath, message: data)
+                        } else {
+                            return configureOtherUserCell(tableView: tableView, indexPath: indexPath, message: data)
+                        }
+                    case .image:
+                        return UITableViewCell()
+                    case .call:
+                        guard let cell = tableView.dequeueReusableCell(
+                            withIdentifier: CallCell.reuseIdentifier,
+                            for: indexPath
+                        ) as? CallCell else {
+                            return UITableViewCell()
+                        }
+                        if sendByMe {
+                            cell.otherUserView.isHidden = true
+                        }
+
+                        cell.sendByMe = sendByMe
+                        cell.sendBy = sendByMe ? currentUserData : otherData
+                        cell.message = message
+                        cell.configureLayout()
+                        return cell
+                    }
                 }
             })
     }
 
-    private func configureCurrentUserCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+    private func configureCurrentUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: CurrentUserMsgCell.reuseIdentifier,
             for: indexPath
         ) as? CurrentUserMsgCell else {
             return UITableViewCell()
         }
-        let message = self.messages[indexPath.item]
 
         cell.msgType = .currentUser
         cell.sendBy = currentUserData
@@ -225,14 +271,13 @@ extension ChatViewController {
         return cell
     }
 
-    private func configureOtherUserCell(tableView: UITableView, indexPath: IndexPath) -> UITableViewCell {
+    private func configureOtherUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: OtherUserMsgCell.reuseIdentifier,
             for: indexPath
         ) as? OtherUserMsgCell else {
             return UITableViewCell()
         }
-        let message = self.messages[indexPath.item]
 
         cell.msgType = .other
         cell.sendBy = otherData
@@ -246,7 +291,7 @@ extension ChatViewController {
     private func updateDataSource() {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
-        newSnapshot.appendItems(messages.map({ $0 }), toSection: .message)
+        newSnapshot.appendItems(messages.map({ Item.message($0) }), toSection: .message)
         dataSource.apply(newSnapshot, animatingDifferences: true)
     }
 }
