@@ -23,6 +23,8 @@
 		E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E587292D291CA7BF00C12E9E /* CUReservationCell.xib */; };
 		E5872932291CAA7300C12E9E /* OUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5872930291CAA7300C12E9E /* OUReservationCell.swift */; };
 		E5872933291CAA7300C12E9E /* OUReservationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5872931291CAA7300C12E9E /* OUReservationCell.xib */; };
+		E5872936291CF32D00C12E9E /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5872935291CF32D00C12E9E /* ProfileCell.swift */; };
+		E5872938291CF49800C12E9E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5872937291CF49800C12E9E /* ProfileViewController.swift */; };
 		E593EFFD290FEFF000B35550 /* MutlipleChooseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */; };
 		E593EFFE290FEFF000B35550 /* MutlipleChooseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */; };
 		E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */; };
@@ -148,6 +150,8 @@
 		E587292D291CA7BF00C12E9E /* CUReservationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUReservationCell.xib; sourceTree = "<group>"; };
 		E5872930291CAA7300C12E9E /* OUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUReservationCell.swift; sourceTree = "<group>"; };
 		E5872931291CAA7300C12E9E /* OUReservationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OUReservationCell.xib; sourceTree = "<group>"; };
+		E5872935291CF32D00C12E9E /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		E5872937291CF49800C12E9E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutlipleChooseController.swift; sourceTree = "<group>"; };
 		E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MutlipleChooseController.xib; sourceTree = "<group>"; };
 		E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChooseCell.swift; sourceTree = "<group>"; };
@@ -324,6 +328,7 @@
 				E59B82F12919117300F02CEC /* CallViewController.xib */,
 				E5FF403E291B45FA00DCA2D4 /* TmpViewController.swift */,
 				E5B984C7291BD2E4006DD8D7 /* ReservationViewController.swift */,
+				E5872937291CF49800C12E9E /* ProfileViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -331,6 +336,7 @@
 		E55C0963290D5C2D00DBF21B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E5872934291CF2F000C12E9E /* Profile */,
 				E5604FDF2918CF9C007AE655 /* Reservation */,
 				E5B018B9291631B400A09788 /* RoomDetail */,
 				E5B018B22915F1C100A09788 /* Home */,
@@ -369,6 +375,14 @@
 			children = (
 			);
 			path = WebRTC;
+			sourceTree = "<group>";
+		};
+		E5872934291CF2F000C12E9E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				E5872935291CF32D00C12E9E /* ProfileCell.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 		E593F0152910ADC700B35550 /* Cell */ = {
@@ -859,6 +873,7 @@
 				E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */,
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
 				E5B984CA291BD3E4006DD8D7 /* Reservation.swift in Sources */,
+				E5872938291CF49800C12E9E /* ProfileViewController.swift in Sources */,
 				E59B8318291A259500F02CEC /* CallCell.swift in Sources */,
 				E5604FE52918EDD3007AE655 /* Config.swift in Sources */,
 				E5EEE20A2912BCC700CAAE84 /* RoomDetailViewController.swift in Sources */,
@@ -873,6 +888,7 @@
 				E5B984D9291BD78A006DD8D7 /* BookingCell.swift in Sources */,
 				E5EEE2832913F97800CAAE84 /* KingfisherWrapper.swift in Sources */,
 				E5B33780290FB61900467404 /* OtherFeeCell.swift in Sources */,
+				E5872936291CF32D00C12E9E /* ProfileCell.swift in Sources */,
 				E59B82F22919117300F02CEC /* CallViewController.swift in Sources */,
 				E5ACE16D291BFC1C006CCF1A /* ReservationService.swift in Sources */,
 				E5B984C5291B905F006DD8D7 /* DateCell.swift in Sources */,
