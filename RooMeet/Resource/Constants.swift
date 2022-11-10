@@ -19,3 +19,5 @@ var gCurrentUser = User.mockUser
 var gCurrentPosition: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 25.03320617048529, longitude: 121.56449873729362)
 
 var gDefaultCounty = "台北市"
+
+var avaterHeight: CGFloat = 30
