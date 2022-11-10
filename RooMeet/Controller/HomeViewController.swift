@@ -30,7 +30,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("===", gCurrentUser.id)
+        print("============", gCurrentUser.id)
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus"),
             style: .plain,
@@ -72,6 +72,8 @@ class HomeViewController: UIViewController {
                 for: indexPath) as? RoomDisplayCell else {
                 return UICollectionViewCell()
             }
+
+            cell.checkImageView.isHidden = true
             cell.configureCell(data: room)
             return cell
         }

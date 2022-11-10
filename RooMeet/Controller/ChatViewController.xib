@@ -31,15 +31,15 @@
                     <rect key="frame" x="10" y="807" width="394" height="45"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hcq-sk-zXe">
-                            <rect key="frame" x="0.0" y="0.0" width="45" height="45"/>
+                            <rect key="frame" x="0.0" y="0.0" width="46.5" height="45"/>
                             <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" image="phone" catalog="system" title=""/>
+                            <buttonConfiguration key="configuration" style="plain" image="calendar.badge.plus" catalog="system" title=""/>
                             <connections>
-                                <action selector="call:" destination="-1" eventType="touchUpInside" id="1Pb-yq-nZh"/>
+                                <action selector="addReservation:" destination="-1" eventType="touchUpInside" id="cVw-rO-GSz"/>
                             </connections>
                         </button>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UDU-vp-0jE">
-                            <rect key="frame" x="53" y="0.0" width="290.5" height="45"/>
+                            <rect key="frame" x="54.5" y="0.0" width="289" height="45"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <textInputTraits key="textInputTraits"/>
                         </textField>
@@ -72,7 +72,7 @@
         </view>
     </objects>
     <resources>
-        <image name="phone" catalog="system" width="128" height="115"/>
+        <image name="calendar.badge.plus" catalog="system" width="128" height="108"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
