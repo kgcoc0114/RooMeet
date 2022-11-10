@@ -17,6 +17,7 @@ enum FirestoreEndpoint {
     case chatRoom
     case user
     case call
+    case reservation
 
     var colRef: CollectionReference {
         let database = Firestore.firestore()
@@ -30,6 +31,8 @@ enum FirestoreEndpoint {
             return database.collection("ChatRoom")
         case .user:
             return database.collection("User")
+        case .reservation:
+            return database.collection("Reservation")
         }
     }
 }
@@ -100,6 +103,34 @@ class FirebaseService {
         let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", isEqualTo: [userA, userB])
 
         getDocuments(query) { [weak self] (chatRooms: [ChatRoom]) in
+            if chatRooms.isEmpty {
+                self?.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
+                    if let chatRoom = chatRoom {
+                        self?.fetchRoomMemberData(chatRooms: [chatRoom], completion: { chatRooms in
+                            if let returnChatRoom = chatRooms.first {
+                                completion(returnChatRoom)
+                            }
+                        })
+                    }
+                }
+            } else {
+                self?.fetchRoomMemberData(chatRooms: chatRooms, completion: { chatRooms in
+                    if let returnChatRoom = chatRooms.first {
+                        completion(returnChatRoom)
+                    }
+                })
+            }
+        }
+    }
+
+    func getChatRoomByUserID(userA: String, userB: String, completion: @escaping ((ChatRoom) -> Void)) {
+        let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", arrayContains: userA)
+
+        getDocuments(query) { [weak self] (chatRooms: [ChatRoom]) in
+            var chatRooms = chatRooms
+            chatRooms = chatRooms.filter({ $0.members.contains(userB)
+            })
+            print(chatRooms)
             if chatRooms.isEmpty {
                 self?.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
                     if let chatRoom = chatRoom {
@@ -273,6 +304,31 @@ class FirebaseService {
         }
 
         query = query.order(by: "createdTime", descending: true)
+
+        let group = DispatchGroup()
+        getDocuments(query) { (rooms: [Room]) in
+            var rooms = rooms
+            rooms.enumerated().forEach { index, roomResult in
+                let ownerID = roomResult.userID
+                group.enter()
+                self.fetchUserByID(userID: ownerID, index: index) { user, index in
+                    if let user = user,
+                       let index = index {
+                        rooms[index].userData = user
+                    }
+                    group.leave()
+                }
+            }
+            group.notify(queue: DispatchQueue.main) {
+                completion(rooms)
+            }
+        }
+    }
+
+    func fetchRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
+        let query = FirestoreEndpoint.room.colRef
+            .whereField("userID", isEqualTo: userID)
+            .order(by: "createdTime", descending: true)
 
         let group = DispatchGroup()
         getDocuments(query) { (rooms: [Room]) in

@@ -6,14 +6,17 @@
 //
 
 import UIKit
-
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 class RoomDetailViewController: UIViewController {
+
     enum Section: String, CaseIterable {
         case images
         case basicInfo
         case amenities
         case rules
         case feeDetail
+        case reservation
     }
 
     enum Item: Hashable {
@@ -22,6 +25,7 @@ class RoomDetailViewController: UIViewController {
         case amenities(String)
         case rules(String)
         case feeDetail(BillInfo)
+        case reservation(Room)
     }
 
     typealias DetailDataSource = UICollectionViewDiffableDataSource<Section, Item>
@@ -98,6 +102,9 @@ extension RoomDetailViewController {
         collectionView.register(
             UINib(nibName: "RoomFeeCell", bundle: nil),
             forCellWithReuseIdentifier: RoomFeeCell.identifier)
+        collectionView.register(
+            UINib(nibName: "BookingCell", bundle: nil),
+            forCellWithReuseIdentifier: BookingCell.identifier)
 
         dataSource = DetailDataSource(collectionView: collectionView) { collectionView, indexPath, item in
             switch item {
@@ -157,6 +164,15 @@ extension RoomDetailViewController {
                     return UICollectionViewCell()
                 }
                 cell.configureCell(data: data)
+                return cell
+            case .reservation(let data):
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: BookingCell.identifier,
+                    for: indexPath
+                ) as? BookingCell else {
+                    return UICollectionViewCell()
+                }
+                cell.delegate = self
                 return cell
             }
         }
@@ -231,7 +247,7 @@ extension RoomDetailViewController {
         let section = Section.allCases[index]
 
         switch section {
-        case .basicInfo:
+        case .basicInfo, .reservation:
             return createBasicInfoSection()
         case .feeDetail:
             return createFeeDetailSection()
@@ -270,7 +286,7 @@ extension RoomDetailViewController {
         guard let room = room else {
             return
         }
-        newSnapshot.appendSections([.images, .basicInfo, .rules, .amenities, .feeDetail])
+        newSnapshot.appendSections([.images, .basicInfo, .rules, .amenities, .feeDetail, .reservation])
         newSnapshot.appendItems([.images(room)], toSection: .images)
         newSnapshot.appendItems(room.rules.map({ Item.rules($0) }), toSection: .rules)
         newSnapshot.appendItems(room.publicAmenities.map({ Item.amenities($0) }), toSection: .amenities)
@@ -278,6 +294,38 @@ extension RoomDetailViewController {
         if let billInfo = room.billInfo {
             newSnapshot.appendItems([.feeDetail(billInfo)], toSection: .feeDetail)
         }
+        newSnapshot.appendItems([.reservation(room)], toSection: .reservation)
+
         dataSource.apply(newSnapshot)
+    }
+}
+
+extension RoomDetailViewController: BookingCellDelegate {
+    func didSendRequest(date: DateComponents, selectPeriod: BookingPeriod) {
+        guard let room = room else { return }
+
+        if let reservations = gCurrentUser.reservations {
+            if !reservations.contains(room.roomID) {
+                ReservationService.shared.upsertReservationData(
+                    status: .waiting,
+                    requestTime: date.date!,
+                    period: selectPeriod.descrption,
+                    room: room,
+                    senderID: gCurrentUser.id,
+                    receiverID: room.userID,
+                    reservation: nil
+                )
+            }
+        } else {
+            ReservationService.shared.upsertReservationData(
+                status: .waiting,
+                requestTime: date.date!,
+                period: selectPeriod.descrption,
+                room: room,
+                senderID: gCurrentUser.id,
+                receiverID: room.userID,
+                reservation: nil
+            )
+        }
     }
 }
