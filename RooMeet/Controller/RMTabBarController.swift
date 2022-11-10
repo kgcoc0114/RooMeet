@@ -83,7 +83,9 @@ class RMTabBarController: UITabBarController {
                 gCurrentUser = user
             }
         }
-
+        FirebaseService.shared.getChatRoomByUserID(userA: "uRzWzteO70l2fI1lN5L5", userB: "LNC9Lmn7s8LrvLOoymKv") { chatroom in
+            print(chatroom)
+        }
         print("gCurrentUser.id = ", gCurrentUser.id)
         FirestoreEndpoint.call.colRef
             .whereField("callee", isEqualTo: testID)

@@ -13,6 +13,7 @@ enum MessageType: Int, CaseIterable {
     case text = 0
     case image
     case call
+    case reservation
 }
 
 struct Message: Codable, Hashable {
@@ -21,4 +22,6 @@ struct Message: Codable, Hashable {
     let sendBy: String // userID
     let content: String
     let createdTime: Timestamp
+    var reservation: Reservation?
+    var imageURL: URL?
 }

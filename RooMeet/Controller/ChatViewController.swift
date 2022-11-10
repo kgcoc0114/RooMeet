@@ -11,11 +11,12 @@ import FirebaseFirestore
 class ChatViewController: UIViewController {
     enum Section: CaseIterable {
         case message
-//        case call
+//        case reservation
     }
 
     enum Item: Hashable {
         case message(Message)
+//        case reservation(Message)
 //        case call(Message)
     }
 
@@ -52,6 +53,14 @@ class ChatViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "phone"),
+            style: .plain,
+            target: self,
+            action: #selector(call))
+
+
         configureDataSource()
     }
 
@@ -133,7 +142,11 @@ class ChatViewController: UIViewController {
         tableView.scrollToButtom(at: .bottom, animated: animated)
     }
 
-    @IBAction func call(_ sender: Any) {
+    @IBAction func addReservation(_ sender: Any) {
+
+    }
+
+    @objc private func call(_ sender: Any) {
         guard let chatRoom = chatRoom else {
             return
         }
@@ -176,8 +189,19 @@ extension ChatViewController {
             forCellReuseIdentifier: CallCell.reuseIdentifier
         )
 
-        dataSource = DataSource(tableView: tableView,
-                                cellProvider: {[unowned self] tableView, indexPath, item in
+        tableView.register(
+            UINib(nibName: CUReservationCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: CUReservationCell.reuseIdentifier
+        )
+
+        tableView.register(
+            UINib(nibName: OUReservationCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: OUReservationCell.reuseIdentifier
+        )
+
+        dataSource = DataSource(
+            tableView: tableView,
+            cellProvider: {[unowned self] tableView, indexPath, item in
                 switch item {
                 case .message(let data):
                     let message = data
@@ -209,9 +233,43 @@ extension ChatViewController {
                         cell.message = message
                         cell.configureLayout()
                         return cell
+                    case .reservation:
+                        if sendByMe {
+                            return configureCUReservationCell(tableView: tableView, indexPath: indexPath, message: message)
+                        } else {
+                            return configureOUReservationCell(tableView: tableView, indexPath: indexPath, message: message)
+                        }
                     }
                 }
             })
+    }
+
+    private func configureCUReservationCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CUReservationCell.reuseIdentifier,
+            for: indexPath
+        ) as? CUReservationCell else {
+            return UITableViewCell()
+        }
+        cell.otherUser = otherData
+        cell.currentUser = currentUserData
+        cell.message = message
+        cell.configureLayout()
+        return cell
+    }
+
+    private func configureOUReservationCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: OUReservationCell.reuseIdentifier,
+            for: indexPath
+        ) as? OUReservationCell else {
+            return UITableViewCell()
+        }
+        cell.otherUser = otherData
+        cell.currentUser = currentUserData
+        cell.message = message
+        cell.configureLayout()
+        return cell
     }
 
     private func configureCurrentUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
