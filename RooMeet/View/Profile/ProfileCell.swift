@@ -11,20 +11,25 @@ class ProfileCell: UITableViewCell {
     static let identifier = "ProfileCell"
 
     @IBOutlet weak var iconImageView: UIImageView!
+
     @IBOutlet weak var titleLabel: UILabel!
+
+    var profileType: Profile?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
     func configureCell() {
+        guard let profileType = profileType else {
+            return
+        }
 
+        iconImageView.image = profileType.iconImage
+        titleLabel.text = profileType.title
     }
 }
