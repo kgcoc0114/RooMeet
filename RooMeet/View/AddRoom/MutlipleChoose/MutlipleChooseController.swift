@@ -92,6 +92,7 @@ class MutlipleChooseController: UIViewController {
             titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
         }
     }
+
     @IBOutlet weak var tableView: UITableView!
 
     override func viewDidLoad() {
