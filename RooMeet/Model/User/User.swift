@@ -13,8 +13,11 @@ struct User: Codable, Hashable {
     var birthday: Date
     var name: String
     var profilePhoto: String
+    var introduction: String?
     var habit: [String]?
-    var hobby: [String]?
+    var rules: [String]?
+    var favorateCounty: String?
+    var favorateTown: String?
     var like: [String]? = []
     var reservations: [String]?
     var chatRooms: [String]?

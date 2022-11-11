@@ -168,7 +168,7 @@ class CallViewController: UIViewController {
             let eTime = endTime else {
             return
         }
-        callTime = DateFormatter.shared.getTimeIntervalString(startTimestamp: sTime, endTimestamp: eTime)
+        callTime = RMDateFormatter.shared.getTimeIntervalString(startTimestamp: sTime, endTimestamp: eTime)
         print(callTime)
         updateCallData(status: "close", content: callTime ?? "")
     }

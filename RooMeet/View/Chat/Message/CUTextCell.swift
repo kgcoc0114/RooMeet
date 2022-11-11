@@ -1,5 +1,5 @@
 //
-//  CurrentUserMsgCell.swift
+//  CUTextCell.swift
 //  RooMeet
 //
 //  Created by kgcoc on 2022/11/4.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class CurrentUserMsgCell: UITableViewCell {
-    static let reuseIdentifier = "\(CurrentUserMsgCell.self)"
+class CUTextCell: UITableViewCell {
+    static let reuseIdentifier = "\(CUTextCell.self)"
 
     var msgType: MsgType = .currentUser
     var message: Message?
     var sendBy: ChatMember?
-
+    @IBOutlet weak var timeLabel: UILabel!
     @IBOutlet weak var contentTextView: UITextView! {
         didSet {
             contentTextView.translatesAutoresizingMaskIntoConstraints = false

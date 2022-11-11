@@ -19,6 +19,7 @@ struct Reservation: Codable, Hashable {
     var acceptedStatus: String?
     var createdTime: Timestamp?
     var modifiedTime: Timestamp?
+    var roomDetail: Room?
 }
 
 enum AcceptedStatus: CaseIterable {
