@@ -47,7 +47,7 @@ class ChatViewController: UIViewController {
         didSet {
             tableView.separatorStyle = .none
             tableView.showsVerticalScrollIndicator = false
-
+            tableView.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
         }
     }
 
@@ -175,8 +175,8 @@ class ChatViewController: UIViewController {
 extension ChatViewController {
     private func configureDataSource() {
         tableView.register(
-            UINib(nibName: OtherUserMsgCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: OtherUserMsgCell.reuseIdentifier
+            UINib(nibName: OUTextCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: OUTextCell.reuseIdentifier
         )
 
         tableView.register(
@@ -289,9 +289,9 @@ extension ChatViewController {
 
     private func configureOtherUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: OtherUserMsgCell.reuseIdentifier,
+            withIdentifier: OUTextCell.reuseIdentifier,
             for: indexPath
-        ) as? OtherUserMsgCell else {
+        ) as? OUTextCell else {
             return UITableViewCell()
         }
 

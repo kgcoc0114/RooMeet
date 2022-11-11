@@ -17,7 +17,7 @@ class CUImageCell: UITableViewCell {
 
     @IBOutlet weak var messageImageView: UIImageView! {
         didSet {
-            messageImageView.layer.cornerRadius = RMConstants.shared.messageImageCornerRadius
+            messageImageView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
         }
     }
 
