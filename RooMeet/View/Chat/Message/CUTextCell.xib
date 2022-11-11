@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="195" id="KGk-i7-Jjw" customClass="CurrentUserMsgCell" customModule="RooMeet" customModuleProvider="target">
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="195" id="KGk-i7-Jjw" customClass="CUTextCell" customModule="RooMeet" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="443" height="195"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
@@ -26,17 +26,26 @@
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     </textView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="20:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gBf-II-e2M">
+                        <rect key="frame" x="186" y="164" width="46" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="wpG-rl-Mcv" secondAttribute="trailing" constant="10" id="9ek-L7-zIL"/>
                     <constraint firstAttribute="bottom" secondItem="wpG-rl-Mcv" secondAttribute="bottom" constant="10" id="P9S-Ch-dvn"/>
                     <constraint firstItem="wpG-rl-Mcv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ger-sx-c0r"/>
+                    <constraint firstItem="gBf-II-e2M" firstAttribute="trailing" secondItem="wpG-rl-Mcv" secondAttribute="leading" constant="5" id="ivv-hH-vQo"/>
                     <constraint firstItem="wpG-rl-Mcv" firstAttribute="width" relation="lessThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.6" constant="-60" id="jrB-ho-8rn"/>
+                    <constraint firstItem="gBf-II-e2M" firstAttribute="bottom" secondItem="wpG-rl-Mcv" secondAttribute="bottom" id="xJc-m6-O7K"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="contentTextView" destination="wpG-rl-Mcv" id="aGr-nO-tEM"/>
+                <outlet property="timeLabel" destination="gBf-II-e2M" id="LAJ-eY-wP8"/>
             </connections>
             <point key="canvasLocation" x="221.01449275362322" y="121.54017857142857"/>
         </tableViewCell>

@@ -9,8 +9,8 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class DateFormatter {
-    static let shared = DateFormatter()
+class RMDateFormatter {
+    static let shared = RMDateFormatter()
 
 //    formatter.string(from: timeInterval)
 
@@ -26,5 +26,17 @@ class DateFormatter {
         let timeInterval = eDate.timeIntervalSince(sDate)
 
         return formatter.string(from: timeInterval)
+    }
+
+    let dateFormatter = DateFormatter()
+
+    func datetimeString(date: Date) -> String {
+        dateFormatter.dateFormat = "YY/MM/dd HH:mm"
+        return dateFormatter.string(from: date)
+    }
+
+    func dateString(date: Date) -> String {
+        dateFormatter.dateFormat = "YY/MM/dd HH:mm"
+        return dateFormatter.string(from: date)
     }
 }

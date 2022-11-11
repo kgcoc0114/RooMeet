@@ -1,5 +1,5 @@
 //
-//  ProfileViewController.swift
+//  ProfileRSVNDetailViewController.swift
 //  RooMeet
 //
 //  Created by kgcoc on 2022/11/10.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController {
+class ProfileRSVNDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
-    
+
 
     /*
     // MARK: - Navigation

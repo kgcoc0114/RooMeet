@@ -180,8 +180,8 @@ extension ChatViewController {
         )
 
         tableView.register(
-            UINib(nibName: CurrentUserMsgCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: CurrentUserMsgCell.reuseIdentifier
+            UINib(nibName: CUTextCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: CUTextCell.reuseIdentifier
         )
 
         tableView.register(
@@ -274,9 +274,9 @@ extension ChatViewController {
 
     private func configureCurrentUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CurrentUserMsgCell.reuseIdentifier,
+            withIdentifier: CUTextCell.reuseIdentifier,
             for: indexPath
-        ) as? CurrentUserMsgCell else {
+        ) as? CUTextCell else {
             return UITableViewCell()
         }
 

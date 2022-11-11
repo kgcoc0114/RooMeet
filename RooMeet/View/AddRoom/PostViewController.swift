@@ -441,7 +441,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
 
     func imagePickerController(
         _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
         var selectedImageFromPicker: UIImage?
 
