@@ -78,7 +78,6 @@ class RoomDetailViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
 
-
     @IBAction func chatWithOwner(_ sender: Any) {
         FirebaseService.shared.upsertChatRoomByUserID(userA: gCurrentUser.id, userB: room!.userID) { [weak self] chatRoom in
             let detailVC = ChatViewController()
@@ -269,7 +268,14 @@ extension RoomDetailViewController: RoomImagesCellDelegate {
     func didClickedLike(like: Bool) {
         if let roomID = room?.roomID {
             if like == true {
-                gCurrentUser.like?.append(roomID)
+                if let likeList = gCurrentUser.like {
+                    gCurrentUser.like?.append(roomID)
+                } else {
+                    gCurrentUser.like = []
+                    gCurrentUser.like?.append(roomID)
+                }
+
+                print( gCurrentUser.like)
             } else {
                 if let index = gCurrentUser.like?.firstIndex(of: roomID) {
                     gCurrentUser.like?.remove(at: index)
