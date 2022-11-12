@@ -51,8 +51,8 @@
 		E5ACE16D291BFC1C006CCF1A /* ReservationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACE16C291BFC1C006CCF1A /* ReservationService.swift */; };
 		E5B018AA2915690C00A09788 /* CUTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018A82915690C00A09788 /* CUTextCell.swift */; };
 		E5B018AB2915690C00A09788 /* CUTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018A92915690C00A09788 /* CUTextCell.xib */; };
-		E5B018AE2915692600A09788 /* OtherUserMsgCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018AC2915692600A09788 /* OtherUserMsgCell.swift */; };
-		E5B018AF2915692600A09788 /* OtherUserMsgCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018AD2915692600A09788 /* OtherUserMsgCell.xib */; };
+		E5B018AE2915692600A09788 /* OUTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018AC2915692600A09788 /* OUTextCell.swift */; };
+		E5B018AF2915692600A09788 /* OUTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018AD2915692600A09788 /* OUTextCell.xib */; };
 		E5B018B12915E12300A09788 /* UITableView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018B02915E12300A09788 /* UITableView+Extension.swift */; };
 		E5B018B52915F20C00A09788 /* RoomCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018B32915F20C00A09788 /* RoomCardCell.swift */; };
 		E5B018B62915F20C00A09788 /* RoomCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018B42915F20C00A09788 /* RoomCardCell.xib */; };
@@ -120,6 +120,13 @@
 		E5D9C046291E4FF900F416E6 /* OUImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D9C044291E4FF900F416E6 /* OUImageCell.xib */; };
 		E5DC0FE32911FFB300EB57FD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC0FE22911FFB300EB57FD /* LocationService.swift */; };
 		E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */; };
+		E5DEFD8D291F3AF60064E2C8 /* CUCallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEFD8B291F3AF60064E2C8 /* CUCallCell.swift */; };
+		E5DEFD8E291F3AF60064E2C8 /* CUCallCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DEFD8C291F3AF60064E2C8 /* CUCallCell.xib */; };
+		E5DEFD91291F3B0A0064E2C8 /* OUCallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEFD8F291F3B0A0064E2C8 /* OUCallCell.swift */; };
+		E5DEFD92291F3B0A0064E2C8 /* OUCallCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DEFD90291F3B0A0064E2C8 /* OUCallCell.xib */; };
+		E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */; };
+		E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */; };
+		E5E27720291E88F300E68D90 /* RMButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E2771F291E88F300E68D90 /* RMButton.swift */; };
 		E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C75290D6E3100F07286 /* RMTabBarController.swift */; };
 		E5E64C81290E13E400F07286 /* RegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C7F290E13E400F07286 /* RegionPickerViewController.swift */; };
 		E5E64C84290E183F00F07286 /* RegionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C83290E183F00F07286 /* RegionService.swift */; };
@@ -195,8 +202,8 @@
 		E5ACE16C291BFC1C006CCF1A /* ReservationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationService.swift; sourceTree = "<group>"; };
 		E5B018A82915690C00A09788 /* CUTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUTextCell.swift; sourceTree = "<group>"; };
 		E5B018A92915690C00A09788 /* CUTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUTextCell.xib; sourceTree = "<group>"; };
-		E5B018AC2915692600A09788 /* OtherUserMsgCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherUserMsgCell.swift; sourceTree = "<group>"; };
-		E5B018AD2915692600A09788 /* OtherUserMsgCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherUserMsgCell.xib; sourceTree = "<group>"; };
+		E5B018AC2915692600A09788 /* OUTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUTextCell.swift; sourceTree = "<group>"; };
+		E5B018AD2915692600A09788 /* OUTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OUTextCell.xib; sourceTree = "<group>"; };
 		E5B018B02915E12300A09788 /* UITableView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+Extension.swift"; sourceTree = "<group>"; };
 		E5B018B32915F20C00A09788 /* RoomCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCardCell.swift; sourceTree = "<group>"; };
 		E5B018B42915F20C00A09788 /* RoomCardCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCardCell.xib; sourceTree = "<group>"; };
@@ -266,6 +273,13 @@
 		E5D9C044291E4FF900F416E6 /* OUImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OUImageCell.xib; sourceTree = "<group>"; };
 		E5DC0FE22911FFB300EB57FD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		E5DEFD8B291F3AF60064E2C8 /* CUCallCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUCallCell.swift; sourceTree = "<group>"; };
+		E5DEFD8C291F3AF60064E2C8 /* CUCallCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUCallCell.xib; sourceTree = "<group>"; };
+		E5DEFD8F291F3B0A0064E2C8 /* OUCallCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUCallCell.swift; sourceTree = "<group>"; };
+		E5DEFD90291F3B0A0064E2C8 /* OUCallCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OUCallCell.xib; sourceTree = "<group>"; };
+		E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBaseCell.swift; sourceTree = "<group>"; };
+		E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
+		E5E2771F291E88F300E68D90 /* RMButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMButton.swift; sourceTree = "<group>"; };
 		E5E64C75290D6E3100F07286 /* RMTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMTabBarController.swift; sourceTree = "<group>"; };
 		E5E64C7F290E13E400F07286 /* RegionPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerViewController.swift; sourceTree = "<group>"; };
 		E5E64C83290E183F00F07286 /* RegionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionService.swift; sourceTree = "<group>"; };
@@ -612,20 +626,14 @@
 		E5D9BFDC291E4D3800F416E6 /* Message */ = {
 			isa = PBXGroup;
 			children = (
-				E5B018A82915690C00A09788 /* CUTextCell.swift */,
-				E5B018A92915690C00A09788 /* CUTextCell.xib */,
-				E5B018AC2915692600A09788 /* OtherUserMsgCell.swift */,
-				E5B018AD2915692600A09788 /* OtherUserMsgCell.xib */,
-				E59B8316291A259500F02CEC /* CallCell.swift */,
-				E59B8317291A259500F02CEC /* CallCell.xib */,
-				E587292C291CA7BF00C12E9E /* CUReservationCell.swift */,
-				E587292D291CA7BF00C12E9E /* CUReservationCell.xib */,
-				E5872930291CAA7300C12E9E /* OUReservationCell.swift */,
-				E5872931291CAA7300C12E9E /* OUReservationCell.xib */,
+				E5E2771D291E883A00E68D90 /* Text */,
+				E5DEFD8A291F3ACC0064E2C8 /* Call */,
+				E5E2771E291E884E00E68D90 /* Reservation */,
 				E5D9C03F291E4E3100F416E6 /* CUImageCell.swift */,
 				E5D9C040291E4E3100F416E6 /* CUImageCell.xib */,
 				E5D9C043291E4FF900F416E6 /* OUImageCell.swift */,
 				E5D9C044291E4FF900F416E6 /* OUImageCell.xib */,
+				E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */,
 			);
 			path = Message;
 			sourceTree = "<group>";
@@ -708,6 +716,7 @@
 				E5B33761290E71A600467404 /* NumberPickerView.swift */,
 				E5B33767290EA2FA00467404 /* RMBaseTextField.swift */,
 				E5B018B72915F21E00A09788 /* CardView.swift */,
+				E5E2771F291E88F300E68D90 /* RMButton.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -732,6 +741,41 @@
 			path = FeeDetail;
 			sourceTree = "<group>";
 		};
+		E5DEFD8A291F3ACC0064E2C8 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				E59B8316291A259500F02CEC /* CallCell.swift */,
+				E59B8317291A259500F02CEC /* CallCell.xib */,
+				E5DEFD8B291F3AF60064E2C8 /* CUCallCell.swift */,
+				E5DEFD8C291F3AF60064E2C8 /* CUCallCell.xib */,
+				E5DEFD8F291F3B0A0064E2C8 /* OUCallCell.swift */,
+				E5DEFD90291F3B0A0064E2C8 /* OUCallCell.xib */,
+			);
+			path = Call;
+			sourceTree = "<group>";
+		};
+		E5E2771D291E883A00E68D90 /* Text */ = {
+			isa = PBXGroup;
+			children = (
+				E5B018A82915690C00A09788 /* CUTextCell.swift */,
+				E5B018A92915690C00A09788 /* CUTextCell.xib */,
+				E5B018AC2915692600A09788 /* OUTextCell.swift */,
+				E5B018AD2915692600A09788 /* OUTextCell.xib */,
+			);
+			path = Text;
+			sourceTree = "<group>";
+		};
+		E5E2771E291E884E00E68D90 /* Reservation */ = {
+			isa = PBXGroup;
+			children = (
+				E587292C291CA7BF00C12E9E /* CUReservationCell.swift */,
+				E587292D291CA7BF00C12E9E /* CUReservationCell.xib */,
+				E5872930291CAA7300C12E9E /* OUReservationCell.swift */,
+				E5872931291CAA7300C12E9E /* OUReservationCell.xib */,
+			);
+			path = Reservation;
+			sourceTree = "<group>";
+		};
 		E5E64C8F290E3B9300F07286 /* RegionPicker */ = {
 			isa = PBXGroup;
 			children = (
@@ -752,6 +796,7 @@
 				E5B018B02915E12300A09788 /* UITableView+Extension.swift */,
 				E5B018DA29174CAB00A09788 /* UICollectionView+Extension.swift */,
 				E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */,
+				E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -860,6 +905,7 @@
 				E5A12A672910C7BF006907D9 /* EditFeeController.xib in Resources */,
 				E5872945291D022000C12E9E /* IntroCell.xib in Resources */,
 				E5D76D0E291D24B20074DFD7 /* ProfileRSVNDetailViewController.xib in Resources */,
+				E5DEFD8E291F3AF60064E2C8 /* CUCallCell.xib in Resources */,
 				E5EEE20329129C6000CAAE84 /* PostalCode.json in Resources */,
 				E5B984BE291B6EF1006DD8D7 /* BookingView.xib in Resources */,
 				E5B018D9291695CA00A09788 /* Profile.storyboard in Resources */,
@@ -878,7 +924,7 @@
 				E59B82F32919117300F02CEC /* CallViewController.xib in Resources */,
 				E5EEE20D2913A8C900CAAE84 /* Chat.storyboard in Resources */,
 				E5D76D04291D21900074DFD7 /* ProfileRSVNViewController.xib in Resources */,
-				E5B018AF2915692600A09788 /* OtherUserMsgCell.xib in Resources */,
+				E5B018AF2915692600A09788 /* OUTextCell.xib in Resources */,
 				E5B984C6291B905F006DD8D7 /* DateCell.xib in Resources */,
 				E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */,
 				E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */,
@@ -898,6 +944,7 @@
 				E593F0062910016D00B35550 /* OptionCell.xib in Resources */,
 				E5872933291CAA7300C12E9E /* OUReservationCell.xib in Resources */,
 				E5C5FE872910CB8000DA91DF /* FeeInfoCell.xib in Resources */,
+				E5DEFD92291F3B0A0064E2C8 /* OUCallCell.xib in Resources */,
 				E5B018CF2916475100A09788 /* RoomItemsCell.xib in Resources */,
 				E5B3376F290F64D800467404 /* RoomSpecCell.xib in Resources */,
 				E5B018B62915F20C00A09788 /* RoomCardCell.xib in Resources */,
@@ -990,7 +1037,7 @@
 				E593F0092910065C00B35550 /* RulesCell.swift in Sources */,
 				E5872944291D022000C12E9E /* IntroCell.swift in Sources */,
 				E5C5FE862910CB8000DA91DF /* FeeInfoCell.swift in Sources */,
-				E5B018AE2915692600A09788 /* OtherUserMsgCell.swift in Sources */,
+				E5B018AE2915692600A09788 /* OUTextCell.swift in Sources */,
 				E5B018CE2916475000A09788 /* RoomItemsCell.swift in Sources */,
 				E5B984C0291B6F04006DD8D7 /* BookingView.swift in Sources */,
 				E5B984C8291BD2E4006DD8D7 /* ReservationViewController.swift in Sources */,
@@ -999,6 +1046,7 @@
 				E5D9C045291E4FF900F416E6 /* OUImageCell.swift in Sources */,
 				E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */,
 				E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */,
+				E5DEFD91291F3B0A0064E2C8 /* OUCallCell.swift in Sources */,
 				E5B018DD29175B7100A09788 /* FilterViewController.swift in Sources */,
 				E5B018B82915F21E00A09788 /* CardView.swift in Sources */,
 				E5B018D629166A4000A09788 /* RoomDetailHeaderView.swift in Sources */,
@@ -1018,6 +1066,7 @@
 				E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */,
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
 				E5B984CA291BD3E4006DD8D7 /* Reservation.swift in Sources */,
+				E5DEFD8D291F3AF60064E2C8 /* CUCallCell.swift in Sources */,
 				E5872938291CF49800C12E9E /* ProfileViewController.swift in Sources */,
 				E59B8318291A259500F02CEC /* CallCell.swift in Sources */,
 				E5604FE52918EDD3007AE655 /* Config.swift in Sources */,
@@ -1027,6 +1076,7 @@
 				E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */,
 				E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */,
 				E5EEE2072912AE3B00CAAE84 /* FirebaseService.swift in Sources */,
+				E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */,
 				E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */,
 				E5EEE2132913B02600CAAE84 /* User.swift in Sources */,
 				E5E64C84290E183F00F07286 /* RegionService.swift in Sources */,
@@ -1042,9 +1092,11 @@
 				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,
 				E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */,
 				E5A12A632910B8C4006907D9 /* NibLoadble.swift in Sources */,
+				E5E27720291E88F300E68D90 /* RMButton.swift in Sources */,
 				E5E64C81290E13E400F07286 /* RegionPickerViewController.swift in Sources */,
 				E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */,
 				E5D9BF75291DFBE700F416E6 /* TagCell.swift in Sources */,
+				E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */,
 				E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */,
 				E5B018B52915F20C00A09788 /* RoomCardCell.swift in Sources */,
 				E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */,

@@ -165,7 +165,7 @@ class ReservationService {
 
             let lastMessage = LastMessage(
                 id: messageRef.documentID,
-                content: status.description,
+                content: status.content,
                 createdTime: message.createdTime
             )
 
