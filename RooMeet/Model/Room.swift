@@ -153,22 +153,32 @@ struct RoomList: Codable {
 enum BillType: CaseIterable {
     case water
     case electricity
+    case cable
+    case internet
+    case management
+
 
     var image: UIImage {
         switch self {
         case .water:
             return UIImage(systemName: "drop")!
         case .electricity:
-            return UIImage(systemName: "bolt.circle")!
+            return UIImage(systemName: "bolt")!
+        case .cable:
+            return UIImage(systemName: "tv")!
+        case .internet:
+            return UIImage(systemName: "globe")!
+        case .management:
+            return UIImage(systemName: "figure.stand")!
         }
     }
 
     var unitString: String {
         switch self {
-        case .water:
+        case .water, .cable, .internet, .management:
             return ""
         case .electricity:
-            return "per degree"
+            return "元/度"
         }
     }
 
@@ -178,12 +188,19 @@ enum BillType: CaseIterable {
             return "水"
         case .electricity:
             return "電"
+        case .cable:
+            return "第四臺"
+        case .internet:
+            return "網路"
+        case .management:
+            return "管理費"
+
         }
     }
 
     var sperateString: String {
         switch self {
-        case .water:
+        case .water, .cable, .internet, .management:
             return "個別支付"
         case .electricity:
             return "獨立電表"
@@ -196,6 +213,12 @@ enum BillType: CaseIterable {
             return billInfo.water
         case .electricity:
             return billInfo.electricity
+        case .cable:
+            return billInfo.cable
+        case .internet:
+            return billInfo.internet
+        case .management:
+            return billInfo.management
         }
     }
 }

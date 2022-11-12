@@ -7,22 +7,7 @@
 
 import UIKit
 
-enum BookingPeriod: CaseIterable {
-    case morning
-    case afternoon
-    case night
 
-    var descrption: String {
-        switch self {
-        case .morning:
-            return "早上 (08:00 - 12:00)"
-        case .afternoon:
-            return "下午 (12:00 - 18:00)"
-        case .night:
-            return "晚上 (18:00 - 20:00)"
-        }
-    }
-}
 
 protocol BookingViewDelegate: AnyObject {
     func didSendRequest(date: DateComponents, selectPeriod: BookingPeriod)
@@ -147,24 +132,24 @@ class BookingView: UIView, NibOwnerLoadable {
             return
         }
         // 第一次選擇
-        if selectView == nil {
-            selectDate = dateView.date
-            selectView = dateView
-            dateView.isSelected = true
-
-        } else {
-            // 取消此次選擇
-            if dateView == selectView {
-                selectView?.isSelected = false
-                selectDate = nil
-                selectView = nil
-            } else {
-                selectView?.isSelected = false
-                dateView.isSelected = true
-                selectDate = dateView.date
-                selectView = dateView
-            }
-        }
+//        if selectView == nil {
+//            selectDate = dateView.date
+//            selectView = dateView
+//            dateView.isSelected = true
+//
+//        } else {
+//            // 取消此次選擇
+//            if dateView == selectView {
+//                selectView?.isSelected = false
+//                selectDate = nil
+//                selectView = nil
+//            } else {
+//                selectView?.isSelected = false
+//                dateView.isSelected = true
+//                selectDate = dateView.date
+//                selectView = dateView
+//            }
+//        }
         print(selectDate)
     }
 
@@ -209,11 +194,11 @@ extension BookingView: UIPickerViewDelegate {
     }
 }
 
-class DateView: UIView {
-    var date: DateComponents?
-    var isSelected: Bool = false {
-        didSet {
-            self.backgroundColor = isSelected == false ? .white : .yellow
-        }
-    }
-}
+//class DateView: UIView {
+//    var date: DateComponents?
+//    var isSelected: Bool = false {
+//        didSet {
+//            self.backgroundColor = isSelected == false ? .white : .yellow
+//        }
+//    }
+//}

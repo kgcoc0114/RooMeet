@@ -9,9 +9,17 @@ import UIKit
 class RMConstants {
     static let shared = RMConstants()
 
+    let buttonCornerRadius: CGFloat = 10
+    let tagCornerRadius: CGFloat = 8
+    let reservationDays: Int = 5
+    let textFontSize: CGFloat = 12
+    let title3FontSize: CGFloat = 15
+    let title2FontSize: CGFloat = 20
+    let title2FontColor = UIColor.hexColor(hex: "#363130")
 
     // Intorduction Page
     let profileImageWidth: CGFloat = 120
+    // MARK: - Room Detail Page
 
     // MARK: - Chat Page
     // MARK: -- message
