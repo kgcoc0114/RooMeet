@@ -47,7 +47,7 @@ class ChatViewController: UIViewController {
         didSet {
             tableView.separatorStyle = .none
             tableView.showsVerticalScrollIndicator = false
-
+            tableView.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
         }
     }
 
@@ -175,8 +175,8 @@ class ChatViewController: UIViewController {
 extension ChatViewController {
     private func configureDataSource() {
         tableView.register(
-            UINib(nibName: OtherUserMsgCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: OtherUserMsgCell.reuseIdentifier
+            UINib(nibName: OUTextCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: OUTextCell.reuseIdentifier
         )
 
         tableView.register(
@@ -199,6 +199,16 @@ extension ChatViewController {
             forCellReuseIdentifier: OUReservationCell.reuseIdentifier
         )
 
+        tableView.register(
+            UINib(nibName: OUCallCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: OUCallCell.reuseIdentifier
+        )
+
+        tableView.register(
+            UINib(nibName: CUCallCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: CUCallCell.reuseIdentifier
+        )
+
         dataSource = DataSource(
             tableView: tableView,
             cellProvider: {[unowned self] tableView, indexPath, item in
@@ -218,30 +228,50 @@ extension ChatViewController {
                     case .image:
                         return UITableViewCell()
                     case .call:
-                        guard let cell = tableView.dequeueReusableCell(
-                            withIdentifier: CallCell.reuseIdentifier,
-                            for: indexPath
-                        ) as? CallCell else {
-                            return UITableViewCell()
-                        }
                         if sendByMe {
-                            cell.otherUserView.isHidden = true
+                            return configureCUCallCell(tableView: tableView, indexPath: indexPath, message: data)
+                        } else {
+                            return configureOUCallCell(tableView: tableView, indexPath: indexPath, message: data)
                         }
-
-                        cell.sendByMe = sendByMe
-                        cell.sendBy = sendByMe ? currentUserData : otherData
-                        cell.message = message
-                        cell.configureLayout()
-                        return cell
                     case .reservation:
                         if sendByMe {
-                            return configureCUReservationCell(tableView: tableView, indexPath: indexPath, message: message)
+                            return configureCUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
                         } else {
-                            return configureOUReservationCell(tableView: tableView, indexPath: indexPath, message: message)
+                            return configureOUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
                         }
                     }
                 }
             })
+    }
+
+    private func configureCUCallCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CUCallCell.reuseIdentifier,
+            for: indexPath
+        ) as? CUCallCell else {
+            return UITableViewCell()
+        }
+
+        cell.sendByMe = true
+        cell.sendBy = currentUserData
+        cell.message = message
+        cell.configureLayout()
+        return cell
+    }
+
+    private func configureOUCallCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: OUCallCell.reuseIdentifier,
+            for: indexPath
+        ) as? OUCallCell else {
+            return UITableViewCell()
+        }
+
+        cell.sendByMe = false
+        cell.sendBy = otherData
+        cell.message = message
+        cell.configureLayout()
+        return cell
     }
 
     private func configureCUReservationCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
@@ -289,9 +319,9 @@ extension ChatViewController {
 
     private func configureOtherUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: OtherUserMsgCell.reuseIdentifier,
+            withIdentifier: OUTextCell.reuseIdentifier,
             for: indexPath
-        ) as? OtherUserMsgCell else {
+        ) as? OUTextCell else {
             return UITableViewCell()
         }
 

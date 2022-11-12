@@ -16,12 +16,16 @@ class RMDateFormatter {
 
     let formatter = DateComponentsFormatter()
 
-    func getTimeIntervalString(startTimestamp: Timestamp, endTimestamp: Timestamp) -> String? {
+    func getTimeIntervalString(
+        startTimestamp: Timestamp,
+        endTimestamp: Timestamp,
+        allowUnits: NSCalendar.Unit = [.hour, .minute, .second]
+    ) -> String? {
         let sDate = Date(timeIntervalSince1970: TimeInterval(startTimestamp.seconds))
         let eDate = Date(timeIntervalSince1970: TimeInterval(endTimestamp.seconds))
 
         formatter.zeroFormattingBehavior = .pad
-        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.allowedUnits = allowUnits
 
         let timeInterval = eDate.timeIntervalSince(sDate)
 
@@ -36,7 +40,18 @@ class RMDateFormatter {
     }
 
     func dateString(date: Date) -> String {
-        dateFormatter.dateFormat = "YY/MM/dd HH:mm"
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        return dateFormatter.string(from: date)
+    }
+
+    func timeString(date: Date) -> String {
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter.string(from: date)
+    }
+
+    func datetimeWithLocaleString(date: Date, dateFormat: String) -> String {
+        dateFormatter.dateFormat = dateFormat
+        dateFormatter.locale = Locale(identifier: "zh_tw")
         return dateFormatter.string(from: date)
     }
 }

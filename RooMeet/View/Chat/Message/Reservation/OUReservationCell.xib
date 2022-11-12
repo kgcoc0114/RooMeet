@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="153" id="KGk-i7-Jjw" customClass="OUReservationCell" customModule="RooMeet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="153"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="153"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rw7-VV-5hm">
+                        <rect key="frame" x="10" y="10" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="Eza-ZL-52f"/>
+                            <constraint firstAttribute="width" constant="40" id="wgN-DT-Mpb"/>
+                        </constraints>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="me9-qW-s4v">
+                        <rect key="frame" x="60" y="10" width="137" height="133"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="calendar" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="iU5-Cg-wwd">
+                                <rect key="frame" x="10" y="55" width="25" height="22.5"/>
+                                <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="25" id="Bfm-eV-m4A"/>
+                                    <constraint firstAttribute="width" constant="25" id="gGe-vg-UKc"/>
+                                </constraints>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qpa-Da-UU1">
+                                <rect key="frame" x="45" y="10" width="82" height="113"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Cq-7d-8Sq">
+                                        <rect key="frame" x="0.0" y="0.0" width="82" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UaI-st-W4h">
+                                        <rect key="frame" x="0.0" y="25.5" width="82" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="2z8-ir-4u5">
+                                        <rect key="frame" x="0.0" y="51" width="82" height="62"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LBj-jz-Knt">
+                                                <rect key="frame" x="0.0" y="0.0" width="31" height="62"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="同意"/>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tSa-5h-cmD">
+                                                <rect key="frame" x="51" y="0.0" width="31" height="62"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="拒絕"/>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="qpa-Da-UU1" firstAttribute="centerY" secondItem="me9-qW-s4v" secondAttribute="centerY" id="CVY-VD-MY8"/>
+                            <constraint firstAttribute="trailing" secondItem="qpa-Da-UU1" secondAttribute="trailing" constant="10" id="U20-HY-8jg"/>
+                            <constraint firstItem="qpa-Da-UU1" firstAttribute="leading" secondItem="iU5-Cg-wwd" secondAttribute="trailing" constant="10" id="Zwy-IS-kYF"/>
+                            <constraint firstItem="iU5-Cg-wwd" firstAttribute="leading" secondItem="me9-qW-s4v" secondAttribute="leading" constant="10" id="gVq-B7-ka6"/>
+                            <constraint firstItem="iU5-Cg-wwd" firstAttribute="centerY" secondItem="me9-qW-s4v" secondAttribute="centerY" id="lbA-O2-C3l"/>
+                            <constraint firstAttribute="bottom" secondItem="qpa-Da-UU1" secondAttribute="bottom" constant="10" id="pxD-Nx-ZUv"/>
+                            <constraint firstItem="qpa-Da-UU1" firstAttribute="top" secondItem="me9-qW-s4v" secondAttribute="top" constant="10" id="z05-UB-1tP"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="me9-qW-s4v" firstAttribute="leading" secondItem="Rw7-VV-5hm" secondAttribute="trailing" constant="10" id="Bnb-1z-hbF"/>
+                    <constraint firstItem="Rw7-VV-5hm" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="OlO-Db-Ue2"/>
+                    <constraint firstItem="Rw7-VV-5hm" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="SdC-3j-ZEd"/>
+                    <constraint firstItem="me9-qW-s4v" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="XNn-qN-0bg"/>
+                    <constraint firstAttribute="bottom" secondItem="me9-qW-s4v" secondAttribute="bottom" constant="10" id="aDC-2c-oDO"/>
+                    <constraint firstItem="me9-qW-s4v" firstAttribute="width" relation="lessThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.55" id="koO-pO-0o3"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="agreeButton" destination="LBj-jz-Knt" id="BRN-Y1-XeX"/>
+                <outlet property="avatarView" destination="Rw7-VV-5hm" id="tNQ-C8-HLh"/>
+                <outlet property="cellView" destination="me9-qW-s4v" id="VEu-Bu-HWl"/>
+                <outlet property="denyButton" destination="tSa-5h-cmD" id="WOO-us-igx"/>
+                <outlet property="statusLabel" destination="UaI-st-W4h" id="Czr-xk-BJa"/>
+                <outlet property="titleLabel" destination="7Cq-7d-8Sq" id="6cN-Y8-l1j"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="128.23660714285714"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="calendar" catalog="system" width="128" height="106"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
