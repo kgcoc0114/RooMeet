@@ -49,8 +49,8 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
-                        <segue destination="mM7-U2-zVB" kind="relationship" relationship="viewControllers" id="Kuf-2p-fmK"/>
                         <segue destination="fYg-EL-xGZ" kind="relationship" relationship="viewControllers" id="qVL-kJ-azh"/>
+                        <segue destination="mM7-U2-zVB" kind="relationship" relationship="viewControllers" id="Kuf-2p-fmK"/>
                         <segue destination="qmS-0x-fbG" kind="relationship" relationship="viewControllers" id="W7O-Tz-NGh"/>
                         <segue destination="doU-CH-gZF" kind="relationship" relationship="viewControllers" id="QIb-pa-8yg"/>
                     </connections>
