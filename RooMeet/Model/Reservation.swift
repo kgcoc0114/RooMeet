@@ -40,4 +40,17 @@ enum AcceptedStatus: CaseIterable {
             return "answer"
         }
     }
+
+    var content: String {
+        switch self {
+        case .waiting:
+            return "預約待回覆"
+        case .cancel:
+            return "預約已取消"
+        case .accept:
+            return "預約已接受"
+        case .answer:
+            return "answer"
+        }
+    }
 }

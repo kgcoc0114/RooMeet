@@ -10,8 +10,8 @@ import UIKit
 
 enum RMColor: String {
     case B1
-    case B2
-    case B3
+    case mainBlue
+    case mainDark
     case B4
     case B5
     case B6
@@ -19,14 +19,15 @@ enum RMColor: String {
     case palePink
     case snow
     case darkSienna
+    case mainBackground
 
     var hex: String {
         switch self {
         case .B1:
             return "#605856"
-        case .B2:
+        case .mainBlue:
             return "#1c6e8c"
-        case .B3:
+        case .mainDark:
             return "#274156"
         case .B4:
             return "#d89a9e"
@@ -42,6 +43,8 @@ enum RMColor: String {
             return "#EED3D5"
         case .darkSienna:
             return "#2C1115"
+        case .mainBackground:
+            return "#FDF3D8"
         }
     }
 }
@@ -50,12 +53,6 @@ enum RMColor: String {
 extension UIColor {
 
     static let B1 = RMColor(.B1)
-
-    static let B2 = RMColor(.B2)
-
-    static let B4 = RMColor(.B4)
-
-    static let B5 = RMColor(.B6)
 
     static let messageCUColor = RMColor(.palePink)
 

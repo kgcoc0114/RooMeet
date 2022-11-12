@@ -9,12 +9,45 @@ import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class CUReservationCell: UITableViewCell {
+class CUReservationCell: MessageBaseCell {
     static let reuseIdentifier = "\(CUReservationCell.self)"
+    @IBOutlet weak var messageView: UIView! {
+        didSet {
+            messageView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            messageView.backgroundColor = .hexColor(hex: RMColor.palePink.hex)
+        }
+    }
 
-    @IBOutlet weak var denyButton: UIButton!
-    @IBOutlet weak var agreeButton: UIButton!
-    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var reservationIcon: UIImageView!
+
+    @IBOutlet weak var stackView: UIStackView! {
+        didSet {
+            stackView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+        }
+    }
+
+    @IBOutlet weak var denyButton: UIButton! {
+        didSet {
+            denyButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            denyButton.backgroundColor = .hexColor(hex: RMColor.mainDark.hex)
+            denyButton.tintColor = .white
+            denyButton.titleLabel!.font =  UIFont.regular(size: 15)
+        }
+    }
+    @IBOutlet weak var agreeButton: UIButton! {
+        didSet {
+            agreeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            agreeButton.backgroundColor = .hexColor(hex: RMColor.mainBlue.hex)
+            agreeButton.tintColor = .white
+            agreeButton.titleLabel!.font =  UIFont.regular(size: 15)
+        }
+    }
+
+    @IBOutlet weak var statusLabel: UILabel!  {
+        didSet {
+            statusLabel.font = UIFont.regular(size: RMConstants.shared.reservationStatusFontSize)
+        }
+    }
     @IBOutlet weak var titleLabel: UILabel!
 
     var message: Message?
@@ -25,17 +58,27 @@ class CUReservationCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+//        addSubview(dateLabel)
+//        addSubview(timeLabel)
+
         denyButton.isHidden = true
         agreeButton.isHidden = true
         denyButton.addTarget(self, action: #selector(deny), for: .touchUpInside)
         agreeButton.addTarget(self, action: #selector(accept), for: .touchUpInside)
+
+        NSLayoutConstraint.activate([
+            dateLabel.trailingAnchor.constraint(equalTo: messageView.leadingAnchor, constant: -5),
+            timeLabel.trailingAnchor.constraint(equalTo: messageView.leadingAnchor, constant: -5),
+            timeLabel.bottomAnchor.constraint(equalTo: messageView.bottomAnchor),
+            dateLabel.bottomAnchor.constraint(equalTo: timeLabel.topAnchor)
+        ])
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
 
-    func configureLayout() {
+    override func configureLayout() {
         guard let message = message,
               let otherUser = otherUser,
               let currentUser = currentUser,
@@ -51,6 +94,7 @@ class CUReservationCell: UITableViewCell {
             agreeButton.isHidden = true
         } else {
             if reservation.acceptedStatus == "waiting" {
+                statusLabel.isHidden = true
                 if reservation.sender == gCurrentUser.id {
                     titleLabel.text = "已發起預約，等候回覆"
                     denyButton.isHidden = true
@@ -62,14 +106,22 @@ class CUReservationCell: UITableViewCell {
                 }
             } else if reservation.acceptedStatus == "accept" {
                 titleLabel.text = "預約已完成"
+                let dateString = RMDateFormatter.shared.dateString(date: reservation.requestTime!.dateValue())
+                statusLabel.text = "\(dateString)\n\(reservation.period!)"
+                statusLabel.isHidden = false
                 denyButton.isHidden = true
                 agreeButton.isHidden = true
             } else if reservation.acceptedStatus == "cancel" {
                 titleLabel.text = "預約已取消"
+                let dateString = RMDateFormatter.shared.dateString(date: reservation.requestTime!.dateValue())
+                statusLabel.text = "\(dateString)\n\(reservation.period!)"
+                statusLabel.isHidden = false
                 denyButton.isHidden = true
                 agreeButton.isHidden = true
             }
         }
+
+        assignDatetime(messageDate: message.createdTime.dateValue())
     }
 
     @objc func deny() {
