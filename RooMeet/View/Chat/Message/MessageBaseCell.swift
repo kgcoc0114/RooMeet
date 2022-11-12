@@ -29,6 +29,7 @@ class MessageBaseCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
         addSubview(dateLabel)
         addSubview(timeLabel)
     }
@@ -39,6 +40,19 @@ class MessageBaseCell: UITableViewCell {
 
     func isSameDate(date: Date) -> Bool {
         return RMDateFormatter.shared.datetimeWithLocaleString(date: date, dateFormat: "YY/MM/dd") == RMDateFormatter.shared.datetimeWithLocaleString(date: Date(), dateFormat: "YY/MM/dd")
+    }
+
+    func assignDatetime(messageDate: Date) {
+
+        dateLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "MM/dd")
+        timeLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "HH:mm")
+
+        if isSameDate(date: messageDate) {
+            dateLabel.isHidden = true
+        }
+    }
+
+    func configureLayout() {
     }
 }
 

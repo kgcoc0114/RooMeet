@@ -40,7 +40,7 @@ class RMDateFormatter {
     }
 
     func dateString(date: Date) -> String {
-        dateFormatter.dateFormat = "YY/MM/dd HH:mm"
+        dateFormatter.dateFormat = "yyyy/MM/dd"
         return dateFormatter.string(from: date)
     }
 

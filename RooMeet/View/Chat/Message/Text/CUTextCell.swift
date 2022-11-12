@@ -1,5 +1,5 @@
 //
-//  OUTextCell.swift
+//  CUTextCell.swift
 //  RooMeet
 //
 //  Created by kgcoc on 2022/11/4.
@@ -7,24 +7,10 @@
 
 import UIKit
 
-enum MsgType {
-    case currentUser
-    case other
+class CUTextCell: MessageBaseCell {
+    static let reuseIdentifier = "\(CUTextCell.self)"
 
-    var backgroundColor: UIColor {
-        switch self {
-        case .currentUser:
-            return UIColor.hexColor(hex: RMColor.palePink.hex)
-        case .other:
-            return UIColor.white
-        }
-    }
-}
-
-class OUTextCell: MessageBaseCell {
-    static let reuseIdentifier = "\(OUTextCell.self)"
-
-    var msgType: MsgType = .other
+    var msgType: MsgType = .currentUser
     var message: Message?
     var sendBy: ChatMember?
 
@@ -38,27 +24,21 @@ class OUTextCell: MessageBaseCell {
         }
     }
 
-    @IBOutlet weak var avaterView: UIImageView! {
-        didSet {
-            avaterView.layer.cornerRadius = 17
-            avaterView.contentMode = .scaleAspectFill
-        }
-    }
-
-    lazy var avaterImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-
     override func awakeFromNib() {
         super.awakeFromNib()
-        selectionStyle = .none
         self.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
+        selectionStyle = .none
+        addSubview(dateLabel)
+        addSubview(timeLabel)
+    }
 
+    override func layoutSubviews() {
         NSLayoutConstraint.activate([
-            dateLabel.leadingAnchor.constraint(equalTo: contentTextView.trailingAnchor, constant: 5),
-            timeLabel.leadingAnchor.constraint(equalTo: contentTextView.trailingAnchor, constant: 5),
+            contentTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: RMConstants.shared.CUTrailing),
+            contentTextView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: RMConstants.shared.OULeading),
+            contentTextView.heightAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5),
+            dateLabel.trailingAnchor.constraint(equalTo: contentTextView.leadingAnchor, constant: -5),
+            timeLabel.trailingAnchor.constraint(equalTo: contentTextView.leadingAnchor, constant: -5),
             timeLabel.bottomAnchor.constraint(equalTo: contentTextView.bottomAnchor),
             dateLabel.bottomAnchor.constraint(equalTo: timeLabel.topAnchor)
         ])
@@ -68,11 +48,8 @@ class OUTextCell: MessageBaseCell {
         super.setSelected(selected, animated: animated)
     }
 
-
-    func configureLayout() {
-        if let message = message,
-            let sendBy = sendBy {
-            avaterView.setImage(urlString: sendBy.profilePhoto)
+    override func configureLayout() {
+        if let message = message {
             contentTextView.text = message.content
             let messageDate = message.createdTime.dateValue()
 

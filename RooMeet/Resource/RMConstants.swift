@@ -15,10 +15,13 @@ class RMConstants {
 
     // MARK: - Chat Page
     // MARK: -- message
-    let avaterImageWidth: CGFloat = 34
+    let avaterImageWidth: CGFloat = 40
     let messageImageWidth: CGFloat = 120
     let messageCornerRadius: CGFloat = 10
     let OULeading: CGFloat = 10
     let CUTrailing: CGFloat = -10
     let dateTimeFontSize: CGFloat = 9
+
+    let reservationStatusFontSize: CGFloat = 12
+
 }
