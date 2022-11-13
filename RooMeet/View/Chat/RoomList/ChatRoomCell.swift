@@ -37,9 +37,19 @@ class ChatRoomCell: UITableViewCell {
     }
 
     func layoutCell(_ userName: String, chatRoom: ChatRoom) {
-        userNameLabel.text = chatRoom.member?.name ?? ""
-        contentLabel.text = chatRoom.lastMessage?.content ?? ""
-        timeLabel.text = "..."
-        profileImageView.setImage(urlString: (chatRoom.member?.profilePhoto ??  "https://github.com/developerjet/JetChat/raw/master/ScreenShot/JetChatSmall.png")!)
+        if let lastMessage = chatRoom.lastMessage {
+            contentLabel.text = lastMessage.content
+            timeLabel.text = RMDateFormatter.shared.genMessageTimeString(messageTime: lastMessage.createdTime)
+        } else {
+            contentLabel.text = ""
+            timeLabel.text = ""
+        }
+        if let member = chatRoom.member {
+            userNameLabel.text = member.name
+            profileImageView.setImage(urlString: member.profilePhoto)
+        } else {
+            userNameLabel.text = ""
+            profileImageView.setImage(urlString: "https://github.com/developerjet/JetChat/raw/master/ScreenShot/JetChatSmall.png")
+        }
     }
 }

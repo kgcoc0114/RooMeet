@@ -76,7 +76,8 @@ class RoomDetailViewController: UIViewController {
         didSet {
             chatButton.setTitle(" 聊聊", for: .normal)
             chatButton.setImage(UIImage(systemName: "message"), for: .normal)
-
+            chatButton.titleLabel?.font = UIFont.regular(size: 18)
+            chatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
             chatButton.backgroundColor = .darkGray
             chatButton.tintColor = .white
             chatButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
@@ -87,7 +88,8 @@ class RoomDetailViewController: UIViewController {
         didSet {
             reservationButton.setTitle(" 預約", for: .normal)
             reservationButton.setImage(UIImage(systemName: "calendar"), for: .normal)
-
+            reservationButton.titleLabel?.font = UIFont.regular(size: 18)
+            reservationButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
             reservationButton.backgroundColor = .darkGray
             reservationButton.tintColor = .white
             reservationButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
@@ -106,11 +108,7 @@ class RoomDetailViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var genderLabel: UILabel! {
-        didSet {
-            genderLabel.font = UIFont.regular(size: 14)
-        }
-    }
+    @IBOutlet weak var genderImageView: UIImageView!
 
     @IBOutlet weak var collectionView: UICollectionView!
 
@@ -126,6 +124,15 @@ class RoomDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "icon_back"),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
+
+        navigationItem.title = "RooMeet"
+
         configureCollectionView()
         collectionView.collectionViewLayout = createLayout()
     }
@@ -136,10 +143,15 @@ class RoomDetailViewController: UIViewController {
             let userData = room.userData {
             nameLabel.text = userData.name
             ageLabel.text = "\(userData.age)"
+            genderImageView.image = Gender.allCases[userData.gender].image
         }
         dealWithBillInfo()
         self.tabBarController?.tabBar.isHidden = true
         updateDataSource()
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 
     private func dealWithBillInfo() {
@@ -173,11 +185,16 @@ class RoomDetailViewController: UIViewController {
             return
         }
 
+        guard let sDate = selectedDate.date else {
+            print("ERROR: - Reservations Date got error.")
+            return
+        }
+
         if let reservations = gCurrentUser.reservations {
             if !reservations.contains(room.roomID) {
                 ReservationService.shared.upsertReservationData(
                     status: .waiting,
-                    requestTime: selectedDate.date!,
+                    requestTime: sDate,
                     period: selectedPeriod.descrption,
                     room: room,
                     senderID: gCurrentUser.id,
@@ -186,12 +203,12 @@ class RoomDetailViewController: UIViewController {
                 )
                 RMProgressHUD.showSuccess(view: self.view)
             } else {
-                RMProgressHUD.showFailure(text: "已預約過此房源",view: self.view)
+                RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
             }
         } else {
             ReservationService.shared.upsertReservationData(
                 status: .waiting,
-                requestTime: selectedDate.date!,
+                requestTime: sDate,
                 period: selectedPeriod.descrption,
                 room: room,
                 senderID: gCurrentUser.id,
@@ -203,7 +220,12 @@ class RoomDetailViewController: UIViewController {
     }
 
     @IBAction func chatWithOwner(_ sender: Any) {
-        FirebaseService.shared.upsertChatRoomByUserID(userA: gCurrentUser.id, userB: room!.userID) { [weak self] chatRoom in
+        guard let room = room else {
+            print("ERROR: - Room Detail got empty room.")
+            return
+        }
+
+        FirebaseService.shared.upsertChatRoomByUserID(userA: gCurrentUser.id, userB: room.userID) { [weak self] chatRoom in
             let detailVC = ChatViewController()
             detailVC.setup(chatRoom: chatRoom)
             self?.navigationController?.pushViewController(detailVC, animated: false)
@@ -313,7 +335,7 @@ extension RoomDetailViewController {
                 cell.delegate = self
                 cell.configureCell(date: data)
                 return cell
-            case .reservationPeriod(_):
+            case .reservationPeriod(let data):
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: BookingPeriodCell.identifier,
                     for: indexPath
@@ -338,7 +360,7 @@ extension RoomDetailViewController {
             }
         }
 
-        dataSource?.supplementaryViewProvider = { (collectionView, kind, indexPath) in
+        dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
                 withReuseIdentifier: RoomDetailHeaderView.identifier,
@@ -399,7 +421,11 @@ extension RoomDetailViewController {
 
     private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
         let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+        let header = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: headerSize,
+            elementKind: UICollectionView.elementKindSectionHeader,
+            alignment: .top
+        )
         return header
     }
 
@@ -541,7 +567,7 @@ extension RoomDetailViewController: RoomImagesCellDelegate {
     func didClickedLike(like: Bool) {
         if let roomID = room?.roomID {
             if like == true {
-                if let likeList = gCurrentUser.like {
+                if gCurrentUser.like != nil {
                     gCurrentUser.like?.append(roomID)
                 } else {
                     gCurrentUser.like = []

@@ -62,7 +62,7 @@
         <!--Home-->
         <scene sceneID="w6N-oe-nPi">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fYg-EL-xGZ" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fYg-EL-xGZ" customClass="RMNavigationController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="house" catalog="system" selectedImage="house.fill" id="Var-RT-90B"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="rD6-PU-Yqu">
@@ -81,7 +81,7 @@
         <!--Explore-->
         <scene sceneID="rXg-Ph-Llb">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qmS-0x-fbG" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qmS-0x-fbG" customClass="RMNavigationController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Explore" image="map" catalog="system" selectedImage="map.fill" id="KiF-h2-weC"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JYh-h7-9eV">
@@ -100,7 +100,7 @@
         <!--Chat-->
         <scene sceneID="6hX-6V-fUV">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mM7-U2-zVB" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mM7-U2-zVB" customClass="RMNavigationController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" image="message" catalog="system" selectedImage="message.fill" id="zf2-DM-Yq7"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ur0-6U-08i">
@@ -129,7 +129,7 @@
         <!--Profile-->
         <scene sceneID="d7W-TU-ZzA">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="doU-CH-gZF" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="doU-CH-gZF" customClass="RMNavigationController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Profile" image="person" catalog="system" selectedImage="person.fill" id="DVS-ux-zcY"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="RfG-R5-eev">

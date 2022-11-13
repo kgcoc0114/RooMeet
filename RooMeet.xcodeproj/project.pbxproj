@@ -10,6 +10,7 @@
 		43F0895A0D2EF93E66E808CB /* Pods_RooMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */; };
 		E5119BA3291FDA8B00A632C9 /* RoomMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119BA1291FDA8B00A632C9 /* RoomMapCell.swift */; };
 		E5119BA4291FDA8B00A632C9 /* RoomMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5119BA2291FDA8B00A632C9 /* RoomMapCell.xib */; };
+		E5119BAB292081F100A632C9 /* RMNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119BAA292081F100A632C9 /* RMNavigationController.swift */; };
 		E55C095E290D51B800DBF21B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095D290D51B800DBF21B /* Room.swift */; };
 		E55C0960290D53F900DBF21B /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095F290D53F900DBF21B /* Gender.swift */; };
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
@@ -166,6 +167,7 @@
 		BE5A43F1B6AB4E753E5C2520 /* Pods-RooMeet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RooMeet.debug.xcconfig"; path = "Target Support Files/Pods-RooMeet/Pods-RooMeet.debug.xcconfig"; sourceTree = "<group>"; };
 		E5119BA1291FDA8B00A632C9 /* RoomMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomMapCell.swift; sourceTree = "<group>"; };
 		E5119BA2291FDA8B00A632C9 /* RoomMapCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomMapCell.xib; sourceTree = "<group>"; };
+		E5119BAA292081F100A632C9 /* RMNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMNavigationController.swift; sourceTree = "<group>"; };
 		E55C095D290D51B800DBF21B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E55C095F290D53F900DBF21B /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -407,6 +409,7 @@
 				E5872940291CFFFB00C12E9E /* Home */,
 				E587293E291CFFB600C12E9E /* Chat */,
 				E587293D291CFFA800C12E9E /* Profile */,
+				E5119BAA292081F100A632C9 /* RMNavigationController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1159,6 +1162,7 @@
 				E5D76D03291D21900074DFD7 /* ProfileRSVNViewController.swift in Sources */,
 				E5B018C62916354600A09788 /* RoomBasicCell.swift in Sources */,
 				E5DEFD95291F55210064E2C8 /* BookingDateCell.swift in Sources */,
+				E5119BAB292081F100A632C9 /* RMNavigationController.swift in Sources */,
 				E5B018DB29174CAB00A09788 /* UICollectionView+Extension.swift in Sources */,
 				E5604FE92918F03F007AE655 /* Candidate.swift in Sources */,
 				E5E64C96290E3E2600F07286 /* UIStoryboard+Extension.swift in Sources */,
@@ -1315,9 +1319,9 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) 需要使用相機";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) 需要使用定位資訊";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "$(PRODUCT_NAME) Requires microphone access in order to capture and transmit audio";
+				INFOPLIST_KEY_NSCameraUsageDescription = "RooMeet 需要使用相機";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要使用定位資訊";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RooMeet Requires microphone access in order to capture and transmit audio";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1348,9 +1352,9 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "$(PRODUCT_NAME) 需要使用相機";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "$(PRODUCT_NAME) 需要使用定位資訊";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "$(PRODUCT_NAME) Requires microphone access in order to capture and transmit audio";
+				INFOPLIST_KEY_NSCameraUsageDescription = "RooMeet 需要使用相機";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要使用定位資訊";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RooMeet Requires microphone access in order to capture and transmit audio";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
