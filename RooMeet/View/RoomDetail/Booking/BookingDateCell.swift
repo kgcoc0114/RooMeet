@@ -52,6 +52,25 @@ enum RMWeekday: Int, CaseIterable {
             return "SAT"
         }
     }
+
+    var descZhTw: String {
+        switch self {
+        case .sun:
+            return "星期天"
+        case .mon:
+            return "星期一"
+        case .tue:
+            return "星期二"
+        case .wed:
+            return "星期三"
+        case .thu:
+            return "星期四"
+        case .fri:
+            return "星期五"
+        case .sat:
+            return "星期六"
+        }
+    }
 }
 
 protocol BookingDateCellDelegate: AnyObject {

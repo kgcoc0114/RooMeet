@@ -33,4 +33,7 @@ class RMConstants {
 
     let reservationStatusFontSize: CGFloat = 12
 
+    let yesterday = "昨天"
+
+
 }
