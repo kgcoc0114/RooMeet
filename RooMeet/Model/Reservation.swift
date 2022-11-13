@@ -22,7 +22,7 @@ struct Reservation: Codable, Hashable {
     var roomDetail: Room?
 }
 
-enum AcceptedStatus: CaseIterable {
+enum AcceptedStatus: String, CaseIterable {
     case waiting
     case cancel // 取消邀請
     case accept // 同意
@@ -51,6 +51,19 @@ enum AcceptedStatus: CaseIterable {
             return "預約已接受"
         case .answer:
             return "answer"
+        }
+    }
+
+    var tagColor: UIColor {
+        switch self {
+        case .waiting:
+            return UIColor.hexColor(hex: "#94B9AF")
+        case .cancel:
+            return UIColor.hexColor(hex: "#D89A9E")
+        case .accept:
+            return UIColor.hexColor(hex: "#f7cb15")
+        case .answer:
+            return UIColor.hexColor(hex: "")
         }
     }
 }

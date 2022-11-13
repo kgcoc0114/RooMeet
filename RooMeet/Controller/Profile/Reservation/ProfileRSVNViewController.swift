@@ -55,18 +55,18 @@ class ProfileRSVNViewController: UIViewController {
 
     private func configureCollectionView() {
         collectionView.register(
-            UINib(nibName: "RoomDisplayCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomDisplayCell.identifier)
+            UINib(nibName: "ReservationDisplayCell", bundle: nil),
+            forCellWithReuseIdentifier: ReservationDisplayCell.identifier)
 
         dataSource = ProfileRSVNDataSource(collectionView: collectionView) { collectionView, indexPath, reservation in
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoomDisplayCell.identifier,
-                for: indexPath) as? RoomDisplayCell else {
+                withReuseIdentifier: ReservationDisplayCell.identifier,
+                for: indexPath) as? ReservationDisplayCell else {
                 return UICollectionViewCell()
             }
 
-            cell.checkImageView.isHidden = true
-            cell.configureCell(data: reservation.roomDetail!)
+//            cell.checkImageView.isHidden = true
+            cell.configureCell(data: reservation)
             return cell
         }
 
@@ -89,12 +89,12 @@ extension ProfileRSVNViewController {
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .absolute(200))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .absolute(200))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item])

@@ -24,6 +24,8 @@
 		E5604FE32918EC22007AE655 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE22918EC22007AE655 /* WebRTCClient.swift */; };
 		E5604FE52918EDD3007AE655 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE42918EDD3007AE655 /* Config.swift */; };
 		E5604FE92918F03F007AE655 /* Candidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE82918F03F007AE655 /* Candidate.swift */; };
+		E574A6922920EC1800EB8E5E /* ReservationDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574A6902920EC1800EB8E5E /* ReservationDisplayCell.swift */; };
+		E574A6932920EC1800EB8E5E /* ReservationDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E574A6912920EC1800EB8E5E /* ReservationDisplayCell.xib */; };
 		E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E587292C291CA7BF00C12E9E /* CUReservationCell.swift */; };
 		E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E587292D291CA7BF00C12E9E /* CUReservationCell.xib */; };
 		E5872932291CAA7300C12E9E /* OUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5872930291CAA7300C12E9E /* OUReservationCell.swift */; };
@@ -183,6 +185,8 @@
 		E5604FE22918EC22007AE655 /* WebRTCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
 		E5604FE42918EDD3007AE655 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		E5604FE82918F03F007AE655 /* Candidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Candidate.swift; sourceTree = "<group>"; };
+		E574A6902920EC1800EB8E5E /* ReservationDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationDisplayCell.swift; sourceTree = "<group>"; };
+		E574A6912920EC1800EB8E5E /* ReservationDisplayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReservationDisplayCell.xib; sourceTree = "<group>"; };
 		E587292C291CA7BF00C12E9E /* CUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUReservationCell.swift; sourceTree = "<group>"; };
 		E587292D291CA7BF00C12E9E /* CUReservationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUReservationCell.xib; sourceTree = "<group>"; };
 		E5872930291CAA7300C12E9E /* OUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUReservationCell.swift; sourceTree = "<group>"; };
@@ -453,6 +457,8 @@
 				E5B984BF291B6F04006DD8D7 /* BookingView.swift */,
 				E5B984C3291B905F006DD8D7 /* DateCell.swift */,
 				E5B984C4291B905F006DD8D7 /* DateCell.xib */,
+				E574A6902920EC1800EB8E5E /* ReservationDisplayCell.swift */,
+				E574A6912920EC1800EB8E5E /* ReservationDisplayCell.xib */,
 			);
 			path = Reservation;
 			sourceTree = "<group>";
@@ -984,6 +990,7 @@
 				E5B018AF2915692600A09788 /* OUTextCell.xib in Resources */,
 				E5B984C6291B905F006DD8D7 /* DateCell.xib in Resources */,
 				E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */,
+				E574A6932920EC1800EB8E5E /* ReservationDisplayCell.xib in Resources */,
 				E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */,
 				E587293C291CFFA100C12E9E /* IntroViewController.xib in Resources */,
 				E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */,
@@ -1079,6 +1086,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E574A6922920EC1800EB8E5E /* ReservationDisplayCell.swift in Sources */,
 				E5D9BF78291E26AA00F416E6 /* RMConstants.swift in Sources */,
 				E593EFFD290FEFF000B35550 /* MutlipleChooseController.swift in Sources */,
 				E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */,
