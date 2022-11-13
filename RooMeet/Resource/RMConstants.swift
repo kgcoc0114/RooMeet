@@ -17,7 +17,7 @@ class RMConstants {
     let title2FontSize: CGFloat = 20
     let title2FontColor = UIColor.hexColor(hex: "#363130")
     let mapCenterButtonWidth: CGFloat = 36
-
+    let mainColor = UIColor.hexColor(hex: "#274156")
     // Intorduction Page
     let profileImageWidth: CGFloat = 120
     // MARK: - Room Detail Page
