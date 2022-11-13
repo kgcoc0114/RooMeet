@@ -11,6 +11,8 @@
 		E5119BA3291FDA8B00A632C9 /* RoomMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119BA1291FDA8B00A632C9 /* RoomMapCell.swift */; };
 		E5119BA4291FDA8B00A632C9 /* RoomMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5119BA2291FDA8B00A632C9 /* RoomMapCell.xib */; };
 		E5119BAB292081F100A632C9 /* RMNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119BAA292081F100A632C9 /* RMNavigationController.swift */; };
+		E51419C92920D52100813D25 /* CallWaitingView.json in Resources */ = {isa = PBXBuildFile; fileRef = E51419C82920D52100813D25 /* CallWaitingView.json */; };
+		E51419CB2920D7CC00813D25 /* LottieWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51419CA2920D7CC00813D25 /* LottieWrapper.swift */; };
 		E55C095E290D51B800DBF21B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095D290D51B800DBF21B /* Room.swift */; };
 		E55C0960290D53F900DBF21B /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095F290D53F900DBF21B /* Gender.swift */; };
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
@@ -168,6 +170,8 @@
 		E5119BA1291FDA8B00A632C9 /* RoomMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomMapCell.swift; sourceTree = "<group>"; };
 		E5119BA2291FDA8B00A632C9 /* RoomMapCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomMapCell.xib; sourceTree = "<group>"; };
 		E5119BAA292081F100A632C9 /* RMNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMNavigationController.swift; sourceTree = "<group>"; };
+		E51419C82920D52100813D25 /* CallWaitingView.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CallWaitingView.json; sourceTree = "<group>"; };
+		E51419CA2920D7CC00813D25 /* LottieWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieWrapper.swift; sourceTree = "<group>"; };
 		E55C095D290D51B800DBF21B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E55C095F290D53F900DBF21B /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -431,6 +435,7 @@
 		E55C0970290D627000DBF21B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				E51419C82920D52100813D25 /* CallWaitingView.json */,
 				E5EEE20229129C6000CAAE84 /* PostalCode.json */,
 				E55C0971290D628400DBF21B /* Constants.swift */,
 				E5604FE42918EDD3007AE655 /* Config.swift */,
@@ -882,6 +887,7 @@
 			children = (
 				E5EEE2822913F97800CAAE84 /* KingfisherWrapper.swift */,
 				E5DEFDA1291F92870064E2C8 /* JGProgressHUDWrapper.swift */,
+				E51419CA2920D7CC00813D25 /* LottieWrapper.swift */,
 			);
 			path = ThirdPartyWrapper;
 			sourceTree = "<group>";
@@ -971,6 +977,7 @@
 				E5B018C72916354600A09788 /* RoomBasicCell.xib in Resources */,
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
 				E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */,
+				E51419C92920D52100813D25 /* CallWaitingView.json in Resources */,
 				E59B82F32919117300F02CEC /* CallViewController.xib in Resources */,
 				E5EEE20D2913A8C900CAAE84 /* Chat.storyboard in Resources */,
 				E5D76D04291D21900074DFD7 /* ProfileRSVNViewController.xib in Resources */,
@@ -1104,6 +1111,7 @@
 				E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */,
 				E5EEE2172913B2B800CAAE84 /* Message.swift in Sources */,
 				E587293B291CFFA100C12E9E /* IntroViewController.swift in Sources */,
+				E51419CB2920D7CC00813D25 /* LottieWrapper.swift in Sources */,
 				E5B018AA2915690C00A09788 /* CUTextCell.swift in Sources */,
 				E5DEFD9E291F81DE0064E2C8 /* BookingPeriodCell.swift in Sources */,
 				E55C095E290D51B800DBF21B /* Room.swift in Sources */,

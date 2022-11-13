@@ -51,7 +51,6 @@ struct Room: Codable, Hashable {
         }
 
         BillType.allCases.forEach { billType in
-
             let feeDetail = billType.feeDetail(billInfo: billInfo)
 
             if feeDetail.paid == true {

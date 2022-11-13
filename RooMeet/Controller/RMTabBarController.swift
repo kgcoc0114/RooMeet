@@ -76,7 +76,7 @@ class RMTabBarController: UITabBarController {
         // test: uRzWzteO70l2fI1lN5L5
         // test: LNC9Lmn7s8LrvLOoymKv
 
-        let testID = "LNC9Lmn7s8LrvLOoymKv"
+        let testID = "uRzWzteO70l2fI1lN5L5"
 
         FirebaseService.shared.fetchUserByID(userID: testID) { user, index in
             if let user = user {
@@ -113,9 +113,9 @@ class RMTabBarController: UITabBarController {
             let call = try document.data(as: Call.self)
 
             if call.caller != gCurrentUser.id && call.status == "offer" {
-                print("需要接電話")
 
                 let callViewController = CallViewController(callRoomId: call.id, callType: .answer, callerData: call.callerData, calleeData: call.calleeData)
+                callViewController.modalPresentationStyle = .fullScreen
                 self.present(callViewController, animated: true)
             }
         } catch {
