@@ -17,8 +17,6 @@ class MessageBaseCell: UITableViewCell {
         return label
     }()
 
-    
-
     lazy var timeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,7 +41,6 @@ class MessageBaseCell: UITableViewCell {
     }
 
     func assignDatetime(messageDate: Date) {
-
         dateLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "MM/dd")
         timeLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "HH:mm")
 

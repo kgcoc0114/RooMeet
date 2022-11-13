@@ -11,7 +11,7 @@ target 'RooMeet' do
   pod 'FirebaseFirestore'
   pod 'FirebaseFirestoreSwift'
   pod 'FirebaseStorage'
-  pod 'ProgressHUD'
+  pod 'JGProgressHUD'
   pod 'Kingfisher'
   pod 'ESPullToRefresh'
   pod 'GoogleWebRTC'

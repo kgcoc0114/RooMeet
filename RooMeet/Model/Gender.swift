@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 // (0: male, 1: female, 2: nonBinary, 3: all)
 enum Gender: String, CaseIterable {
@@ -13,6 +14,19 @@ enum Gender: String, CaseIterable {
     case female = "Female"
     case nonBinary = "Non Binary"
     case all = "All"
+
+    var image: UIImage {
+        switch self {
+        case .male:
+            return UIImage.asset(.gender_male)
+        case .female:
+            return UIImage.asset(.gender_female)
+        case .nonBinary:
+            return UIImage.asset(.gender_non_binary)
+        case .all:
+            return UIImage(systemName: "all")!
+        }
+    }
 }
 
 enum RoomType: String, CaseIterable {
