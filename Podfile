@@ -15,5 +15,6 @@ target 'RooMeet' do
   pod 'Kingfisher'
   pod 'ESPullToRefresh'
   pod 'GoogleWebRTC'
+  pod 'lottie-ios'
 
 end
