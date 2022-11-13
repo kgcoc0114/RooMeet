@@ -25,3 +25,5 @@ struct Message: Codable, Hashable {
     var reservation: Reservation?
     var imageURL: URL?
 }
+
+

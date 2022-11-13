@@ -54,4 +54,31 @@ class RMDateFormatter {
         dateFormatter.locale = Locale(identifier: "zh_tw")
         return dateFormatter.string(from: date)
     }
+
+    func genMessageTimeString(messageTime: Timestamp) -> String {
+        let dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: messageTime.dateValue())
+        let messageTime = Date(timeIntervalSince1970: TimeInterval(messageTime.seconds))
+        let currentTime = Date()
+        let timeDiff = currentTime.timeIntervalSince(messageTime)
+
+        // 昨天
+        let lastDateTime = currentTime.addingTimeInterval(-(24*60*60))
+
+        let messageDateString = dateString(date: messageTime)
+        let currentDateString = dateString(date: currentTime)
+        let lastDateString = dateString(date: lastDateTime)
+
+        let messageTimeString = timeString(date: messageTime)
+
+        if messageDateString == currentDateString {
+            return messageTimeString
+        } else if messageDateString == lastDateString {
+            return RMConstants.shared.yesterday
+        }
+        let days = Int(timeDiff / 3600 / 24)
+        if days < 7 && days > 1 {
+            return RMWeekday.allCases[dateComponents.weekday!].descZhTw
+        }
+        return messageDateString
+    }
 }

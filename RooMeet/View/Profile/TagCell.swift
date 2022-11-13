@@ -11,10 +11,11 @@ class TagCell: UICollectionViewCell {
     static let identifier = "TagCell"
 
     @IBOutlet weak var tagButton: UIButton! {
-        didSet{
-            tagButton.layer.cornerRadius = 5
-            tagButton.tintColor = .white
-            tagButton.backgroundColor = .blue
+        didSet {
+            tagButton.isEnabled = false
+            tagButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
+            tagButton.titleLabel!.font = UIFont.regular(size: 12)
+            tagButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         }
     }
 
@@ -22,10 +23,11 @@ class TagCell: UICollectionViewCell {
         super.awakeFromNib()
     }
 
-    func styleCell(data: String) {
-        tagButton.setTitle(data, for: .normal)
+    func styleCell(backgroundColor: UIColor, tintColor: UIColor) {
+        tagButton.setTitleColor(tintColor, for: .disabled)
+        tagButton.backgroundColor = backgroundColor
     }
-    
+
     func configureCell(data: String) {
         tagButton.setTitle(data, for: .normal)
     }

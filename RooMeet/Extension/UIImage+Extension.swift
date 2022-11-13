@@ -21,4 +21,15 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return newImage ?? self
     }
+
+    static func asset(_ asset: ImageAsset) -> UIImage {
+        return UIImage(named: asset.rawValue)!
+    }
+}
+
+enum ImageAsset: String {
+    // swiftlint:disable identifier_name
+    case gender_male
+    case gender_female
+    case gender_non_binary
 }

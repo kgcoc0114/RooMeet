@@ -76,7 +76,7 @@ class RMTabBarController: UITabBarController {
         // test: uRzWzteO70l2fI1lN5L5
         // test: LNC9Lmn7s8LrvLOoymKv
 
-        let testID = "uRzWzteO70l2fI1lN5L5"
+        let testID = "LNC9Lmn7s8LrvLOoymKv"
 
         FirebaseService.shared.fetchUserByID(userID: testID) { user, index in
             if let user = user {

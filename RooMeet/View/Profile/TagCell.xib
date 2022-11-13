@@ -23,8 +23,9 @@
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3O-Nb-icf">
                                 <rect key="frame" x="5" y="5" width="152" height="57"/>
+                                <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
                             </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -48,7 +49,7 @@
             </constraints>
             <size key="customSize" width="162" height="67"/>
             <connections>
-                <outlet property="tagButton" destination="a3O-Nb-icf" id="6Gb-bX-5pN"/>
+                <outlet property="tagButton" destination="a3O-Nb-icf" id="U4k-Nd-0GM"/>
             </connections>
             <point key="canvasLocation" x="213.04347826086959" y="105.46875"/>
         </collectionViewCell>
