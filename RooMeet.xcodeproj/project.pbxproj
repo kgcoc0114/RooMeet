@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		43F0895A0D2EF93E66E808CB /* Pods_RooMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */; };
+		E5119BA3291FDA8B00A632C9 /* RoomMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119BA1291FDA8B00A632C9 /* RoomMapCell.swift */; };
+		E5119BA4291FDA8B00A632C9 /* RoomMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5119BA2291FDA8B00A632C9 /* RoomMapCell.xib */; };
 		E55C095E290D51B800DBF21B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095D290D51B800DBF21B /* Room.swift */; };
 		E55C0960290D53F900DBF21B /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095F290D53F900DBF21B /* Gender.swift */; };
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
@@ -162,6 +164,8 @@
 		572078A3C9F8A5A84AA3CAE9 /* Pods-RooMeet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RooMeet.release.xcconfig"; path = "Target Support Files/Pods-RooMeet/Pods-RooMeet.release.xcconfig"; sourceTree = "<group>"; };
 		69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RooMeet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE5A43F1B6AB4E753E5C2520 /* Pods-RooMeet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RooMeet.debug.xcconfig"; path = "Target Support Files/Pods-RooMeet/Pods-RooMeet.debug.xcconfig"; sourceTree = "<group>"; };
+		E5119BA1291FDA8B00A632C9 /* RoomMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomMapCell.swift; sourceTree = "<group>"; };
+		E5119BA2291FDA8B00A632C9 /* RoomMapCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomMapCell.xib; sourceTree = "<group>"; };
 		E55C095D290D51B800DBF21B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E55C095F290D53F900DBF21B /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -343,6 +347,33 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		E5119BA5291FDA9600A632C9 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				E5B018BE2916351300A09788 /* RoomImagesCell.swift */,
+				E5B018BF2916351300A09788 /* RoomImagesCell.xib */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		E5119BA6291FDA9F00A632C9 /* Info */ = {
+			isa = PBXGroup;
+			children = (
+				E5B018C42916354600A09788 /* RoomBasicCell.swift */,
+				E5B018C52916354600A09788 /* RoomBasicCell.xib */,
+			);
+			path = Info;
+			sourceTree = "<group>";
+		};
+		E5119BA7291FDAAB00A632C9 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				E5B018CC2916475000A09788 /* RoomItemsCell.swift */,
+				E5B018CD2916475000A09788 /* RoomItemsCell.xib */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		E55C095B290D4F5800DBF21B /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -514,12 +545,9 @@
 		E5B018B9291631B400A09788 /* RoomDetail */ = {
 			isa = PBXGroup;
 			children = (
-				E5B018BE2916351300A09788 /* RoomImagesCell.swift */,
-				E5B018BF2916351300A09788 /* RoomImagesCell.xib */,
-				E5B018C42916354600A09788 /* RoomBasicCell.swift */,
-				E5B018C52916354600A09788 /* RoomBasicCell.xib */,
-				E5B018CC2916475000A09788 /* RoomItemsCell.swift */,
-				E5B018CD2916475000A09788 /* RoomItemsCell.xib */,
+				E5119BA5291FDA9600A632C9 /* Image */,
+				E5119BA6291FDA9F00A632C9 /* Info */,
+				E5119BA7291FDAAB00A632C9 /* New Group */,
 				E5B984D7291BD78A006DD8D7 /* BookingCell.swift */,
 				E5B984D8291BD78A006DD8D7 /* BookingCell.xib */,
 				E5DEFD97291F5D810064E2C8 /* RoomFeeCell.swift */,
@@ -527,6 +555,8 @@
 				E5DEFDA0291F81F10064E2C8 /* Booking */,
 				E5DEFDA3291FC9550064E2C8 /* RoomDetailHeaderView.swift */,
 				E5DEFDA4291FC9550064E2C8 /* RoomDetailHeaderView.xib */,
+				E5119BA1291FDA8B00A632C9 /* RoomMapCell.swift */,
+				E5119BA2291FDA8B00A632C9 /* RoomMapCell.xib */,
 			);
 			path = RoomDetail;
 			sourceTree = "<group>";
@@ -933,6 +963,7 @@
 				E5B018AB2915690C00A09788 /* CUTextCell.xib in Resources */,
 				E5BDDB4B290D0E2D00F4A767 /* LaunchScreen.storyboard in Resources */,
 				E5B3377D290FAA4800467404 /* PostImageCell.xib in Resources */,
+				E5119BA4291FDA8B00A632C9 /* RoomMapCell.xib in Resources */,
 				E5B33773290F65D800467404 /* PostViewController.xib in Resources */,
 				E5B018C72916354600A09788 /* RoomBasicCell.xib in Resources */,
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
@@ -1089,6 +1120,7 @@
 				E5604FE52918EDD3007AE655 /* Config.swift in Sources */,
 				E5EEE20A2912BCC700CAAE84 /* RoomDetailViewController.swift in Sources */,
 				E5EEE20529129F6700CAAE84 /* PostalCode.swift in Sources */,
+				E5119BA3291FDA8B00A632C9 /* RoomMapCell.swift in Sources */,
 				E5DEFDA2291F92870064E2C8 /* JGProgressHUDWrapper.swift in Sources */,
 				E5E64C86290E185600F07286 /* Region.swift in Sources */,
 				E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */,

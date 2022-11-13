@@ -22,10 +22,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="88" height="105"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lML-s5-oKy">
-                                <rect key="frame" x="10" y="10" width="68" height="85"/>
+                                <rect key="frame" x="0.0" y="10" width="88" height="85"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="CS2-7u-1hf">
-                                        <rect key="frame" x="19" y="18" width="30.5" height="49"/>
+                                        <rect key="frame" x="29" y="18" width="30.5" height="49"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tls-fA-NoV">
                                                 <rect key="frame" x="6.5" y="0.0" width="17.5" height="20.5"/>
@@ -52,9 +52,9 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="lML-s5-oKy" firstAttribute="top" secondItem="1no-bI-VPV" secondAttribute="top" constant="10" id="T32-ts-RBI"/>
-                            <constraint firstItem="lML-s5-oKy" firstAttribute="leading" secondItem="1no-bI-VPV" secondAttribute="leading" constant="10" id="VvD-sE-9yo"/>
+                            <constraint firstItem="lML-s5-oKy" firstAttribute="leading" secondItem="1no-bI-VPV" secondAttribute="leading" id="VvD-sE-9yo"/>
                             <constraint firstAttribute="bottom" secondItem="lML-s5-oKy" secondAttribute="bottom" constant="10" id="rhn-aP-tWx"/>
-                            <constraint firstAttribute="trailing" secondItem="lML-s5-oKy" secondAttribute="trailing" constant="10" id="vs0-pm-OFK"/>
+                            <constraint firstAttribute="trailing" secondItem="lML-s5-oKy" secondAttribute="trailing" id="vs0-pm-OFK"/>
                         </constraints>
                     </view>
                 </subviews>

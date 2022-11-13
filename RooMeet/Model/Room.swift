@@ -44,6 +44,24 @@ struct Room: Codable, Hashable {
 //        return nil
 //    }
 
+    var billInfoList: [RoomDetailFee]? {
+        var tmpList: [RoomDetailFee] = []
+        guard let billInfo = billInfo else {
+            return tmpList
+        }
+
+        BillType.allCases.forEach { billType in
+
+            let feeDetail = billType.feeDetail(billInfo: billInfo)
+
+            if feeDetail.paid == true {
+                let roomDetailFee = RoomDetailFee(billType: billType, feeDatail: feeDetail)
+                tmpList.append(roomDetailFee)
+            }
+        }
+        return tmpList
+    }
+
     func getRoomMinPrice() -> Int? {
         let minRoom = rooms.min { $0.price! > $1.price! }
         if let minRoom = minRoom {

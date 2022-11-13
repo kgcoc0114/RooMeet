@@ -12,7 +12,7 @@ class TagCell: UICollectionViewCell {
 
     @IBOutlet weak var tagButton: UIButton! {
         didSet {
-            tagButton.isSelected = false
+            tagButton.isEnabled = false
             tagButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
             tagButton.titleLabel!.font = UIFont.regular(size: 12)
             tagButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
@@ -24,7 +24,7 @@ class TagCell: UICollectionViewCell {
     }
 
     func styleCell(backgroundColor: UIColor, tintColor: UIColor) {
-        tagButton.tintColor = tintColor
+        tagButton.setTitleColor(tintColor, for: .disabled)
         tagButton.backgroundColor = backgroundColor
     }
 

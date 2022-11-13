@@ -26,12 +26,20 @@ class RoomFeeCell: UICollectionViewCell {
         if let _ = data.isGov {
             feeLabel.text = "台\(billType.title)"
         } else {
-            feeLabel.text = "$ \(data.fee!) \(billType.unitString)"
+            guard let fee = data.fee else {
+                feeLabel.text = ""
+                return
+            }
+
+            if billType != .electricity {
+                feeLabel.text = "$ \(Int(fee)) \(billType.unitString)"
+            } else {
+                feeLabel.text = "$ \(fee) \(billType.unitString)"
+            }
         }
 
         let sperateString = data.affordType == "sperate" ? billType.sperateString : "總費用均分"
 
         affordTypeLabel.text = sperateString
     }
-
 }
