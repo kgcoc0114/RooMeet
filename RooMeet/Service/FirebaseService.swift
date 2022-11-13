@@ -40,6 +40,8 @@ enum FirestoreEndpoint {
 class FirebaseService {
     static let shared = FirebaseService()
 
+    var currentTimestamp = Timestamp()
+
     func getDocuments<T: Codable>(_ query: Query, complection: @escaping ([T]) -> Void) {
         query.getDocuments { [weak self] querySnapshot, error in
             guard let `self` = self else { return }
