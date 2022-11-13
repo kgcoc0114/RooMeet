@@ -69,11 +69,19 @@
                                             </label>
                                         </subviews>
                                     </stackView>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Ml0-OA-bAh">
+                                        <rect key="frame" x="207" y="77" width="30" height="29"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="EVW-66-wW5"/>
+                                            <constraint firstAttribute="height" constant="30" id="eMd-7d-CcR"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstItem="YXz-uf-lx4" firstAttribute="top" secondItem="MgE-Gh-gFR" secondAttribute="top" constant="16" id="3NH-vN-zUJ"/>
                                     <constraint firstItem="uTv-Lg-SLW" firstAttribute="top" secondItem="MgE-Gh-gFR" secondAttribute="top" constant="5" id="3ax-ap-4f6"/>
+                                    <constraint firstItem="Ml0-OA-bAh" firstAttribute="centerY" secondItem="MgE-Gh-gFR" secondAttribute="centerY" id="AyW-Ms-I5P"/>
                                     <constraint firstAttribute="trailing" secondItem="uTv-Lg-SLW" secondAttribute="trailing" constant="10" id="Bt9-lQ-g4r"/>
                                     <constraint firstItem="91T-qc-SsS" firstAttribute="top" secondItem="MgE-Gh-gFR" secondAttribute="top" id="CEw-d8-17Y"/>
                                     <constraint firstAttribute="bottom" secondItem="YXz-uf-lx4" secondAttribute="bottom" constant="15.5" id="Qr0-Yb-R7z"/>
@@ -81,6 +89,7 @@
                                     <constraint firstItem="YXz-uf-lx4" firstAttribute="leading" secondItem="91T-qc-SsS" secondAttribute="trailing" constant="21" id="gP3-1p-LVu"/>
                                     <constraint firstAttribute="bottom" secondItem="91T-qc-SsS" secondAttribute="bottom" id="kVE-Qi-EQW"/>
                                     <constraint firstItem="91T-qc-SsS" firstAttribute="leading" secondItem="MgE-Gh-gFR" secondAttribute="leading" id="oBL-1K-aU6"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ml0-OA-bAh" secondAttribute="trailing" constant="5" id="yGg-Qi-gNN"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -103,6 +112,7 @@
             </constraints>
             <size key="customSize" width="262" height="203"/>
             <connections>
+                <outlet property="checkImageView" destination="Ml0-OA-bAh" id="LbF-0j-J6l"/>
                 <outlet property="displayBackgroundView" destination="MgE-Gh-gFR" id="NPn-ha-rM7"/>
                 <outlet property="imageView" destination="91T-qc-SsS" id="58Z-ie-De1"/>
                 <outlet property="ownerLabel" destination="MaS-oN-EeB" id="zSE-kc-aUl"/>
@@ -115,6 +125,7 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="checkmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

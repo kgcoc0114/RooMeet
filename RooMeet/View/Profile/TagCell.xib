@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="TagCell" id="gTV-IL-0wX" customClass="TagCell" customModule="RooMeet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="162" height="67"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="162" height="67"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5wg-Qs-2ie">
+                        <rect key="frame" x="0.0" y="0.0" width="162" height="67"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a3O-Nb-icf">
+                                <rect key="frame" x="5" y="5" width="152" height="57"/>
+                                <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Button"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="a3O-Nb-icf" firstAttribute="leading" secondItem="5wg-Qs-2ie" secondAttribute="leading" constant="5" id="0hs-iG-sKt"/>
+                            <constraint firstItem="a3O-Nb-icf" firstAttribute="top" secondItem="5wg-Qs-2ie" secondAttribute="top" constant="5" id="Hye-aD-EVk"/>
+                            <constraint firstAttribute="trailing" secondItem="a3O-Nb-icf" secondAttribute="trailing" constant="5" id="ONk-f5-O7s"/>
+                            <constraint firstAttribute="bottom" secondItem="a3O-Nb-icf" secondAttribute="bottom" constant="5" id="gec-Cf-oSF"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="5wg-Qs-2ie" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="3Nl-WT-vuG"/>
+                <constraint firstItem="5wg-Qs-2ie" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="7el-hp-deG"/>
+                <constraint firstAttribute="trailing" secondItem="5wg-Qs-2ie" secondAttribute="trailing" id="FpK-mo-Oe2"/>
+                <constraint firstItem="5wg-Qs-2ie" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="QYe-UJ-0sO"/>
+                <constraint firstItem="5wg-Qs-2ie" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="aZQ-U4-UX7"/>
+                <constraint firstAttribute="bottom" secondItem="5wg-Qs-2ie" secondAttribute="bottom" id="nXt-0y-vmV"/>
+            </constraints>
+            <size key="customSize" width="162" height="67"/>
+            <connections>
+                <outlet property="tagButton" destination="a3O-Nb-icf" id="U4k-Nd-0GM"/>
+            </connections>
+            <point key="canvasLocation" x="213.04347826086959" y="105.46875"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

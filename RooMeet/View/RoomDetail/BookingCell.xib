@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="BookingCell" customModule="RooMeet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="211"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="211"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NXZ-pc-cGP">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="211"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lBr-lK-NKn" customClass="BookingView" customModule="RooMeet" customModuleProvider="target">
+                                <rect key="frame" x="10" y="10" width="300" height="191"/>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="lBr-lK-NKn" firstAttribute="leading" secondItem="NXZ-pc-cGP" secondAttribute="leading" constant="10" id="nm2-Kl-7nm"/>
+                            <constraint firstAttribute="bottom" secondItem="lBr-lK-NKn" secondAttribute="bottom" constant="10" id="pgO-mL-bon"/>
+                            <constraint firstItem="lBr-lK-NKn" firstAttribute="top" secondItem="NXZ-pc-cGP" secondAttribute="top" constant="10" id="rSA-J7-kWr"/>
+                            <constraint firstAttribute="trailing" secondItem="lBr-lK-NKn" secondAttribute="trailing" constant="10" id="vUn-3n-7X8"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="NXZ-pc-cGP" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="F32-Sh-QvP"/>
+                <constraint firstAttribute="trailing" secondItem="NXZ-pc-cGP" secondAttribute="trailing" id="azL-p9-Zwn"/>
+                <constraint firstItem="NXZ-pc-cGP" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="br1-Yu-pF7"/>
+                <constraint firstAttribute="bottom" secondItem="NXZ-pc-cGP" secondAttribute="bottom" id="wae-mi-UfA"/>
+            </constraints>
+            <size key="customSize" width="320" height="211"/>
+            <connections>
+                <outlet property="bookingView" destination="lBr-lK-NKn" id="YfW-Bz-VJq"/>
+            </connections>
+            <point key="canvasLocation" x="233.33333333333334" y="9.7098214285714288"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

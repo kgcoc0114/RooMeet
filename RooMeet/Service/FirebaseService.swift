@@ -16,6 +16,8 @@ enum FirestoreEndpoint {
     case room
     case chatRoom
     case user
+    case call
+    case reservation
 
     var colRef: CollectionReference {
         let database = Firestore.firestore()
@@ -23,16 +25,22 @@ enum FirestoreEndpoint {
         switch self {
         case .room:
             return database.collection("Room")
+        case .call:
+            return database.collection("Call")
         case .chatRoom:
             return database.collection("ChatRoom")
         case .user:
             return database.collection("User")
+        case .reservation:
+            return database.collection("Reservation")
         }
     }
 }
 
 class FirebaseService {
     static let shared = FirebaseService()
+
+    var currentTimestamp = Timestamp()
 
     func getDocuments<T: Codable>(_ query: Query, complection: @escaping ([T]) -> Void) {
         query.getDocuments { [weak self] querySnapshot, error in
@@ -97,6 +105,34 @@ class FirebaseService {
         let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", isEqualTo: [userA, userB])
 
         getDocuments(query) { [weak self] (chatRooms: [ChatRoom]) in
+            if chatRooms.isEmpty {
+                self?.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
+                    if let chatRoom = chatRoom {
+                        self?.fetchRoomMemberData(chatRooms: [chatRoom], completion: { chatRooms in
+                            if let returnChatRoom = chatRooms.first {
+                                completion(returnChatRoom)
+                            }
+                        })
+                    }
+                }
+            } else {
+                self?.fetchRoomMemberData(chatRooms: chatRooms, completion: { chatRooms in
+                    if let returnChatRoom = chatRooms.first {
+                        completion(returnChatRoom)
+                    }
+                })
+            }
+        }
+    }
+
+    func getChatRoomByUserID(userA: String, userB: String, completion: @escaping ((ChatRoom) -> Void)) {
+        let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", arrayContains: userA)
+
+        getDocuments(query) { [weak self] (chatRooms: [ChatRoom]) in
+            var chatRooms = chatRooms
+            chatRooms = chatRooms.filter({ $0.members.contains(userB)
+            })
+            print(chatRooms)
             if chatRooms.isEmpty {
                 self?.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
                     if let chatRoom = chatRoom {
@@ -291,6 +327,167 @@ class FirebaseService {
         }
     }
 
+    func fetchRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
+        let query = FirestoreEndpoint.room.colRef
+            .whereField("userID", isEqualTo: userID)
+            .order(by: "createdTime", descending: true)
+
+        let group = DispatchGroup()
+        getDocuments(query) { (rooms: [Room]) in
+            var rooms = rooms
+            rooms.enumerated().forEach { index, roomResult in
+                let ownerID = roomResult.userID
+                group.enter()
+                self.fetchUserByID(userID: ownerID, index: index) { user, index in
+                    if
+                        let user = user,
+                        let index = index {
+                        rooms[index].userData = user
+                    }
+                    group.leave()
+                }
+            }
+            group.notify(queue: DispatchQueue.main) {
+                completion(rooms)
+            }
+        }
+    }
+
+    func fetchFavoriteRoomsByUserID(roomIDList: [String]?, completion: @escaping (([Room]) -> Void)) {
+        guard let roomIDList = roomIDList else {
+            return
+        }
+        var rooms: [Room] = []
+        let group = DispatchGroup()
+        roomIDList.forEach { roomID in
+            group.enter()
+            fetchRoomByRoomID(roomID: roomID) { room in
+                rooms.append(room)
+                group.leave()
+            }
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            completion(rooms)
+        }
+    }
+
+    func fetchReservationByID(reservationID: String, completion: @escaping ((Reservation) -> Void)) {
+        let query = FirestoreEndpoint.reservation.colRef.document(reservationID)
+
+        query.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    let reservation = try document.data(as: Reservation.self)
+                    completion(reservation)
+                } catch {
+                    print("ERROR: \(error.localizedDescription)")
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
+
+    func fetchReservationRoomsByUserID(reservationList: [String]?, completion: @escaping (([Reservation]) -> Void)) {
+        guard let reservationList = reservationList else {
+            return
+        }
+        var reservations: [Reservation] = []
+        var rooms: [Room] = []
+        let group = DispatchGroup()
+        reservationList.enumerated().forEach { index, reservationID in
+            group.enter()
+            fetchReservationByID(reservationID: reservationID) { [weak self] reservation in
+                reservations.append(reservation)
+                guard let roomID = reservation.roomID else {
+                    return
+                }
+                self?.fetchRoomByRoomID(roomID: roomID) { room in
+                    rooms.append(room)
+                    group.leave()
+                }
+            }
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            let roomIDList = rooms.map({ room in
+                room.roomID
+            })
+
+            let rsvns = reservations.map { reservation -> Reservation in
+                var rsvn = reservation
+                if let roomID = rsvn.roomID,
+                   let roomIndex = roomIDList.firstIndex(of: roomID) {
+                    rsvn.roomDetail = rooms[roomIndex]
+                }
+                return rsvn
+            }
+            completion(rsvns)
+        }
+    }
+
+    func fetchRoomByRoomID(roomID: String, completion: @escaping ((Room) -> Void)) {
+        let query = FirestoreEndpoint.room.colRef.document(roomID)
+
+        query.getDocument { [weak self] document, error in
+            guard let `self` = self else { return }
+            if let document = document, document.exists {
+                do {
+                    var room = try document.data(as: Room.self)
+
+                    self.fetchUserByID(userID: room.userID) { user, _ in
+                        room.userData = user
+
+                        completion(room)
+                    }
+                } catch {
+                    print("ERROR: \(error.localizedDescription)")
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
+
+    func fetchRoomWithOwnerData(roomID: String, completion: @escaping ((Room) -> Void)) {
+        let query = FirestoreEndpoint.room.colRef.document(roomID)
+
+        query.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    let room = try document.data(as: Room.self)
+                    completion(room)
+                } catch {
+                    print("ERROR: \(error.localizedDescription)")
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
+
+    func fetchRoomsOwnByUserID(roomIDList: [String]?, completion: @escaping (([Room]) -> Void)) {
+        guard let roomIDList = roomIDList else {
+            return
+        }
+        var rooms: [Room] = []
+        let group = DispatchGroup()
+        roomIDList.forEach { roomID in
+            group.enter()
+            fetchRoomByRoomID(roomID: roomID) { room in
+                rooms.append(room)
+                group.leave()
+            }
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            completion(rooms)
+        }
+    }
+}
+
+extension FirebaseService {
     // MARK: - Chat Room
     func fetchMessagesbyChatRoomID(chatRoomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
         let query = FirestoreEndpoint.chatRoom.colRef.document(chatRoomID).collection("Message")

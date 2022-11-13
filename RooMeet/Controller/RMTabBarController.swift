@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseFirestoreSwift
+
 private enum Tab: String, CaseIterable {
     case home = "首頁"
     case explore = "探索"
@@ -66,8 +69,57 @@ class RMTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        listenPhoneCallEvent()
     }
 
+    func listenPhoneCallEvent() {
+        // test: uRzWzteO70l2fI1lN5L5
+        // test: LNC9Lmn7s8LrvLOoymKv
+
+        let testID = "LNC9Lmn7s8LrvLOoymKv"
+
+        FirebaseService.shared.fetchUserByID(userID: testID) { user, index in
+            if let user = user {
+                gCurrentUser = user
+            }
+        }
+        FirebaseService.shared.getChatRoomByUserID(userA: "uRzWzteO70l2fI1lN5L5", userB: "LNC9Lmn7s8LrvLOoymKv") { chatroom in
+            print(chatroom)
+        }
+        print("gCurrentUser.id = ", gCurrentUser.id)
+        FirestoreEndpoint.call.colRef
+            .whereField("callee", isEqualTo: testID)
+            .addSnapshotListener({ [weak self] querySnapshot, error in
+                if let error = error {
+                    print("Error getting documents: \(error)")
+                }
+
+                guard let snapshot = querySnapshot else {
+                    print("Error fetching snapshots: \(error)")
+                    return
+                }
+
+                snapshot.documentChanges.forEach { diff in
+                    print(diff)
+                    if diff.type == .added {
+                        self?.showCallVC(document: diff.document)
+                    }
+                }
+            })
+    }
+
+    func showCallVC(document: QueryDocumentSnapshot) {
+        do {
+            let call = try document.data(as: Call.self)
+
+            if call.caller != gCurrentUser.id && call.status == "offer" {
+
+                let callViewController = CallViewController(callRoomId: call.id, callType: .answer, callerData: call.callerData, calleeData: call.calleeData)
+                callViewController.modalPresentationStyle = .fullScreen
+                self.present(callViewController, animated: true)
+            }
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
 }
