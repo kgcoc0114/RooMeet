@@ -25,20 +25,38 @@ class ProfileRSVNViewController: UIViewController {
             }
         }
     }
+    lazy var reservationAnimationView =  RMLottie.shared.reservationAnimationView
+    @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.title = "Reservations"
 
+
         collectionView.delegate = self
 
         configureCollectionView()
+
+        configureAnimationView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         // fetch room to display
         fetchReservations()
+        RMLottie.shared.startAnimate(animationView: reservationAnimationView)
+    }
+
+    private func configureAnimationView() {
+        animationView.addSubview(reservationAnimationView)
+
+        NSLayoutConstraint.activate([
+            reservationAnimationView.widthAnchor.constraint(equalTo: animationView.widthAnchor),
+            reservationAnimationView.heightAnchor.constraint(equalTo: animationView.heightAnchor),
+            reservationAnimationView.centerXAnchor.constraint(equalTo: animationView.centerXAnchor),
+            reservationAnimationView.centerYAnchor.constraint(equalTo: animationView.centerYAnchor)
+        ])
+
     }
 
     private func configureCollectionView() {

@@ -121,6 +121,7 @@
 		E5D9C046291E4FF900F416E6 /* OUImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D9C044291E4FF900F416E6 /* OUImageCell.xib */; };
 		E5DC0FE32911FFB300EB57FD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC0FE22911FFB300EB57FD /* LocationService.swift */; };
 		E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */; };
+		E5DEEEB52921150A00A649C1 /* Reservation.json in Resources */ = {isa = PBXBuildFile; fileRef = E5DEEEB42921150A00A649C1 /* Reservation.json */; };
 		E5DEFD8D291F3AF60064E2C8 /* CUCallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEFD8B291F3AF60064E2C8 /* CUCallCell.swift */; };
 		E5DEFD8E291F3AF60064E2C8 /* CUCallCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DEFD8C291F3AF60064E2C8 /* CUCallCell.xib */; };
 		E5DEFD91291F3B0A0064E2C8 /* OUCallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEFD8F291F3B0A0064E2C8 /* OUCallCell.swift */; };
@@ -284,6 +285,7 @@
 		E5D9C044291E4FF900F416E6 /* OUImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OUImageCell.xib; sourceTree = "<group>"; };
 		E5DC0FE22911FFB300EB57FD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
+		E5DEEEB42921150A00A649C1 /* Reservation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Reservation.json; sourceTree = "<group>"; };
 		E5DEFD8B291F3AF60064E2C8 /* CUCallCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUCallCell.swift; sourceTree = "<group>"; };
 		E5DEFD8C291F3AF60064E2C8 /* CUCallCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUCallCell.xib; sourceTree = "<group>"; };
 		E5DEFD8F291F3B0A0064E2C8 /* OUCallCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUCallCell.swift; sourceTree = "<group>"; };
@@ -439,6 +441,7 @@
 		E55C0970290D627000DBF21B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				E5DEEEB42921150A00A649C1 /* Reservation.json */,
 				E51419C82920D52100813D25 /* CallWaitingView.json */,
 				E5EEE20229129C6000CAAE84 /* PostalCode.json */,
 				E55C0971290D628400DBF21B /* Constants.swift */,
@@ -1000,6 +1003,7 @@
 				E5E64C93290E3D3E00F07286 /* Home.storyboard in Resources */,
 				E5EEE1F8291214C300CAAE84 /* Explore.storyboard in Resources */,
 				E59B8319291A259500F02CEC /* CallCell.xib in Resources */,
+				E5DEEEB52921150A00A649C1 /* Reservation.json in Resources */,
 				E593F014291012DF00B35550 /* RulesHeaderCell.xib in Resources */,
 				E5B984DA291BD78A006DD8D7 /* BookingCell.xib in Resources */,
 				E593F00A2910065C00B35550 /* RulesCell.xib in Resources */,
