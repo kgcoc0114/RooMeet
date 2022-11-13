@@ -11,11 +11,12 @@ class RMConstants {
 
     let buttonCornerRadius: CGFloat = 10
     let tagCornerRadius: CGFloat = 8
-    let reservationDays: Int = 5
+    let reservationDays: Int = 6
     let textFontSize: CGFloat = 12
     let title3FontSize: CGFloat = 15
     let title2FontSize: CGFloat = 20
     let title2FontColor = UIColor.hexColor(hex: "#363130")
+    let mapCenterButtonWidth: CGFloat = 36
 
     // Intorduction Page
     let profileImageWidth: CGFloat = 120
