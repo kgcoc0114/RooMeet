@@ -29,18 +29,6 @@ class ProfileRSVNViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //        navigationItem.rightBarButtonItem = UIBarButtonItem(
-        //            image: UIImage(systemName: "plus"),
-        //            style: .plain,
-        //            target: self,
-        //            action: #selector(addRoomPost))
-        //
-        //        navigationItem.leftBarButtonItem = UIBarButtonItem(
-        //            image: UIImage(systemName: "slider.horizontal.3"),
-        //            style: .plain,
-        //            target: self,
-        //            action: #selector(showFilterPage))
-        // set title
         navigationItem.title = "Reservations"
 
         collectionView.delegate = self
