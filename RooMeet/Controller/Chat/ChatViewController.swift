@@ -168,6 +168,7 @@ class ChatViewController: UIViewController {
         )
         callViewController.otherUserData = otherData
         callViewController.currentUserData = currentUserData
+        callViewController.modalPresentationStyle = .fullScreen
         present(callViewController, animated: true)
     }
 }

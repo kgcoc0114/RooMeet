@@ -13,7 +13,7 @@ import FirebaseFirestoreSwift
 class CallViewController: UIViewController {
     // for webRTC
     private let webRTCClient = WebRTCClient(iceServers: Config.default.webRTCIceServers)
-    private var hasLocalSdp: Bool = false
+    private var hasLocalSdp = false
     var state: RTCIceConnectionState?
 
     var chatRoom: ChatRoom?
@@ -33,16 +33,51 @@ class CallViewController: UIViewController {
     var callStatus: String?
     var completion: ((Message) -> Void)?
 
-    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var hangUpButtonView: UIImageView! {
+        didSet {
+            let hangUpTapGR = UITapGestureRecognizer(target: self, action: #selector(hangUpTapped))
+
+            hangUpButtonView.isUserInteractionEnabled = true
+            hangUpButtonView.addGestureRecognizer(hangUpTapGR)
+        }
+    }
+
+    @IBOutlet weak var answerButtonView: UIImageView! {
+        didSet {
+            let answerTapGR = UITapGestureRecognizer(target: self, action: #selector(answerTapped))
+
+            answerButtonView.isUserInteractionEnabled = true
+            answerButtonView.animationDuration = 10
+            answerButtonView.addGestureRecognizer(answerTapGR)
+        }
+    }
+
+    @IBOutlet weak var callerImageView: UIImageView! {
+        didSet {
+            callerImageView.contentMode = .scaleAspectFill
+        }
+    }
+
+    @IBOutlet weak var callerNameLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel! {
+        didSet {
+            statusLabel.textColor = .white
+            statusLabel.translatesAutoresizingMaskIntoConstraints = false
+        }
+    }
     @IBOutlet weak var answerButton: UIButton!
     @IBOutlet weak var hangUpButton: UIButton!
     @IBOutlet weak var callTimeLabel: UILabel! {
         didSet {
             callTimeLabel.isHidden = true
+            callTimeLabel.textColor = .white
+            callTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         }
     }
 
     private var listener: ListenerRegistration?
+
+    lazy var animationView = RMLottie.shared.callAnimationView
 
     init(callRoomId: String, callType: CallType, callerData: ChatMember, calleeData: ChatMember) {
         super.init(nibName: "CallViewController", bundle: nil)
@@ -66,12 +101,30 @@ class CallViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         webRTCClient.delegate = self
+        view.addSubview(animationView)
+
+        NSLayoutConstraint.activate([
+            animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.15),
+            animationView.heightAnchor.constraint(equalToConstant: 50),
+            animationView.topAnchor.constraint(equalTo: callerNameLabel.topAnchor, constant: 30)
+        ])
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUp()
         listenCall()
+
+        guard let otherUserData = otherUserData else {
+            return
+        }
+
+        callerImageView.setImage(urlString: otherUserData.profilePhoto)
+    }
+
+    override func viewDidLayoutSubviews() {
+        callerImageView.layer.cornerRadius = callerImageView.bounds.width / 2
     }
 
     func setUp() {
@@ -79,116 +132,93 @@ class CallViewController: UIViewController {
         case .offer:
             statusLabel.text = "wait for ..."
             offerDidTap()
+            RMLottie.shared.startCallAnimate(animationView: animationView)
         case .answer:
             print("需要接電話")
+            RMLottie.shared.startCallAnimate(animationView: animationView)
         }
     }
 
     func listenCall() {
-        Firestore.firestore().collection("Call").document(callRoomId!)
+        FirestoreEndpoint.call.colRef.document(callRoomId!)
             .addSnapshotListener { [weak self] documentSnapshot, error in
-                guard let document = documentSnapshot else {
-                    print("Error fetching document: \(error!)")
-                    return
-                }
-                guard let data = document.data() else {
+                guard let `self` = self else { return }
+
+                guard
+                    let document = documentSnapshot,
+                    let _ = document.data() else {
                     print("Document data was empty.")
-//                    self?.dismiss(animated: true)
                     return
                 }
+
                 do {
                     let call = try document.data(as: Call.self)
-                    print("====", call.status)
-                    var status: String
-                    self?.callStatus = call.status
+
+                    var status: String = ""
+                    self.callStatus = call.status
+
                     switch call.status {
                     case "close":
                         status = "結束通話"
-                        self?.callTimeLabel.isHidden = false
-                        self?.answerButton.isHidden = true
-
+                        self.updateComponentStatus(answer: true)
                     case "answer":
-                        self?.startTime = call.startTime
-                        self?.callTimeLabel.isHidden = false
-                        self?.hangUpButton.isHidden = false
-                        self?.answerButton.isHidden = true
+                        self.startTime = call.startTime
+                        self.updateComponentStatus(answer: true)
                         status = "開始通話中"
-
+                        self.animationView.isHidden = true
+                        RMLottie.shared.endCallAnimate(animationView: self.animationView)
                     case "offer":
-                        self?.startTime = call.startTime
+                        self.startTime = call.startTime
                         if call.caller == gCurrentUser.id {
-                            status = "等待\(self?.otherUserData!.name)回覆中"
-                            self?.hangUpButton.isHidden = false
-                            self?.answerButton.isHidden = true
-
+                            self.updateComponentStatus(answer: true, status: true)
+                            RMLottie.shared.startCallAnimate(animationView: self.animationView)
                         } else {
-                            status = "\(self?.otherUserData!.name)\n打電話給你"
-                            self?.hangUpButton.isHidden = false
-                            self?.answerButton.isHidden = false
+                            self.updateComponentStatus(status: true)
                         }
                     case "cancel":
                         status = ""
-                        self?.dismiss(animated: true)
+                        self.dismiss(animated: true)
                     default:
                         status = ""
                     }
                     DispatchQueue.main.async {
-                        self?.statusLabel.text = status
-                        self?.callTimeLabel.text = "通話時間: \(call.callTime)"
+                        self.statusLabel.text = status
+                        if let otherUserData = self.otherUserData {
+                            self.callerNameLabel.text = otherUserData.name
+                        } else {
+                            self.callerNameLabel.text = "有人打電話來了"
+                        }
+
+                        guard let callTime = call.callTime else {
+                            self.callTimeLabel.isHidden = true
+                            return
+                        }
+                        self.callTimeLabel.text = "通話時間: \(callTime)"
                     }
-                } catch let DecodingError.dataCorrupted(context) {
-                    print(context)
-                } catch let DecodingError.keyNotFound(key, context) {
-                    print("Key '\(key)' not found:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch let DecodingError.valueNotFound(value, context) {
-                    print("Value '\(value)' not found:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
-                } catch let DecodingError.typeMismatch(type, context) {
-                    print("Type '\(type)' mismatch:", context.debugDescription)
-                    print("codingPath:", context.codingPath)
                 } catch {
                     print("error: ", error)
                 }
             }
     }
 
-    private func dealWithHangUp() {
-//        guard
-//            let callRoomId = self.callRoomId,
-//            let callerData = self.callerData
-//        else { return }
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            self?.webRTCClient.closeConnection()
-        }
-
-        endTime = Timestamp()
-        guard
-            let sTime = startTime,
-            let eTime = endTime else {
-            return
-        }
-        callTime = RMDateFormatter.shared.getTimeIntervalString(startTimestamp: sTime, endTimestamp: eTime)
-        print(callTime)
-        updateCallData(status: "close", content: callTime ?? "")
+    func updateComponentStatus(
+        hangUp: Bool = false,
+        answer: Bool = false,
+        status: Bool = false,
+        callTime: Bool = false
+    ) {
+        hangUpButtonView.isHidden = hangUp
+        answerButtonView.isHidden = answer
+        statusLabel.isHidden = status
+        callTimeLabel.isHidden = callTime
     }
 
-    @IBAction func answer(_ sender: Any) {
-        joinARoom()
-    }
-
-    @IBAction func hangUp(_ sender: Any) {
-        guard
-            let callRoomId = self.callRoomId,
-            let callerData = self.callerData
-        else { return }
-
+    @objc private func hangUpTapped() {
         if state == .closed || state == .failed {
             print("被掛電話")
         } else {
             // 自播自己取消
             if callStatus == "offer" && callType == .offer {
-                print("======== 自播自己取消")
                 DispatchQueue.global(qos: .background).async { [weak self] in
                     self?.webRTCClient.closeConnection()
                 }
@@ -199,7 +229,6 @@ class CallViewController: UIViewController {
 
                 // 掛對方來電
             } else if callStatus == "offer" && callType == .answer {
-                print("======== 掛對方來電")
                 DispatchQueue.global(qos: .background).async { [weak self] in
                     self?.webRTCClient.closeConnection()
                 }
@@ -212,9 +241,34 @@ class CallViewController: UIViewController {
                 if callStatus != "close" {
                     dealWithHangUp()
                 }
+
+                DispatchQueue.global(qos: .background).async { [weak self] in
+                    self?.webRTCClient.closeConnection()
+                }
+
                 dismiss(animated: true)
             }
         }
+    }
+
+    @objc private func answerTapped() {
+        joinARoom()
+    }
+
+
+    private func dealWithHangUp() {
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            self?.webRTCClient.closeConnection()
+        }
+
+        endTime = Timestamp()
+        guard
+            let sTime = startTime,
+            let eTime = endTime else {
+            return
+        }
+        callTime = RMDateFormatter.shared.getTimeIntervalString(startTimestamp: sTime, endTimestamp: eTime)
+        updateCallData(status: "close", content: callTime ?? "")
     }
 
     func updateCallData(status: String, content: String) {
@@ -223,8 +277,8 @@ class CallViewController: UIViewController {
             let callerData = self.callerData
         else { return }
 
-        let docRef = Firestore.firestore().collection("Call").document(callRoomId)
-        var updateData: [AnyHashable : Any]
+        let docRef = FirestoreEndpoint.call.colRef.document(callRoomId)
+        var updateData: [AnyHashable: Any]
         if status == "close" {
             updateData = [
                 "status": status,
@@ -277,7 +331,7 @@ class CallViewController: UIViewController {
             let callRoomId = self.callRoomId
         else { return }
 
-        Firestore.firestore().collection("Call").document(callRoomId).delete() { err in
+        FirestoreEndpoint.call.colRef.document(callRoomId).delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
             } else {
@@ -324,10 +378,8 @@ extension CallViewController {
                     "status": "offer"
                 ] as [String: Any]
 
-                let roomRef = Firestore.firestore().collection("Call").document(callRoomId)
+                let roomRef = FirestoreEndpoint.call.colRef.document(callRoomId)
                 roomRef.setData(roomWithOffer)
-                //            let answerCandidates = roomRef.collection("answerCandidates")
-                //            let offerCandidates = roomRef.collection("offerCandidates")
                 self.roomId = roomRef.documentID
                 print("Current room is \(self.roomId!) - You are the caller!")
                 self.listenRoom()
@@ -341,24 +393,23 @@ extension CallViewController {
             let callRoomId = self.callRoomId
         else { return }
 
-        listener = Firestore.firestore().collection("Call").document(callRoomId).addSnapshotListener({ querySnapshot, error in
+        listener = FirestoreEndpoint.call.colRef.document(callRoomId).addSnapshotListener { querySnapshot, error in
             guard let snapshot = querySnapshot else {
-                print("Error fetching snapshot results: \(error!)")
+                print("Error fetching snapshot results: \(error as Any)")
                 return
             }
             do {
                 let data = try snapshot.data(as: Call.self)
-                if let dataAnswer = data.answer,
-                   data.status != "close" {
+                if let dataAnswer = data.answer, data.status != "close" {
                     let answer = RTCSessionDescription(type: RTCSdpType.answer, sdp: dataAnswer.sdp)
                     self.webRTCClient.set(remoteSdp: answer) { error in
-                        print(error)
+                        print(error as Any)
                     }
                 }
             } catch {
                 print(error.localizedDescription)
             }
-        })
+        }
     }
 
     private func listenAnswerCandidates() {
@@ -366,16 +417,17 @@ extension CallViewController {
             let callRoomId = self.callRoomId
         else { return }
 
-        listener = Firestore.firestore()
-            .collection("Call")
+        listener = FirestoreEndpoint.call.colRef
             .document(callRoomId)
-            .collection("answerCandidates").addSnapshotListener({ [weak self] querySnapshot, error in
+            .collection("answerCandidates")
+            .addSnapshotListener { [weak self] querySnapshot, error in
+                guard let `self` = self else { return }
                 guard let snapshot = querySnapshot else {
                     print("Error fetching snapshot results: \(error!)")
                     return
                 }
 
-                snapshot.documentChanges.forEach({ documentChange in
+                snapshot.documentChanges.forEach { documentChange in
                     do {
                         let candidateChange = try documentChange.document.data(as: Candidate.self)
                         switch documentChange.type {
@@ -385,8 +437,9 @@ extension CallViewController {
                                 sdpMLineIndex: Int32(candidateChange.sdpMLineIndex),
                                 sdpMid: candidateChange.sdpMid
                             )
-                            self?.webRTCClient.set(remoteCandidate: remoteCandidate) { error in
-                                print(error?.localizedDescription)
+                            self.webRTCClient.set(remoteCandidate: remoteCandidate) { error in
+                                guard let error = error else { return }
+                                print(error.localizedDescription)
                             }
                         case .modified:
                             break
@@ -396,8 +449,8 @@ extension CallViewController {
                     } catch {
                         print("")
                     }
-                })
-            })
+                }
+            }
     }
 
     // MARK: - answer phone call
@@ -408,27 +461,30 @@ extension CallViewController {
         callType = .answer
 
         DispatchQueue.global(qos: .background).async {
-            let docRef = Firestore.firestore().collection("Call").document(callRoomId)
+            let docRef = FirestoreEndpoint.call.colRef.document(callRoomId)
             docRef.getDocument { document, error in
                 if let document = document, document.exists {
-                    let offer = try! document.data(as: Call.self).offer
+                    guard let offer = try? document.data(as: Call.self).offer else { return }
                     let offerSdp = RTCSessionDescription(type: RTCSdpType.offer, sdp: offer.sdp)
                     self.webRTCClient.set(remoteSdp: offerSdp) { error in
-                        print(error?.localizedDescription)
+                        guard let error = error else { return }
+                        print(error.localizedDescription)
                     }
 
                     self.startTime = Timestamp()
                     self.webRTCClient.answer { [weak self] sdp in
+                        guard let `self` = self else { return }
+
                         let roomWithAnswer = [
                             "answer": [
                                 "type": sdp.value(forKey: "type"),
                                 "sdp": sdp.value(forKey: "sdp")
                             ],
                             "status": "answer",
-                            "startTime": self?.startTime ?? Timestamp()
+                            "startTime": self.startTime ?? Timestamp()
                         ] as [String: Any]
                         docRef.updateData(roomWithAnswer)
-                        self?.listenOfferCandidates()
+                        self.listenOfferCandidates()
                     }
                 } else {
                     print("Document does not exist")
@@ -442,21 +498,20 @@ extension CallViewController {
             let callRoomId = self.callRoomId
         else { return }
 
-        listener = Firestore.firestore()
-            .collection("Call")
+        listener = FirestoreEndpoint.call.colRef
             .document(callRoomId)
             .collection("offerCandidates")
-            .addSnapshotListener({ [weak self] querySnapshot, error in
+            .addSnapshotListener { [weak self] querySnapshot, error in
                 guard let snapshot = querySnapshot else {
                     print("Error fetching snapshot results: \(error!)")
                     return
                 }
-                snapshot.documentChanges.forEach({ documentChange in
+                snapshot.documentChanges.forEach { documentChange in
                     do {
                         let candidateChange = try documentChange.document.data(as: Candidate.self)
                         switch documentChange.type {
                         case .added:
-//                            let data = documentChange.document.data()
+
                             let remoteCandidate = RTCIceCandidate(
                                 sdp: candidateChange.candidate,
                                 sdpMLineIndex: Int32(candidateChange.sdpMLineIndex),
@@ -475,8 +530,8 @@ extension CallViewController {
                     } catch {
                         print("")
                     }
-                })
-            })
+                }
+            }
     }
 }
 
@@ -487,7 +542,7 @@ extension CallViewController: WebRTCClientDelegate {
             let sdpMid = candidate.sdpMid
         else { return }
 
-        let docRef = Firestore.firestore().collection("Call").document(callRoomId)
+        let docRef = FirestoreEndpoint.call.colRef.document(callRoomId)
 
         switch callType {
         case .offer:
@@ -510,34 +565,6 @@ extension CallViewController: WebRTCClientDelegate {
     }
 
     func webRTCClient(_ client: WebRTCClient, didChangeConnectionState state: RTCIceConnectionState) {
-        let textColor: UIColor
-        switch state {
-        case .connected, .completed:
-            print("==== .connected, .completed")
-
-            textColor = .green
-        case .disconnected:
-            print("==== .disconnected")
-
-            textColor = .orange
-        case .failed, .closed:
-            print("===== .failed, .closed")
-            textColor = .red
-        case .new, .checking, .count:
-
-            print("==== .new, .checking, .count")
-            textColor = .black
-        @unknown default:
-            textColor = .black
-        }
-    }
-
-    func webRTCClient(_ client: WebRTCClient, didReceiveData data: Data) {
-        DispatchQueue.main.async {
-            let message = String(data: data, encoding: .utf8) ?? "(Binary: \(data.count) bytes)"
-            let alert = UIAlertController(title: "Message from WebRTC", message: message, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-        }
+        self.state = state
     }
 }
