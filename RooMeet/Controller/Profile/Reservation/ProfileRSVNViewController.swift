@@ -25,48 +25,54 @@ class ProfileRSVNViewController: UIViewController {
             }
         }
     }
+    lazy var reservationAnimationView =  RMLottie.shared.reservationAnimationView
+    @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //        navigationItem.rightBarButtonItem = UIBarButtonItem(
-        //            image: UIImage(systemName: "plus"),
-        //            style: .plain,
-        //            target: self,
-        //            action: #selector(addRoomPost))
-        //
-        //        navigationItem.leftBarButtonItem = UIBarButtonItem(
-        //            image: UIImage(systemName: "slider.horizontal.3"),
-        //            style: .plain,
-        //            target: self,
-        //            action: #selector(showFilterPage))
-        // set title
         navigationItem.title = "Reservations"
+
 
         collectionView.delegate = self
 
         configureCollectionView()
+
+        configureAnimationView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         // fetch room to display
         fetchReservations()
+        RMLottie.shared.startAnimate(animationView: reservationAnimationView)
+    }
+
+    private func configureAnimationView() {
+        animationView.addSubview(reservationAnimationView)
+
+        NSLayoutConstraint.activate([
+            reservationAnimationView.widthAnchor.constraint(equalTo: animationView.widthAnchor),
+            reservationAnimationView.heightAnchor.constraint(equalTo: animationView.heightAnchor),
+            reservationAnimationView.centerXAnchor.constraint(equalTo: animationView.centerXAnchor),
+            reservationAnimationView.centerYAnchor.constraint(equalTo: animationView.centerYAnchor)
+        ])
+
     }
 
     private func configureCollectionView() {
         collectionView.register(
-            UINib(nibName: "RoomDisplayCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomDisplayCell.identifier)
+            UINib(nibName: "ReservationDisplayCell", bundle: nil),
+            forCellWithReuseIdentifier: ReservationDisplayCell.identifier)
 
         dataSource = ProfileRSVNDataSource(collectionView: collectionView) { collectionView, indexPath, reservation in
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoomDisplayCell.identifier,
-                for: indexPath) as? RoomDisplayCell else {
+                withReuseIdentifier: ReservationDisplayCell.identifier,
+                for: indexPath) as? ReservationDisplayCell else {
                 return UICollectionViewCell()
             }
 
-            cell.checkImageView.isHidden = true
-            cell.configureCell(data: reservation.roomDetail!)
+//            cell.checkImageView.isHidden = true
+            cell.configureCell(data: reservation)
             return cell
         }
 
@@ -89,12 +95,12 @@ extension ProfileRSVNViewController {
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .absolute(200))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .absolute(200))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item])

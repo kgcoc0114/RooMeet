@@ -49,7 +49,7 @@ class OUReservationCell: MessageBaseCell {
         didSet {
             avatarView.translatesAutoresizingMaskIntoConstraints = false
             avatarView.contentMode = .scaleToFill
-            avatarView.layer.cornerRadius = RMConstants.shared.avaterImageWidth / 2
+            avatarView.layer.cornerRadius = RMConstants.shared.avatarImageWidth / 2
         }
     }
 

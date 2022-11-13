@@ -96,6 +96,12 @@ class RoomDetailViewController: UIViewController {
         }
     }
 
+    @IBOutlet weak var ownerAvatarView: UIImageView! {
+        didSet {
+            ownerAvatarView.contentMode = .scaleAspectFill
+        }
+    }
+
     @IBOutlet weak var nameLabel: UILabel! {
         didSet {
             nameLabel.font = UIFont.regular(size: 18)
@@ -144,10 +150,15 @@ class RoomDetailViewController: UIViewController {
             nameLabel.text = userData.name
             ageLabel.text = "\(userData.age)"
             genderImageView.image = Gender.allCases[userData.gender].image
+            ownerAvatarView.setImage(urlString: userData.profilePhoto)
         }
         dealWithBillInfo()
         self.tabBarController?.tabBar.isHidden = true
         updateDataSource()
+    }
+
+    override func viewDidLayoutSubviews() {
+        ownerAvatarView.layer.cornerRadius = ownerAvatarView.bounds.width / 2
     }
 
     @objc private func backAction() {

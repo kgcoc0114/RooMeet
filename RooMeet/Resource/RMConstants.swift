@@ -17,14 +17,14 @@ class RMConstants {
     let title2FontSize: CGFloat = 20
     let title2FontColor = UIColor.hexColor(hex: "#363130")
     let mapCenterButtonWidth: CGFloat = 36
-
+    let mainColor = UIColor.hexColor(hex: "#274156")
     // Intorduction Page
     let profileImageWidth: CGFloat = 120
     // MARK: - Room Detail Page
 
     // MARK: - Chat Page
     // MARK: -- message
-    let avaterImageWidth: CGFloat = 40
+    let avatarImageWidth: CGFloat = 40
     let messageImageWidth: CGFloat = 120
     let messageCornerRadius: CGFloat = 10
     let OULeading: CGFloat = 10

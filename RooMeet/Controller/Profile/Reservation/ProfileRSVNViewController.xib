@@ -11,6 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProfileRSVNViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
+                <outlet property="animationView" destination="3qq-Qe-PCh" id="RMS-z2-LkT"/>
                 <outlet property="collectionView" destination="TMl-ZN-Fq3" id="chV-7h-dMk"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -21,7 +22,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="TMl-ZN-Fq3">
-                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <rect key="frame" x="0.0" y="164" width="414" height="698"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="2ty-aZ-QfE">
                         <size key="itemSize" width="128" height="128"/>
@@ -30,14 +31,24 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3qq-Qe-PCh">
+                    <rect key="frame" x="0.0" y="44" width="414" height="120"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="120" id="Snd-35-h0T"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="3qq-Qe-PCh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="990-1n-7Ab"/>
+                <constraint firstItem="3qq-Qe-PCh" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="KnN-OS-dZx"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="TMl-ZN-Fq3" secondAttribute="bottom" id="aYE-qM-h8C"/>
                 <constraint firstItem="TMl-ZN-Fq3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="cof-DB-ftY"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TMl-ZN-Fq3" secondAttribute="trailing" id="eIY-3l-0Qd"/>
-                <constraint firstItem="TMl-ZN-Fq3" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="uNP-GW-spU"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="3qq-Qe-PCh" secondAttribute="trailing" id="gLb-0P-aWh"/>
+                <constraint firstItem="TMl-ZN-Fq3" firstAttribute="top" secondItem="3qq-Qe-PCh" secondAttribute="bottom" id="uNP-GW-spU"/>
             </constraints>
             <point key="canvasLocation" x="132" y="92"/>
         </view>
