@@ -40,7 +40,7 @@ class OUCallCell: MessageBaseCell {
     @IBOutlet weak var avatarView: UIImageView! {
         didSet {
             avatarView.translatesAutoresizingMaskIntoConstraints = false
-            avatarView.contentMode = .scaleToFill
+            avatarView.contentMode = .scaleAspectFill
             avatarView.layer.cornerRadius = RMConstants.shared.avatarImageWidth / 2
         }
     }
