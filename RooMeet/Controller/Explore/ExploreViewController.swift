@@ -10,6 +10,18 @@ import MapKit
 class ExploreViewController: UIViewController {
     @IBOutlet weak var roomExploreMap: MKMapView!
 
+    lazy var centerButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("", for: .normal)
+        button.backgroundColor = .white
+        button.tintColor = UIColor.darkGray
+        button.setImage(UIImage(systemName: "location.fill"), for: .normal)
+        button.layer.cornerRadius = RMConstants.shared.mapCenterButtonWidth / 2
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(setMapCenter(_:)), for: .touchUpInside)
+        return button
+    }()
+
     var rooms: [Room] = [] {
         didSet {
             if rooms.isEmpty {
@@ -58,6 +70,8 @@ class ExploreViewController: UIViewController {
 
         roomExploreMap.delegate = self
 
+        view.addSubview(centerButton)
+
         locationManger.requestWhenInUseAuthorization()
         locationManger.delegate = self
         locationManger.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
@@ -71,6 +85,15 @@ class ExploreViewController: UIViewController {
         super.viewWillAppear(animated)
         LocationService.shared.setCenterRegion(position: gCurrentPosition, mapView: roomExploreMap)
         getRoomForCurrentPosition(mapView: roomExploreMap)
+    }
+
+    override func viewDidLayoutSubviews() {
+        NSLayoutConstraint.activate([
+            centerButton.widthAnchor.constraint(equalToConstant: RMConstants.shared.mapCenterButtonWidth),
+            centerButton.heightAnchor.constraint(equalTo: centerButton.widthAnchor),
+            centerButton.bottomAnchor.constraint(equalTo: roomExploreMap.bottomAnchor, constant: -10),
+            centerButton.trailingAnchor.constraint(equalTo: roomExploreMap.trailingAnchor, constant: -10)
+        ])
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -101,6 +124,10 @@ class ExploreViewController: UIViewController {
             }
         }
         present(filterVC, animated: true)
+    }
+
+    @objc private func setMapCenter(_ sender: Any) {
+        LocationService.shared.setCenterRegion(position: gCurrentPosition, mapView: roomExploreMap)
     }
 }
 
