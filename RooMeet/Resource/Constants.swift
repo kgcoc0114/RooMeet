@@ -20,4 +20,4 @@ var gCurrentPosition: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 
 
 var gDefaultCounty = "台北市"
 
-var avaterHeight: CGFloat = 30
+var avatarHeight: CGFloat = 30
