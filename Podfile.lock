@@ -643,6 +643,7 @@ PODS:
   - GoogleUtilities/Logger (7.8.0):
     - GoogleUtilities/Environment
   - "GoogleUtilities/NSData+zlib (7.8.0)"
+  - GoogleWebRTC (1.1.31999)
   - "gRPC-C++ (1.44.0)":
     - "gRPC-C++/Implementation (= 1.44.0)"
     - "gRPC-C++/Interface (= 1.44.0)"
@@ -696,6 +697,7 @@ PODS:
   - gRPC-Core/Interface (1.44.0)
   - GTMSessionFetcher/Core (2.1.0)
   - IQKeyboardManagerSwift (6.5.10)
+  - JGProgressHUD (2.2)
   - Kingfisher (7.4.0)
   - leveldb-library (1.22.1)
   - Libuv-gRPC (0.0.10):
@@ -704,12 +706,12 @@ PODS:
   - Libuv-gRPC/Implementation (0.0.10):
     - Libuv-gRPC/Interface (= 0.0.10)
   - Libuv-gRPC/Interface (0.0.10)
+  - lottie-ios (3.5.0)
   - nanopb (2.30909.0):
     - nanopb/decode (= 2.30909.0)
     - nanopb/encode (= 2.30909.0)
   - nanopb/decode (2.30909.0)
   - nanopb/encode (2.30909.0)
-  - ProgressHUD (13.6)
   - PromisesObjC (2.1.1)
   - SwiftLint (0.49.1)
 
@@ -718,9 +720,11 @@ DEPENDENCIES:
   - FirebaseFirestore
   - FirebaseFirestoreSwift
   - FirebaseStorage
+  - GoogleWebRTC
   - IQKeyboardManagerSwift
+  - JGProgressHUD
   - Kingfisher
-  - ProgressHUD
+  - lottie-ios
   - SwiftLint
 
 SPEC REPOS:
@@ -738,15 +742,17 @@ SPEC REPOS:
     - FirebaseSharedSwift
     - FirebaseStorage
     - GoogleUtilities
+    - GoogleWebRTC
     - "gRPC-C++"
     - gRPC-Core
     - GTMSessionFetcher
     - IQKeyboardManagerSwift
+    - JGProgressHUD
     - Kingfisher
     - leveldb-library
     - Libuv-gRPC
+    - lottie-ios
     - nanopb
-    - ProgressHUD
     - PromisesObjC
     - SwiftLint
 
@@ -764,18 +770,20 @@ SPEC CHECKSUMS:
   FirebaseSharedSwift: eae0978bbb46dbfc21975e88a79654f614822ce4
   FirebaseStorage: 132c10c4d2f8ed8afbfa918eb35d19a87f383d59
   GoogleUtilities: 1d20a6ad97ef46f67bbdec158ce00563a671ebb7
+  GoogleWebRTC: b39a78c4f5cc6b0323415b9233db03a2faa7b0f0
   "gRPC-C++": 9675f953ace2b3de7c506039d77be1f2e77a8db2
   gRPC-Core: 943e491cb0d45598b0b0eb9e910c88080369290b
   GTMSessionFetcher: ffbb25ec00ebcb5201adab0a56d808f6f1902d9f
   IQKeyboardManagerSwift: 52962c76ab33532f15ad9f3ff4e5715eda5335bb
+  JGProgressHUD: d83d7a981b85d11205e19ff8ad5bb9c40571c847
   Kingfisher: 596b207973051aae5e4c54a1c1cb39837ea10d36
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   Libuv-gRPC: 55e51798e14ef436ad9bc45d12d43b77b49df378
+  lottie-ios: c55158d67d0629a260625cc2ded2052b829e3c3e
   nanopb: b552cce312b6c8484180ef47159bc0f65a1f0431
-  ProgressHUD: 4bdaa0d2ddf676b23324b199f9facffb5c3a1620
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   SwiftLint: 32ee33ded0636d0905ef6911b2b67bbaeeedafa5
 
-PODFILE CHECKSUM: 7e3cf16f257830bfd193a02ad5058bbe1ae6c03d
+PODFILE CHECKSUM: 009b676f8270441f9e6af945a416bb04f4e75e98
 
 COCOAPODS: 1.11.3

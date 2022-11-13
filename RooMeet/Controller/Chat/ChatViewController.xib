@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatViewController" customModule="RooMeet" customModuleProvider="target">
+            <connections>
+                <outlet property="contentTextField" destination="UDU-vp-0jE" id="4iN-8y-EWV"/>
+                <outlet property="otherFunctionButton" destination="Hcq-sk-zXe" id="cQe-hV-0kd"/>
+                <outlet property="tableView" destination="0H5-Gx-yal" id="hFS-O0-C05"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="0H5-Gx-yal">
+                    <rect key="frame" x="0.0" y="43" width="414" height="754"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </tableView>
+                <stackView opaque="NO" contentMode="scaleToFill" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="f7e-EG-BLX">
+                    <rect key="frame" x="10" y="807" width="394" height="45"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hcq-sk-zXe">
+                            <rect key="frame" x="0.0" y="0.0" width="46.5" height="45"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="calendar.badge.plus" catalog="system" title=""/>
+                            <connections>
+                                <action selector="addReservation:" destination="-1" eventType="touchUpInside" id="cVw-rO-GSz"/>
+                            </connections>
+                        </button>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UDU-vp-0jE">
+                            <rect key="frame" x="54.5" y="0.0" width="289" height="45"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vg6-up-6qb">
+                            <rect key="frame" x="351.5" y="0.0" width="42.5" height="45"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Go"/>
+                            <connections>
+                                <action selector="sendMessage:" destination="-1" eventType="touchUpInside" id="gmK-ff-FQy"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="Vx8-YH-Irm"/>
+                    </constraints>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="f7e-EG-BLX" secondAttribute="trailing" constant="10" id="7ky-2y-fUr"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="f7e-EG-BLX" secondAttribute="bottom" constant="10" id="Api-35-HSh"/>
+                <constraint firstItem="0H5-Gx-yal" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="-1" id="Ca4-U7-hR3"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0H5-Gx-yal" secondAttribute="trailing" id="D9z-xP-eas"/>
+                <constraint firstItem="f7e-EG-BLX" firstAttribute="top" secondItem="0H5-Gx-yal" secondAttribute="bottom" constant="10" id="kYm-fe-4xG"/>
+                <constraint firstItem="f7e-EG-BLX" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="odn-lq-ptk"/>
+                <constraint firstItem="0H5-Gx-yal" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="rbB-dL-xBd"/>
+            </constraints>
+            <point key="canvasLocation" x="131.8840579710145" y="95.758928571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="calendar.badge.plus" catalog="system" width="128" height="108"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

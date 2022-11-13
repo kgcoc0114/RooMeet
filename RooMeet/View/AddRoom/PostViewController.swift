@@ -9,7 +9,6 @@ import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
-import ProgressHUD
 
 enum PostSection: CaseIterable {
     case basic
@@ -441,7 +440,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
 
     func imagePickerController(
         _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
         var selectedImageFromPicker: UIImage?
 
@@ -531,9 +530,9 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             do {
                 try docRef.setData(from: room, completion: { error in
                     if let _ = error {
-                        ProgressHUD.showFailed()
+                        RMProgressHUD.showFailure(view: self.view)
                     } else {
-                        ProgressHUD.showSuccess()
+                        RMProgressHUD.showSuccess(view: self.view)
                     }
                 })
                 self.navigationController?.popViewController(animated: true)

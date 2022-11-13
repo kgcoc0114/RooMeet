@@ -40,18 +40,20 @@
         <!--Tab Bar Controller-->
         <scene sceneID="r5D-Jv-gb5">
             <objects>
-                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="1aS-Mo-4r6" sceneMemberID="viewController">
+                <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="1aS-Mo-4r6" customClass="RMTabBarController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9W4-Vw-cAP">
                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" red="0.15294117647058825" green="0.25490196078431371" blue="0.33725490196078434" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="fYg-EL-xGZ" kind="relationship" relationship="viewControllers" id="qVL-kJ-azh"/>
                         <segue destination="qmS-0x-fbG" kind="relationship" relationship="viewControllers" id="W7O-Tz-NGh"/>
                         <segue destination="mM7-U2-zVB" kind="relationship" relationship="viewControllers" id="Kuf-2p-fmK"/>
+                        <segue destination="doU-CH-gZF" kind="relationship" relationship="viewControllers" id="QIb-pa-8yg"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iaO-Qc-t6J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -61,7 +63,7 @@
         <!--Home-->
         <scene sceneID="w6N-oe-nPi">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fYg-EL-xGZ" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="fYg-EL-xGZ" customClass="RMNavigationController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Home" image="house" catalog="system" selectedImage="house.fill" id="Var-RT-90B"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="rD6-PU-Yqu">
@@ -80,7 +82,7 @@
         <!--Explore-->
         <scene sceneID="rXg-Ph-Llb">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qmS-0x-fbG" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="qmS-0x-fbG" customClass="RMNavigationController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Explore" image="map" catalog="system" selectedImage="map.fill" id="KiF-h2-weC"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JYh-h7-9eV">
@@ -99,7 +101,7 @@
         <!--Chat-->
         <scene sceneID="6hX-6V-fUV">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mM7-U2-zVB" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="mM7-U2-zVB" customClass="RMNavigationController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Chat" image="message" catalog="system" selectedImage="message.fill" id="zf2-DM-Yq7"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ur0-6U-08i">
@@ -115,7 +117,37 @@
             </objects>
             <point key="canvasLocation" x="1826" y="570"/>
         </scene>
+        <!--Profile-->
+        <scene sceneID="EMs-mG-Kv4">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Profile" id="eer-yy-aku" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="4za-9W-Sz6"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W5U-uh-Naj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2647.826086956522" y="1126.3392857142856"/>
+        </scene>
+        <!--Profile-->
+        <scene sceneID="d7W-TU-ZzA">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="doU-CH-gZF" customClass="RMNavigationController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Profile" image="person" catalog="system" selectedImage="person.fill" id="DVS-ux-zcY"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="RfG-R5-eev">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="eer-yy-aku" kind="relationship" relationship="rootViewController" id="ccG-YK-Mu0"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B8n-d5-Uzr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1459" y="966"/>
+        </scene>
     </scenes>
+    <color key="tintColor" red="0.15294117647058825" green="0.25490196078431371" blue="0.33725490196078434" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="house" catalog="system" width="128" height="106"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
@@ -123,5 +155,7 @@
         <image name="map.fill" catalog="system" width="128" height="110"/>
         <image name="message" catalog="system" width="128" height="113"/>
         <image name="message.fill" catalog="system" width="128" height="113"/>
+        <image name="person" catalog="system" width="128" height="117"/>
+        <image name="person.fill" catalog="system" width="128" height="120"/>
     </resources>
 </document>

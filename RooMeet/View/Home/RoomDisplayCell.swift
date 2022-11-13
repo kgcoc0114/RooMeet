@@ -9,7 +9,7 @@ import UIKit
 
 class RoomDisplayCell: UICollectionViewCell {
     static let identifier = "RoomDisplayCell"
-
+    @IBOutlet weak var checkImageView: UIImageView!
     @IBOutlet weak var tagLabel: UILabel!
     @IBOutlet weak var tagView: UIView!
     @IBOutlet weak var imageView: UIImageView!
