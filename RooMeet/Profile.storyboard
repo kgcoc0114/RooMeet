@@ -18,9 +18,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="nosign" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="46i-r1-Vhf">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="46i-r1-Vhf">
                                 <rect key="frame" x="143" y="94.5" width="128" height="127"/>
-                                <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" systemColor="systemGray5Color"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="128" id="2wy-vH-JO4"/>
                                     <constraint firstAttribute="height" constant="128" id="aeq-Zj-M77"/>
@@ -32,18 +32,19 @@
                                 <buttonConfiguration key="configuration" style="plain"/>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="262-j9-L1d">
-                                <rect key="frame" x="20" y="252" width="374" height="610"/>
+                                <rect key="frame" x="0.0" y="252" width="414" height="610"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ProfileCell" rowHeight="74" id="oge-jA-Zrn" customClass="ProfileCell" customModule="RooMeet" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="374" height="74"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="74"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oge-jA-Zrn" id="D4P-4g-Cjg">
-                                            <rect key="frame" x="0.0" y="0.0" width="374" height="74"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="74"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WT2-S5-nvl">
                                                     <rect key="frame" x="20" y="10" width="30" height="54"/>
+                                                    <color key="tintColor" red="0.1529411765" green="0.25490196079999999" blue="0.33725490200000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="3aA-wg-HMv"/>
                                                         <constraint firstAttribute="width" constant="30" id="pob-IZ-Jdc"/>
@@ -88,8 +89,8 @@
                             <constraint firstItem="5Mu-rm-R5Q" firstAttribute="trailing" secondItem="46i-r1-Vhf" secondAttribute="trailing" id="PEb-Gk-sbS"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="262-j9-L1d" secondAttribute="bottom" id="Ypx-Y8-1IW"/>
                             <constraint firstItem="46i-r1-Vhf" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="kjV-qK-8sP"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="262-j9-L1d" secondAttribute="trailing" constant="20" id="lGd-N9-ueH"/>
-                            <constraint firstItem="262-j9-L1d" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="r6V-3W-GoS"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="262-j9-L1d" secondAttribute="trailing" id="lGd-N9-ueH"/>
+                            <constraint firstItem="262-j9-L1d" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="r6V-3W-GoS"/>
                             <constraint firstItem="5Mu-rm-R5Q" firstAttribute="top" secondItem="46i-r1-Vhf" secondAttribute="top" id="wDr-um-gfk"/>
                         </constraints>
                     </view>
@@ -149,10 +150,13 @@
         </scene>
     </scenes>
     <resources>
-        <image name="nosign" catalog="system" width="128" height="121"/>
         <image name="pencil.circle.fill" catalog="system" width="128" height="121"/>
+        <image name="person.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -38,10 +38,10 @@ class OUTextCell: MessageBaseCell {
         }
     }
 
-    @IBOutlet weak var avaterView: UIImageView! {
+    @IBOutlet weak var avatarView: UIImageView! {
         didSet {
-            avaterView.layer.cornerRadius = RMConstants.shared.avaterImageWidth / 2
-            avaterView.contentMode = .scaleAspectFill
+            avatarView.layer.cornerRadius = RMConstants.shared.avatarImageWidth / 2
+            avatarView.contentMode = .scaleAspectFill
         }
     }
 
@@ -66,7 +66,7 @@ class OUTextCell: MessageBaseCell {
     override func configureLayout() {
         if let message = message,
             let sendBy = sendBy {
-            avaterView.setImage(urlString: sendBy.profilePhoto)
+            avatarView.setImage(urlString: sendBy.profilePhoto)
             contentTextView.text = message.content
             let messageDate = message.createdTime.dateValue()
 

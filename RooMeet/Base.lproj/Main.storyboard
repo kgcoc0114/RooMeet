@@ -47,11 +47,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" red="0.15294117647058825" green="0.25490196078431371" blue="0.33725490196078434" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="fYg-EL-xGZ" kind="relationship" relationship="viewControllers" id="qVL-kJ-azh"/>
-                        <segue destination="mM7-U2-zVB" kind="relationship" relationship="viewControllers" id="Kuf-2p-fmK"/>
                         <segue destination="qmS-0x-fbG" kind="relationship" relationship="viewControllers" id="W7O-Tz-NGh"/>
+                        <segue destination="mM7-U2-zVB" kind="relationship" relationship="viewControllers" id="Kuf-2p-fmK"/>
                         <segue destination="doU-CH-gZF" kind="relationship" relationship="viewControllers" id="QIb-pa-8yg"/>
                     </connections>
                 </tabBarController>
@@ -146,6 +147,7 @@
             <point key="canvasLocation" x="1459" y="966"/>
         </scene>
     </scenes>
+    <color key="tintColor" red="0.15294117647058825" green="0.25490196078431371" blue="0.33725490196078434" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="house" catalog="system" width="128" height="106"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>

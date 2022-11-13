@@ -430,6 +430,29 @@ class FirebaseService {
     func fetchRoomByRoomID(roomID: String, completion: @escaping ((Room) -> Void)) {
         let query = FirestoreEndpoint.room.colRef.document(roomID)
 
+        query.getDocument { [weak self] document, error in
+            guard let `self` = self else { return }
+            if let document = document, document.exists {
+                do {
+                    var room = try document.data(as: Room.self)
+
+                    self.fetchUserByID(userID: room.userID) { user, _ in
+                        room.userData = user
+
+                        completion(room)
+                    }
+                } catch {
+                    print("ERROR: \(error.localizedDescription)")
+                }
+            } else {
+                print("Document does not exist")
+            }
+        }
+    }
+
+    func fetchRoomWithOwnerData(roomID: String, completion: @escaping ((Room) -> Void)) {
+        let query = FirestoreEndpoint.room.colRef.document(roomID)
+
         query.getDocument { document, error in
             if let document = document, document.exists {
                 do {
@@ -462,8 +485,6 @@ class FirebaseService {
             completion(rooms)
         }
     }
-
-
 }
 
 extension FirebaseService {

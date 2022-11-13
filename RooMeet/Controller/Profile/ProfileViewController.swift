@@ -29,13 +29,13 @@ enum Profile: CaseIterable {
     var iconImage: UIImage {
         switch self {
         case .favorite:
-            return UIImage(systemName: "heart")!
+            return UIImage(systemName: "heart")!.withTintColor(RMConstants.shared.mainColor)
         case .reservations:
-            return UIImage(systemName: "calendar")!
+            return UIImage(systemName: "calendar")!.withTintColor(RMConstants.shared.mainColor)
         case .blockade:
-            return UIImage(systemName: "nosign")!
+            return UIImage(systemName: "nosign")!.withTintColor(RMConstants.shared.mainColor)
         case .logout:
-            return UIImage(systemName: "zzz")!
+            return UIImage(systemName: "zzz")!.withTintColor(RMConstants.shared.mainColor)
         }
     }
 

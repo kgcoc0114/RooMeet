@@ -16,6 +16,7 @@
                 <outlet property="collectionView" destination="PBa-7D-EYM" id="beV-Su-MTH"/>
                 <outlet property="genderImageView" destination="ysc-me-dlp" id="TgX-K1-STb"/>
                 <outlet property="nameLabel" destination="qMy-G8-o3r" id="kUa-ed-Czv"/>
+                <outlet property="ownerAvatarView" destination="CqM-NU-BMi" id="dvx-wo-K5f"/>
                 <outlet property="reservationButton" destination="rig-B9-TTL" id="yku-Bx-SUN"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -51,22 +52,22 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qMy-G8-o3r">
-                            <rect key="frame" x="30" y="20" width="42" height="21"/>
+                            <rect key="frame" x="84" y="20" width="42" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Yx-eg-3E7">
-                            <rect key="frame" x="30" y="49" width="42" height="21"/>
+                            <rect key="frame" x="84" y="49" width="42" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ysc-me-dlp">
-                            <rect key="frame" x="87" y="52" width="15" height="15"/>
+                            <rect key="frame" x="139" y="53" width="13" height="13"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="15" id="LJ3-s9-WNB"/>
-                                <constraint firstAttribute="width" constant="15" id="SxY-dx-nRb"/>
+                                <constraint firstAttribute="height" constant="13" id="LJ3-s9-WNB"/>
+                                <constraint firstAttribute="width" constant="13" id="SxY-dx-nRb"/>
                             </constraints>
                         </imageView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S4q-yG-jyE">
@@ -81,19 +82,28 @@
                                 <action selector="chatWithOwner:" destination="-1" eventType="touchUpInside" id="58u-9d-qgv"/>
                             </connections>
                         </button>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="CqM-NU-BMi" userLabel="Owner">
+                            <rect key="frame" x="15" y="18" width="54" height="54"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="CqM-NU-BMi" secondAttribute="height" multiplier="1:1" id="htr-vw-6XZ"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
+                        <constraint firstItem="CqM-NU-BMi" firstAttribute="height" secondItem="iCj-6q-Kkl" secondAttribute="height" multiplier="0.6" id="48T-Zf-NYy"/>
                         <constraint firstAttribute="height" constant="90" id="67H-yM-RV1"/>
                         <constraint firstItem="S4q-yG-jyE" firstAttribute="leading" secondItem="rig-B9-TTL" secondAttribute="trailing" constant="25" id="7ym-1U-8LN"/>
                         <constraint firstAttribute="trailing" secondItem="S4q-yG-jyE" secondAttribute="trailing" constant="15" id="Anv-MO-gUa"/>
-                        <constraint firstItem="8Yx-eg-3E7" firstAttribute="leading" secondItem="iCj-6q-Kkl" secondAttribute="leading" constant="30" id="IWI-O7-oVs"/>
-                        <constraint firstItem="qMy-G8-o3r" firstAttribute="leading" secondItem="iCj-6q-Kkl" secondAttribute="leading" constant="30" id="Ncf-e1-nJ7"/>
+                        <constraint firstItem="8Yx-eg-3E7" firstAttribute="leading" secondItem="CqM-NU-BMi" secondAttribute="trailing" constant="15" id="IWI-O7-oVs"/>
+                        <constraint firstItem="qMy-G8-o3r" firstAttribute="leading" secondItem="CqM-NU-BMi" secondAttribute="trailing" constant="15" id="Ncf-e1-nJ7"/>
                         <constraint firstItem="ysc-me-dlp" firstAttribute="centerY" secondItem="8Yx-eg-3E7" secondAttribute="centerY" id="Qak-48-Nss"/>
                         <constraint firstItem="8Yx-eg-3E7" firstAttribute="bottom" secondItem="rig-B9-TTL" secondAttribute="bottom" id="VOz-CW-zqS"/>
                         <constraint firstItem="S4q-yG-jyE" firstAttribute="centerY" secondItem="iCj-6q-Kkl" secondAttribute="centerY" id="W83-p9-yIb"/>
                         <constraint firstItem="qMy-G8-o3r" firstAttribute="top" secondItem="rig-B9-TTL" secondAttribute="top" id="WWJ-LU-vMe"/>
-                        <constraint firstItem="ysc-me-dlp" firstAttribute="leading" secondItem="8Yx-eg-3E7" secondAttribute="trailing" constant="15" id="dNK-2h-ocp"/>
+                        <constraint firstItem="CqM-NU-BMi" firstAttribute="centerY" secondItem="iCj-6q-Kkl" secondAttribute="centerY" id="ZBe-3t-iIn"/>
+                        <constraint firstItem="CqM-NU-BMi" firstAttribute="leading" secondItem="iCj-6q-Kkl" secondAttribute="leading" constant="15" id="csc-KY-BRf"/>
+                        <constraint firstItem="ysc-me-dlp" firstAttribute="leading" secondItem="8Yx-eg-3E7" secondAttribute="trailing" constant="13" id="dNK-2h-ocp"/>
                         <constraint firstItem="rig-B9-TTL" firstAttribute="centerY" secondItem="iCj-6q-Kkl" secondAttribute="centerY" id="t01-0p-JuK"/>
                     </constraints>
                 </view>
@@ -103,13 +113,13 @@
             <constraints>
                 <constraint firstItem="PBa-7D-EYM" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="G1K-SR-iVQ"/>
                 <constraint firstAttribute="bottom" secondItem="iCj-6q-Kkl" secondAttribute="bottom" id="J2v-rk-pWy"/>
-                <constraint firstItem="PBa-7D-EYM" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="NZc-ez-gQw"/>
                 <constraint firstItem="PBa-7D-EYM" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="jFQ-nJ-NfA"/>
                 <constraint firstItem="iCj-6q-Kkl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ock-4n-Jjz"/>
                 <constraint firstItem="iCj-6q-Kkl" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="saY-GW-cko"/>
+                <constraint firstItem="PBa-7D-EYM" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="usU-dg-2fc"/>
                 <constraint firstItem="iCj-6q-Kkl" firstAttribute="top" secondItem="PBa-7D-EYM" secondAttribute="bottom" id="yEe-KD-g4Z"/>
             </constraints>
-            <point key="canvasLocation" x="375" y="-98"/>
+            <point key="canvasLocation" x="373.91304347826087" y="-98.4375"/>
         </view>
     </objects>
     <resources>
