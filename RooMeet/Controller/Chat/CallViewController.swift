@@ -69,6 +69,7 @@ class CallViewController: UIViewController {
     @IBOutlet weak var hangUpButton: UIButton!
     @IBOutlet weak var callTimeLabel: UILabel! {
         didSet {
+            callTimeLabel.text = ""
             callTimeLabel.isHidden = true
             callTimeLabel.textColor = .white
             callTimeLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -105,8 +106,8 @@ class CallViewController: UIViewController {
 
         NSLayoutConstraint.activate([
             animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.15),
-            animationView.heightAnchor.constraint(equalToConstant: 50),
+            animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.2),
+            animationView.heightAnchor.constraint(equalToConstant: 70),
             animationView.topAnchor.constraint(equalTo: callerNameLabel.topAnchor, constant: 30)
         ])
     }
@@ -132,10 +133,8 @@ class CallViewController: UIViewController {
         case .offer:
             statusLabel.text = "wait for ..."
             offerDidTap()
-            RMLottie.shared.startCallAnimate(animationView: animationView)
         case .answer:
             print("需要接電話")
-            RMLottie.shared.startCallAnimate(animationView: animationView)
         }
     }
 
@@ -171,10 +170,10 @@ class CallViewController: UIViewController {
                         self.startTime = call.startTime
                         if call.caller == gCurrentUser.id {
                             self.updateComponentStatus(answer: true, status: true)
-                            RMLottie.shared.startCallAnimate(animationView: self.animationView)
                         } else {
                             self.updateComponentStatus(status: true)
                         }
+                        RMLottie.shared.startCallAnimate(animationView: self.animationView)
                     case "cancel":
                         status = ""
                         self.dismiss(animated: true)

@@ -43,7 +43,14 @@ class ProfileRSVNViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         // fetch room to display
-        fetchReservations()
+        FirebaseService.shared.fetchUserByID(userID: gCurrentUser.id) { [self] user, _ in
+            guard let user = user else {
+                return
+            }
+            gCurrentUser = user
+            fetchReservations()
+        }
+
         RMLottie.shared.startAnimate(animationView: reservationAnimationView)
     }
 
