@@ -19,6 +19,18 @@ class RMLottie {
         return animationView
     }()
 
+    lazy var reservationAnimationView: LottieAnimationView = {
+        let animationView = LottieAnimationView(name: "Reservation")
+
+        animationView.contentMode = .scaleAspectFit
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        return animationView
+    }()
+
+    func startAnimate(animationView: LottieAnimationView) {
+        animationView.play()
+    }
+
     func startCallAnimate(animationView: LottieAnimationView) {
         animationView.play(fromProgress: 0, toProgress: 30, loopMode: .loop)
     }
