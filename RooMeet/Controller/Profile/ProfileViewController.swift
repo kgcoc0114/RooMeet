@@ -61,7 +61,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var editIntroButton: UIButton!
     override func viewDidLayoutSubviews() {
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        profileImageView.contentMode = .scaleToFill
+        profileImageView.contentMode = .scaleAspectFill
         profileImageView.layer.cornerRadius = 128 / 2
     }
 

@@ -212,6 +212,7 @@ class RoomDetailViewController: UIViewController {
                     receiverID: room.userID,
                     reservation: nil
                 )
+                gCurrentUser.reservations?.append(room.roomID)
                 RMProgressHUD.showSuccess(view: self.view)
             } else {
                 RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
@@ -226,6 +227,7 @@ class RoomDetailViewController: UIViewController {
                 receiverID: room.userID,
                 reservation: nil
             )
+            gCurrentUser.reservations? = [room.roomID]
             RMProgressHUD.showSuccess(view: self.view)
         }
     }
