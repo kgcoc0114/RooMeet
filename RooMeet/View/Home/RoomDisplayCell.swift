@@ -36,7 +36,7 @@ class RoomDisplayCell: UICollectionViewCell {
                 with: data.roomImages[0],
                 placeholder: UIImage(systemName: "house")?.withTintColor(.systemGray6))
         } else {
-            imageView.image = UIImage(systemName: "house")
+            imageView.image = UIImage(systemName: "house")?.withTintColor(.systemGray6)
         }
 
         if !data.county.isEmpty && !data.town.isEmpty {

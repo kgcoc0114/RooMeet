@@ -21,29 +21,20 @@ struct Room: Codable, Hashable {
     var roommateGender: Int // (0: male, 1: female, 2: nonBinary, 3: all)
     var rules: [String]
     var publicAmenities: [String]
+    var feature: [String]?
     var town: String
     var county: String
     var address: String
     var lat: Double?
     var long: Double?
     var postalCode: String?
-//    var currentLivingInfo: CurrentLivingInfo
     var billInfo: BillInfo?
     var lease: Double
     var movinDate: Date
     var otherDescriction: String?
-//    var status: String
     var isDeleted: Bool
 
     var roomMinPrice: Int?
-//    {
-//        let minRoom = rooms.min { $0.price! > $1.price! }
-//        if let minRoom = minRoom {
-//            return minRoom.price
-//        }
-//        return nil
-//    }
-
     var billInfoList: [RoomDetailFee]? {
         var tmpList: [RoomDetailFee] = []
         guard let billInfo = billInfo else {
@@ -89,7 +80,6 @@ struct Address: Codable {
     let address: String
     let lat: Double
     let long: Double
-//    let transportation: [Transportation]
 }
 
 struct Transportation: Codable {
@@ -104,7 +94,7 @@ struct BillInfo: Codable, Hashable {
     var cable: FeeDetail
     var internet: FeeDetail
     var management: FeeDetail
-    
+
     private func genString(data: FeeDetail, type: FeeType) -> String {
         var desc: String
         if data.paid == true {
@@ -112,8 +102,9 @@ struct BillInfo: Codable, Hashable {
             let unitString = type == .electricity ? "度/元" : "元"
             let priceString = "\(data.isGov == true ? typeString : String(describing: data.fee))"
             var affordString: String
-            if let affordType = data.affordType,
-               let afford = AffordType(rawValue: affordType) {
+            if
+                let affordType = data.affordType,
+                let afford = AffordType(rawValue: affordType) {
                 affordString = " - \(afford.description)"
             } else {
                 affordString = ""
@@ -142,7 +133,7 @@ struct FeeDetail: Codable, Hashable {
     var isGov: Bool?
     var affordType: String?
 
-    var description : String {
+    var description: String {
         if paid == false {
             return "無須支付"
         } else {
@@ -155,7 +146,7 @@ enum AffordType: String, Hashable {
     case sperate = "sperate"
     case share = "share"
 
-    var description : String {
+    var description: String {
         switch self {
         case .sperate: return "獨立量表"
         case .share: return "費用均分"
@@ -211,7 +202,6 @@ enum BillType: CaseIterable {
             return "網路"
         case .management:
             return "管理費"
-
         }
     }
 

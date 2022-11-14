@@ -42,6 +42,12 @@ class PostViewController: UIViewController {
         }
     }
 
+    var featureSelection: [String] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+
     var billInfo: BillInfo? {
         didSet {
             collectionView.reloadData()
@@ -120,8 +126,11 @@ class PostViewController: UIViewController {
     }
 
     @IBAction func submitAction(_ sender: Any) {
-        uploadImages(images: roomImages)
-
+        if roomImages.isEmpty {
+            saveData(url: nil)
+        } else {
+            uploadImages(images: roomImages)
+        }
     }
 }
 
@@ -498,9 +507,11 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
 
 
-    private func saveData(url: URL) {
+    private func saveData(url: URL?) {
         print(Thread.current)
-        roomImagesUrl.append(url)
+        if let url = url {
+            roomImagesUrl.append(url)
+        }
         if roomImagesUrl.count == roomImages.count {
             let docRef = Firestore.firestore().collection("Room").document()
             print("docRef")
@@ -514,6 +525,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                             roommateGender: (postBasicData?.gender)!,
                             rules: ruleSelection,
                             publicAmenities: amenitiesSelection,
+                            feature: featureSelection,
                             town: (postBasicData?.town)!,
                             county: (postBasicData?.county)!,
                             address: (postBasicData?.address)!,
