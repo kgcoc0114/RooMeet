@@ -42,6 +42,12 @@ class PostViewController: UIViewController {
         }
     }
 
+    var featureSelection: [String] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+
     var billInfo: BillInfo? {
         didSet {
             collectionView.reloadData()
@@ -519,6 +525,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                             roommateGender: (postBasicData?.gender)!,
                             rules: ruleSelection,
                             publicAmenities: amenitiesSelection,
+                            feature: featureSelection,
                             town: (postBasicData?.town)!,
                             county: (postBasicData?.county)!,
                             address: (postBasicData?.address)!,
