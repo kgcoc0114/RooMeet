@@ -139,7 +139,7 @@ class ReservationService {
     ) {
         print("senderID", senderID)
         print("receiverID", receiverID)
-        FirebaseService.shared.upsertChatRoomByUserID(userA: senderID, userB: receiverID) { chatRoom in
+        FirebaseService.shared.getChatRoomByUserID(userA: senderID, userB: receiverID) { chatRoom in
             let messageRef = Firestore.firestore()
                 .collection("ChatRoom")
                 .document(chatRoom.id)

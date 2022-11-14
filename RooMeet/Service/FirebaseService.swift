@@ -101,30 +101,6 @@ class FirebaseService {
         }
     }
 
-    func upsertChatRoomByUserID(userA: String, userB: String, completion: @escaping ((ChatRoom) -> Void)) {
-        let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", isEqualTo: [userA, userB])
-
-        getDocuments(query) { [weak self] (chatRooms: [ChatRoom]) in
-            if chatRooms.isEmpty {
-                self?.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
-                    if let chatRoom = chatRoom {
-                        self?.fetchRoomMemberData(chatRooms: [chatRoom], completion: { chatRooms in
-                            if let returnChatRoom = chatRooms.first {
-                                completion(returnChatRoom)
-                            }
-                        })
-                    }
-                }
-            } else {
-                self?.fetchRoomMemberData(chatRooms: chatRooms, completion: { chatRooms in
-                    if let returnChatRoom = chatRooms.first {
-                        completion(returnChatRoom)
-                    }
-                })
-            }
-        }
-    }
-
     func getChatRoomByUserID(userA: String, userB: String, completion: @escaping ((ChatRoom) -> Void)) {
         let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", arrayContains: userA)
 

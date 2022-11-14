@@ -8,7 +8,8 @@
 import UIKit
 import MapKit
 
-class HomeViewController: UIViewController {
+
+class HomeViewController: ViewController {
     enum Section {
         case main
     }
@@ -27,10 +28,16 @@ class HomeViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var collectionView: UICollectionView!
+
+    @IBOutlet weak var collectionView: UICollectionView!  {
+        didSet {
+            collectionView.translatesAutoresizingMaskIntoConstraints = false
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("============", gCurrentUser.id)
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus"),
             style: .plain,
@@ -61,19 +68,24 @@ class HomeViewController: UIViewController {
         fetchRooms()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+//        navigationController?.navigationBar.isHidden = true
+    }
+
     private func configureCollectionView() {
         collectionView.register(
-            UINib(nibName: "RoomDisplayCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomDisplayCell.identifier)
+            UINib(nibName: "RoomCell", bundle: nil),
+            forCellWithReuseIdentifier: RoomCell.identifier)
 
         dataSource = HomeDataSource(collectionView: collectionView) { collectionView, indexPath, room in
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoomDisplayCell.identifier,
-                for: indexPath) as? RoomDisplayCell else {
+                withReuseIdentifier: RoomCell.identifier,
+                for: indexPath) as? RoomCell else {
                 return UICollectionViewCell()
             }
 
-            cell.checkImageView.isHidden = true
+//            cell.checkImageView.isHidden = true
             cell.configureCell(data: room)
             return cell
         }
@@ -123,12 +135,12 @@ extension HomeViewController {
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .absolute(300))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .absolute(300))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item])
