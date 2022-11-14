@@ -14,6 +14,18 @@ private enum RMFontName: String {
 
 extension UIFont {
 
+    static func bold(size: CGFloat) -> UIFont? {
+        var descriptor = UIFontDescriptor(name: RMFontName.regular.rawValue, size: size)
+
+        descriptor = descriptor.addingAttributes(
+            [UIFontDescriptor.AttributeName.traits: [UIFontDescriptor.TraitKey.weight: UIFont.Weight.bold]]
+        )
+
+        let font = UIFont(descriptor: descriptor, size: size)
+
+        return font
+    }
+
     static func medium(size: CGFloat) -> UIFont? {
         var descriptor = UIFontDescriptor(name: RMFontName.regular.rawValue, size: size)
 
