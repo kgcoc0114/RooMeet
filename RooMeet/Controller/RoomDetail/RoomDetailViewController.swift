@@ -238,7 +238,7 @@ class RoomDetailViewController: UIViewController {
             return
         }
 
-        FirebaseService.shared.upsertChatRoomByUserID(userA: gCurrentUser.id, userB: room.userID) { [weak self] chatRoom in
+        FirebaseService.shared.getChatRoomByUserID(userA: gCurrentUser.id, userB: room.userID) { [weak self] chatRoom in
             let detailVC = ChatViewController()
             detailVC.setup(chatRoom: chatRoom)
             self?.navigationController?.pushViewController(detailVC, animated: false)
@@ -407,13 +407,13 @@ extension RoomDetailViewController {
 
     func createItemsSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
-            widthDimension: .estimated(20),
+            widthDimension: .estimated(1),
             heightDimension: .fractionalHeight(1)
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .estimated(20),
+            widthDimension: .estimated(1),
             heightDimension: .absolute(30)
         )
 
@@ -421,7 +421,6 @@ extension RoomDetailViewController {
             layoutSize: groupSize,
             subitems: [item]
         )
-
 
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
