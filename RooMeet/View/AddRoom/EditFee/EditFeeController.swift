@@ -8,20 +8,31 @@
 import UIKit
 
 class EditFeeController: UIViewController {
+    @IBOutlet weak var dismissButton: UIButton! {
+        didSet {
+            dismissButton.setTitle("", for: .normal)
+        }
+    }
+    @IBOutlet weak var confirmButton: UIButton! {
+        didSet {
+            confirmButton.backgroundColor = RMConstants.shared.mainColor
+            confirmButton.tintColor = RMConstants.shared.mainLightColor
+            confirmButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+        }
+    }
 
-    @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
-    
+
     var completion: ((BillInfo) -> Void)?
 
-    var billInfo: BillInfo = BillInfo(
+    var billInfo = BillInfo(
         water: FeeDetail(),
         electricity: FeeDetail(),
         cable: FeeDetail(),
         internet: FeeDetail(),
         management: FeeDetail()
     )
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -35,11 +46,17 @@ class EditFeeController: UIViewController {
         self.completion?(billInfo)
         dismiss(animated: true)
     }
+
+    @IBAction func dismissAction(_ sender: Any) {
+        dismiss(animated: true)
+    }
 }
 
 extension EditFeeController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FeeInfoCell.reuseIdentifier, for: indexPath) as? FeeInfoCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: FeeInfoCell.reuseIdentifier,
+            for: indexPath) as? FeeInfoCell else {
             fatalError()
         }
 
@@ -48,11 +65,10 @@ extension EditFeeController: UITableViewDataSource {
         cell.delegate = self
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         FeeType.allCases.count
     }
-    
 }
 
 extension EditFeeController: FeeInfoCellDelegate {

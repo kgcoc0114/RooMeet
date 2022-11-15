@@ -604,8 +604,8 @@ extension RoomDetailViewController {
         newSnapshot.appendSections(Section.allCases)
         newSnapshot.appendItems([.images(room)], toSection: .images)
 
-        newSnapshot.appendItems(room.rules.map { Item.rules($0) }, toSection: .rules)
-        newSnapshot.appendItems(room.publicAmenities.map { Item.amenities($0) }, toSection: .amenities)
+        newSnapshot.appendItems(room.roomPetsRules.map { Item.rules($0) }, toSection: .rules)
+        newSnapshot.appendItems(room.roomFeatures.map { Item.amenities($0) }, toSection: .amenities)
         newSnapshot.appendItems([.basicInfo(room)], toSection: .basicInfo)
         if room.billInfo != nil {
             newSnapshot.appendItems(

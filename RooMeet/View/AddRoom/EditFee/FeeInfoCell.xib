@@ -5,100 +5,95 @@
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="133" id="KGk-i7-Jjw" customClass="FeeInfoCell" customModule="RooMeet" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="355" height="133"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="129" id="KGk-i7-Jjw" customClass="FeeInfoCell" customModule="RooMeet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="677" height="129"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="355" height="133"/>
+                <rect key="frame" x="0.0" y="0.0" width="677" height="129"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="rj4-ap-pWJ">
-                        <rect key="frame" x="30" y="15" width="295" height="103"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vY4-ez-he1">
+                        <rect key="frame" x="35" y="22.5" width="37.5" height="18"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="R7j-Nv-qe5">
+                        <rect key="frame" x="100" y="15" width="152.5" height="34"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vY4-ez-he1">
-                                <rect key="frame" x="0.0" y="41.5" width="41.5" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Gl-qQ-gJ6" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="R8X-yf-jQZ"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="VDt-Ek-DlF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arU-cs-doI">
+                                <rect key="frame" x="115" y="0.0" width="37.5" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="7cl-GB-twk">
-                                <rect key="frame" x="66.5" y="9" width="228.5" height="85"/>
-                                <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="R7j-Nv-qe5">
-                                        <rect key="frame" x="0.0" y="0.0" width="224.5" height="34"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8f-Zk-Y5g">
-                                                <rect key="frame" x="0.0" y="0.0" width="53" height="34"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="台電"/>
-                                                <connections>
-                                                    <action selector="tapGovTypeButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Tpt-Ks-zy2"/>
-                                                </connections>
-                                            </button>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Gl-qQ-gJ6" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
-                                                <rect key="frame" x="68" y="0.0" width="100" height="34"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="VDt-Ek-DlF"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </textField>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arU-cs-doI">
-                                                <rect key="frame" x="183" y="0.0" width="41.5" height="34"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="zrg-lx-YCW">
-                                        <rect key="frame" x="0.0" y="54" width="172" height="31"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8ff-3D-iZZ">
-                                                <rect key="frame" x="0.0" y="0.0" width="81.5" height="31"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="獨立支付"/>
-                                                <connections>
-                                                    <action selector="tapSperateButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="7IE-rW-M3j"/>
-                                                </connections>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ze-lV-NdU">
-                                                <rect key="frame" x="90.5" y="0.0" width="81.5" height="31"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="費用均分"/>
-                                                <connections>
-                                                    <action selector="tapShareButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="zOK-V6-koa"/>
-                                                </connections>
-                                            </button>
-                                        </subviews>
-                                    </stackView>
-                                </subviews>
-                            </stackView>
                         </subviews>
                     </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GeH-dT-5wT" customClass="RMSegmentedControl" customModule="RooMeet" customModuleProvider="target">
+                        <rect key="frame" x="100" y="64" width="345.5" height="30"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="30" id="HiW-Op-e0r"/>
+                        </constraints>
+                    </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8f-Zk-Y5g" customClass="FeeButton" customModule="RooMeet" customModuleProvider="target">
+                        <rect key="frame" x="287.5" y="19.5" width="44.5" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="25" id="qcr-8I-Qdt"/>
+                        </constraints>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="plain" title="台電">
+                            <fontDescription key="titleFontDescription" type="system" pointSize="10"/>
+                        </buttonConfiguration>
+                        <connections>
+                            <action selector="tapGovTypeButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Tpt-Ks-zy2"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="rj4-ap-pWJ" secondAttribute="trailing" constant="30" id="cqt-Lv-HPe"/>
-                    <constraint firstItem="rj4-ap-pWJ" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="30" id="ogP-0T-Uj6"/>
-                    <constraint firstAttribute="bottom" secondItem="rj4-ap-pWJ" secondAttribute="bottom" constant="15" id="weq-wr-yI6"/>
-                    <constraint firstItem="rj4-ap-pWJ" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="xVJ-8F-3sw"/>
+                    <constraint firstAttribute="bottom" secondItem="GeH-dT-5wT" secondAttribute="bottom" constant="15" id="9a5-VJ-pNM"/>
+                    <constraint firstItem="A8f-Zk-Y5g" firstAttribute="leading" secondItem="R7j-Nv-qe5" secondAttribute="trailing" constant="35" id="M5Q-3W-hLm"/>
+                    <constraint firstItem="GeH-dT-5wT" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.510192" id="V4b-hD-dxp"/>
+                    <constraint firstItem="GeH-dT-5wT" firstAttribute="top" secondItem="R7j-Nv-qe5" secondAttribute="bottom" constant="15" id="V83-9S-bbu"/>
+                    <constraint firstItem="R7j-Nv-qe5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="XRi-1Z-QDc"/>
+                    <constraint firstItem="A8f-Zk-Y5g" firstAttribute="centerY" secondItem="arU-cs-doI" secondAttribute="centerY" id="Xn5-fY-53q"/>
+                    <constraint firstItem="GeH-dT-5wT" firstAttribute="leading" secondItem="6Gl-qQ-gJ6" secondAttribute="leading" id="YYg-If-UlW"/>
+                    <constraint firstItem="vY4-ez-he1" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="15" id="kkb-XL-Nf2"/>
+                    <constraint firstItem="vY4-ez-he1" firstAttribute="firstBaseline" secondItem="6Gl-qQ-gJ6" secondAttribute="firstBaseline" id="yYO-oV-5zs"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <constraints>
+                <constraint firstItem="R7j-Nv-qe5" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="100" id="ov1-SE-vZB"/>
+            </constraints>
             <connections>
                 <outlet property="govTypeButton" destination="A8f-Zk-Y5g" id="UPc-BV-6Dw"/>
                 <outlet property="priceTextField" destination="6Gl-qQ-gJ6" id="GsA-gN-Is4"/>
                 <outlet property="priceUnitLabel" destination="arU-cs-doI" id="Akf-nD-4Kh"/>
-                <outlet property="shareButton" destination="1Ze-lV-NdU" id="FDe-sz-IQI"/>
-                <outlet property="sperateButton" destination="8ff-3D-iZZ" id="Vv5-NA-rb2"/>
+                <outlet property="segmentControl" destination="GeH-dT-5wT" id="z2f-5Y-h19"/>
                 <outlet property="titleLabel" destination="vY4-ez-he1" id="HKB-kw-euA"/>
             </connections>
-            <point key="canvasLocation" x="106.5217391304348" y="161.71875"/>
+            <point key="canvasLocation" x="409.4202898550725" y="128.90625"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

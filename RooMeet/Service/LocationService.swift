@@ -76,7 +76,6 @@ class LocationService {
             do {
                 let data = try Data(contentsOf: url)
                 let jsonData = try JSONDecoder().decode(PostalCodeData.self, from: data)
-                print(jsonData)
                 return jsonData.data
             } catch {
                 print("error:\(error)")

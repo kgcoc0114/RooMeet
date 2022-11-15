@@ -31,24 +31,41 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PI8-Cm-ohC">
-                    <rect key="frame" x="173.5" y="831" width="67" height="31"/>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                    <connections>
-                        <action selector="submitAction:" destination="-1" eventType="touchUpInside" id="HuZ-Ld-Tcx"/>
-                    </connections>
-                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="X7p-XC-tEG">
+                    <rect key="frame" x="0.0" y="821" width="414" height="75"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PI8-Cm-ohC">
+                            <rect key="frame" x="10" y="10" width="394" height="55"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                            <connections>
+                                <action selector="submitAction:" destination="-1" eventType="touchUpInside" id="HuZ-Ld-Tcx"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="5bI-gc-bOs"/>
+                        <constraint firstItem="PI8-Cm-ohC" firstAttribute="leading" secondItem="X7p-XC-tEG" secondAttribute="leading" constant="10" id="NHP-7U-Q98"/>
+                        <constraint firstAttribute="bottom" secondItem="PI8-Cm-ohC" secondAttribute="bottom" constant="10" id="cMP-0t-OIG"/>
+                        <constraint firstItem="PI8-Cm-ohC" firstAttribute="top" secondItem="X7p-XC-tEG" secondAttribute="top" constant="10" id="h0Z-IZ-OpU"/>
+                        <constraint firstAttribute="trailing" secondItem="PI8-Cm-ohC" secondAttribute="trailing" constant="10" id="ySR-LN-2cP"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="PI8-Cm-ohC" firstAttribute="top" secondItem="Xdb-rx-Tz5" secondAttribute="bottom" constant="10" id="6fP-RR-FIW"/>
-                <constraint firstItem="PI8-Cm-ohC" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="9Kx-Vw-kWQ"/>
+                <constraint firstItem="Xdb-rx-Tz5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="0vD-3b-Z0m"/>
                 <constraint firstItem="Xdb-rx-Tz5" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="CrP-qU-Nw7"/>
-                <constraint firstItem="PI8-Cm-ohC" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Oye-Mm-coN"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="X7p-XC-tEG" secondAttribute="trailing" id="Icd-wq-gM7"/>
+                <constraint firstItem="X7p-XC-tEG" firstAttribute="top" secondItem="Xdb-rx-Tz5" secondAttribute="bottom" id="Mp1-d4-bYX"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Xdb-rx-Tz5" secondAttribute="trailing" id="aF1-PX-s9Z"/>
+                <constraint firstAttribute="bottom" secondItem="X7p-XC-tEG" secondAttribute="bottom" id="e60-ZN-W0M"/>
+                <constraint firstItem="Xdb-rx-Tz5" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="fW2-zC-0Pu"/>
+                <constraint firstItem="Xdb-rx-Tz5" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="sgj-jy-KtG"/>
                 <constraint firstItem="Xdb-rx-Tz5" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="vpX-8f-psy"/>
+                <constraint firstItem="X7p-XC-tEG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="xSI-ls-zge"/>
             </constraints>
             <point key="canvasLocation" x="131.8840579710145" y="117.85714285714285"/>
         </view>
