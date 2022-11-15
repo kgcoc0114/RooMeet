@@ -12,54 +12,87 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PostBasicCell" customModule="RooMeet" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="333" height="530"/>
+            <rect key="frame" x="0.0" y="0.0" width="449" height="530"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="333" height="530"/>
+                <rect key="frame" x="0.0" y="0.0" width="449" height="530"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5bt-d9-CYA">
-                        <rect key="frame" x="0.0" y="0.0" width="333" height="530"/>
+                        <rect key="frame" x="0.0" y="0.0" width="449" height="530"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="GOk-Pw-KuX">
-                                <rect key="frame" x="30" y="15" width="273" height="500"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="GOk-Pw-KuX">
+                                <rect key="frame" x="30" y="15" width="389" height="500"/>
                                 <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="dmA-NZ-lIe">
-                                        <rect key="frame" x="0.0" y="0.0" width="273" height="31"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Region" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xwr-Nt-xsR">
-                                        <rect key="frame" x="0.0" y="52" width="273" height="31"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YkL-Iu-Hoo">
-                                        <rect key="frame" x="0.0" y="104" width="273" height="31.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mt6-ih-BAa">
-                                        <rect key="frame" x="0.0" y="156.5" width="273" height="31"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="XOb-yA-TKG">
+                                        <rect key="frame" x="0.0" y="0.0" width="389" height="66.5"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K5z-8T-FQ3" customClass="NumberPickerView" customModule="RooMeet" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="0.0" width="82" height="31"/>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                            </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="房" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spu-DJ-3t7">
-                                                <rect key="frame" x="106.5" y="0.0" width="17.5" height="31"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="貼文標題" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Drr-9h-tCV">
+                                                <rect key="frame" x="0.0" y="0.0" width="69.5" height="66.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder=" 請填寫標題" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="368-14-KjK" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                                <rect key="frame" x="84.5" y="0.0" width="304.5" height="66.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="OjF-G9-KhJ">
+                                        <rect key="frame" x="0.0" y="86.5" width="389" height="67"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地區" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KlS-xA-l2t">
+                                                <rect key="frame" x="0.0" y="0.0" width="35" height="67"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder=" 請選擇地區" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xwr-Nt-xsR" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                                <rect key="frame" x="50" y="0.0" width="339" height="67"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="n9v-Bj-6L5">
+                                        <rect key="frame" x="0.0" y="173.5" width="389" height="66.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地址" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cBT-IZ-x00">
+                                                <rect key="frame" x="0.0" y="0.0" width="35" height="66.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder=" 請填寫房源地址" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="YkL-Iu-Hoo" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                                <rect key="frame" x="50" y="0.0" width="339" height="66.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="mt6-ih-BAa">
+                                        <rect key="frame" x="0.0" y="260" width="389" height="66.5"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K5z-8T-FQ3" customClass="NumberPickerView" customModule="RooMeet" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="128.5" height="66.5"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="房" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spu-DJ-3t7">
+                                                <rect key="frame" x="161" y="0.0" width="17.5" height="66.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.10980392156862745" green="0.10980392156862745" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VOg-de-FNd" customClass="NumberPickerView" customModule="RooMeet" customModuleProvider="target">
-                                                <rect key="frame" x="149" y="0.0" width="82" height="31"/>
+                                                <rect key="frame" x="210.5" y="0.0" width="128.5" height="66.5"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                             </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="廳" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bur-Yd-fCf">
-                                                <rect key="frame" x="255.5" y="0.0" width="17.5" height="31"/>
+                                                <rect key="frame" x="371.5" y="0.0" width="17.5" height="66.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
+                                                <color key="textColor" red="0.10980392160000001" green="0.10980392160000001" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                         </subviews>
@@ -67,47 +100,44 @@
                                             <constraint firstItem="VOg-de-FNd" firstAttribute="width" secondItem="K5z-8T-FQ3" secondAttribute="width" id="iBF-1v-cCA"/>
                                         </constraints>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="租期" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nvT-9u-IXL">
-                                        <rect key="frame" x="0.0" y="208.5" width="273" height="31"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="年" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Re9-0c-DVB">
-                                        <rect key="frame" x="0.0" y="260.5" width="273" height="31"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
-                                    </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="性別" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lwZ-Qu-yrV">
-                                        <rect key="frame" x="0.0" y="312.5" width="273" height="31"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="iS8-iT-hnX">
-                                        <rect key="frame" x="0.0" y="364.5" width="273" height="32.5"/>
-                                        <segments>
-                                            <segment title="Male"/>
-                                            <segment title="Female"/>
-                                            <segment title="不限"/>
-                                        </segments>
-                                    </segmentedControl>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最快可搬入時間" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kh9-QP-UsI" userLabel="最快可搬入時間">
-                                        <rect key="frame" x="0.0" y="417" width="273" height="31"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <datePicker contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="AOe-IE-TXO">
-                                        <rect key="frame" x="0.0" y="469" width="273" height="31"/>
-                                    </datePicker>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="gvS-jf-BSw">
+                                        <rect key="frame" x="0.0" y="346.5" width="389" height="67"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最短租期" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nvT-9u-IXL">
+                                                <rect key="frame" x="0.0" y="0.0" width="69.5" height="67"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.10980392160000001" green="0.10980392160000001" blue="0.10980392160000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xqu-Ym-o3S" customClass="NumberPickerView" customModule="RooMeet" customModuleProvider="target">
+                                                <rect key="frame" x="84.5" y="0.0" width="304.5" height="67"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="dh6-3o-8gZ">
+                                        <rect key="frame" x="0.0" y="433.5" width="389" height="66.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="最快可搬入時間" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kh9-QP-UsI" userLabel="最快可搬入時間">
+                                                <rect key="frame" x="0.0" y="0.0" width="121.5" height="66.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vMB-IV-R2j" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                                <rect key="frame" x="136.5" y="0.0" width="252.5" height="66.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </textField>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="GOk-Pw-KuX" secondAttribute="trailing" constant="30" id="5NS-QJ-Ure"/>
-                            <constraint firstItem="K5z-8T-FQ3" firstAttribute="width" secondItem="mt6-ih-BAa" secondAttribute="width" multiplier="0.3" id="7Lh-Kv-DrY"/>
+                            <constraint firstItem="K5z-8T-FQ3" firstAttribute="width" secondItem="mt6-ih-BAa" secondAttribute="width" multiplier="0.33" id="7Lh-Kv-DrY"/>
                             <constraint firstAttribute="bottom" secondItem="GOk-Pw-KuX" secondAttribute="bottom" constant="15" id="PKv-fG-D0T"/>
                             <constraint firstItem="GOk-Pw-KuX" firstAttribute="top" secondItem="5bt-d9-CYA" secondAttribute="top" constant="15" id="Shm-WC-t7u"/>
                             <constraint firstItem="GOk-Pw-KuX" firstAttribute="leading" secondItem="5bt-d9-CYA" secondAttribute="leading" constant="30" id="xEv-Y2-yfD"/>
@@ -121,18 +151,17 @@
                 <constraint firstItem="5bt-d9-CYA" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="whO-Le-loY"/>
                 <constraint firstAttribute="trailing" secondItem="5bt-d9-CYA" secondAttribute="trailing" id="zrX-SU-ELw"/>
             </constraints>
-            <size key="customSize" width="333" height="530"/>
+            <size key="customSize" width="449" height="530"/>
             <connections>
                 <outlet property="addressTextField" destination="YkL-Iu-Hoo" id="gsT-rl-qcC"/>
-                <outlet property="genderSegmentControl" destination="iS8-iT-hnX" id="OhO-pM-q3d"/>
-                <outlet property="leaseTextField" destination="Re9-0c-DVB" id="EiO-6Y-9Je"/>
-                <outlet property="movinDatePicker" destination="AOe-IE-TXO" id="Clc-ZY-PKM"/>
+                <outlet property="datePickerTextField" destination="vMB-IV-R2j" id="55K-6b-Skb"/>
+                <outlet property="leasePickerView" destination="xqu-Ym-o3S" id="vX6-bR-Iv8"/>
                 <outlet property="parlorCountView" destination="VOg-de-FNd" id="sXW-LH-86j"/>
                 <outlet property="regionSelectView" destination="Xwr-Nt-xsR" id="FMj-FW-dXv"/>
                 <outlet property="roomCountView" destination="K5z-8T-FQ3" id="aJK-R8-xd8"/>
-                <outlet property="titleTextField" destination="dmA-NZ-lIe" id="Eh0-Ra-Reg"/>
+                <outlet property="titleTextField" destination="368-14-KjK" id="vrQ-H7-h0x"/>
             </connections>
-            <point key="canvasLocation" x="-230" y="125"/>
+            <point key="canvasLocation" x="-147.10144927536234" y="124.55357142857142"/>
         </collectionViewCell>
     </objects>
     <resources>

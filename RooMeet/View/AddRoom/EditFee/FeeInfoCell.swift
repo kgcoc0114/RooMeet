@@ -48,12 +48,40 @@ protocol FeeInfoCellDelegate: AnyObject {
 class FeeInfoCell: UITableViewCell {
     static let reuseIdentifier = "\(FeeInfoCell.self)"
 
+    @IBOutlet weak var segmentControl: RMSegmentedControl! {
+        didSet {
+            segmentControl.items = ["獨立支付", "費用均分"]
+            segmentControl.borderColor = RMConstants.shared.mainLightBackgroundColor
+            segmentControl.selectedLabelColor = RMConstants.shared.mainColor
+            segmentControl.unselectedLabelColor = RMConstants.shared.mainColor
+            segmentControl.backgroundColor = .white
+            segmentControl.thumbColor = RMConstants.shared.mainLightBackgroundColor
+            segmentControl.selectedIndex = 0
+            segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
+        }
+    }
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var govTypeButton: UIButton!
+    @IBOutlet weak var govTypeButton: FeeButton! {
+        didSet {
+            govTypeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            govTypeButton.isSelected = false
+        }
+    }
     @IBOutlet weak var priceTextField: RMBaseTextField!
     @IBOutlet weak var priceUnitLabel: UILabel!
-    @IBOutlet weak var shareButton: UIButton!
-    @IBOutlet weak var sperateButton: UIButton!
+    @IBOutlet weak var shareButton: FeeButton! {
+        didSet {
+            shareButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            shareButton.isSelected = false
+        }
+    }
+
+    @IBOutlet weak var sperateButton: FeeButton! {
+        didSet {
+            sperateButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            sperateButton.isSelected = false
+        }
+    }
 
     var feeType: FeeType?
     var affordType: AffordType?
@@ -123,6 +151,12 @@ class FeeInfoCell: UITableViewCell {
     @IBAction func tapGovTypeButton(_ sender: Any) {
         govTypeButton.isSelected.toggle()
         feeDetail.isGov = govTypeButton.isSelected
+        feeDetail.affordType = segmentControl.selectedIndex == 0 ? "sperate" : "share"
+        delegate?.passData(self)
+    }
+
+    @objc func segmentValueChanged(_ sender: RMSegmentedControl) {
+        feeDetail.affordType = sender.selectedIndex == 0 ? "sperate" : "share"
         delegate?.passData(self)
     }
 }
@@ -131,7 +165,22 @@ extension FeeInfoCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let fee = priceTextField.text {
             feeDetail.fee = Double(fee)
+            feeDetail.affordType = segmentControl.selectedIndex == 0 ? "sperate" : "share"
             delegate?.passData(self)
+        }
+    }
+}
+
+class FeeButton: UIButton {
+    override var isSelected: Bool {
+        didSet {
+            if isSelected == true {
+                self.backgroundColor = RMConstants.shared.mainColor
+                self.tintColor = RMConstants.shared.mainLightColor
+            } else {
+                self.backgroundColor = RMConstants.shared.mainLightColor
+                self.tintColor = RMConstants.shared.mainColor
+            }
         }
     }
 }

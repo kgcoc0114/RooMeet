@@ -18,10 +18,14 @@ struct Room: Codable, Hashable {
     var title: String
     var roomImages: [URL]
     var rooms: [RoomSpec]
-    var roommateGender: Int // (0: male, 1: female, 2: nonBinary, 3: all)
-    var rules: [String]
-    var publicAmenities: [String]
-    var feature: [String]?
+//    var roommateGender: Int // (0: male, 1: female, 2: nonBinary, 3: all)
+    var roomFeatures: [String]
+    var roomPetsRules: [String]
+    var roomHighLights: [String]
+    var roomGenderRules: [String]
+    var roomCookingRules: [String]
+    var roomElevatorRules: [String]
+    var roomBathroomRules: [String]
     var town: String
     var county: String
     var address: String
@@ -29,7 +33,7 @@ struct Room: Codable, Hashable {
     var long: Double?
     var postalCode: String?
     var billInfo: BillInfo?
-    var lease: Double
+    var leaseMonth: Int
     var movinDate: Date
     var otherDescriction: String?
     var isDeleted: Bool
@@ -65,8 +69,6 @@ struct RoomSpec: Codable, Hashable {
     var roomType: String?
     var price: Int?
     var space: Double?
-    var people: Int?
-    var amenities: [String]?
 }
 
 struct CurrentLivingInfo: Codable {

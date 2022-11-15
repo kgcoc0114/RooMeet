@@ -35,15 +35,17 @@ class RMBaseTextField: UITextField {
         underline.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(underline)
-    
+
         NSLayoutConstraint.activate([
+            self.heightAnchor.constraint(equalToConstant: 50),
             leadingAnchor.constraint(equalTo: underline.leadingAnchor),
             trailingAnchor.constraint(equalTo: underline.trailingAnchor),
             bottomAnchor.constraint(equalTo: underline.bottomAnchor),
-            underline.heightAnchor.constraint(equalToConstant: 1.0)
+            underline.heightAnchor.constraint(equalToConstant: 1)
         ])
 
-        underline.backgroundColor = UIColor.hexColor(hex: "cccccc")
+        underline.backgroundColor = .hexColor(hex: "#F1F5F9")
+        self.font = UIFont.regular(size: 15)
     }
 
     private func addToolbar() {
@@ -55,10 +57,11 @@ class RMBaseTextField: UITextField {
         ]
         toolbar.sizeToFit()
         self.inputAccessoryView = toolbar
+        self.layer.borderColor = UIColor.clear.cgColor
+        self.layer.borderWidth = 0
     }
 
     @objc private func textFieldDone() {
         self.endEditing(true)
     }
 }
-
