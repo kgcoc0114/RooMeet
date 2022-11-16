@@ -16,5 +16,6 @@ target 'RooMeet' do
   pod 'ESPullToRefresh'
   pod 'GoogleWebRTC'
   pod 'lottie-ios'
+  pod "TTGTagCollectionView"
 
 end
