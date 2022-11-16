@@ -7,16 +7,6 @@
 
 import UIKit
 
-//enum Rules: String, CaseIterable {
-//
-//    case noSmoking = "No Smoking"
-//    case noPets = "No Pets"
-//    case noSmoking = "No Smoking"
-//    case noSmoking = "No Smoking"
-//    case noSmoking = "No Smoking"
-//    case noSmoking = "No Smoking"
-//}
-
 enum Rules: String, CaseIterable {
     case noSmoking = "No Smoking"
     case noPets = "No Pets"
@@ -27,12 +17,50 @@ enum Rules: String, CaseIterable {
     case couplesOk = "Couples OK"
 }
 
+//enum Rules: String, CaseIterable {
+//    case pets = "寵物"
+//    case cooking = "做飯"
+//    case elevator = "電梯"
+//    case gender = "租客性別"
+//    case bathroom = "衛浴"
+//
+//    var items: [String] {
+//        switch self {
+//        case .pets:
+//            return ["不可寵", "可養貓", "可養狗", "可議"]
+//        case .cooking:
+//            return ["可做飯", "不可做飯"]
+//        case .elevator:
+//            return ["有電梯", "無電梯"]
+//        case .gender:
+//            return ["男女不限", "限男", "限女"]
+//        case .bathroom:
+//            return ["獨立衛浴", "公用衛浴"]
+//        }
+//    }
+//}
+
 enum Amenities: String, CaseIterable {
-    case wiFiIncluded = "Wi-Fi"
-    case utilitiesIncluded = "附家電"
+    case refrigerator = "冰箱"
+    case waterHeater = "熱水器"
+    case wifi = "網路"
+    case balcony = "陽台"
+    case washer = "洗衣機"
     case doorman = "管理員"
     case tv = "電視"
 }
+
+//roomFeatures  =
+//enum Features: String, CaseIterable {
+//    case noSmoking = "No Smoking"
+//    case noPets = "No Pets"
+//    case noDrinking = "No Drinking"
+//    case catsOk = "Cats OK"
+//    case dogsOk = "Dogs OK"
+//    case otherPetsOk = "Other Pets OK"
+//    case couplesOk = "Couples OK"
+//}
+
 
 enum MutlipleChooseType {
     case rule
@@ -87,6 +115,14 @@ class MutlipleChooseController: UIViewController {
 
     var completion: (([String]) -> Void)?
 
+    @IBOutlet weak var confirmButton: UIButton! {
+        didSet {
+            confirmButton.setTitle("確認", for: .normal)
+            confirmButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            confirmButton.backgroundColor = RMConstants.shared.mainColor
+            confirmButton.tintColor = RMConstants.shared.mainLightColor
+        }
+    }
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
@@ -97,7 +133,6 @@ class MutlipleChooseController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         tableView.register(
             UINib(nibName: OptionCell.reuseIdentifier, bundle: nil),
             forCellReuseIdentifier: OptionCell.reuseIdentifier)
@@ -138,6 +173,7 @@ class MutlipleChooseController: UIViewController {
             options = []
         }
     }
+
     @IBAction func confirmAction(_ sender: Any) {
         let selectedItem = options
             .filter({ option in

@@ -32,4 +32,7 @@ enum ImageAsset: String {
     case gender_male
     case gender_female
     case gender_non_binary
+    case user
+    case home
+    case dollar
 }

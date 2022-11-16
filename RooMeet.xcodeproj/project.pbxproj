@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		43F0895A0D2EF93E66E808CB /* Pods_RooMeet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */; };
+		E507B0C42923B08F002E501E /* ItemsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E507B0C22923B08F002E501E /* ItemsCell.swift */; };
+		E507B0C52923B08F002E501E /* ItemsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E507B0C32923B08F002E501E /* ItemsCell.xib */; };
+		E507B0C72923BA03002E501E /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E507B0C62923BA03002E501E /* TagView.swift */; };
+		E507B0C92923DE51002E501E /* RMSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E507B0C82923DE50002E501E /* RMSegmentedControl.swift */; };
 		E5119BA3291FDA8B00A632C9 /* RoomMapCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119BA1291FDA8B00A632C9 /* RoomMapCell.swift */; };
 		E5119BA4291FDA8B00A632C9 /* RoomMapCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5119BA2291FDA8B00A632C9 /* RoomMapCell.xib */; };
 		E5119BAB292081F100A632C9 /* RMNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119BAA292081F100A632C9 /* RMNavigationController.swift */; };
@@ -173,6 +177,10 @@
 		572078A3C9F8A5A84AA3CAE9 /* Pods-RooMeet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RooMeet.release.xcconfig"; path = "Target Support Files/Pods-RooMeet/Pods-RooMeet.release.xcconfig"; sourceTree = "<group>"; };
 		69E8B7344E8447ABD91037E0 /* Pods_RooMeet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RooMeet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE5A43F1B6AB4E753E5C2520 /* Pods-RooMeet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RooMeet.debug.xcconfig"; path = "Target Support Files/Pods-RooMeet/Pods-RooMeet.debug.xcconfig"; sourceTree = "<group>"; };
+		E507B0C22923B08F002E501E /* ItemsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsCell.swift; sourceTree = "<group>"; };
+		E507B0C32923B08F002E501E /* ItemsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ItemsCell.xib; sourceTree = "<group>"; };
+		E507B0C62923BA03002E501E /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
+		E507B0C82923DE50002E501E /* RMSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSegmentedControl.swift; sourceTree = "<group>"; };
 		E5119BA1291FDA8B00A632C9 /* RoomMapCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomMapCell.swift; sourceTree = "<group>"; };
 		E5119BA2291FDA8B00A632C9 /* RoomMapCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomMapCell.xib; sourceTree = "<group>"; };
 		E5119BAA292081F100A632C9 /* RMNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMNavigationController.swift; sourceTree = "<group>"; };
@@ -420,12 +428,12 @@
 			children = (
 				E5FF403E291B45FA00DCA2D4 /* TmpViewController.swift */,
 				E5E64C75290D6E3100F07286 /* RMTabBarController.swift */,
+				E5119BAA292081F100A632C9 /* RMNavigationController.swift */,
 				E5872941291D000B00C12E9E /* Explore */,
 				E587293F291CFFE900C12E9E /* RoomDetail */,
 				E5872940291CFFFB00C12E9E /* Home */,
 				E587293E291CFFB600C12E9E /* Chat */,
 				E587293D291CFFA800C12E9E /* Profile */,
-				E5119BAA292081F100A632C9 /* RMNavigationController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -767,6 +775,8 @@
 				E593F0082910065C00B35550 /* RulesCell.xib */,
 				E593F011291012DF00B35550 /* RulesHeaderCell.swift */,
 				E593F012291012DF00B35550 /* RulesHeaderCell.xib */,
+				E507B0C22923B08F002E501E /* ItemsCell.swift */,
+				E507B0C32923B08F002E501E /* ItemsCell.xib */,
 			);
 			path = RuleCell;
 			sourceTree = "<group>";
@@ -778,6 +788,8 @@
 				E5B33767290EA2FA00467404 /* RMBaseTextField.swift */,
 				E5B018B72915F21E00A09788 /* CardView.swift */,
 				E5E2771F291E88F300E68D90 /* RMButton.swift */,
+				E507B0C62923BA03002E501E /* TagView.swift */,
+				E507B0C82923DE50002E501E /* RMSegmentedControl.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -1023,6 +1035,7 @@
 				E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */,
 				E593F0062910016D00B35550 /* OptionCell.xib in Resources */,
 				E5872933291CAA7300C12E9E /* OUReservationCell.xib in Resources */,
+				E507B0C52923B08F002E501E /* ItemsCell.xib in Resources */,
 				E5C5FE872910CB8000DA91DF /* FeeInfoCell.xib in Resources */,
 				E5DEFD92291F3B0A0064E2C8 /* OUCallCell.xib in Resources */,
 				E5DEFDA6291FC9550064E2C8 /* RoomDetailHeaderView.xib in Resources */,
@@ -1129,9 +1142,11 @@
 				E5D9C045291E4FF900F416E6 /* OUImageCell.swift in Sources */,
 				E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */,
 				E5E64C9A290E474200F07286 /* UIColor+Extension.swift in Sources */,
+				E507B0C92923DE51002E501E /* RMSegmentedControl.swift in Sources */,
 				E5DEFD91291F3B0A0064E2C8 /* OUCallCell.swift in Sources */,
 				E5B018DD29175B7100A09788 /* FilterViewController.swift in Sources */,
 				E5B018B82915F21E00A09788 /* CardView.swift in Sources */,
+				E507B0C72923BA03002E501E /* TagView.swift in Sources */,
 				E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */,
 				E5EEE2172913B2B800CAAE84 /* Message.swift in Sources */,
 				E587293B291CFFA100C12E9E /* IntroViewController.swift in Sources */,
@@ -1163,6 +1178,7 @@
 				E5EEE2072912AE3B00CAAE84 /* FirebaseService.swift in Sources */,
 				E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */,
 				E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */,
+				E507B0C42923B08F002E501E /* ItemsCell.swift in Sources */,
 				E5EEE2132913B02600CAAE84 /* User.swift in Sources */,
 				E5E64C84290E183F00F07286 /* RegionService.swift in Sources */,
 				E5B984D9291BD78A006DD8D7 /* BookingCell.swift in Sources */,

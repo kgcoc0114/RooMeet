@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EditFeeController" customModule="RooMeet" customModuleProvider="target">
             <connections>
                 <outlet property="confirmButton" destination="WE9-Zh-lmp" id="iBx-ri-OUQ"/>
+                <outlet property="dismissButton" destination="e5R-PW-8h5" id="B2L-iC-M7c"/>
                 <outlet property="tableView" destination="d4a-Nr-1WJ" id="gti-lv-aFl"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -21,33 +22,61 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WE9-Zh-lmp">
-                    <rect key="frame" x="169" y="831" width="76" height="31"/>
-                    <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Confirm"/>
-                    <connections>
-                        <action selector="confirmAction:" destination="-1" eventType="touchUpInside" id="jCi-8S-D0X"/>
-                    </connections>
-                </button>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="d4a-Nr-1WJ">
-                    <rect key="frame" x="-12" y="44" width="414" height="787"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sUP-Eh-pTc">
+                    <rect key="frame" x="0.0" y="821" width="414" height="75"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WE9-Zh-lmp">
+                            <rect key="frame" x="10" y="10" width="394" height="55"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Confirm"/>
+                            <connections>
+                                <action selector="confirmAction:" destination="-1" eventType="touchUpInside" id="jCi-8S-D0X"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="WE9-Zh-lmp" secondAttribute="trailing" constant="10" id="7iG-DP-Xoj"/>
+                        <constraint firstAttribute="bottom" secondItem="WE9-Zh-lmp" secondAttribute="bottom" constant="10" id="D9C-73-LXi"/>
+                        <constraint firstItem="WE9-Zh-lmp" firstAttribute="top" secondItem="sUP-Eh-pTc" secondAttribute="top" constant="10" id="Llo-Fg-0gG"/>
+                        <constraint firstAttribute="height" constant="75" id="cNn-vv-g3d"/>
+                        <constraint firstItem="WE9-Zh-lmp" firstAttribute="leading" secondItem="sUP-Eh-pTc" secondAttribute="leading" constant="10" id="wAw-Ww-Ttu"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="d4a-Nr-1WJ">
+                    <rect key="frame" x="0.0" y="95" width="414" height="726"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </tableView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e5R-PW-8h5">
+                    <rect key="frame" x="321" y="54" width="83" height="31"/>
+                    <color key="tintColor" red="0.29411764709999999" green="0.50196078430000002" blue="0.4941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" image="multiply" catalog="system" title="Button"/>
+                    <connections>
+                        <action selector="dismissAction:" destination="-1" eventType="touchUpInside" id="TUO-5P-jHF"/>
+                    </connections>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="d4a-Nr-1WJ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="2sP-vU-zR6"/>
-                <constraint firstItem="WE9-Zh-lmp" firstAttribute="top" secondItem="d4a-Nr-1WJ" secondAttribute="bottom" id="9ZP-7a-yCb"/>
-                <constraint firstItem="WE9-Zh-lmp" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="XXy-Ju-iYA"/>
-                <constraint firstItem="d4a-Nr-1WJ" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="bgf-bW-LjC"/>
+                <constraint firstItem="sUP-Eh-pTc" firstAttribute="top" secondItem="d4a-Nr-1WJ" secondAttribute="bottom" id="3tM-LU-Tmh"/>
+                <constraint firstItem="d4a-Nr-1WJ" firstAttribute="top" secondItem="e5R-PW-8h5" secondAttribute="bottom" constant="10" id="Qjv-qM-bKu"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="sUP-Eh-pTc" secondAttribute="trailing" id="QpQ-WT-vnr"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="d4a-Nr-1WJ" secondAttribute="trailing" id="R1P-Na-wyo"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="e5R-PW-8h5" secondAttribute="trailing" constant="10" id="Yrq-jS-ZGj"/>
+                <constraint firstAttribute="bottom" secondItem="sUP-Eh-pTc" secondAttribute="bottom" id="jUU-dc-43c"/>
+                <constraint firstItem="d4a-Nr-1WJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="l8V-91-bmn"/>
+                <constraint firstItem="e5R-PW-8h5" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="10" id="r67-1a-3Gc"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="d4a-Nr-1WJ" secondAttribute="trailing" id="rML-Fu-gMu"/>
-                <constraint firstItem="WE9-Zh-lmp" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="xGa-Ie-Of1"/>
+                <constraint firstItem="sUP-Eh-pTc" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="wiI-0d-hId"/>
             </constraints>
-            <point key="canvasLocation" x="133" y="100"/>
+            <point key="canvasLocation" x="51" y="-58"/>
         </view>
     </objects>
     <resources>
+        <image name="multiply" catalog="system" width="128" height="111"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
