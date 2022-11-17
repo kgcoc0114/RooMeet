@@ -77,8 +77,8 @@ class FavoritesViewController: UIViewController {
     }
 
     private func fetchRooms() {
-        FirebaseService.shared.fetchFavoriteRoomsByUserID(roomIDList: gCurrentUser.like) { rooms in
-//            guard let `self` = self else { return }
+        FirebaseService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
+            guard let self = self else { return }
             self.rooms = rooms
         }
     }

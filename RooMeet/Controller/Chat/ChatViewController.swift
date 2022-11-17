@@ -26,13 +26,19 @@ class ChatViewController: UIViewController {
 
     var chatRoom: ChatRoom?
     var otherData: ChatMember?
-    var currentUserData = ChatMember(id: gCurrentUser.id, profilePhoto: gCurrentUser.profilePhoto, name: gCurrentUser.name)
+    var currentUserData = ChatMember(
+        id: UserDefaults.id,
+        profilePhoto: UserDefaults.profilePhoto,
+        name: UserDefaults.name
+    )
+
     var messages: [Message] = [] {
         didSet {
             updateDataSource()
             scrollToButtom(animated: false)
         }
     }
+
     @IBOutlet weak var otherFunctionButton: UIButton! {
         didSet {
             otherFunctionButton.setTitle("", for: .normal)
@@ -111,7 +117,7 @@ class ChatViewController: UIViewController {
             let message = Message(
                 id: messageRef.documentID,
                 messageType: 0,
-                sendBy: gCurrentUser.id,
+                sendBy: UserDefaults.id,
                 content: content,
                 createdTime: Timestamp()
             )

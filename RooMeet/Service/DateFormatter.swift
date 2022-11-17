@@ -12,8 +12,8 @@ import FirebaseFirestoreSwift
 class RMDateFormatter {
     static let shared = RMDateFormatter()
 
-//    formatter.string(from: timeInterval)
-
+    //    formatter.string(from: timeInterval)
+    let currentTimestamp = Timestamp()
     let formatter = DateComponentsFormatter()
 
     func getTimeIntervalString(
@@ -42,6 +42,11 @@ class RMDateFormatter {
     func dateString(date: Date) -> String {
         dateFormatter.dateFormat = "yyyy/MM/dd"
         return dateFormatter.string(from: date)
+    }
+
+    func dateString(dateString: String) -> Date {
+        dateFormatter.dateFormat = "yyyy/MM/dd"
+        return dateFormatter.date(from: dateString)!
     }
 
     func timeString(date: Date) -> String {

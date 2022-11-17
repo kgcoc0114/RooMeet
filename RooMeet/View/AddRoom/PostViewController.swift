@@ -389,7 +389,7 @@ extension PostViewController: PostBasicCellDelegate {
     func passData(cell: PostBasicCell, data: PostBasicData) {
         postBasicData = data
         if let county = postBasicData?.county,
-           let town = postBasicData?.town {
+            let town = postBasicData?.town {
             postalCode = LocationService.shared.postalCodeList?.filter({ postal in
                 postal.city == county && postal.area == town
             })[0].zip
@@ -538,7 +538,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             let docRef = Firestore.firestore().collection("Room").document()
             print("docRef")
             var room = Room(roomID: docRef.documentID,
-                            userID: gCurrentUser.id,
+                            userID: UserDefaults.id,
                             createdTime: Timestamp(),
                             modifiedTime: Timestamp(),
                             title: (postBasicData?.title)!,
@@ -558,7 +558,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                             long: longitude,
                             postalCode: postalCode,
                             billInfo: billInfo,
-                            leaseMonth: (postBasicData?.leaseMonth)!,
+                            leaseMonth: (postBasicData?.leaseMonth) ?? 12,
                             movinDate: (postBasicData?.movinDate)!,
                             otherDescriction: otherDescriction,
                             isDeleted: false)

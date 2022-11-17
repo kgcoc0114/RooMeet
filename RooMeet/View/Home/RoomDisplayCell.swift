@@ -44,8 +44,8 @@ class RoomDisplayCell: UICollectionViewCell {
         }
 
         if let owner = data.userData {
-            let gender = Gender.allCases[owner.gender].rawValue
-            ownerLabel.text = "\(owner.name) / \(owner.age) / \(gender)"
+            let gender = Gender.allCases[owner.gender ?? 0].rawValue
+            ownerLabel.text = "\(owner.name!) / \(owner.age) / \(gender)"
         }
 
         if let price = data.roomMinPrice {

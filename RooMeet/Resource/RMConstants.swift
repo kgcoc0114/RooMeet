@@ -51,4 +51,12 @@ class RMConstants {
     let roomElevatorRules = ["有電梯", "無電梯"]
     let roomGenderRules = ["男女不限", "限男", "限女"]
     let roomBathroomRules = ["獨立衛浴", "公用衛浴"]
+
 }
+
+enum EntryType {
+    case edit
+    case new
+}
+
+var gCurrentUser = User(id: "")

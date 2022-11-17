@@ -95,7 +95,7 @@ class CUReservationCell: MessageBaseCell {
         } else {
             if reservation.acceptedStatus == "waiting" {
                 statusLabel.isHidden = true
-                if reservation.sender == gCurrentUser.id {
+                if reservation.sender == UserDefaults.id {
                     titleLabel.text = "已發起預約，等候回覆"
                     denyButton.isHidden = true
                     agreeButton.isHidden = true

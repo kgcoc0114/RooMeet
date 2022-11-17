@@ -88,7 +88,7 @@ class CallViewController: UIViewController {
         self.callerData = callerData
         self.calleeData = calleeData
 
-        if callerData.id != gCurrentUser.id {
+        if callerData.id != UserDefaults.id {
             otherUserData = callerData
         } else {
             otherUserData = calleeData
@@ -121,7 +121,11 @@ class CallViewController: UIViewController {
             return
         }
 
-        callerImageView.setImage(urlString: otherUserData.profilePhoto)
+        if let profilePhoto = otherUserData.profilePhoto {
+            callerImageView.setImage(urlString: profilePhoto)
+        } else {
+            callerImageView.image = UIImage.asset(.profile_user)
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -168,7 +172,7 @@ class CallViewController: UIViewController {
                         RMLottie.shared.endCallAnimate(animationView: self.animationView)
                     case "offer":
                         self.startTime = call.startTime
-                        if call.caller == gCurrentUser.id {
+                        if call.caller == UserDefaults.id {
                             self.updateComponentStatus(answer: true, status: true)
                         } else {
                             self.updateComponentStatus(status: true)

@@ -66,7 +66,12 @@ class OUTextCell: MessageBaseCell {
     override func configureLayout() {
         if let message = message,
             let sendBy = sendBy {
-            avatarView.setImage(urlString: sendBy.profilePhoto)
+            if let profilePhoto = sendBy.profilePhoto {
+                avatarView.setImage(urlString: profilePhoto)
+            } else {
+                avatarView.image = UIImage.asset(.profile_user)
+            }
+
             contentTextView.text = message.content
             let messageDate = message.createdTime.dateValue()
 

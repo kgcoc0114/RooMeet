@@ -17,5 +17,8 @@ target 'RooMeet' do
   pod 'GoogleWebRTC'
   pod 'lottie-ios'
   pod "TTGTagCollectionView"
+  pod 'FirebaseUI/Auth'
+  pod 'FirebaseUI/OAuth'
+  pod 'TTSegmentedControl', '~>0.4.9'
 
 end

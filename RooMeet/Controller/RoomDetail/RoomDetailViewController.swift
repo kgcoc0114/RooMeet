@@ -63,6 +63,7 @@ class RoomDetailViewController: UIViewController {
     private var dataSource: DetailDataSource!
 
     var room: Room?
+    var user: User?
     var selectedPeriod: BookingPeriod?
     var selectedDate: DateComponents?
     var selectedDateCell: BookingDateCell?
@@ -122,6 +123,11 @@ class RoomDetailViewController: UIViewController {
         super.init(nibName: "RoomDetailViewController", bundle: nil)
 
         self.room = room
+
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self else { return }
+            self.user = user
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -149,12 +155,17 @@ class RoomDetailViewController: UIViewController {
             let userData = room.userData {
             nameLabel.text = userData.name
             ageLabel.text = "\(userData.age)"
-            genderImageView.image = Gender.allCases[userData.gender].image
-            ownerAvatarView.setImage(urlString: userData.profilePhoto)
+            genderImageView.image = Gender.allCases[userData.gender ?? 0].image
+            if let profilePhoto = userData.profilePhoto {
+                ownerAvatarView.setImage(urlString: profilePhoto)
+            } else {
+                ownerAvatarView.image = UIImage.asset(.profile_user)
+            }
         }
+        user = gCurrentUser
         dealWithBillInfo()
-        self.tabBarController?.tabBar.isHidden = true
         updateDataSource()
+        self.tabBarController?.tabBar.isHidden = true
     }
 
     override func viewDidLayoutSubviews() {
@@ -182,7 +193,13 @@ class RoomDetailViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        FirebaseService.shared.updateUserLikeData()
+        guard let user = user else {
+            return
+        }
+
+        gCurrentUser = user
+        FirebaseService.shared.updateUserFavoriteData(reservations: user.reservations, favoriteRooms: user.favoriteRooms)
+
         self.tabBarController?.tabBar.isHidden = false
     }
 
@@ -200,35 +217,27 @@ class RoomDetailViewController: UIViewController {
             print("ERROR: - Reservations Date got error.")
             return
         }
+        print(user)
+        print(gCurrentUser)
+        guard var user = user else {
+            return
+        }
 
-        if let reservations = gCurrentUser.reservations {
-            if !reservations.contains(room.roomID) {
-                ReservationService.shared.upsertReservationData(
-                    status: .waiting,
-                    requestTime: sDate,
-                    period: selectedPeriod.descrption,
-                    room: room,
-                    senderID: gCurrentUser.id,
-                    receiverID: room.userID,
-                    reservation: nil
-                )
-                gCurrentUser.reservations?.append(room.roomID)
-                RMProgressHUD.showSuccess(view: self.view)
-            } else {
-                RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
-            }
-        } else {
+
+        if !user.reservations.contains(room.roomID) {
             ReservationService.shared.upsertReservationData(
                 status: .waiting,
                 requestTime: sDate,
                 period: selectedPeriod.descrption,
                 room: room,
-                senderID: gCurrentUser.id,
+                senderID: UserDefaults.id,
                 receiverID: room.userID,
                 reservation: nil
             )
-            gCurrentUser.reservations? = [room.roomID]
+            self.user?.reservations.append(room.roomID)
             RMProgressHUD.showSuccess(view: self.view)
+        } else {
+            RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
         }
     }
 
@@ -238,7 +247,7 @@ class RoomDetailViewController: UIViewController {
             return
         }
 
-        FirebaseService.shared.getChatRoomByUserID(userA: gCurrentUser.id, userB: room.userID) { [weak self] chatRoom in
+        FirebaseService.shared.getChatRoomByUserID(userA: UserDefaults.id, userB: room.userID) { [weak self] chatRoom in
             let detailVC = ChatViewController()
             detailVC.setup(chatRoom: chatRoom)
             self?.navigationController?.pushViewController(detailVC, animated: false)
@@ -277,7 +286,7 @@ extension RoomDetailViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: RoomDetailHeaderView.identifier)
 
-        dataSource = DetailDataSource(collectionView: collectionView) { collectionView, indexPath, item in
+        dataSource = DetailDataSource(collectionView: collectionView) { [self] collectionView, indexPath, item in
             switch item {
             case .images(let data):
                 guard
@@ -291,8 +300,9 @@ extension RoomDetailViewController {
 
                 cell.configureCell(images: data.roomImages)
                 cell.delegate = self
-                if let likeRooms = gCurrentUser.like {
-                    if likeRooms.contains(data.roomID) {
+
+                if let user = self.user {
+                    if user.favoriteRoomIDs.contains(data.roomID) {
                         cell.isLike = true
                     }
                 } else {
@@ -579,15 +589,17 @@ extension RoomDetailViewController: RoomImagesCellDelegate {
     func didClickedLike(like: Bool) {
         if let roomID = room?.roomID {
             if like == true {
-                if gCurrentUser.like != nil {
-                    gCurrentUser.like?.append(roomID)
-                } else {
-                    gCurrentUser.like = []
-                    gCurrentUser.like?.append(roomID)
-                }
+                let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
+                user?.favoriteRooms.append(favoriteRoom)
+//                if user.like != nil {
+//                    gCurrentUser.like?.append(roomID)
+//                } else {
+//                    gCurrentUser.like = []
+//                    gCurrentUser.like?.append(roomID)
+//
             } else {
-                if let index = gCurrentUser.like?.firstIndex(of: roomID) {
-                    gCurrentUser.like?.remove(at: index)
+                if let index = user?.favoriteRoomIDs.firstIndex(of: roomID) {
+                    user?.favoriteRooms.remove(at: index)
                 }
             }
         }

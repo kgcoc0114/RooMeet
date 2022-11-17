@@ -43,7 +43,7 @@ class ChatRoomListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Chat"
-        print("Chat ===", gCurrentUser.id)
+        print("Chat ===", UserDefaults.id)
         configureDataSource()
 //        FirebaseService.shared.fetchChatRoomDataWithMemberData(userID: gCurrentUser.id) { [weak self] chatRooms in
 //            self?.chatRooms = chatRooms
@@ -83,7 +83,7 @@ extension ChatRoomListViewController {
                 return UITableViewCell()
             }
             let chatRoom = self.chatRooms[indexPath.item]
-            cell.layoutCell(gCurrentUser.id, chatRoom: chatRoom)
+            cell.layoutCell(UserDefaults.id, chatRoom: chatRoom)
             return cell
         })
     }
