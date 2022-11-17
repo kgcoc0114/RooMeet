@@ -20,6 +20,8 @@ class IntroViewController: UIViewController {
         case rules(String)
     }
 
+    let imagePickerController = UIImagePickerController()
+
     var user: User?
     var rules: [String] = [] {
         didSet {
@@ -31,17 +33,19 @@ class IntroViewController: UIViewController {
 
     private var profileImageCell: IntroCell?
     private var profileImage: UIImage?
-    private var favorateCounty: String?
-    private var favorateTown: String?
+    private var favoriteCounty: String?
+    private var favoriteTown: String?
+    private var entryType: EntryType?
 
     typealias IntroDataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias IntroSnapshot = NSDiffableDataSourceSnapshot<Section, Item>
     private var dataSource: IntroDataSource!
 
-    init(entryPage: String, user: User? = nil) {
+    init(entryType: EntryType, user: User? = nil) {
         super.init(nibName: "IntroViewController", bundle: nil)
+        self.entryType = entryType
         self.user = user
-        print(user)
+        print("====", user?.gender)
     }
 
     required init?(coder: NSCoder) {
@@ -51,15 +55,15 @@ class IntroViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) {[weak self] user, _ in
+            guard let self = self else { return }
+            self.user = user
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateDataSource()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        fetchUserData()
     }
 
     private func configureCollectionView() {
@@ -78,7 +82,11 @@ class IntroViewController: UIViewController {
                     return UICollectionViewCell()
                 }
                 cell.delegate = self
-                cell.imageView.setImage(urlString: gCurrentUser.profilePhoto)
+                if let profilePhoto = UserDefaults.standard.string(forKey: "profilePhoto") {
+                    cell.imageView.setImage(urlString: profilePhoto)
+                } else {
+                    cell.imageView.image = UIImage.asset(.profile_user)
+                }
                 cell.configureCell(data: data)
                 return cell
             case .rules(let rule):
@@ -95,7 +103,7 @@ class IntroViewController: UIViewController {
     }
 
     private func fetchUser() {
-        FirebaseService.shared.fetchUserByID(userID: gCurrentUser.id) { user, _ in
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
             self.user = user
         }
     }
@@ -106,7 +114,28 @@ class IntroViewController: UIViewController {
             return
         }
         uploadImages(image: profileImage)
+    }
 
+    func updateUserDefault(user: User) {
+        if let rules = user.rules {
+            UserDefaults.rules = rules
+        }
+
+        if let name = user.name {
+            UserDefaults.name = name
+        }
+
+        if let birthday = user.birthday {
+            UserDefaults.birthday = birthday
+        }
+
+        if let favoriteCounty = user.favoriteCounty {
+            UserDefaults.favoriteCounty = favoriteCounty
+        }
+
+        if let favoriteTown = user.favoriteTown {
+            UserDefaults.favoriteTown = favoriteTown
+        }
     }
 }
 
@@ -163,8 +192,9 @@ extension IntroViewController: IntroCellDelegate {
         mutlipleChooseVC.setup(pageType: .rule, selectedOptions: [])
 
         mutlipleChooseVC.completion = { [self] selectedItem in
-            self.rules = selectedItem
-            print(self.rules)
+            if selectedItem.isEmpty {
+                user?.rules = selectedItem
+            }
         }
         present(mutlipleChooseVC, animated: true)
     }
@@ -172,18 +202,17 @@ extension IntroViewController: IntroCellDelegate {
     func showRegionPickerView(cell: IntroCell) {
         cell.regionTextField.resignFirstResponder()
         let regionPickerVC = RegionPickerViewController()
-        regionPickerVC.completion = { county, town in
+        regionPickerVC.completion = { [self] county, town in
             cell.county = county
             cell.town = town
-            self.favorateCounty = county
-            self.favorateTown = town
+            self.user?.favoriteCounty = county
+            self.user?.favoriteTown = town
         }
         present(regionPickerVC, animated: true)
     }
 
     func didClickImageView(_ cell: IntroCell) {
         profileImageCell = cell
-        let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
 
         let imagePickerAlertController = UIAlertController(
@@ -192,17 +221,19 @@ extension IntroViewController: IntroCellDelegate {
             preferredStyle: .actionSheet
         )
 
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { _ in
+        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { [weak self] _ in
+            guard let self = self else { return }
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                imagePickerController.sourceType = .photoLibrary
-                self.present(imagePickerController, animated: true, completion: nil)
+                self.imagePickerController.sourceType = .photoLibrary
+                self.present(self.imagePickerController, animated: true, completion: nil)
             }
         }
 
-        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { _ in
+        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { [weak self] _ in
+            guard let self = self else { return }
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                imagePickerController.sourceType = .camera
-                self.present(imagePickerController, animated: true, completion: nil)
+                self.imagePickerController.sourceType = .camera
+                self.present(self.imagePickerController, animated: true, completion: nil)
             }
         }
 
@@ -228,7 +259,7 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
-        var selectedImageFromPicker: UIImage?
+//        var selectedImageFromPicker: UIImage
 
         // 取得從 UIImagePickerController 選擇的檔案
         if let pickedImage = info[.originalImage] as? UIImage {
@@ -237,7 +268,7 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
             }
 
             cell.imageView.image = pickedImage
-            selectedImageFromPicker = pickedImage
+//            selectedImageFromPicker = pickedImage
             profileImage = pickedImage
         }
 
@@ -245,13 +276,10 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
     }
 
     private func uploadImages(image: UIImage) {
-        //        ProgressHUD.showProgress(0.4)
-
         DispatchQueue.global().async {
             let uniqueString = NSUUID().uuidString
             let storageRef = Storage.storage().reference(withPath: "Profile").child("\(uniqueString).png")
             if let uploadData = image.scale(scaleFactor: 0.1).jpegData(compressionQuality: 0.1) {
-                print("===",uploadData)
                 storageRef.putData(uploadData, completion: {[weak self] data, error in
                     if let error = error {
                         // TODO: Error Handle
@@ -274,35 +302,61 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
 
 
     private func saveData(url: URL?) {
-        let userRef = FirestoreEndpoint.user.colRef.document(gCurrentUser.id)
+        guard var user = user else { return }
+
+        let userRef = FirestoreEndpoint.user.colRef.document(user.id)
 
         var updateData: [AnyHashable: Any]
-        user?.rules = rules
-//        user?.name = name
-//        user?.birthday = birthday
-        user?.favorateCounty = favorateCounty
-        user?.favorateTown = favorateTown
+
 
         updateData = [
-            "rules": rules,
-            "name": user?.name as Any,
-            "birthday": user?.birthday as Any,
-            "favorateCounty": self.favorateCounty as Any,
-            "favorateTown": self.favorateTown as Any
+            "rules": user.rules as Any,
+            "name": user.name as Any,
+            "gender": user.gender as Any,
+            "birthday": user.birthday as Any,
+            "favoriteCounty": user.favoriteCounty as Any,
+            "favoriteTown": user.favoriteTown as Any
         ]
 
         if let url = url {
             updateData["profilePhoto"] = url.absoluteString
-            user?.profilePhoto = url.absoluteString
+            user.profilePhoto = url.absoluteString
         }
-        userRef.updateData(updateData)
-        completion?(user!)
-        dismiss(animated: true)
-    }
 
-    func fetchUserData() {
-        FirebaseService.shared.fetchUserByID(userID: user!.id) { user, _ in
-            gCurrentUser = user!
+        userRef.updateData(updateData)
+        completion?(user)
+        updateUserDefault(user: user)
+        if entryType == .new {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            guard let RMTabBarVC = storyBoard.instantiateViewController(withIdentifier: "RMTabBarController") as? RMTabBarController else {
+                return
+            }
+            UIApplication.shared.windows.first?.rootViewController = RMTabBarVC
+            UIApplication.shared.windows.first?.makeKeyAndVisible()
+        } else {
+            backToRoot(completion: nil)
         }
+    }
+}
+
+extension UIViewController {
+    func backToRoot(completion: (() -> Void)? = nil) {
+        if presentingViewController != nil {
+            let superVC = presentingViewController
+            dismiss(animated: false, completion: nil)
+            superVC?.backToRoot(completion: completion)
+            return
+        }
+
+        if let tabbarVC = self as? UITabBarController {
+            tabbarVC.selectedViewController?.backToRoot(completion: completion)
+            return
+        }
+
+        if let navigateVC = self as? UINavigationController {
+            navigateVC.popToRootViewController(animated: false)
+        }
+
+        completion?()
     }
 }

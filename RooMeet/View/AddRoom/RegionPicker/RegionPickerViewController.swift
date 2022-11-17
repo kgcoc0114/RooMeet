@@ -43,8 +43,8 @@ class RegionPickerViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
-    
-    private let regionList: [Region] = Region.regionList
+
+    private let regionList: [Region] = LocationService.shared.regionList ?? []
     private var countySelectedIndex: Int?
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -69,26 +69,23 @@ class RMTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+
         listenPhoneCallEvent()
     }
 
     func listenPhoneCallEvent() {
-        // test: uRzWzteO70l2fI1lN5L5
-        // test: LNC9Lmn7s8LrvLOoymKv
+        let uid = UserDefaults.id
 
-        let testID = "LNC9Lmn7s8LrvLOoymKv"
-
-        FirebaseService.shared.fetchUserByID(userID: testID) { user, index in
+        FirebaseService.shared.fetchUserByID(userID: uid) { user, index in
             if let user = user {
                 gCurrentUser = user
+                print("gCurrentUser = ", gCurrentUser)
             }
         }
-        FirebaseService.shared.getChatRoomByUserID(userA: "uRzWzteO70l2fI1lN5L5", userB: "LNC9Lmn7s8LrvLOoymKv") { chatroom in
-            print(chatroom)
-        }
-        print("gCurrentUser.id = ", gCurrentUser.id)
+
         FirestoreEndpoint.call.colRef
-            .whereField("callee", isEqualTo: testID)
+            .whereField("callee", isEqualTo: uid)
             .addSnapshotListener({ [weak self] querySnapshot, error in
                 if let error = error {
                     print("Error getting documents: \(error)")
@@ -112,8 +109,7 @@ class RMTabBarController: UITabBarController {
         do {
             let call = try document.data(as: Call.self)
 
-            if call.caller != gCurrentUser.id && call.status == "offer" {
-
+            if call.caller != UserDefaults.id && call.status == "offer" {
                 let callViewController = CallViewController(callRoomId: call.id, callType: .answer, callerData: call.callerData, calleeData: call.calleeData)
                 callViewController.modalPresentationStyle = .fullScreen
                 self.present(callViewController, animated: true)

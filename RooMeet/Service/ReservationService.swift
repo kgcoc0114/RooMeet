@@ -89,9 +89,9 @@ class ReservationService {
     func addUserReservation(userID: String, reservationID: String) {
         let userQuery = FirestoreEndpoint.user.colRef.document(userID)
 
-        if userID == gCurrentUser.id {
-            gCurrentUser.reservations?.append(reservationID)
-        }
+//        if userID == UserDefaults.id {
+//            gCurrentUser.reservations?.append(reservationID)
+//        }
 
         userQuery.updateData([
             "reservations": FieldValue.arrayUnion([reservationID])
@@ -105,20 +105,18 @@ class ReservationService {
             if let document = document, document.exists {
                 do {
                     let user = try document.data(as: User.self)
-                    guard var reservations = user.reservations else {
-                        return
-                    }
+                    var reservations = user.reservations
                     if let index = reservations.firstIndex(of: reservationID) {
                         print("index", index)
                         print("reservations", reservations)
                         reservations.remove(at: index)
                         userQuery.updateData([
-                            "reservations": reservations ?? []
+                            "reservations": reservations
                         ])
                         // 更新 user 狀態
-                        if userID == gCurrentUser.id {
-                            gCurrentUser.reservations = reservations
-                        }
+//                        if userID == UserDefaults.id {
+//                            gCurrentUser.reservations = reservations
+//                        }
                     }
 
                 } catch {
@@ -149,7 +147,7 @@ class ReservationService {
             let message = Message(
                 id: messageRef.documentID,
                 messageType: MessageType.reservation.rawValue,
-                sendBy: gCurrentUser.id,
+                sendBy: UserDefaults.id,
                 content: status.description,
                 createdTime: Timestamp(),
                 reservation: reservation

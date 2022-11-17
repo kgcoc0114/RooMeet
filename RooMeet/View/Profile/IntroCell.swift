@@ -28,38 +28,43 @@ class IntroCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView! {
         didSet {
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-
+            let tapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(imageTapped(tapGestureRecognizer:)))
+            imageView.contentMode = .scaleAspectFill
             imageView.isUserInteractionEnabled = true
             imageView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
 
-    @IBOutlet weak var regionTextField: UITextField!
-    @IBOutlet weak var birthdayTextField: UITextField! {
+
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var regionTextField: RMBaseTextField!
+    @IBOutlet weak var birthdayTextField: RMBaseTextField! {
         didSet {
-            let datePicker = UIDatePicker()
-            datePicker.datePickerMode = .date
-            datePicker.preferredDatePickerStyle = .inline
-
-            datePicker.addTarget(self, action: #selector(onDateValueChange), for: .valueChanged)
-
-            birthdayTextField.inputView = datePicker
-
             let toolbar = UIToolbar()
             toolbar.barStyle = .default
             toolbar.items = [
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-                UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(textFieldDone))
+                UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(datePickerDone))
             ]
             toolbar.sizeToFit()
-            birthdayTextField.inputAccessoryView = toolbar
+
+            let datePicker = UIDatePicker()
+            datePicker.datePickerMode = .date
+            datePicker.preferredDatePickerStyle = .inline
+            datePicker.tintColor = .hexColor(hex: "#437471")
+
+            birthdayTextField.placeholder = "YYYY/MM/DD"
+            birthdayTextField.inputView = datePicker
+
+            datePicker.addTarget(self, action: #selector(onDateValueChange(_:)), for: .valueChanged)
         }
     }
 
-    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var nameTextField: RMBaseTextField!
 
-    @IBOutlet weak var ruleTextField: UITextField!
+    @IBOutlet weak var ruleTextField: RMBaseTextField!
 
     @IBOutlet weak var imageButton: UIButton!
 
@@ -72,7 +77,7 @@ class IntroCell: UICollectionViewCell {
                 let town = town {
                 regionTextField.text = "\(county)\(town)"
             }
-            user?.favorateCounty = county
+            user?.favoriteCounty = county
         }
     }
 
@@ -83,7 +88,7 @@ class IntroCell: UICollectionViewCell {
                 let town = town {
                 regionTextField.text = "\(county)\(town)"
             }
-            user?.favorateTown = town
+            user?.favoriteTown = town
         }
     }
 
@@ -106,6 +111,10 @@ class IntroCell: UICollectionViewCell {
         imageButton.setTitle("Edit", for: .normal)
     }
 
+    override func layoutSubviews() {
+        imageView.layer.cornerRadius = imageButton.bounds.height / 2
+    }
+
     func configureCell(edit: Bool = true, data: User) {
         self.user = data
         if edit {
@@ -113,15 +122,27 @@ class IntroCell: UICollectionViewCell {
                 return
             }
 
-            birthdayTextField.isEnabled = false
             nameTextField.text = user.name
-            birthdayTextField.text = RMDateFormatter.shared.dateString(date: user.birthday)
-            if user.favorateTown != nil {
-                regionTextField.text = "\( user.favorateCounty)\(user.favorateTown)"
+
+            if let birthday = user.birthday {
+                birthdayTextField.text = RMDateFormatter.shared.dateString(date: birthday)
+            } else {
+                birthdayTextField.text = ""
             }
 
-            if user.introduction != nil {
-                introTextView.text = "\( user.introduction)"
+            if let profilePhoto = user.profilePhoto {
+                imageView.setImage(urlString: profilePhoto)
+            } else {
+                imageView.image = UIImage.asset(.profile_user)
+            }
+
+            if let favoriteCounty = user.favoriteCounty,
+                let favoriteTown = user.favoriteTown {
+                regionTextField.text = "\(favoriteCounty)\(favoriteTown)"
+            }
+
+            if let introduction = user.introduction {
+                introTextView.text = "\(introduction)"
             }
 
             guard let rules = user.rules else {
@@ -129,14 +150,19 @@ class IntroCell: UICollectionViewCell {
             }
 
             self.rules = rules
-            print("gCurrentUser.profilePhoto = ", user.profilePhoto)
         }
     }
 
     @objc func textFieldDone(_ sender: UIBarButtonItem) {
         self.endEditing(true)
+        user?.gender = segmentedControl.selectedSegmentIndex
         delegate?.passData(cell: self, data: user!)
     }
+
+    @objc private func datePickerDone() {
+        self.endEditing(true)
+    }
+
 
     @objc func onDateValueChange(_ datePicker: UIDatePicker) {
         birthday = datePicker.date
@@ -145,6 +171,7 @@ class IntroCell: UICollectionViewCell {
         }
         birthdayTextField.text = RMDateFormatter.shared.dateString(date: birthday)
         user?.birthday = birthday
+        user?.gender = segmentedControl.selectedSegmentIndex
         delegate?.passData(cell: self, data: user!)
     }
 
@@ -164,6 +191,7 @@ extension IntroCell: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         user?.name = nameTextField.text ?? ""
+        user?.gender = segmentedControl.selectedSegmentIndex
         delegate?.passData(cell: self, data: user!)
     }
 }

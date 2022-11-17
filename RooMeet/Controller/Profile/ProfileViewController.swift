@@ -72,7 +72,11 @@ class ProfileViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
 
-        profileImageView.setImage(urlString: gCurrentUser.profilePhoto)
+        if UserDefaults.profilePhoto != "empty"{
+            profileImageView.setImage(urlString: UserDefaults.profilePhoto)
+        } else {
+            profileImageView.image = UIImage.asset(.profile_user)
+        }
 
         editIntroButton.setTitle("", for: .normal)
         editIntroButton.isEnabled = false
@@ -82,11 +86,19 @@ class ProfileViewController: UIViewController {
 
 
     @objc private func editIntro() {
-        let introductionVC = IntroViewController(entryPage: "true", user: gCurrentUser)
-        introductionVC.completion = { [self] user in
+        let introductionVC = IntroViewController(entryType: EntryType.edit, user: gCurrentUser)
+        introductionVC.completion = { [weak self] user in
+            guard let self = self else { return }
+
             gCurrentUser = user
-            profileImageView.setImage(urlString: gCurrentUser.profilePhoto)
+
+            if UserDefaults.profilePhoto != "empty"{
+                self.profileImageView.setImage(urlString: UserDefaults.profilePhoto)
+            } else {
+                self.profileImageView.image = UIImage.asset(.profile_user)
+            }
         }
+
         present(introductionVC, animated: true)
     }
 }
@@ -97,7 +109,9 @@ extension ProfileViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell", for: indexPath) as? ProfileCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: "ProfileCell",
+            for: indexPath) as? ProfileCell else {
             return UITableViewCell()
         }
 
@@ -111,6 +125,16 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let profileType = Profile.allCases[indexPath.item]
+        if profileType == .logout {
+            AuthService.shared.logOut()
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .fullScreen
+            present(loginVC, animated: false)
+        }
+
         let pushVC = profileType.viewConroller
         navigationController?.pushViewController(pushVC, animated: true)
     }

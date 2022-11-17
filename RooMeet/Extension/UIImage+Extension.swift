@@ -35,4 +35,5 @@ enum ImageAsset: String {
     case user
     case home
     case dollar
+    case profile_user
 }

@@ -37,6 +37,22 @@ class LocationService {
         return nil
     }()
 
+    var regionList: [Region]? = {
+        if let url = Bundle.main.url(forResource: "Region", withExtension: "json") {
+            do {
+                let data = try Data(contentsOf: url)
+                let jsonData = try JSONDecoder().decode(RegionData.self, from: data)
+                print(jsonData)
+                return jsonData.data
+            } catch {
+                print("error:\(error)")
+            }
+        }
+        return nil
+    }()
+
+
+
     // getCoordinates
     func getCoordinates(fullAddress: String = "台北市中正區仁愛路二段99號", handler: @escaping ((CLLocationCoordinate2D) -> Void)) {
         CLGeocoder().geocodeAddressString(fullAddress) { ( placemark, error ) in

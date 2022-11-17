@@ -94,10 +94,47 @@ class FirebaseService {
     }
 
     func fetchChatRoomsByUserID(userID: String, completion: @escaping (([ChatRoom]) -> Void)) {
-        let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", arrayContains: gCurrentUser.id)
+        let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", arrayContains: UserDefaults.id)
 
         getDocuments(query) { (chatRooms: [ChatRoom]) in
             completion(chatRooms)
+        }
+    }
+
+    func upsertUser(uid: String, email: String?, user: User? = nil, completion: @escaping ((Bool) -> Void)) {
+        let docRef = FirestoreEndpoint.user.colRef.document(uid)
+
+        docRef.getDocument { [weak self] document, _ in
+            guard let `self` = self else { return }
+            if let document = document, document.exists {
+                guard let user = user else {
+                    // get user info
+                    self.fetchUserByID(userID: uid) { user, _ in
+                        if let user = user {
+                            UserDefaults.id = user.id
+
+                            gCurrentUser = user
+                            completion(false)
+                        }
+                    }
+                    return
+                }
+                docRef.updateData(user.dictionary)
+            } else {
+                // create new user
+                var updateData = [
+                    "id": uid
+                ]
+
+                if let email = email {
+                    updateData["email"] = email
+                }
+
+                docRef.setData(updateData)
+
+                // new user -> should present information page
+                completion(true)
+            }
         }
     }
 
@@ -150,7 +187,7 @@ class FirebaseService {
             chatRooms.enumerated().forEach { index, roomResult in
                 var chatRoom = roomResult
                 let members = chatRoom.members.filter { member in
-                    member != gCurrentUser.id
+                    member != UserDefaults.id
                 }
 
                 if !members.isEmpty {
@@ -158,7 +195,7 @@ class FirebaseService {
                     group.enter()
                     self?.fetchUserByID(userID: memberID, index: index) { user, index in
                         if let user = user {
-                            chatRooms[index!].member = ChatMember(id: memberID, profilePhoto: user.profilePhoto, name: user.name)
+                            chatRooms[index!].member = ChatMember(id: memberID, profilePhoto: user.profilePhoto!, name: user.name!)
                         }
                         group.leave()
                     }
@@ -197,7 +234,7 @@ class FirebaseService {
         chatRooms.enumerated().forEach { index, roomResult in
             var chatRoom = roomResult
             let members = chatRoom.members.filter { member in
-                member != gCurrentUser.id
+                member != UserDefaults.id
             }
 
             if !members.isEmpty {
@@ -209,7 +246,7 @@ class FirebaseService {
                         chatRooms[index].member = ChatMember(
                             id: memberID,
                             profilePhoto: user.profilePhoto,
-                            name: user.name
+                            name: user.name!
                         )
                     }
                     group.leave()
@@ -329,7 +366,19 @@ class FirebaseService {
         }
     }
 
-    func fetchFavoriteRoomsByUserID(roomIDList: [String]?, completion: @escaping (([Room]) -> Void)) {
+    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
+        fetchUserByID(userID: userID) { [unowned self] user, _ in
+            guard let user = user else {
+                completion([])
+                return
+            }
+            self.fetchFavoriteRoomsByRoomID(roomIDList: user.favoriteRoomIDs) { rooms in
+                completion(rooms)
+            }
+        }
+    }
+
+    func fetchFavoriteRoomsByRoomID(roomIDList: [String]?, completion: @escaping (([Room]) -> Void)) {
         guard let roomIDList = roomIDList else {
             return
         }
@@ -365,7 +414,7 @@ class FirebaseService {
         }
     }
 
-    func fetchReservationRoomsByUserID(reservationList: [String]?, completion: @escaping (([Reservation]) -> Void)) {
+    func fetchRoomsByReservationID(reservationList: [String]?, completion: @escaping (([Reservation]) -> Void)) {
         guard let reservationList = reservationList else {
             return
         }
@@ -400,6 +449,19 @@ class FirebaseService {
                 return rsvn
             }
             completion(rsvns)
+        }
+    }
+
+    func fetchReservationRoomsByUserID(userID: String, completion: @escaping (([Reservation]) -> Void)) {
+        fetchUserByID(userID: userID) {[weak self] user, _ in
+            guard let user = user,
+                  let self = self else {
+                return
+            }
+
+            self.fetchRoomsByReservationID(reservationList: user.reservations) { reservations in
+                completion(reservations)
+            }
         }
     }
 
@@ -540,7 +602,7 @@ extension FirebaseService {
 
     func listenToChatRoomUpdate(completion: @escaping (([ChatRoom]?, Error?) -> Void)) {
         FirestoreEndpoint.chatRoom.colRef
-            .whereField("members", arrayContains: gCurrentUser.id)
+            .whereField("members", arrayContains: UserDefaults.id)
             .order(by: "lastUpdated", descending: true)
             .addSnapshotListener({ querySnapshot, error in
                 if let error = error {
@@ -581,10 +643,28 @@ extension FirebaseService {
 
     // MARK: - Room Detail Page - Like
     func updateUserLikeData() {
-        let query = FirestoreEndpoint.user.colRef.document(gCurrentUser.id)
+        let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
+
+//        query.updateData([
+//            "like": gCurrentUser.like
+//        ])
+    }
+
+
+    func updateUserFavoriteData(reservations: [String], favoriteRooms: [FavoriteRoom]) {
+        let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
 
         query.updateData([
-            "like": gCurrentUser.like
+            "reservations": reservations,
+            "favoriteRooms": []
+        ])
+
+        let favoriteRoomsMap = favoriteRooms.map { favoriteRoom in
+            favoriteRoom.dictionary
+        }
+
+        query.updateData([
+            "favoriteRooms": FieldValue.arrayUnion(favoriteRoomsMap)
         ])
     }
 }
