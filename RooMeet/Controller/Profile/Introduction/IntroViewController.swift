@@ -17,17 +17,17 @@ class IntroViewController: UIViewController {
 
     enum Item: Hashable {
         case main(User)
-        case rules(String)
+        case rules(User)
     }
 
     let imagePickerController = UIImagePickerController()
 
     var user: User?
-    var rules: [String] = [] {
-        didSet {
-            updateDataSource()
-        }
-    }
+    var rules: [String] = RMConstants.shared.roomHighLights
+        + RMConstants.shared.roomCookingRules
+        + RMConstants.shared.roomElevatorRules
+        + RMConstants.shared.roomBathroomRules
+        + RMConstants.shared.roomPetsRules
 
     var completion: ((User) -> Void)?
 
@@ -45,7 +45,6 @@ class IntroViewController: UIViewController {
         super.init(nibName: "IntroViewController", bundle: nil)
         self.entryType = entryType
         self.user = user
-        print("====", user?.gender)
     }
 
     required init?(coder: NSCoder) {
@@ -71,9 +70,10 @@ class IntroViewController: UIViewController {
             UINib(nibName: "IntroCell", bundle: nil),
             forCellWithReuseIdentifier: IntroCell.identifier)
         collectionView.register(
-            UINib(nibName: "TagCell", bundle: nil),
-            forCellWithReuseIdentifier: TagCell.identifier)
-        dataSource = IntroDataSource(collectionView: collectionView) { collectionView, indexPath, item in
+            UINib(nibName: "ItemsCell", bundle: nil),
+            forCellWithReuseIdentifier: ItemsCell.reuseIdentifier)
+        dataSource = IntroDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
+            guard let self = self else { return UICollectionViewCell() }
             switch item {
             case .main(let data):
                 guard let cell = collectionView.dequeueReusableCell(
@@ -89,12 +89,21 @@ class IntroViewController: UIViewController {
                 }
                 cell.configureCell(data: data)
                 return cell
-            case .rules(let rule):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagCell.identifier, for: indexPath) as? TagCell else {
+            case .rules(_):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemsCell.reuseIdentifier, for: indexPath) as? ItemsCell else {
                     return UICollectionViewCell()
                 }
 
-                cell.configureCell(data: rule)
+                cell.configureTagView(
+                    ruleType: "要求",
+                    tags: self.rules,
+                    selectedTags: self.user?.rules ?? [],
+                    mainColor: UIColor.main!,
+                    lightColor: UIColor.mainLightColor!,
+                    mainLightBackgroundColor: UIColor.mainBackgroundColor!,
+                    enableTagSelection: true
+                )
+                cell.delegate = self
                 return cell
             }
         }
@@ -158,12 +167,16 @@ extension IntroViewController {
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
                 return section
             case .rules:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(44), heightDimension: .fractionalHeight(1))
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .estimated(30))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(44), heightDimension: .absolute(50))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .estimated(30))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuous
                 return section
             }
         }
@@ -173,10 +186,11 @@ extension IntroViewController {
 // MARK: - Snapshot
 extension IntroViewController {
     private func updateDataSource() {
+        guard let user = user else { return }
         var newSnapshot = IntroSnapshot()
         newSnapshot.appendSections([.main, .rules])
-        newSnapshot.appendItems([.main(user!)], toSection: .main)
-        newSnapshot.appendItems(rules.map({ Item.rules($0) }), toSection: .rules)
+        newSnapshot.appendItems([.main(user)], toSection: .main)
+        newSnapshot.appendItems([.rules(user)], toSection: .rules)
         dataSource.apply(newSnapshot)
     }
 }
@@ -186,29 +200,18 @@ extension IntroViewController: IntroCellDelegate {
         user = data
     }
 
-    func showRulePickerView(cell: IntroCell) {
-        cell.ruleTextField.endEditing(true)
-        let mutlipleChooseVC = MutlipleChooseController()
-        mutlipleChooseVC.setup(pageType: .rule, selectedOptions: [])
-
-        mutlipleChooseVC.completion = { [self] selectedItem in
-            if selectedItem.isEmpty {
-                user?.rules = selectedItem
-            }
-        }
-        present(mutlipleChooseVC, animated: true)
-    }
-
     func showRegionPickerView(cell: IntroCell) {
         cell.regionTextField.resignFirstResponder()
-        let regionPickerVC = RegionPickerViewController()
+        let regionPickerVC = LocationPickerViewController()
+        regionPickerVC.modalPresentationStyle = .overCurrentContext
+
         regionPickerVC.completion = { [self] county, town in
             cell.county = county
             cell.town = town
             self.user?.favoriteCounty = county
             self.user?.favoriteTown = town
         }
-        present(regionPickerVC, animated: true)
+        present(regionPickerVC, animated: false)
     }
 
     func didClickImageView(_ cell: IntroCell) {
@@ -259,16 +262,12 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
-//        var selectedImageFromPicker: UIImage
-
-        // 取得從 UIImagePickerController 選擇的檔案
         if let pickedImage = info[.originalImage] as? UIImage {
             guard let cell = profileImageCell else {
                 return
             }
 
             cell.imageView.image = pickedImage
-//            selectedImageFromPicker = pickedImage
             profileImage = pickedImage
         }
 
@@ -311,6 +310,7 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
 
         updateData = [
             "rules": user.rules as Any,
+            "introduction": user.introduction as Any,
             "name": user.name as Any,
             "gender": user.gender as Any,
             "birthday": user.birthday as Any,
@@ -328,7 +328,9 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
         updateUserDefault(user: user)
         if entryType == .new {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            guard let RMTabBarVC = storyBoard.instantiateViewController(withIdentifier: "RMTabBarController") as? RMTabBarController else {
+            guard let RMTabBarVC = storyBoard.instantiateViewController(
+                withIdentifier: "RMTabBarController") as? RMTabBarController
+            else {
                 return
             }
             UIApplication.shared.windows.first?.rootViewController = RMTabBarVC
@@ -358,5 +360,11 @@ extension UIViewController {
         }
 
         completion?()
+    }
+}
+
+extension IntroViewController: ItemsCellDelegate {
+    func itemsCell(cell: ItemsCell, selectedTags: [String]) {
+        user?.rules = selectedTags
     }
 }

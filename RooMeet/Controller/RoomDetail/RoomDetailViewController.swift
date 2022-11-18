@@ -19,11 +19,18 @@ class RoomDetailViewController: UIViewController {
         case images
         case basicInfo
         case map
-        case amenities
-        case rules
+//        case amenities
+//        case rules
         case feeDetail
         case reservationDays
         case reservationPeriod
+        case highLight
+        case gender
+        case pet
+        case elevator
+        case cooking
+        case bathroom
+        case features
 
         var title: String {
             switch self {
@@ -31,10 +38,20 @@ class RoomDetailViewController: UIViewController {
                 return ""
             case .basicInfo:
                 return ""
-            case .amenities:
+            case .highLight:
                 return "亮點"
-            case .rules:
-                return "注意"
+            case .gender:
+                return "租客性別"
+            case .pet:
+                return "寵物"
+            case .elevator:
+                return "電梯"
+            case .cooking:
+                return "開伙"
+            case .features:
+                return "設施"
+            case .bathroom:
+                return "衛浴"
             case .feeDetail:
                 return "費用明細"
             case .reservationDays:
@@ -50,8 +67,13 @@ class RoomDetailViewController: UIViewController {
     enum Item: Hashable {
         case images(Room)
         case basicInfo(Room)
-        case amenities(String)
-        case rules(String)
+        case highLight(Room)
+        case gender(Room)
+        case pet(Room)
+        case elevator(Room)
+        case cooking(Room)
+        case bathroom(Room)
+        case features(Room)
         case feeDetail(RoomDetailFee)
         case reservationDays(DateComponents)
         case reservationPeriod(Room)
@@ -270,8 +292,9 @@ extension RoomDetailViewController {
             UINib(nibName: "BookingCell", bundle: nil),
             forCellWithReuseIdentifier: BookingCell.identifier)
         collectionView.register(
-            UINib(nibName: "TagCell", bundle: nil),
-            forCellWithReuseIdentifier: TagCell.identifier)
+            UINib(nibName: ItemsCell.reuseIdentifier, bundle: nil),
+            forCellWithReuseIdentifier: ItemsCell.reuseIdentifier
+        )
         collectionView.register(
             UINib(nibName: "BookingDateCell", bundle: nil),
             forCellWithReuseIdentifier: BookingDateCell.identifier)
@@ -319,26 +342,6 @@ extension RoomDetailViewController {
                 }
                 cell.configureCell(data: data)
                 return cell
-            case .rules(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: TagCell.identifier,
-                    for: indexPath
-                ) as? TagCell else {
-                    return UICollectionViewCell()
-                }
-                cell.styleCell(backgroundColor: .hexColor(hex: "#D89A9E"), tintColor: .black)
-                cell.configureCell(data: data)
-                return cell
-            case .amenities(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: TagCell.identifier,
-                    for: indexPath
-                ) as? TagCell else {
-                    return UICollectionViewCell()
-                }
-                cell.styleCell(backgroundColor: .hexColor(hex: "#1C6E8C"), tintColor: .white)
-                cell.configureCell(data: data)
-                return cell
             case .feeDetail(let data):
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: RoomFeeCell.identifier,
@@ -380,6 +383,10 @@ extension RoomDetailViewController {
                     longitude: data.long ?? gCurrentPosition.longitude
                 )
                 return cell
+            case .highLight(let data), .gender(let data), .pet(let data),
+                    .elevator(let data), .cooking(let data), .bathroom(let data),
+                    .features(let data):
+                return genTagCell(item: data, indexPath: indexPath)
             }
         }
 
@@ -396,6 +403,65 @@ extension RoomDetailViewController {
         }
 
         collectionView.collectionViewLayout = createLayout()
+    }
+
+    func genTagCell(item: Room, indexPath: IndexPath) -> ItemsCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: TagCell.identifier,
+            for: indexPath
+        ) as? ItemsCell,
+            let room = room else {
+            return UICollectionViewCell() as! ItemsCell
+        }
+
+        var tags: [String] = []
+        var mainColor: UIColor = .white
+        var lightColor: UIColor = .white
+
+        let section = Section.allCases[indexPath.section]
+        switch section {
+        case .highLight:
+            tags = room.roomHighLights
+            mainColor = UIColor.main!
+            lightColor = UIColor.mainBackgroundColor!
+        case .gender:
+            tags = room.roomGenderRules
+            mainColor = UIColor.main!
+            lightColor = UIColor.mainBackgroundColor!
+        case .pet:
+            tags = room.roomPetsRules
+            mainColor = UIColor.main!
+            lightColor = UIColor.mainBackgroundColor!
+        case .elevator:
+            tags = room.roomElevatorRules
+            mainColor = UIColor.main!
+            lightColor = UIColor.mainBackgroundColor!
+        case .cooking:
+            tags = room.roomCookingRules
+            mainColor = UIColor.main!
+            lightColor = UIColor.mainBackgroundColor!
+        case .bathroom:
+            tags = room.roomBathroomRules
+            mainColor = UIColor.main!
+            lightColor = UIColor.mainBackgroundColor!
+        case .features:
+            tags = room.roomBathroomRules
+            mainColor = UIColor.subTitleColor!
+            lightColor = UIColor.mainBackgroundColor!
+        default:
+            break
+        }
+
+        cell.configureTagView(
+            ruleType: section.title,
+            tags: tags,
+            selectedTags: tags,
+            mainColor: mainColor,
+            lightColor: lightColor,
+            mainLightBackgroundColor: .white,
+            enableTagSelection: false)
+
+        return cell
     }
 }
 
@@ -561,12 +627,10 @@ extension RoomDetailViewController {
     func sectionFor(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let section = Section.allCases[index]
         switch section {
-        case .basicInfo:
+        case .basicInfo, .highLight, .gender, .pet, .elevator, .cooking, .bathroom, .features:
             return createBasicInfoSection()
         case .feeDetail:
             return createFeeDetailSection()
-        case .amenities, .rules:
-            return createItemsSection()
         case .images:
             return createImagesSection()
         case .reservationDays:
@@ -615,9 +679,13 @@ extension RoomDetailViewController {
         }
         newSnapshot.appendSections(Section.allCases)
         newSnapshot.appendItems([.images(room)], toSection: .images)
-
-        newSnapshot.appendItems(room.roomPetsRules.map { Item.rules($0) }, toSection: .rules)
-        newSnapshot.appendItems(room.roomFeatures.map { Item.amenities($0) }, toSection: .amenities)
+        newSnapshot.appendItems([.pet(room)], toSection: .pet)
+        newSnapshot.appendItems([.elevator(room)], toSection: .elevator)
+        newSnapshot.appendItems([.cooking(room)], toSection: .cooking)
+        newSnapshot.appendItems([.bathroom(room)], toSection: .bathroom)
+        newSnapshot.appendItems([.features(room)], toSection: .features)
+        newSnapshot.appendItems([.gender(room)], toSection: .gender)
+        newSnapshot.appendItems([.highLight(room)], toSection: .highLight)
         newSnapshot.appendItems([.basicInfo(room)], toSection: .basicInfo)
         if room.billInfo != nil {
             newSnapshot.appendItems(

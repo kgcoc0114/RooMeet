@@ -7,18 +7,8 @@
 
 import UIKit
 
-enum Habit {
-    case `switch`
-    case ps
-    case sport
-    case cook
-    case dessert
-    case climbing
-}
-
 protocol IntroCellDelegate: AnyObject {
     func showRegionPickerView(cell: IntroCell)
-    func showRulePickerView(cell: IntroCell)
     func passData(cell: IntroCell, data: User)
     func didClickImageView(_ cell: IntroCell)
 }
@@ -36,7 +26,6 @@ class IntroCell: UICollectionViewCell {
             imageView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
-
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
     @IBOutlet weak var regionTextField: RMBaseTextField!
@@ -64,12 +53,10 @@ class IntroCell: UICollectionViewCell {
 
     @IBOutlet weak var nameTextField: RMBaseTextField!
 
-    @IBOutlet weak var ruleTextField: RMBaseTextField!
-
     @IBOutlet weak var imageButton: UIButton!
 
     @IBOutlet weak var introTextView: UITextView!
-
+    
     var county: String? {
         didSet {
             if
@@ -106,8 +93,8 @@ class IntroCell: UICollectionViewCell {
         super.awakeFromNib()
         nameTextField.delegate = self
         birthdayTextField.delegate = self
-        ruleTextField.delegate = self
         regionTextField.delegate = self
+        introTextView.delegate = self
         imageButton.setTitle("Edit", for: .normal)
     }
 
@@ -156,7 +143,8 @@ class IntroCell: UICollectionViewCell {
     @objc func textFieldDone(_ sender: UIBarButtonItem) {
         self.endEditing(true)
         user?.gender = segmentedControl.selectedSegmentIndex
-        delegate?.passData(cell: self, data: user!)
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
     }
 
     @objc private func datePickerDone() {
@@ -172,7 +160,8 @@ class IntroCell: UICollectionViewCell {
         birthdayTextField.text = RMDateFormatter.shared.dateString(date: birthday)
         user?.birthday = birthday
         user?.gender = segmentedControl.selectedSegmentIndex
-        delegate?.passData(cell: self, data: user!)
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
     }
 
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
@@ -184,14 +173,23 @@ extension IntroCell: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == regionTextField {
             delegate?.showRegionPickerView(cell: self)
-        } else if textField == ruleTextField {
-            delegate?.showRulePickerView(cell: self)
         }
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         user?.name = nameTextField.text ?? ""
         user?.gender = segmentedControl.selectedSegmentIndex
-        delegate?.passData(cell: self, data: user!)
+
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
+    }
+}
+
+extension IntroCell: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        user?.introduction = textView.text
+        print(user?.introduction, textView.text)
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
     }
 }

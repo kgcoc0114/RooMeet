@@ -30,11 +30,13 @@ class ItemsCell: UICollectionViewCell {
         tagView.removeAllTags()
     }
 
-    override func awakeFromNib() {}
-
-    func configureTagView(ruleType: String, tags: [String], mainColor: UIColor, lightColor: UIColor, mainLightBackgroundColor: UIColor) {
-        titleLabel.text = ruleType
+    override func awakeFromNib() {
         tagView.delegate = self
+    }
+
+    func configureTagView(ruleType: String, tags: [String], selectedTags: [String], mainColor: UIColor, lightColor: UIColor, mainLightBackgroundColor: UIColor, enableTagSelection: Bool) {
+        titleLabel.text = ruleType
+        tagView.enableTagSelection = enableTagSelection
         for text in tags {
             let content = TTGTextTagStringContent.init(text: text)
             content.textColor = .darkGray
@@ -62,7 +64,9 @@ class ItemsCell: UICollectionViewCell {
             tag.selectedContent = selectedContent
             tag.style = normalStyle
             tag.selectedStyle = selectedStyle
-
+            if enableTagSelection {
+                tag.selected = selectedTags.contains(text)
+            }
             tagView.addTag(tag)
         }
 
