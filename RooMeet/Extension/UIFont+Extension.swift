@@ -8,12 +8,16 @@
 import UIKit
 
 private enum RMFontName: String {
-
     case regular = "NotoSansChakma-Regular"
 }
 
-extension UIFont {
+private enum RMFontSize: Int {
+    case title = 18
+    case subTitle = 15
+    case text = 14
+}
 
+extension UIFont {
     static func bold(size: CGFloat) -> UIFont? {
         var descriptor = UIFontDescriptor(name: RMFontName.regular.rawValue, size: size)
 
@@ -41,6 +45,7 @@ extension UIFont {
     static func regular(size: CGFloat) -> UIFont? {
         return RMFont(.regular, size: size)
     }
+
 
     private static func RMFont(_ font: RMFontName, size: CGFloat) -> UIFont? {
         return UIFont(name: font.rawValue, size: size)

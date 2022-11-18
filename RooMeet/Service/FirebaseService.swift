@@ -505,6 +505,14 @@ class FirebaseService {
         }
     }
 
+    func fetchRoomCountsOwnByUserID(userID: String, completion: @escaping ((Int) -> Void)) {
+        let query = FirestoreEndpoint.room.colRef
+            .whereField("userID", isEqualTo: userID)
+        getDocuments(query) { (rooms: [Room]) in
+            completion(rooms.count)
+        }
+    }
+
     func fetchRoomsOwnByUserID(roomIDList: [String]?, completion: @escaping (([Room]) -> Void)) {
         guard let roomIDList = roomIDList else {
             return

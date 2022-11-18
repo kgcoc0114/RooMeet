@@ -66,12 +66,14 @@ class ChatViewController: UIViewController {
             target: self,
             action: #selector(call))
 
-
+        tableView.delegate = self
         configureDataSource()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(#function)
+
         self.tabBarController?.tabBar.isHidden = true
 
         // listen
@@ -87,8 +89,9 @@ class ChatViewController: UIViewController {
         }
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print(#function)
         self.tabBarController?.tabBar.isHidden = false
     }
 
@@ -344,7 +347,13 @@ extension ChatViewController {
     private func updateDataSource() {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
-        newSnapshot.appendItems(messages.map({ Item.message($0) }), toSection: .message)
+        newSnapshot.appendItems(messages.map { Item.message($0) }, toSection: .message)
         dataSource.apply(newSnapshot, animatingDifferences: true)
+    }
+}
+
+extension ChatViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        view.endEditing(true)
     }
 }
