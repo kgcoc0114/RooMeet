@@ -146,7 +146,7 @@ class ProfileViewController: UIViewController {
         editIntroButton.setTitle("", for: .normal)
 //        editIntroButton.isEnabled = false
 //        editButton.setTitle("", for: .normal)
-//        editButton.addTarget(self, action: #selector(editIntro), for: .touchUpInside)
+        editIntroButton.addTarget(self, action: #selector(editIntro), for: .touchUpInside)
     }
 
 

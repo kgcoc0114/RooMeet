@@ -8,6 +8,7 @@
 import UIKit
 class RMConstants {
     static let shared = RMConstants()
+    let screenVerticalPadding: CGFloat = 30
 
     let buttonCornerRadius: CGFloat = 10
     let tagCornerRadius: CGFloat = 8

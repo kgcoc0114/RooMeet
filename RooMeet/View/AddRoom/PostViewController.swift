@@ -269,12 +269,16 @@ extension PostViewController: UICollectionViewDataSource {
                 fatalError("RulesHeaderCell Error")
             }
             let title = PostSection.allCases[indexPath.section].title
+            // FIXME: selection tag 
             cell.configureTagView(
                 ruleType: title,
                 tags: PostSection.allCases[indexPath.section].tags,
+                selectedTags: [],
                 mainColor: RMConstants.shared.mainColor,
                 lightColor: RMConstants.shared.mainLightBackgroundColor,
-                mainLightBackgroundColor: .white)
+                mainLightBackgroundColor: .white,
+                enableTagSelection: true
+            )
             cell.delegate = self
             return cell
         }
@@ -408,12 +412,14 @@ extension PostViewController: PostBasicCellDelegate {
 
     func showRegionPickerView(cell: PostBasicCell) {
         cell.regionSelectView.resignFirstResponder()
-        let regionPickerVC = RegionPickerViewController()
+        let regionPickerVC = LocationPickerViewController()
+        regionPickerVC.modalPresentationStyle = .overCurrentContext
+        // FIXME:
         regionPickerVC.completion = { county, town in
             cell.county = county
             cell.town = town
         }
-        present(regionPickerVC, animated: true)
+        present(regionPickerVC, animated: false)
     }
 }
 

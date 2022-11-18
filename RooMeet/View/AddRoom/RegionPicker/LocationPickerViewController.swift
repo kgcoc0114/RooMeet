@@ -1,17 +1,20 @@
 //
-//  RegionPickerViewController.swift
+//  LocationPickerViewController.swift
 //  RooMeet
 //
-//  Created by kgcoc on 2022/10/30.
+//  Created by kgcoc on 2022/11/18.
 //
 
 import UIKit
 
-class RegionPickerViewController: UIViewController {
+class LocationPickerViewController: RMButtomSheetViewController {
+
+    // define lazy views
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "選擇地區"
-        label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
+        label.font = UIFont.bold(size: 18)
+        label.textColor = UIColor.main
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -20,7 +23,8 @@ class RegionPickerViewController: UIViewController {
         let tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
+        tableView.backgroundColor = .mainLightColor
         tableView.register(
             UINib(nibName: RegionPickerCell.reuseIdentifier, bundle: nil),
             forCellReuseIdentifier: RegionPickerCell.reuseIdentifier
@@ -46,39 +50,48 @@ class RegionPickerViewController: UIViewController {
 
     private let regionList: [Region] = LocationService.shared.regionList ?? []
     private var countySelectedIndex: Int?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        defaultHeight = 600
+        currentContainerHeight = 600
 
-        configureHierarchy()
+        setupBaseView()
+        setupBaseConstraints()
+
+        configureLayout()
     }
 
-    private func configureHierarchy() {
-        view.addSubview(titleLabel)
-        view.addSubview(countyTableView)
-        view.addSubview(townTableView)
-        viewLayout()
-    }
+    func configureLayout() {
+        containerView.addSubview(titleLabel)
+        containerView.addSubview(countyTableView)
+        containerView.addSubview(townTableView)
 
-    private func  viewLayout() {
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        countyTableView.translatesAutoresizingMaskIntoConstraints = false
+        townTableView.translatesAutoresizingMaskIntoConstraints = false
+
+
+        // Set static constraints
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            countyTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            countyTableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            countyTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            countyTableView.widthAnchor.constraint(equalToConstant: 100),
-
-            townTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 20),
-            townTableView.leadingAnchor.constraint(equalTo: countyTableView.trailingAnchor),
-            townTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            townTableView.widthAnchor.constraint(equalToConstant: 100)
+            // titleLabel
+            titleLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
+            // countyTableView
+            countyTableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
+            countyTableView.trailingAnchor.constraint(equalTo: containerView.centerXAnchor),
+            countyTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            countyTableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
+            // townTableView
+            townTableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            townTableView.leadingAnchor.constraint(equalTo: containerView.centerXAnchor),
+            townTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            townTableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
     }
 }
 
-extension RegionPickerViewController: UITableViewDataSource {
+extension LocationPickerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if tableView == countyTableView {
             return regionList.count
@@ -98,6 +111,7 @@ extension RegionPickerViewController: UITableViewDataSource {
             fatalError("Create RegionPickerCell error")
         }
         if tableView == countyTableView {
+            cell.backgroundColor = UIColor.mainLightColor
             cell.regionLabel.text = regionList[indexPath.row].county
         } else {
             if let countySelectedIndex = countySelectedIndex {
@@ -108,7 +122,7 @@ extension RegionPickerViewController: UITableViewDataSource {
     }
 }
 
-extension RegionPickerViewController: UITableViewDelegate {
+extension LocationPickerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == countyTableView {
             countySelectedIndex = indexPath.item
@@ -117,7 +131,7 @@ extension RegionPickerViewController: UITableViewDelegate {
             if let countySelectedIndex = countySelectedIndex {
                 let selectedRegion = regionList[countySelectedIndex]
                 completion?(selectedRegion.county, selectedRegion.town[indexPath.item])
-                dismiss(animated: true)
+                animateDismissView()
             }
         }
     }

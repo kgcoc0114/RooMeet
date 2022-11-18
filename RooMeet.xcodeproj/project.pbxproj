@@ -29,6 +29,10 @@
 		E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */; };
 		E560135029271DC500EE0083 /* ProfileItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E560134E29271DC500EE0083 /* ProfileItemCell.swift */; };
 		E560135129271DC500EE0083 /* ProfileItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E560134F29271DC500EE0083 /* ProfileItemCell.xib */; };
+		E560135A292771D600EE0083 /* LocationPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5601358292771D600EE0083 /* LocationPickerViewController.swift */; };
+		E560135D29277A7100EE0083 /* RMButtomSheetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E560135C29277A7100EE0083 /* RMButtomSheetViewController.swift */; };
+		E560136029277FBE00EE0083 /* MultipleChooseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E560135E29277FBE00EE0083 /* MultipleChooseViewController.swift */; };
+		E560136129277FBE00EE0083 /* MultipleChooseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E560135F29277FBE00EE0083 /* MultipleChooseViewController.xib */; };
 		E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7129178B1F007AE655 /* HomeViewController.swift */; };
 		E5604F7A29179539007AE655 /* RoomDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7829179539007AE655 /* RoomDisplayCell.swift */; };
 		E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5604F7929179539007AE655 /* RoomDisplayCell.xib */; };
@@ -47,8 +51,6 @@
 		E587293C291CFFA100C12E9E /* IntroViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E587293A291CFFA100C12E9E /* IntroViewController.xib */; };
 		E5872944291D022000C12E9E /* IntroCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5872942291D022000C12E9E /* IntroCell.swift */; };
 		E5872945291D022000C12E9E /* IntroCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5872943291D022000C12E9E /* IntroCell.xib */; };
-		E593EFFD290FEFF000B35550 /* MutlipleChooseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */; };
-		E593EFFE290FEFF000B35550 /* MutlipleChooseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */; };
 		E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */; };
 		E593F002290FF03900B35550 /* MultipleChooseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F000290FF03900B35550 /* MultipleChooseCell.xib */; };
 		E593F0052910016D00B35550 /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593F0032910016D00B35550 /* OptionCell.swift */; };
@@ -152,7 +154,6 @@
 		E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */; };
 		E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */; };
 		E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C75290D6E3100F07286 /* RMTabBarController.swift */; };
-		E5E64C81290E13E400F07286 /* RegionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C7F290E13E400F07286 /* RegionPickerViewController.swift */; };
 		E5E64C84290E183F00F07286 /* RegionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C83290E183F00F07286 /* RegionService.swift */; };
 		E5E64C86290E185600F07286 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C85290E185600F07286 /* Region.swift */; };
 		E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C8B290E1AA700F07286 /* RegionPickerCell.swift */; };
@@ -205,6 +206,10 @@
 		E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
 		E560134E29271DC500EE0083 /* ProfileItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileItemCell.swift; sourceTree = "<group>"; };
 		E560134F29271DC500EE0083 /* ProfileItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileItemCell.xib; sourceTree = "<group>"; };
+		E5601358292771D600EE0083 /* LocationPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPickerViewController.swift; sourceTree = "<group>"; };
+		E560135C29277A7100EE0083 /* RMButtomSheetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMButtomSheetViewController.swift; sourceTree = "<group>"; };
+		E560135E29277FBE00EE0083 /* MultipleChooseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChooseViewController.swift; sourceTree = "<group>"; };
+		E560135F29277FBE00EE0083 /* MultipleChooseViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultipleChooseViewController.xib; sourceTree = "<group>"; };
 		E5604F7129178B1F007AE655 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E5604F7829179539007AE655 /* RoomDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDisplayCell.swift; sourceTree = "<group>"; };
 		E5604F7929179539007AE655 /* RoomDisplayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDisplayCell.xib; sourceTree = "<group>"; };
@@ -223,8 +228,6 @@
 		E587293A291CFFA100C12E9E /* IntroViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IntroViewController.xib; sourceTree = "<group>"; };
 		E5872942291D022000C12E9E /* IntroCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroCell.swift; sourceTree = "<group>"; };
 		E5872943291D022000C12E9E /* IntroCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IntroCell.xib; sourceTree = "<group>"; };
-		E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MutlipleChooseController.swift; sourceTree = "<group>"; };
-		E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MutlipleChooseController.xib; sourceTree = "<group>"; };
 		E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleChooseCell.swift; sourceTree = "<group>"; };
 		E593F000290FF03900B35550 /* MultipleChooseCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MultipleChooseCell.xib; sourceTree = "<group>"; };
 		E593F0032910016D00B35550 /* OptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
@@ -330,7 +333,6 @@
 		E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBaseCell.swift; sourceTree = "<group>"; };
 		E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		E5E64C75290D6E3100F07286 /* RMTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMTabBarController.swift; sourceTree = "<group>"; };
-		E5E64C7F290E13E400F07286 /* RegionPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerViewController.swift; sourceTree = "<group>"; };
 		E5E64C83290E183F00F07286 /* RegionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionService.swift; sourceTree = "<group>"; };
 		E5E64C85290E185600F07286 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
 		E5E64C8B290E1AA700F07286 /* RegionPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerCell.swift; sourceTree = "<group>"; };
@@ -448,6 +450,7 @@
 				E587293E291CFFB600C12E9E /* Chat */,
 				E587293D291CFFA800C12E9E /* Profile */,
 				E507B0CD292487A4002E501E /* LoginViewController.swift */,
+				E560135C29277A7100EE0083 /* RMButtomSheetViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -741,12 +744,12 @@
 		E5DC0FE629120BEC00EB57FD /* MutlipleChoose */ = {
 			isa = PBXGroup;
 			children = (
-				E593EFFB290FEFF000B35550 /* MutlipleChooseController.swift */,
-				E593EFFC290FEFF000B35550 /* MutlipleChooseController.xib */,
 				E593EFFF290FF03900B35550 /* MultipleChooseCell.swift */,
 				E593F000290FF03900B35550 /* MultipleChooseCell.xib */,
 				E593F0032910016D00B35550 /* OptionCell.swift */,
 				E593F0042910016D00B35550 /* OptionCell.xib */,
+				E560135E29277FBE00EE0083 /* MultipleChooseViewController.swift */,
+				E560135F29277FBE00EE0083 /* MultipleChooseViewController.xib */,
 			);
 			path = MutlipleChoose;
 			sourceTree = "<group>";
@@ -881,9 +884,9 @@
 		E5E64C8F290E3B9300F07286 /* RegionPicker */ = {
 			isa = PBXGroup;
 			children = (
-				E5E64C7F290E13E400F07286 /* RegionPickerViewController.swift */,
 				E5E64C8B290E1AA700F07286 /* RegionPickerCell.swift */,
 				E5E64C8C290E1AA700F07286 /* RegionPickerCell.xib */,
+				E5601358292771D600EE0083 /* LocationPickerViewController.swift */,
 			);
 			path = RegionPicker;
 			sourceTree = "<group>";
@@ -1003,7 +1006,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E593EFFE290FEFF000B35550 /* MutlipleChooseController.xib in Resources */,
 				E5B33777290F668F00467404 /* PostBasicCell.xib in Resources */,
 				E5DEEEBE292226E800A649C1 /* RoomCell.xib in Resources */,
 				E5B018C12916351300A09788 /* RoomImagesCell.xib in Resources */,
@@ -1062,6 +1064,7 @@
 				E5DEFD92291F3B0A0064E2C8 /* OUCallCell.xib in Resources */,
 				E5DEFDA6291FC9550064E2C8 /* RoomDetailHeaderView.xib in Resources */,
 				E5B018CF2916475100A09788 /* RoomItemsCell.xib in Resources */,
+				E560136129277FBE00EE0083 /* MultipleChooseViewController.xib in Resources */,
 				E5B3376F290F64D800467404 /* RoomSpecCell.xib in Resources */,
 				E5C5FE8B2910EF9E00DA91DF /* FeeDetailCell.xib in Resources */,
 				E5DEFD9A291F5D810064E2C8 /* RoomFeeCell.xib in Resources */,
@@ -1138,17 +1141,18 @@
 			files = (
 				E574A6922920EC1800EB8E5E /* ReservationDisplayCell.swift in Sources */,
 				E5D9BF78291E26AA00F416E6 /* RMConstants.swift in Sources */,
-				E593EFFD290FEFF000B35550 /* MutlipleChooseController.swift in Sources */,
 				E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */,
 				E55C0960290D53F900DBF21B /* Gender.swift in Sources */,
 				E5B984BB291B547E006DD8D7 /* HintTextView.swift in Sources */,
 				E5D76D0D291D24B20074DFD7 /* ProfileRSVNDetailViewController.swift in Sources */,
+				E560135D29277A7100EE0083 /* RMButtomSheetViewController.swift in Sources */,
 				E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */,
 				E5FF403F291B45FA00DCA2D4 /* TmpViewController.swift in Sources */,
 				E59B83152919FEE800F02CEC /* DateFormatter.swift in Sources */,
 				E5EEE21D2913B4F900CAAE84 /* ChatRoomCell.swift in Sources */,
 				E5604FE32918EC22007AE655 /* WebRTCClient.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
+				E560135A292771D600EE0083 /* LocationPickerViewController.swift in Sources */,
 				E5DEEEB829221A0600A649C1 /* EditOptionViewController.swift in Sources */,
 				E5B018C02916351300A09788 /* RoomImagesCell.swift in Sources */,
 				E593F013291012DF00B35550 /* RulesHeaderCell.swift in Sources */,
@@ -1160,6 +1164,7 @@
 				E5B984C0291B6F04006DD8D7 /* BookingView.swift in Sources */,
 				E5B984C8291BD2E4006DD8D7 /* ReservationViewController.swift in Sources */,
 				E5DC0FE32911FFB300EB57FD /* LocationService.swift in Sources */,
+				E560136029277FBE00EE0083 /* MultipleChooseViewController.swift in Sources */,
 				E5B33772290F65D800467404 /* PostViewController.swift in Sources */,
 				E5D9C045291E4FF900F416E6 /* OUImageCell.swift in Sources */,
 				E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */,
@@ -1221,7 +1226,6 @@
 				E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */,
 				E507B0DA29263076002E501E /* UserDefaultValue.swift in Sources */,
 				E5A12A632910B8C4006907D9 /* NibLoadble.swift in Sources */,
-				E5E64C81290E13E400F07286 /* RegionPickerViewController.swift in Sources */,
 				E593F001290FF03900B35550 /* MultipleChooseCell.swift in Sources */,
 				E5D9BF75291DFBE700F416E6 /* TagCell.swift in Sources */,
 				E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */,
