@@ -27,6 +27,8 @@
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
 		E55E6FCB2914CA3000CBB0EB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */; };
 		E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */; };
+		E560135029271DC500EE0083 /* ProfileItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E560134E29271DC500EE0083 /* ProfileItemCell.swift */; };
+		E560135129271DC500EE0083 /* ProfileItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E560134F29271DC500EE0083 /* ProfileItemCell.xib */; };
 		E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7129178B1F007AE655 /* HomeViewController.swift */; };
 		E5604F7A29179539007AE655 /* RoomDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7829179539007AE655 /* RoomDisplayCell.swift */; };
 		E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5604F7929179539007AE655 /* RoomDisplayCell.xib */; };
@@ -201,6 +203,8 @@
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
+		E560134E29271DC500EE0083 /* ProfileItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileItemCell.swift; sourceTree = "<group>"; };
+		E560134F29271DC500EE0083 /* ProfileItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileItemCell.xib; sourceTree = "<group>"; };
 		E5604F7129178B1F007AE655 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E5604F7829179539007AE655 /* RoomDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDisplayCell.swift; sourceTree = "<group>"; };
 		E5604F7929179539007AE655 /* RoomDisplayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDisplayCell.xib; sourceTree = "<group>"; };
@@ -506,6 +510,8 @@
 				E5872943291D022000C12E9E /* IntroCell.xib */,
 				E5D9BF73291DFBE700F416E6 /* TagCell.swift */,
 				E5D9BF74291DFBE700F416E6 /* TagCell.xib */,
+				E560134E29271DC500EE0083 /* ProfileItemCell.swift */,
+				E560134F29271DC500EE0083 /* ProfileItemCell.xib */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1033,6 +1039,7 @@
 				E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */,
 				E574A6932920EC1800EB8E5E /* ReservationDisplayCell.xib in Resources */,
 				E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */,
+				E560135129271DC500EE0083 /* ProfileItemCell.xib in Resources */,
 				E587293C291CFFA100C12E9E /* IntroViewController.xib in Resources */,
 				E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */,
 				E5DEFD9F291F81DE0064E2C8 /* BookingPeriodCell.xib in Resources */,
@@ -1181,6 +1188,7 @@
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
 				E5B984CA291BD3E4006DD8D7 /* Reservation.swift in Sources */,
 				E5DEFD8D291F3AF60064E2C8 /* CUCallCell.swift in Sources */,
+				E560135029271DC500EE0083 /* ProfileItemCell.swift in Sources */,
 				E5872938291CF49800C12E9E /* ProfileViewController.swift in Sources */,
 				E59B8318291A259500F02CEC /* CallCell.swift in Sources */,
 				E5604FE52918EDD3007AE655 /* Config.swift in Sources */,
