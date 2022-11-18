@@ -65,10 +65,12 @@ extension UIColor {
     static let mainLightColor = UIColor(named: "mainLightColor")
     static let mainBackgroundColor = UIColor(named: "backgroundColor")
     static let subTitleColor = UIColor(named: "subTitleColor")
+    static let subColor = UIColor(named: "subColor")
+    static let mainDarkColor = UIColor(named: "mainDarkColor")
 
     // swiftlint:enable identifier_name
     private static func RMColor(_ color: RMColor) -> UIColor? {
-        return hexColor(hex: color.hex)//UIColor(named: color.rawValue)
+        return hexColor(hex: color.hex)
     }
 
     static func hexColor(hex: String) -> UIColor {

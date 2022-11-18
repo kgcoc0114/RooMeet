@@ -8,7 +8,6 @@
 import UIKit
 
 class LocationPickerViewController: RMButtomSheetViewController {
-
     // define lazy views
     lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -49,7 +48,8 @@ class LocationPickerViewController: RMButtomSheetViewController {
     }()
 
     private let regionList: [Region] = LocationService.shared.regionList ?? []
-    private var countySelectedIndex: Int?
+    private var countySelectedIndex: Int = 0
+    private var selectedCell: RegionPickerCell?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,10 +96,7 @@ extension LocationPickerViewController: UITableViewDataSource {
         if tableView == countyTableView {
             return regionList.count
         } else {
-            guard let countySelected = countySelectedIndex else {
-                return 0
-            }
-            return regionList[countySelected].town.count
+            return regionList[countySelectedIndex].town.count
         }
     }
 
@@ -111,12 +108,15 @@ extension LocationPickerViewController: UITableViewDataSource {
             fatalError("Create RegionPickerCell error")
         }
         if tableView == countyTableView {
-            cell.backgroundColor = UIColor.mainLightColor
+            if countySelectedIndex == indexPath.item {
+                cell.isPicked = countySelectedIndex == indexPath.item
+                selectedCell = cell
+            } else {
+                cell.isPicked = false
+            }
             cell.regionLabel.text = regionList[indexPath.row].county
         } else {
-            if let countySelectedIndex = countySelectedIndex {
-                cell.regionLabel.text = regionList[countySelectedIndex].town[indexPath.item]
-            }
+            cell.regionLabel.text = regionList[countySelectedIndex].town[indexPath.item]
         }
         return cell
     }
@@ -126,13 +126,19 @@ extension LocationPickerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == countyTableView {
             countySelectedIndex = indexPath.item
+            guard let cell = tableView.cellForRow(at: indexPath) as? RegionPickerCell else {
+                return
+            }
+            if let selectedCell = selectedCell {
+                selectedCell.isPicked.toggle()
+            }
+            cell.isPicked.toggle()
+            selectedCell = cell
             townTableView.reloadData()
         } else {
-            if let countySelectedIndex = countySelectedIndex {
-                let selectedRegion = regionList[countySelectedIndex]
-                completion?(selectedRegion.county, selectedRegion.town[indexPath.item])
-                animateDismissView()
-            }
+            let selectedRegion = regionList[countySelectedIndex]
+            completion?(selectedRegion.county, selectedRegion.town[indexPath.item])
+            animateDismissView()
         }
     }
 }
