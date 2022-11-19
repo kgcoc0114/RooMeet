@@ -45,7 +45,8 @@ class ReservationViewController: UIViewController {
     }
 
     private func fetchRoomsByUserID() {
-        FirebaseService.shared.fetchRoomsByUserID(userID: otherUserData!.id) { [weak self] rooms in
+        guard let otherUserData = otherUserData else { return }
+        FirebaseService.shared.fetchRoomsByUserID(userID: otherUserData.id) { [weak self] rooms in
             guard let `self` = self else { return }
             self.rooms = rooms
         }
@@ -62,13 +63,12 @@ class ReservationViewController: UIViewController {
                 for: indexPath) as? RoomDisplayCell else {
                 return UICollectionViewCell()
             }
-            cell.checkImageView.isHidden = true
+
             cell.configureCell(data: room)
             return cell
         }
 
         collectionView.collectionViewLayout = createLayout()
-
     }
 
     @IBAction func close(_ sender: Any) {
@@ -101,7 +101,7 @@ extension ReservationViewController {
     private func updateDataSource() {
         var newSnapshot = HomeSnapshot()
         newSnapshot.appendSections([Section.main])
-        newSnapshot.appendItems(rooms.map { $0 }, toSection: .main)
+        newSnapshot.appendItems(rooms, toSection: .main)
         dataSource.apply(newSnapshot)
     }
 }
@@ -110,11 +110,9 @@ extension ReservationViewController {
 extension ReservationViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
-            let room = dataSource.itemIdentifier(for: indexPath),
-            let cell = collectionView.cellForItem(at: indexPath) as? RoomDisplayCell
+            let room = dataSource.itemIdentifier(for: indexPath)
         else { return }
         selectedRoom = room
-        cell.checkImageView.isHidden = false
         updateDataSource()
     }
 }

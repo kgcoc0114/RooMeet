@@ -11,9 +11,9 @@ private enum RMFontName: String {
     case regular = "NotoSansChakma-Regular"
 }
 
-private enum RMFontSize: Int {
+private enum RMFontSize: CGFloat {
     case title = 18
-    case subTitle = 15
+    case subTitle = 16
     case text = 14
 }
 
@@ -44,6 +44,18 @@ extension UIFont {
 
     static func regular(size: CGFloat) -> UIFont? {
         return RMFont(.regular, size: size)
+    }
+
+    static func regularTitle() -> UIFont? {
+        return RMFont(.regular, size: RMFontSize.title.rawValue)
+    }
+
+    static func regularSubTitle() -> UIFont? {
+        return RMFont(.regular, size: RMFontSize.subTitle.rawValue)
+    }
+
+    static func regularText() -> UIFont? {
+        return RMFont(.regular, size: RMFontSize.text.rawValue)
     }
 
 

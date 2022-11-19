@@ -366,7 +366,7 @@ class FirebaseService {
         }
     }
 
-    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
+    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([FavoriteRoom]) -> Void)) {
         fetchUserByID(userID: userID) { [unowned self] user, _ in
             guard let user = user else {
                 completion([])
@@ -378,22 +378,23 @@ class FirebaseService {
         }
     }
 
-    func fetchFavoriteRoomsByRoomID(roomIDList: [String]?, completion: @escaping (([Room]) -> Void)) {
+    func fetchFavoriteRoomsByRoomID(roomIDList: [String]?, completion: @escaping (([FavoriteRoom]) -> Void)) {
         guard let roomIDList = roomIDList else {
             return
         }
-        var rooms: [Room] = []
+//        var rooms: [Room] = []
         let group = DispatchGroup()
         roomIDList.forEach { roomID in
             group.enter()
             fetchRoomByRoomID(roomID: roomID) { room in
-                rooms.append(room)
+                let index = roomIDList.firstIndex(of: room.roomID)
+                gCurrentUser.favoriteRooms[index!].room = room
                 group.leave()
             }
         }
 
         group.notify(queue: DispatchQueue.main) {
-            completion(rooms)
+            completion(gCurrentUser.favoriteRooms)
         }
     }
 
@@ -650,17 +651,26 @@ extension FirebaseService {
     }
 
     // MARK: - Room Detail Page - Like
-    func updateUserLikeData() {
+    func updateUserFavoriteRoomsData(favoriteRooms: [FavoriteRoom]) {
         let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
 
-//        query.updateData([
-//            "like": gCurrentUser.like
-//        ])
+        query.updateData([
+            "favoriteRooms": []
+        ])
+
+        let favoriteRoomsMap = favoriteRooms.map { favoriteRoom in
+            favoriteRoom.dictionary
+        }
+
+        query.updateData([
+            "favoriteRooms": favoriteRoomsMap
+        ])
     }
 
 
-    func updateUserFavoriteData(reservations: [String], favoriteRooms: [FavoriteRoom]) {
+    func updateUserFavRsvnData(reservations: [String], favoriteRooms: [FavoriteRoom]) {
         let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
+        
 
         query.updateData([
             "reservations": reservations,
