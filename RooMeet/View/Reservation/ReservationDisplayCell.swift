@@ -13,7 +13,7 @@ class ReservationDisplayCell: UICollectionViewCell {
     @IBOutlet weak var statusButton: UIButton! {
         didSet {
             statusButton.isEnabled = false
-            statusButton.titleLabel!.font = UIFont.regular(size: 15)
+            statusButton.titleLabel!.font = UIFont.regularText()
             statusButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
             statusButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             statusButton.setTitleColor(.white, for: .disabled)
@@ -22,32 +22,32 @@ class ReservationDisplayCell: UICollectionViewCell {
 
     @IBOutlet weak var priceLabel: UILabel! {
         didSet {
-            priceLabel.font = UIFont.regular(size: 15)
+            priceLabel.font = UIFont.regularText()
             priceLabel.textColor = .hexColor(hex: "#BA4F56")
         }
     }
 
     @IBOutlet weak var roomTitleLabel: UILabel! {
         didSet {
-            roomTitleLabel.font = UIFont.regular(size: 15)
+            roomTitleLabel.font = UIFont.regularSubTitle()
         }
     }
 
     @IBOutlet weak var periodLabel: UILabel! {
         didSet {
-            periodLabel.font = UIFont.regular(size: 15)
+            periodLabel.font = UIFont.regularSubTitle()
         }
     }
 
     @IBOutlet weak var dateLabel: UILabel! {
         didSet {
-            dateLabel.font = UIFont.regular(size: 20)
+            dateLabel.font = UIFont.regularTitle()
         }
     }
 
     @IBOutlet weak var regionLabel: UILabel! {
         didSet {
-            regionLabel.font = UIFont.regular(size: 15)
+            regionLabel.font = UIFont.regularText()
         }
     }
 
@@ -70,7 +70,7 @@ class ReservationDisplayCell: UICollectionViewCell {
     }
 
     override func layoutSubviews() {
-        roomImageView.layer.cornerRadius = roomImageView.bounds.width / 2
+        roomImageView.layer.cornerRadius = roomImageView.bounds.width * 0.15
     }
 
     func configureCell(data: Reservation) {

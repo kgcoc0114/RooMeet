@@ -129,7 +129,7 @@ class RoomSpecCell: UICollectionViewCell {
             return
         }
 
-        let roomType = RoomType.allCases[typeSegmentControl.selectedSegmentIndex].desc
+        let roomType = RoomType.allCases[typeSegmentControl.selectedSegmentIndex].rawValue
 
         delegate?.didChangeData(self, data: RoomSpec(roomType: roomType, price: price, space: space))
     }

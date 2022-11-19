@@ -12,11 +12,11 @@ class FavoritesViewController: UIViewController {
         case main
     }
 
-    typealias FavoriteDataSource = UICollectionViewDiffableDataSource<Section, Room>
-    typealias FavoriteSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
+    typealias FavoriteDataSource = UICollectionViewDiffableDataSource<Section, FavoriteRoom>
+    typealias FavoriteSnapshot = NSDiffableDataSourceSnapshot<Section, FavoriteRoom>
     private var dataSource: FavoriteDataSource!
 
-    var rooms: [Room] = [] {
+    var rooms: [FavoriteRoom] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView.stopPullToRefresh()
@@ -28,18 +28,6 @@ class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(
-//            image: UIImage(systemName: "plus"),
-//            style: .plain,
-//            target: self,
-//            action: #selector(addRoomPost))
-//
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(
-//            image: UIImage(systemName: "slider.horizontal.3"),
-//            style: .plain,
-//            target: self,
-//            action: #selector(showFilterPage))
-        // set title
         navigationItem.title = "Favorites"
 
         collectionView.delegate = self
@@ -48,7 +36,7 @@ class FavoritesViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        // fetch room to display
+        super.viewWillAppear(animated)
         fetchRooms()
     }
 
@@ -57,15 +45,17 @@ class FavoritesViewController: UIViewController {
             UINib(nibName: "RoomDisplayCell", bundle: nil),
             forCellWithReuseIdentifier: RoomDisplayCell.identifier)
 
-        dataSource = FavoriteDataSource(collectionView: collectionView) { collectionView, indexPath, room in
+        dataSource = FavoriteDataSource(collectionView: collectionView) { collectionView, indexPath, favRoom in
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: RoomDisplayCell.identifier,
-                for: indexPath) as? RoomDisplayCell else {
+                for: indexPath) as? RoomDisplayCell,
+                let room = favRoom.room else {
                 return UICollectionViewCell()
             }
 
-            cell.checkImageView.isHidden = true
             cell.configureCell(data: room)
+            cell.isLike = true
+            cell.delegate = self
             return cell
         }
 
@@ -89,17 +79,17 @@ extension FavoritesViewController {
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .estimated(130))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
         return UICollectionViewCompositionalLayout(section: section)
     }
 }
@@ -109,7 +99,7 @@ extension FavoritesViewController {
     private func updateDataSource() {
         var newSnapshot = FavoriteSnapshot()
         newSnapshot.appendSections([Section.main])
-        newSnapshot.appendItems(rooms.map { $0 }, toSection: .main)
+        newSnapshot.appendItems(rooms, toSection: .main)
         dataSource.apply(newSnapshot)
     }
 }
@@ -118,9 +108,24 @@ extension FavoritesViewController {
 extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
-            let room = dataSource.itemIdentifier(for: indexPath)
+            let favRoom = dataSource.itemIdentifier(for: indexPath),
+            let room = favRoom.room
         else { return }
         let detailViewController = RoomDetailViewController(room: room)
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
+extension FavoritesViewController: RoomDisplayCellDelegate {
+    func didClickedLike(_ cell: RoomDisplayCell, like: Bool) {
+        guard let indexPath = collectionView.indexPath(for: cell) else {
+            return
+        }
+
+        rooms.remove(at: indexPath.item)
+
+        gCurrentUser.favoriteRooms.remove(at: indexPath.item)
+
+        FirebaseService.shared.updateUserFavoriteRoomsData(favoriteRooms: gCurrentUser.favoriteRooms)
     }
 }

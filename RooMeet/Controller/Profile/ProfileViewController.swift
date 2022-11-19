@@ -55,11 +55,11 @@ enum Profile: CaseIterable {
     }
 
     var firstLineColorSet: ColorSet {
-        return ColorSet(font: UIColor(named: "mainLightColor")!, background: UIColor(named: "subColor")!)
+        return ColorSet(font: UIColor.mainBackgroundColor!, background: UIColor.subColor!)
     }
 
-    var secondLineColorSet: ColorSet{
-        return ColorSet(font: UIColor(named: "mainDarkColor")!, background: UIColor(named: "mainLightColor")!)
+    var secondLineColorSet: ColorSet {
+        return ColorSet(font: UIColor.mainDarkColor!, background: UIColor.mainLightColor!)
     }
 
 
@@ -144,11 +144,22 @@ class ProfileViewController: UIViewController {
 
         userNameLabel.text = UserDefaults.name
         editIntroButton.setTitle("", for: .normal)
-//        editIntroButton.isEnabled = false
-//        editButton.setTitle("", for: .normal)
         editIntroButton.addTarget(self, action: #selector(editIntro), for: .touchUpInside)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
+            guard let user = user else {
+                return
+            }
+            gCurrentUser = user
+            FirebaseService.shared.fetchRoomCountsOwnByUserID(userID: UserDefaults.id) { count in
+                gCurrentUser.postCount = count
+            }
+        }
+        collectionView.reloadData()
+    }
 
     @objc private func editIntro() {
         let introductionVC = IntroViewController(entryType: EntryType.edit, user: gCurrentUser)

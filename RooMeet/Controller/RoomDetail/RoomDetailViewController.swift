@@ -220,7 +220,7 @@ class RoomDetailViewController: UIViewController {
         }
 
         gCurrentUser = user
-        FirebaseService.shared.updateUserFavoriteData(reservations: user.reservations, favoriteRooms: user.favoriteRooms)
+        FirebaseService.shared.updateUserFavRsvnData(reservations: user.reservations, favoriteRooms: user.favoriteRooms)
 
         self.tabBarController?.tabBar.isHidden = false
     }

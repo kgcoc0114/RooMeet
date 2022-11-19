@@ -59,7 +59,7 @@ struct User: Codable, Hashable {
 struct FavoriteRoom: Codable, Hashable {
     var roomID: String
     var createdTime: Timestamp
-
+    var room: Room?
     var dictionary: [String: Any] {
         return [
             "roomID": roomID,
