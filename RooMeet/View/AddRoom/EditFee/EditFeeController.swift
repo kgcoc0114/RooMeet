@@ -24,6 +24,7 @@ class EditFeeController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
 
     var completion: ((BillInfo) -> Void)?
+    var entryType: EntryType = .new
 
     var billInfo = BillInfo(
         water: FeeDetail(),
@@ -32,6 +33,20 @@ class EditFeeController: UIViewController {
         internet: FeeDetail(),
         management: FeeDetail()
     )
+
+    init(entryType: EntryType, data: BillInfo?) {
+        super.init(nibName: "EditFeeController", bundle: nil)
+
+        if entryType == .edit,
+           let data = data {
+            self.billInfo = data
+        }
+        self.entryType = entryType
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +76,27 @@ extension EditFeeController: UITableViewDataSource {
         }
 
         let feeType = FeeType.allCases[indexPath.item]
-        cell.initialView(feeType: feeType)
+        var feeDetail = FeeDetail()
+
+        switch feeType {
+        case .electricity:
+            feeDetail = billInfo.electricity
+        case .water:
+            feeDetail = billInfo.water
+        case .cable:
+            feeDetail = billInfo.cable
+        case .internet:
+            feeDetail = billInfo.internet
+        case .management:
+            feeDetail = billInfo.management
+        }
+
+        cell.configureCell(
+            feeType: feeType,
+            entryType: entryType,
+            data: feeDetail
+        )
+
         cell.delegate = self
         return cell
     }

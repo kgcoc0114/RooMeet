@@ -47,6 +47,7 @@ class RoomImagesCell: UICollectionViewCell {
         super.awakeFromNib()
         scrollView.delegate = self
     }
+
     @IBAction func likeAction(_ sender: Any) {
         isLike.toggle()
         delegate?.didClickedLike(like: isLike)

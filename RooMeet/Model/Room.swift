@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 struct Room: Codable, Hashable {
-    var roomID: String
+    var roomID: String?
     var userID: String
     var userData: User?
     var createdTime: Timestamp
@@ -34,6 +34,8 @@ struct Room: Codable, Hashable {
     var postalCode: String?
     var billInfo: BillInfo?
     var leaseMonth: Int
+    var room: Int
+    var parlor: Int
     var movinDate: Date
     var otherDescriction: String?
     var isDeleted: Bool
@@ -57,7 +59,7 @@ struct Room: Codable, Hashable {
     }
 
     func getRoomMinPrice() -> Int? {
-        let minRoom = rooms.min { $0.price! > $1.price! }
+        let minRoom = rooms.min { $0.price! < $1.price! }
         if let minRoom = minRoom {
             return minRoom.price
         }
@@ -144,13 +146,13 @@ struct FeeDetail: Codable, Hashable {
     }
 }
 
-enum AffordType: String, Hashable {
+enum AffordType: String, Hashable, CaseIterable {
     case sperate = "sperate"
     case share = "share"
 
     var description: String {
         switch self {
-        case .sperate: return "獨立量表"
+        case .sperate: return "獨立支付"
         case .share: return "費用均分"
         }
     }

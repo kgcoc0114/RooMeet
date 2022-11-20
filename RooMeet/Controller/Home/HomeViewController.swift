@@ -65,11 +65,12 @@ class HomeViewController: ViewController {
         configureCollectionView()
 
         // fetch room to display
-        fetchRooms()
+//        fetchRooms()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        fetchRooms()
 //        navigationController?.navigationBar.isHidden = true
     }
 
@@ -94,7 +95,7 @@ class HomeViewController: ViewController {
 
         collectionView.addPullToRefresh {[weak self] in
             self?.fetchRooms()
-            FirebaseService.shared.fetchUserByID(userID: gCurrentUser.id) { user, index in
+            FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, index in
                 if let user = user {
                     gCurrentUser = user
                 }
@@ -110,8 +111,8 @@ class HomeViewController: ViewController {
     }
 
     @objc private func addRoomPost(_ sender: Any) {
-        let postVC = PostViewController()
-        navigationController?.pushViewController(postVC, animated: true)
+        let postViewController = PostViewController(entryType: .new, data: nil)
+        navigationController?.pushViewController(postViewController, animated: true)
     }
 
     @objc private func showFilterPage() {

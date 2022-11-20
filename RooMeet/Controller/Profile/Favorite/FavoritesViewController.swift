@@ -12,6 +12,11 @@ class FavoritesViewController: UIViewController {
         case main
     }
 
+    enum EntryPage {
+        case fav
+        case ownPost
+    }
+
     typealias FavoriteDataSource = UICollectionViewDiffableDataSource<Section, Room>
     typealias FavoriteSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
     private var dataSource: FavoriteDataSource!
@@ -24,31 +29,32 @@ class FavoritesViewController: UIViewController {
             }
         }
     }
+
+    var entryPage: EntryPage = .fav
+
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(
-//            image: UIImage(systemName: "plus"),
-//            style: .plain,
-//            target: self,
-//            action: #selector(addRoomPost))
-//
-//        navigationItem.leftBarButtonItem = UIBarButtonItem(
-//            image: UIImage(systemName: "slider.horizontal.3"),
-//            style: .plain,
-//            target: self,
-//            action: #selector(showFilterPage))
-        // set title
-        navigationItem.title = "Favorites"
+        navigationItem.title = entryPage == .fav ? "Favorites" : "My Post"
 
         collectionView.delegate = self
 
         configureCollectionView()
     }
 
+    init(entryPage: EntryPage) {
+        super.init(nibName: "FavoritesViewController", bundle: nil)
+
+        self.entryPage = entryPage
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewWillAppear(_ animated: Bool) {
-        // fetch room to display
+        super.viewWillAppear(animated)
         fetchRooms()
     }
 
@@ -64,8 +70,9 @@ class FavoritesViewController: UIViewController {
                 return UICollectionViewCell()
             }
 
-            cell.checkImageView.isHidden = true
             cell.configureCell(data: room)
+            cell.isLike = true
+            cell.delegate = self
             return cell
         }
 
@@ -77,9 +84,17 @@ class FavoritesViewController: UIViewController {
     }
 
     private func fetchRooms() {
-        FirebaseService.shared.fetchFavoriteRoomsByUserID(roomIDList: gCurrentUser.like) { rooms in
-//            guard let `self` = self else { return }
-            self.rooms = rooms
+        if entryPage == .fav {
+            FirebaseService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
+                guard let self = self else { return }
+                self.rooms = rooms
+            }
+        } else {
+            FirebaseService.shared.fetchRoomsByUserID(userID: UserDefaults.id) {
+                [weak self] rooms in
+                guard let self = self else { return }
+                self.rooms = rooms
+            }
         }
     }
 }
@@ -89,17 +104,17 @@ extension FavoritesViewController {
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .fractionalHeight(1.0))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .estimated(130))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
         return UICollectionViewCompositionalLayout(section: section)
     }
 }
@@ -109,7 +124,7 @@ extension FavoritesViewController {
     private func updateDataSource() {
         var newSnapshot = FavoriteSnapshot()
         newSnapshot.appendSections([Section.main])
-        newSnapshot.appendItems(rooms.map { $0 }, toSection: .main)
+        newSnapshot.appendItems(rooms, toSection: .main)
         dataSource.apply(newSnapshot)
     }
 }
@@ -120,7 +135,26 @@ extension FavoritesViewController: UICollectionViewDelegate {
         guard
             let room = dataSource.itemIdentifier(for: indexPath)
         else { return }
-        let detailViewController = RoomDetailViewController(room: room)
-        navigationController?.pushViewController(detailViewController, animated: true)
+        if entryPage == .fav {
+            let detailViewController = RoomDetailViewController(room: room)
+            navigationController?.pushViewController(detailViewController, animated: true)
+        } else {
+            let postViewController = PostViewController(entryType: .edit, data: room)
+            navigationController?.pushViewController(postViewController, animated: true)
+        }
+    }
+}
+
+extension FavoritesViewController: RoomDisplayCellDelegate {
+    func didClickedLike(_ cell: RoomDisplayCell, like: Bool) {
+        guard let indexPath = collectionView.indexPath(for: cell) else {
+            return
+        }
+
+        rooms.remove(at: indexPath.item)
+
+        gCurrentUser.favoriteRooms.remove(at: indexPath.item)
+
+        FirebaseService.shared.updateUserFavoriteRoomsData(favoriteRooms: gCurrentUser.favoriteRooms)
     }
 }

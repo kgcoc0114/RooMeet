@@ -86,7 +86,12 @@ class OUReservationCell: MessageBaseCell {
             return
         }
 
-        avatarView.setImage(urlString: otherUser.profilePhoto)
+        if let profilePhoto = otherUser.profilePhoto {
+            avatarView.setImage(urlString: profilePhoto)
+        } else {
+            avatarView.image = UIImage.asset(.profile_user)
+        }
+
         statusLabel.text = reservation.acceptedStatus
 
         if message.content == "answer" {
@@ -96,7 +101,7 @@ class OUReservationCell: MessageBaseCell {
             agreeButton.isHidden = true
         } else {
             if reservation.acceptedStatus == "waiting" {
-                if reservation.sender == gCurrentUser.id {
+                if reservation.sender == UserDefaults.standard.string(forKey: UserDefaults.id) {
                     titleLabel.text = "已發起預約，等候回覆"
                     statusLabel.isHidden = true
                     denyButton.isHidden = true

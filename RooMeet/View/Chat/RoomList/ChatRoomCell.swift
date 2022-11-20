@@ -46,7 +46,13 @@ class ChatRoomCell: UITableViewCell {
         }
         if let member = chatRoom.member {
             userNameLabel.text = member.name
-            profileImageView.setImage(urlString: member.profilePhoto)
+
+            if let profilePhoto = member.profilePhoto {
+                profileImageView.setImage(urlString: profilePhoto)
+            } else {
+                profileImageView.image = UIImage.asset(.profile_user)
+            }
+
         } else {
             userNameLabel.text = ""
             profileImageView.setImage(urlString: "https://github.com/developerjet/JetChat/raw/master/ScreenShot/JetChatSmall.png")
