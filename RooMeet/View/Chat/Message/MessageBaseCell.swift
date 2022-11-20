@@ -52,5 +52,3 @@ class MessageBaseCell: UITableViewCell {
     func configureLayout() {
     }
 }
-
-

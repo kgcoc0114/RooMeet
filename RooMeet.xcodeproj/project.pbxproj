@@ -22,6 +22,7 @@
 		E5119BAB292081F100A632C9 /* RMNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5119BAA292081F100A632C9 /* RMNavigationController.swift */; };
 		E51419C92920D52100813D25 /* CallWaitingView.json in Resources */ = {isa = PBXBuildFile; fileRef = E51419C82920D52100813D25 /* CallWaitingView.json */; };
 		E51419CB2920D7CC00813D25 /* LottieWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51419CA2920D7CC00813D25 /* LottieWrapper.swift */; };
+		E539D22F2929F189007D50FD /* LoginPageAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = E539D22E2929F189007D50FD /* LoginPageAnimation.json */; };
 		E55C095E290D51B800DBF21B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095D290D51B800DBF21B /* Room.swift */; };
 		E55C0960290D53F900DBF21B /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095F290D53F900DBF21B /* Gender.swift */; };
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
@@ -199,6 +200,7 @@
 		E5119BAA292081F100A632C9 /* RMNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMNavigationController.swift; sourceTree = "<group>"; };
 		E51419C82920D52100813D25 /* CallWaitingView.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CallWaitingView.json; sourceTree = "<group>"; };
 		E51419CA2920D7CC00813D25 /* LottieWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieWrapper.swift; sourceTree = "<group>"; };
+		E539D22E2929F189007D50FD /* LoginPageAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoginPageAnimation.json; sourceTree = "<group>"; };
 		E55C095D290D51B800DBF21B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E55C095F290D53F900DBF21B /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 				E5DEEEB42921150A00A649C1 /* Reservation.json */,
 				E51419C82920D52100813D25 /* CallWaitingView.json */,
 				E5EEE20229129C6000CAAE84 /* PostalCode.json */,
+				E539D22E2929F189007D50FD /* LoginPageAnimation.json */,
 				E55C0971290D628400DBF21B /* Constants.swift */,
 				E5604FE42918EDD3007AE655 /* Config.swift */,
 				E5D9BF77291E26AA00F416E6 /* RMConstants.swift */,
@@ -1030,6 +1033,7 @@
 				E5B33773290F65D800467404 /* PostViewController.xib in Resources */,
 				E5B018C72916354600A09788 /* RoomBasicCell.xib in Resources */,
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
+				E539D22F2929F189007D50FD /* LoginPageAnimation.json in Resources */,
 				E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */,
 				E51419C92920D52100813D25 /* CallWaitingView.json in Resources */,
 				E59B82F32919117300F02CEC /* CallViewController.xib in Resources */,
