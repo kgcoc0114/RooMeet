@@ -21,13 +21,25 @@ class IntroCell: UICollectionViewCell {
             let tapGestureRecognizer = UITapGestureRecognizer(
                 target: self,
                 action: #selector(imageTapped(tapGestureRecognizer:)))
+            imageView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
             imageView.contentMode = .scaleAspectFill
             imageView.isUserInteractionEnabled = true
             imageView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
 
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    @IBOutlet weak var genderSegmentedControl: RMSegmentedControl! {
+        didSet {
+            genderSegmentedControl.items = Gender.allCases.map { $0.rawValue }
+            genderSegmentedControl.borderColor = UIColor.mainLightColor
+            genderSegmentedControl.selectedLabelColor = UIColor.mainDarkColor
+            genderSegmentedControl.unselectedLabelColor = UIColor.mainColor
+            genderSegmentedControl.backgroundColor = .white
+            genderSegmentedControl.thumbColor = UIColor.mainLightColor
+            genderSegmentedControl.selectedIndex = 0
+            genderSegmentedControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
+        }
+    }
     @IBOutlet weak var regionTextField: RMBaseTextField!
     @IBOutlet weak var birthdayTextField: RMBaseTextField! {
         didSet {
@@ -42,7 +54,7 @@ class IntroCell: UICollectionViewCell {
             let datePicker = UIDatePicker()
             datePicker.datePickerMode = .date
             datePicker.preferredDatePickerStyle = .inline
-            datePicker.tintColor = .hexColor(hex: "#437471")
+            datePicker.tintColor = .mainColor
 
             birthdayTextField.placeholder = "YYYY/MM/DD"
             birthdayTextField.inputView = datePicker
@@ -53,10 +65,21 @@ class IntroCell: UICollectionViewCell {
 
     @IBOutlet weak var nameTextField: RMBaseTextField!
 
-    @IBOutlet weak var imageButton: UIButton!
+    @IBOutlet weak var imageButton: UIButton! {
+        didSet {
+            imageButton.setTitle("", for: .normal)
+            imageButton.backgroundColor = .white
+            imageButton.tintColor = .mainColor
+        }
+    }
 
-    @IBOutlet weak var introTextView: UITextView!
-    
+    @IBOutlet weak var introTextView: UITextView! {
+        didSet {
+            introTextView.backgroundColor = .mainLightColor
+            introTextView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+        }
+    }
+
     var county: String? {
         didSet {
             if
@@ -95,11 +118,10 @@ class IntroCell: UICollectionViewCell {
         birthdayTextField.delegate = self
         regionTextField.delegate = self
         introTextView.delegate = self
-        imageButton.setTitle("Edit", for: .normal)
     }
 
     override func layoutSubviews() {
-        imageView.layer.cornerRadius = imageButton.bounds.height / 2
+        imageButton.layer.cornerRadius = imageView.bounds.width / 2
     }
 
     func configureCell(edit: Bool = true, data: User) {
@@ -115,6 +137,10 @@ class IntroCell: UICollectionViewCell {
                 birthdayTextField.text = RMDateFormatter.shared.dateString(date: birthday)
             } else {
                 birthdayTextField.text = ""
+            }
+
+            if let gender = user.gender {
+                genderSegmentedControl.selectedIndex = gender
             }
 
             if let profilePhoto = user.profilePhoto {
@@ -142,7 +168,7 @@ class IntroCell: UICollectionViewCell {
 
     @objc func textFieldDone(_ sender: UIBarButtonItem) {
         self.endEditing(true)
-        user?.gender = segmentedControl.selectedSegmentIndex
+
         guard let user = user else { return }
         delegate?.passData(cell: self, data: user)
     }
@@ -159,13 +185,19 @@ class IntroCell: UICollectionViewCell {
         }
         birthdayTextField.text = RMDateFormatter.shared.dateString(date: birthday)
         user?.birthday = birthday
-        user?.gender = segmentedControl.selectedSegmentIndex
         guard let user = user else { return }
         delegate?.passData(cell: self, data: user)
     }
 
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         delegate?.didClickImageView(self)
+    }
+
+    @objc func segmentValueChanged(_ sender: RMSegmentedControl) {
+        user?.gender = genderSegmentedControl.selectedIndex
+
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
     }
 }
 
@@ -178,7 +210,6 @@ extension IntroCell: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         user?.name = nameTextField.text ?? ""
-        user?.gender = segmentedControl.selectedSegmentIndex
 
         guard let user = user else { return }
         delegate?.passData(cell: self, data: user)
@@ -188,7 +219,7 @@ extension IntroCell: UITextFieldDelegate {
 extension IntroCell: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         user?.introduction = textView.text
-        print(user?.introduction, textView.text)
+
         guard let user = user else { return }
         delegate?.passData(cell: self, data: user)
     }

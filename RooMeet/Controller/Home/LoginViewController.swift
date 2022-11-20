@@ -33,8 +33,8 @@ class LoginViewController: UIViewController {
             signInWithAppleButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             authAppleIDButton.centerXAnchor.constraint(equalTo: signInWithAppleButtonView.centerXAnchor),
             authAppleIDButton.centerYAnchor.constraint(equalTo: signInWithAppleButtonView.centerYAnchor),
-            authAppleIDButton.widthAnchor.constraint(equalTo: signInWithAppleButtonView.widthAnchor, multiplier: 1),
-            authAppleIDButton.heightAnchor.constraint(equalTo: signInWithAppleButtonView.heightAnchor, multiplier: 1)
+            authAppleIDButton.widthAnchor.constraint(equalTo: signInWithAppleButtonView.widthAnchor),
+            authAppleIDButton.heightAnchor.constraint(equalTo: signInWithAppleButtonView.heightAnchor)
         ])
 
         AuthService.shared.delegate = self
@@ -42,11 +42,13 @@ class LoginViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
         RMLottie.shared.startLoopAnimate(animationView: loginAnimationView)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
         RMLottie.shared.stopLoopAnimate(animationView: loginAnimationView)
     }
 
@@ -175,6 +177,7 @@ extension LoginViewController: UserServiceDelegate {
     func userService(isNewUser: Bool, user: User) {
         if isNewUser {
             let profileVC = IntroViewController(entryType: EntryType.new, user: user)
+            profileVC.modalPresentationStyle = .overCurrentContext
             present(profileVC, animated: true)
         } else {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)

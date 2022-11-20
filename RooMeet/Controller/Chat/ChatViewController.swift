@@ -44,7 +44,16 @@ class ChatViewController: UIViewController {
 
     private var listener: ListenerRegistration?
 
-    @IBOutlet weak var contentTextField: UITextField!
+    @IBOutlet weak var contentTextField: UITextField! {
+        didSet {
+            contentTextField.placeholder = "Aa"
+        }
+    }
+    @IBOutlet weak var sendButton: UIButton! {
+        didSet {
+            sendButton.setTitle("", for: .normal)
+        }
+    }
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
@@ -56,12 +65,20 @@ class ChatViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+
+        let phoneBarButton = UIBarButtonItem(
             image: UIImage(systemName: "phone"),
             style: .plain,
             target: self,
-            action: #selector(call))
+            action: #selector(audioCall))
+
+        let videoCallBarButton = UIBarButtonItem(
+            image: UIImage(systemName: "video"),
+            style: .plain,
+            target: self,
+            action: #selector(videoCall))
+
+        navigationItem.rightBarButtonItems = [phoneBarButton]
 
         tableView.delegate = self
         configureDataSource()
@@ -149,10 +166,9 @@ class ChatViewController: UIViewController {
     }
 
     @IBAction func showRuler(_ sender: Any) {
-
     }
 
-    @objc private func call(_ sender: Any) {
+    @objc private func audioCall(_ sender: Any) {
         guard let chatRoom = chatRoom else {
             return
         }
@@ -172,6 +188,34 @@ class ChatViewController: UIViewController {
             callerData: currentUserData,
             calleeData: otherData!
         )
+
+        callViewController.otherUserData = otherData
+        callViewController.currentUserData = currentUserData
+        callViewController.modalPresentationStyle = .fullScreen
+        present(callViewController, animated: true)
+    }
+
+    @objc private func videoCall(_ sender: Any) {
+        guard let chatRoom = chatRoom else {
+            return
+        }
+
+        // 清空通話資料
+        Firestore.firestore().collection("Call").document(chatRoom.id).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
+
+        let callViewController = CallViewController(
+            callRoomId: chatRoom.id,
+            callType: .offer,
+            callerData: currentUserData,
+            calleeData: otherData!
+        )
+
         callViewController.otherUserData = otherData
         callViewController.currentUserData = currentUserData
         callViewController.modalPresentationStyle = .fullScreen

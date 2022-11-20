@@ -29,7 +29,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kqW-3o-MHH">
                                         <rect key="frame" x="0.0" y="0.0" width="441" height="30"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <color key="textColor" name="mainColor"/>
+                                        <color key="textColor" name="mainDarkColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ypt-CY-f5n">
@@ -41,7 +41,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="1000" verticalCompressionResistancePriority="250" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ohD-ma-zEN">
                                         <rect key="frame" x="0.0" y="66.5" width="441" height="20.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" name="Color"/>
+                                        <color key="textColor" name="subTitleRedColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="FYT-Pd-MXm">
@@ -74,23 +74,20 @@
             </constraints>
             <size key="customSize" width="441" height="482"/>
             <connections>
-                <outlet property="areaLabel" destination="ypt-CY-f5n" id="Eoq-CP-8j2"/>
                 <outlet property="otherDescTextView" destination="FYT-Pd-MXm" id="gnR-MB-7Db"/>
                 <outlet property="priceLabel" destination="ohD-ma-zEN" id="4nE-Km-W2Z"/>
+                <outlet property="regionLabel" destination="ypt-CY-f5n" id="Eoq-CP-8j2"/>
                 <outlet property="titleLabel" destination="kqW-3o-MHH" id="ccj-tu-B3I"/>
             </connections>
             <point key="canvasLocation" x="225.36231884057972" y="176.78571428571428"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <namedColor name="Color">
-            <color red="0.72899997234344482" green="0.36100000143051147" blue="0.071000002324581146" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="mainColor">
-            <color red="0.2627450980392157" green="0.45098039215686275" blue="0.43529411764705883" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="mainDarkColor">
-            <color red="0.14901960784313725" green="0.25098039215686274" blue="0.24313725490196078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="subTitleRedColor">
+            <color red="0.83899998664855957" green="0.41999998688697815" blue="0.45100000500679016" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

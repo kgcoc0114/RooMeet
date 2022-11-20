@@ -30,7 +30,7 @@
                                 </constraints>
                             </imageView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="oB3-BF-iVN">
-                                <rect key="frame" x="113" y="30.5" width="251" height="81"/>
+                                <rect key="frame" x="113" y="30.5" width="271" height="81"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="252" text="溫馨好房 下班放鬆好避風" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ATm-Kf-okF">
                                         <rect key="frame" x="0.0" y="0.0" width="206.5" height="21.5"/>
@@ -77,7 +77,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uUc-8J-nrp">
-                                <rect key="frame" x="364" y="8.5" width="20" height="25.5"/>
+                                <rect key="frame" x="364" y="58.5" width="20" height="25"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="trash.circle" catalog="system"/>
@@ -85,14 +85,14 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="uUc-8J-nrp" firstAttribute="top" secondItem="91T-qc-SsS" secondAttribute="top" constant="-10" id="7qB-wm-zVA"/>
                             <constraint firstAttribute="trailing" secondItem="uUc-8J-nrp" secondAttribute="trailing" id="J9d-hK-hgS"/>
                             <constraint firstItem="91T-qc-SsS" firstAttribute="leading" secondItem="MgE-Gh-gFR" secondAttribute="leading" id="YzU-AG-CO7"/>
                             <constraint firstItem="oB3-BF-iVN" firstAttribute="leading" secondItem="91T-qc-SsS" secondAttribute="trailing" constant="8" id="bfR-ix-0zZ"/>
                             <constraint firstItem="91T-qc-SsS" firstAttribute="centerY" secondItem="MgE-Gh-gFR" secondAttribute="centerY" id="fJ0-Dm-Ijk"/>
                             <constraint firstItem="oB3-BF-iVN" firstAttribute="centerY" secondItem="91T-qc-SsS" secondAttribute="centerY" id="geg-OT-4UZ"/>
                             <constraint firstItem="uUc-8J-nrp" firstAttribute="height" secondItem="MgE-Gh-gFR" secondAttribute="height" multiplier="0.179191" id="jbo-sP-63G"/>
-                            <constraint firstAttribute="trailing" secondItem="oB3-BF-iVN" secondAttribute="trailing" constant="20" id="yhN-1G-BtU"/>
+                            <constraint firstItem="uUc-8J-nrp" firstAttribute="centerY" secondItem="MgE-Gh-gFR" secondAttribute="centerY" id="tIU-6J-ZyU"/>
+                            <constraint firstAttribute="trailing" secondItem="oB3-BF-iVN" secondAttribute="trailing" id="yhN-1G-BtU"/>
                         </constraints>
                     </view>
                 </subviews>

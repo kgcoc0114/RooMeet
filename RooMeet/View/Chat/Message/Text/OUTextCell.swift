@@ -49,7 +49,7 @@ class OUTextCell: MessageBaseCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        self.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
+        self.backgroundColor = UIColor.mainBackgroundColor
 
         NSLayoutConstraint.activate([
             dateLabel.leadingAnchor.constraint(equalTo: contentTextView.trailingAnchor, constant: 5),

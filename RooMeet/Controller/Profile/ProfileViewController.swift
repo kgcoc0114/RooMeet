@@ -101,16 +101,26 @@ enum Profile: CaseIterable {
 class ProfileViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var profileImageView: UIImageView!  {
+        didSet {
+            let tapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(editIntro)
+            )
+            profileImageView.translatesAutoresizingMaskIntoConstraints = false
+            profileImageView.contentMode = .scaleAspectFill
+            profileImageView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+            profileImageView.contentMode = .scaleAspectFill
+            profileImageView.isUserInteractionEnabled = true
+            profileImageView.addGestureRecognizer(tapGestureRecognizer)
+        }
+    }
 
     @IBOutlet weak var userNameLabel: UILabel!
 //    @IBOutlet weak var editButton: UIButton!
     @IBOutlet weak var editIntroButton: UIButton!
 
     override func viewDidLayoutSubviews() {
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        profileImageView.contentMode = .scaleAspectFill
-        profileImageView.layer.cornerRadius = (profileImageView.bounds.height * 0.25)
         editIntroButton.layer.cornerRadius = (editIntroButton.bounds.height * 0.25)
     }
 
@@ -118,7 +128,10 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Profile"
 
-        collectionView.register(UINib(nibName: "ProfileItemCell", bundle: nil), forCellWithReuseIdentifier: ProfileItemCell.identifier)
+        collectionView.register(
+            UINib(nibName: "ProfileItemCell", bundle: nil),
+            forCellWithReuseIdentifier: ProfileItemCell.identifier
+        )
 
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -168,13 +181,14 @@ class ProfileViewController: UIViewController {
 
             gCurrentUser = user
 
-            if UserDefaults.profilePhoto != "empty"{
+            if gCurrentUser.profilePhoto != "empty" {
                 self.profileImageView.setImage(urlString: UserDefaults.profilePhoto)
             } else {
                 self.profileImageView.image = UIImage.asset(.profile_user)
             }
         }
 
+        introductionVC.modalPresentationStyle = .fullScreen
         present(introductionVC, animated: true)
     }
 }
@@ -185,7 +199,9 @@ extension ProfileViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProfileItemCell.identifier, for: indexPath) as? ProfileItemCell else {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: ProfileItemCell.identifier,
+            for: indexPath) as? ProfileItemCell else {
             return UICollectionViewCell()
         }
 
@@ -200,7 +216,6 @@ extension ProfileViewController: UICollectionViewDataSource {
             cell.configureCell(count: gCurrentUser.reservations.count)
         case .post:
             cell.configureCell(count: gCurrentUser.postCount ?? 0)
-
         case .blockade, .delete, .logout:
             cell.configureCell(count: nil)
         }
@@ -221,7 +236,7 @@ extension ProfileViewController {
                 heightDimension: .fractionalHeight(0.33)), subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 30, bottom: 0, trailing: 30)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 
         let layout = UICollectionViewCompositionalLayout(section: section)
 

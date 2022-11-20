@@ -18,9 +18,9 @@ class RoomBasicCell: UICollectionViewCell {
         }
     }
 
-    @IBOutlet weak var areaLabel: UILabel! {
+    @IBOutlet weak var regionLabel: UILabel! {
         didSet {
-            areaLabel.font = UIFont.regularSubTitle()
+            regionLabel.font = UIFont.regularSubTitle()
         }
     }
     @IBOutlet weak var priceLabel: UILabel! {
@@ -43,7 +43,7 @@ class RoomBasicCell: UICollectionViewCell {
 
     func configureCell(data: Room) {
         priceLabel.text = genPriceString(roomSpecs: data.rooms)
-        areaLabel.text = "\(data.county)\(data.town)"
+        regionLabel.text = "\(data.county)\(data.town)"
         titleLabel.text = data.title
         if let otherDesc = data.otherDescriction {
             otherDescTextView.text = otherDesc

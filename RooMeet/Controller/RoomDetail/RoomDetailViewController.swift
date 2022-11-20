@@ -99,9 +99,9 @@ class RoomDetailViewController: UIViewController {
             chatButton.setImage(UIImage(systemName: "message"), for: .normal)
             chatButton.titleLabel?.font = UIFont.regular(size: 18)
             chatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-            chatButton.backgroundColor = .darkGray
-            chatButton.tintColor = .white
-            chatButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+            chatButton.backgroundColor = .mainColor
+            chatButton.tintColor = .mainBackgroundColor
+            chatButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius * 0.8
         }
     }
 
@@ -111,9 +111,9 @@ class RoomDetailViewController: UIViewController {
             reservationButton.setImage(UIImage(systemName: "calendar"), for: .normal)
             reservationButton.titleLabel?.font = UIFont.regular(size: 18)
             reservationButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-            reservationButton.backgroundColor = .darkGray
-            reservationButton.tintColor = .white
-            reservationButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+            reservationButton.backgroundColor = .mainColor
+            reservationButton.tintColor = .mainBackgroundColor
+            reservationButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius * 0.8
         }
     }
 
@@ -167,6 +167,14 @@ class RoomDetailViewController: UIViewController {
 
         configureCollectionView()
         collectionView.collectionViewLayout = createLayout()
+    }
+
+    @IBOutlet weak var buttomView: UIView! {
+        didSet {
+            buttomView.backgroundColor = .mainLightColor
+            buttomView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+            buttomView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -381,7 +389,13 @@ extension RoomDetailViewController {
                     longitude: data.long ?? gCurrentPosition.longitude
                 )
                 return cell
-            case .highLight(let data), .gender(let data), .pet(let data), .elevator(let data), .cooking(let data), .bathroom(let data), .features(let data):
+            case .highLight(let data),
+                    .gender(let data),
+                    .pet(let data),
+                    .elevator(let data),
+                    .cooking(let data),
+                    .bathroom(let data),
+                    .features(let data):
                 return genTagCell(item: data, indexPath: indexPath)
             }
         }

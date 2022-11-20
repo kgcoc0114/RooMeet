@@ -22,7 +22,7 @@ class RoomDisplayCell: UICollectionViewCell {
             likeButton.backgroundColor = .clear
             likeButton.setTitle("", for: .normal)
             likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            likeButton.tintColor = UIColor.subTitleColor
+            likeButton.tintColor = UIColor.subTitleRedColor
         }
     }
 

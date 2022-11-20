@@ -666,7 +666,6 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                 } else {
                     RMProgressHUD.showSuccess(view: self.view)
                 }
-                RMProgressHUD.dismiss()
                 self.navigationController?.popViewController(animated: true)
             }
         } else {
@@ -680,9 +679,8 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                     } else {
                         RMProgressHUD.showSuccess(view: self.view)
                     }
+                    self.navigationController?.popViewController(animated: true)
                 }
-                RMProgressHUD.dismiss()
-                self.navigationController?.popViewController(animated: true)
             }
         }
     }
