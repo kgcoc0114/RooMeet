@@ -43,7 +43,7 @@ class ProfileRSVNViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         // fetch room to display
-        FirebaseService.shared.fetchUserByID(userID: gCurrentUser.id) { [self] user, _ in
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [self] user, _ in
             guard let user = user else {
                 return
             }
@@ -63,7 +63,6 @@ class ProfileRSVNViewController: UIViewController {
             reservationAnimationView.centerXAnchor.constraint(equalTo: animationView.centerXAnchor),
             reservationAnimationView.centerYAnchor.constraint(equalTo: animationView.centerYAnchor)
         ])
-
     }
 
     private func configureCollectionView() {
@@ -91,8 +90,8 @@ class ProfileRSVNViewController: UIViewController {
     }
 
     private func fetchReservations() {
-        FirebaseService.shared.fetchReservationRoomsByUserID(reservationList: gCurrentUser.reservations) { reservations in
-            self.reservations = reservations
+        FirebaseService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations in
+            self?.reservations = reservations
         }
     }
 }

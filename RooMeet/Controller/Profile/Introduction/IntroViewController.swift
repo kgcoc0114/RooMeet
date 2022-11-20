@@ -17,31 +17,34 @@ class IntroViewController: UIViewController {
 
     enum Item: Hashable {
         case main(User)
-        case rules(String)
+        case rules(User)
     }
 
+    let imagePickerController = UIImagePickerController()
+
     var user: User?
-    var rules: [String] = [] {
-        didSet {
-            updateDataSource()
-        }
-    }
+    var rules: [String] = RMConstants.shared.roomHighLights
+        + RMConstants.shared.roomCookingRules
+        + RMConstants.shared.roomElevatorRules
+        + RMConstants.shared.roomBathroomRules
+        + RMConstants.shared.roomPetsRules
 
     var completion: ((User) -> Void)?
 
     private var profileImageCell: IntroCell?
     private var profileImage: UIImage?
-    private var favorateCounty: String?
-    private var favorateTown: String?
+    private var favoriteCounty: String?
+    private var favoriteTown: String?
+    private var entryType: EntryType?
 
     typealias IntroDataSource = UICollectionViewDiffableDataSource<Section, Item>
     typealias IntroSnapshot = NSDiffableDataSourceSnapshot<Section, Item>
     private var dataSource: IntroDataSource!
 
-    init(entryPage: String, user: User? = nil) {
+    init(entryType: EntryType, user: User? = nil) {
         super.init(nibName: "IntroViewController", bundle: nil)
+        self.entryType = entryType
         self.user = user
-        print(user)
     }
 
     required init?(coder: NSCoder) {
@@ -51,6 +54,10 @@ class IntroViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) {[weak self] user, _ in
+            guard let self = self else { return }
+            self.user = user
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -58,18 +65,15 @@ class IntroViewController: UIViewController {
         updateDataSource()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        fetchUserData()
-    }
-
     private func configureCollectionView() {
         collectionView.register(
             UINib(nibName: "IntroCell", bundle: nil),
             forCellWithReuseIdentifier: IntroCell.identifier)
         collectionView.register(
-            UINib(nibName: "TagCell", bundle: nil),
-            forCellWithReuseIdentifier: TagCell.identifier)
-        dataSource = IntroDataSource(collectionView: collectionView) { collectionView, indexPath, item in
+            UINib(nibName: "ItemsCell", bundle: nil),
+            forCellWithReuseIdentifier: ItemsCell.reuseIdentifier)
+        dataSource = IntroDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
+            guard let self = self else { return UICollectionViewCell() }
             switch item {
             case .main(let data):
                 guard let cell = collectionView.dequeueReusableCell(
@@ -78,15 +82,28 @@ class IntroViewController: UIViewController {
                     return UICollectionViewCell()
                 }
                 cell.delegate = self
-                cell.imageView.setImage(urlString: gCurrentUser.profilePhoto)
+                if let profilePhoto = UserDefaults.standard.string(forKey: "profilePhoto") {
+                    cell.imageView.setImage(urlString: profilePhoto)
+                } else {
+                    cell.imageView.image = UIImage.asset(.profile_user)
+                }
                 cell.configureCell(data: data)
                 return cell
-            case .rules(let rule):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TagCell.identifier, for: indexPath) as? TagCell else {
+            case .rules(_):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemsCell.reuseIdentifier, for: indexPath) as? ItemsCell else {
                     return UICollectionViewCell()
                 }
 
-                cell.configureCell(data: rule)
+                cell.configureTagView(
+                    ruleType: "要求",
+                    tags: self.rules,
+                    selectedTags: self.user?.rules ?? [],
+                    mainColor: UIColor.main,
+                    lightColor: UIColor.mainLightColor,
+                    mainLightBackgroundColor: UIColor.mainBackgroundColor,
+                    enableTagSelection: true
+                )
+                cell.delegate = self
                 return cell
             }
         }
@@ -95,7 +112,7 @@ class IntroViewController: UIViewController {
     }
 
     private func fetchUser() {
-        FirebaseService.shared.fetchUserByID(userID: gCurrentUser.id) { user, _ in
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
             self.user = user
         }
     }
@@ -106,7 +123,28 @@ class IntroViewController: UIViewController {
             return
         }
         uploadImages(image: profileImage)
+    }
 
+    func updateUserDefault(user: User) {
+        if let rules = user.rules {
+            UserDefaults.rules = rules
+        }
+
+        if let name = user.name {
+            UserDefaults.name = name
+        }
+
+        if let birthday = user.birthday {
+            UserDefaults.birthday = birthday
+        }
+
+        if let favoriteCounty = user.favoriteCounty {
+            UserDefaults.favoriteCounty = favoriteCounty
+        }
+
+        if let favoriteTown = user.favoriteTown {
+            UserDefaults.favoriteTown = favoriteTown
+        }
     }
 }
 
@@ -129,12 +167,16 @@ extension IntroViewController {
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
                 return section
             case .rules:
-                let itemSize = NSCollectionLayoutSize(widthDimension: .estimated(44), heightDimension: .fractionalHeight(1))
+                let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .estimated(30))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(widthDimension: .estimated(44), heightDimension: .absolute(50))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+
+                let groupSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .estimated(30))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuous
                 return section
             }
         }
@@ -144,10 +186,11 @@ extension IntroViewController {
 // MARK: - Snapshot
 extension IntroViewController {
     private func updateDataSource() {
+        guard let user = user else { return }
         var newSnapshot = IntroSnapshot()
         newSnapshot.appendSections([.main, .rules])
-        newSnapshot.appendItems([.main(user!)], toSection: .main)
-        newSnapshot.appendItems(rules.map({ Item.rules($0) }), toSection: .rules)
+        newSnapshot.appendItems([.main(user)], toSection: .main)
+        newSnapshot.appendItems([.rules(user)], toSection: .rules)
         dataSource.apply(newSnapshot)
     }
 }
@@ -157,33 +200,22 @@ extension IntroViewController: IntroCellDelegate {
         user = data
     }
 
-    func showRulePickerView(cell: IntroCell) {
-        cell.ruleTextField.endEditing(true)
-        let mutlipleChooseVC = MutlipleChooseController()
-        mutlipleChooseVC.setup(pageType: .rule, selectedOptions: [])
-
-        mutlipleChooseVC.completion = { [self] selectedItem in
-            self.rules = selectedItem
-            print(self.rules)
-        }
-        present(mutlipleChooseVC, animated: true)
-    }
-
     func showRegionPickerView(cell: IntroCell) {
         cell.regionTextField.resignFirstResponder()
-        let regionPickerVC = RegionPickerViewController()
-        regionPickerVC.completion = { county, town in
+        let regionPickerVC = LocationPickerViewController()
+        regionPickerVC.modalPresentationStyle = .overCurrentContext
+
+        regionPickerVC.completion = { [self] county, town in
             cell.county = county
             cell.town = town
-            self.favorateCounty = county
-            self.favorateTown = town
+            self.user?.favoriteCounty = county
+            self.user?.favoriteTown = town
         }
-        present(regionPickerVC, animated: true)
+        present(regionPickerVC, animated: false)
     }
 
     func didClickImageView(_ cell: IntroCell) {
         profileImageCell = cell
-        let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
 
         let imagePickerAlertController = UIAlertController(
@@ -192,17 +224,19 @@ extension IntroViewController: IntroCellDelegate {
             preferredStyle: .actionSheet
         )
 
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { _ in
+        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { [weak self] _ in
+            guard let self = self else { return }
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                imagePickerController.sourceType = .photoLibrary
-                self.present(imagePickerController, animated: true, completion: nil)
+                self.imagePickerController.sourceType = .photoLibrary
+                self.present(self.imagePickerController, animated: true, completion: nil)
             }
         }
 
-        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { _ in
+        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { [weak self] _ in
+            guard let self = self else { return }
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                imagePickerController.sourceType = .camera
-                self.present(imagePickerController, animated: true, completion: nil)
+                self.imagePickerController.sourceType = .camera
+                self.present(self.imagePickerController, animated: true, completion: nil)
             }
         }
 
@@ -228,16 +262,12 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
-        var selectedImageFromPicker: UIImage?
-
-        // 取得從 UIImagePickerController 選擇的檔案
         if let pickedImage = info[.originalImage] as? UIImage {
             guard let cell = profileImageCell else {
                 return
             }
 
             cell.imageView.image = pickedImage
-            selectedImageFromPicker = pickedImage
             profileImage = pickedImage
         }
 
@@ -245,13 +275,10 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
     }
 
     private func uploadImages(image: UIImage) {
-        //        ProgressHUD.showProgress(0.4)
-
         DispatchQueue.global().async {
             let uniqueString = NSUUID().uuidString
             let storageRef = Storage.storage().reference(withPath: "Profile").child("\(uniqueString).png")
             if let uploadData = image.scale(scaleFactor: 0.1).jpegData(compressionQuality: 0.1) {
-                print("===",uploadData)
                 storageRef.putData(uploadData, completion: {[weak self] data, error in
                     if let error = error {
                         // TODO: Error Handle
@@ -274,35 +301,70 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
 
 
     private func saveData(url: URL?) {
-        let userRef = FirestoreEndpoint.user.colRef.document(gCurrentUser.id)
+        guard var user = user else { return }
+
+        let userRef = FirestoreEndpoint.user.colRef.document(user.id)
 
         var updateData: [AnyHashable: Any]
-        user?.rules = rules
-//        user?.name = name
-//        user?.birthday = birthday
-        user?.favorateCounty = favorateCounty
-        user?.favorateTown = favorateTown
+
 
         updateData = [
-            "rules": rules,
-            "name": user?.name as Any,
-            "birthday": user?.birthday as Any,
-            "favorateCounty": self.favorateCounty as Any,
-            "favorateTown": self.favorateTown as Any
+            "rules": user.rules as Any,
+            "introduction": user.introduction as Any,
+            "name": user.name as Any,
+            "gender": user.gender as Any,
+            "birthday": user.birthday as Any,
+            "favoriteCounty": user.favoriteCounty as Any,
+            "favoriteTown": user.favoriteTown as Any
         ]
 
         if let url = url {
             updateData["profilePhoto"] = url.absoluteString
-            user?.profilePhoto = url.absoluteString
+            user.profilePhoto = url.absoluteString
         }
-        userRef.updateData(updateData)
-        completion?(user!)
-        dismiss(animated: true)
-    }
 
-    func fetchUserData() {
-        FirebaseService.shared.fetchUserByID(userID: user!.id) { user, _ in
-            gCurrentUser = user!
+        userRef.updateData(updateData)
+        completion?(user)
+        updateUserDefault(user: user)
+        if entryType == .new {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            guard let RMTabBarVC = storyBoard.instantiateViewController(
+                withIdentifier: "RMTabBarController") as? RMTabBarController
+            else {
+                return
+            }
+            UIApplication.shared.windows.first?.rootViewController = RMTabBarVC
+            UIApplication.shared.windows.first?.makeKeyAndVisible()
+        } else {
+            backToRoot(completion: nil)
         }
+    }
+}
+
+extension UIViewController {
+    func backToRoot(completion: (() -> Void)? = nil) {
+        if presentingViewController != nil {
+            let superVC = presentingViewController
+            dismiss(animated: false, completion: nil)
+            superVC?.backToRoot(completion: completion)
+            return
+        }
+
+        if let tabbarVC = self as? UITabBarController {
+            tabbarVC.selectedViewController?.backToRoot(completion: completion)
+            return
+        }
+
+        if let navigateVC = self as? UINavigationController {
+            navigateVC.popToRootViewController(animated: false)
+        }
+
+        completion?()
+    }
+}
+
+extension IntroViewController: ItemsCellDelegate {
+    func itemsCell(cell: ItemsCell, selectedTags: [String]) {
+        user?.rules = selectedTags
     }
 }

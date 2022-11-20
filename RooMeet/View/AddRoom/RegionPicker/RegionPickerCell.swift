@@ -10,6 +10,12 @@ import UIKit
 class RegionPickerCell: UITableViewCell {
     static let reuseIdentifier = "\(RegionPickerCell.self)"
     @IBOutlet weak var regionLabel: UILabel!
+    var isPicked = false {
+        didSet {
+            self.backgroundColor = isPicked == true ? UIColor.subColor : UIColor.mainLightColor
+            regionLabel.textColor = isPicked == true ? UIColor.white : UIColor.mainDarkColor
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -18,5 +24,12 @@ class RegionPickerCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        isPicked = false
+        regionLabel.textColor = UIColor.mainDarkColor
+        self.backgroundColor = .white
     }
 }

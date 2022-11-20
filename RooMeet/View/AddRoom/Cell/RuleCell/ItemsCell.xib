@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -22,22 +23,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="473" height="110"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kZQ-jL-JuZ" customClass="TTGTextTagCollectionView">
-                                <rect key="frame" x="10" y="35.5" width="453" height="64.5"/>
+                                <rect key="frame" x="0.0" y="35.5" width="473" height="64.5"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pml-Rz-x3e">
-                                <rect key="frame" x="10" y="5" width="42" height="20.5"/>
+                                <rect key="frame" x="0.0" y="5" width="42" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                                <color key="textColor" name="mainDarkColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="pml-Rz-x3e" firstAttribute="leading" secondItem="rTD-KD-avl" secondAttribute="leading" constant="10" id="4qv-pY-FZU"/>
+                            <constraint firstItem="pml-Rz-x3e" firstAttribute="leading" secondItem="rTD-KD-avl" secondAttribute="leading" id="4qv-pY-FZU"/>
                             <constraint firstItem="pml-Rz-x3e" firstAttribute="top" secondItem="rTD-KD-avl" secondAttribute="top" constant="5" id="HwQ-5A-hAD"/>
                             <constraint firstAttribute="bottom" secondItem="kZQ-jL-JuZ" secondAttribute="bottom" constant="10" id="KpZ-ax-dGU"/>
                             <constraint firstItem="kZQ-jL-JuZ" firstAttribute="top" secondItem="pml-Rz-x3e" secondAttribute="bottom" constant="10" id="QCT-KW-hJ2"/>
-                            <constraint firstItem="kZQ-jL-JuZ" firstAttribute="width" secondItem="rTD-KD-avl" secondAttribute="width" multiplier="0.957717" id="Shx-xQ-mhs"/>
+                            <constraint firstItem="kZQ-jL-JuZ" firstAttribute="width" secondItem="rTD-KD-avl" secondAttribute="width" id="Shx-xQ-mhs"/>
                             <constraint firstItem="kZQ-jL-JuZ" firstAttribute="leading" secondItem="pml-Rz-x3e" secondAttribute="leading" id="cGc-wf-ih1"/>
                         </constraints>
                     </view>
@@ -59,6 +60,9 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <namedColor name="mainDarkColor">
+            <color red="0.14901960784313725" green="0.25098039215686274" blue="0.24313725490196078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

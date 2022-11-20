@@ -14,7 +14,7 @@ protocol RoomSpecCellDelegate: AnyObject {
 class RoomSpecCell: UICollectionViewCell {
     @IBOutlet var typeButtons: [UIButton]!
     static let reuseIdentifier = "\(RoomSpecCell.self)"
-    
+
     @IBOutlet weak var typeSegmentControl: UISegmentedControl! {
         didSet {
             typeSegmentControl.backgroundColor = UIColor.hexColor(hex: "#E9EEEE")
@@ -52,6 +52,12 @@ class RoomSpecCell: UICollectionViewCell {
         }
     }
 
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.regularSubTitle()
+            titleLabel.textColor = UIColor.mainDarkColor
+        }
+    }
     @IBOutlet weak var priceTextField: RMBaseTextField! {
         didSet {
             priceTextField.keyboardType = .numberPad
@@ -98,6 +104,11 @@ class RoomSpecCell: UICollectionViewCell {
         if let roomSpec = self.roomSpec {
             priceTextField.text = setTextFieldDisplay(data: roomSpec.price)
             spaceTextField.text = setTextFieldDisplay(data: roomSpec.space)
+            if let dataRoomType = data.roomType,
+                let roomType = RoomType(rawValue: dataRoomType),
+                let roomTypeIndex = RoomType.allCases.firstIndex(of: roomType) {
+                typeSegmentControl.selectedSegmentIndex = roomTypeIndex
+            }
         }
 
         if indexPath.item == 0 {
@@ -121,15 +132,15 @@ class RoomSpecCell: UICollectionViewCell {
 
     private func passData() {
         guard priceTextField.text != nil,
-              let price = priceTextField.text,
-              spaceTextField.text != nil,
-              let space = spaceTextField.text,
-              let price = Int(price),
-              let space = Double(space) else {
+            let price = priceTextField.text,
+            spaceTextField.text != nil,
+            let space = spaceTextField.text,
+            let price = Int(price),
+            let space = Double(space) else {
             return
         }
 
-        let roomType = RoomType.allCases[typeSegmentControl.selectedSegmentIndex].desc
+        let roomType = RoomType.allCases[typeSegmentControl.selectedSegmentIndex].rawValue
 
         delegate?.didChangeData(self, data: RoomSpec(roomType: roomType, price: price, space: space))
     }

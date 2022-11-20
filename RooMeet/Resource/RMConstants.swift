@@ -8,6 +8,7 @@
 import UIKit
 class RMConstants {
     static let shared = RMConstants()
+    let screenVerticalPadding: CGFloat = 30
 
     let buttonCornerRadius: CGFloat = 10
     let tagCornerRadius: CGFloat = 8
@@ -51,4 +52,13 @@ class RMConstants {
     let roomElevatorRules = ["有電梯", "無電梯"]
     let roomGenderRules = ["男女不限", "限男", "限女"]
     let roomBathroomRules = ["獨立衛浴", "公用衛浴"]
+
+    let compressSizeGap: Double = 50
 }
+
+enum EntryType {
+    case edit
+    case new
+}
+
+var gCurrentUser = User(id: "")

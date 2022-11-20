@@ -20,11 +20,11 @@ class NumberPickerView: UIView {
 
     weak var delegate: NumberPickerViewDelegate?
 
-    lazy private var quantityField: RMBaseTextField = {
+    lazy var quantityField: RMBaseTextField = {
         let field = RMBaseTextField()
         field.returnKeyType = .default
         field.font = UIFont.regular(size: 15)
-        
+
         let numberPicker = UIPickerView()
         numberPicker.dataSource = self
         numberPicker.delegate = self

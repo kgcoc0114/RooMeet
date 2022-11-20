@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -21,10 +22,10 @@
                         <rect key="frame" x="0.0" y="0.0" width="493" height="133"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wMh-h7-r2D">
-                                <rect key="frame" x="20" y="10" width="453" height="113"/>
+                                <rect key="frame" x="0.0" y="10" width="493" height="113"/>
                                 <subviews>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="vuh-uF-lUK">
-                                        <rect key="frame" x="65" y="10" width="236.5" height="41"/>
+                                        <rect key="frame" x="63" y="10" width="257.5" height="41"/>
                                         <color key="backgroundColor" red="0.91448998449999996" green="0.93187516930000003" blue="0.93214029070000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="rpN-Tp-rJs"/>
@@ -37,8 +38,8 @@
                                         <color key="tintColor" red="0.26274509800000001" green="0.45098039220000002" blue="0.43529411759999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </segmentedControl>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="房型" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iW1-4q-8vN">
-                                        <rect key="frame" x="15" y="20" width="35" height="20"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="15" y="20" width="33" height="20"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -59,8 +60,8 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mH8-NY-kfR">
-                                        <rect key="frame" x="375.5" y="10" width="72.5" height="31"/>
-                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <rect key="frame" x="415.5" y="10" width="72.5" height="31"/>
+                                        <color key="tintColor" name="mainDarkColor"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="plus" catalog="system" title="新增"/>
                                         <connections>
@@ -84,8 +85,8 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1mQ-z9-883">
-                                        <rect key="frame" x="375" y="71.5" width="73" height="31"/>
-                                        <color key="tintColor" red="0.26274509800000001" green="0.45098039220000002" blue="0.43529411759999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <rect key="frame" x="415" y="71.5" width="73" height="31"/>
+                                        <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="trash" catalog="system" title="刪除">
                                             <color key="baseForegroundColor" red="0.9137254901960784" green="0.93333333333333335" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -121,10 +122,10 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="wMh-h7-r2D" firstAttribute="leading" secondItem="NKl-PF-d9O" secondAttribute="leading" constant="20" id="Wdd-gU-4aB"/>
+                            <constraint firstItem="wMh-h7-r2D" firstAttribute="leading" secondItem="NKl-PF-d9O" secondAttribute="leading" id="Wdd-gU-4aB"/>
                             <constraint firstItem="wMh-h7-r2D" firstAttribute="top" secondItem="NKl-PF-d9O" secondAttribute="top" constant="10" id="YRQ-9t-Mk7"/>
                             <constraint firstAttribute="bottom" secondItem="wMh-h7-r2D" secondAttribute="bottom" constant="10" id="ZRR-If-2QD"/>
-                            <constraint firstAttribute="trailing" secondItem="wMh-h7-r2D" secondAttribute="trailing" constant="20" id="ZiN-jl-zpm"/>
+                            <constraint firstAttribute="trailing" secondItem="wMh-h7-r2D" secondAttribute="trailing" id="ZiN-jl-zpm"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -145,6 +146,7 @@
                 <outlet property="priceTextField" destination="OlE-RI-fFz" id="vhp-Uk-4Y3"/>
                 <outlet property="spaceImageView" destination="SN1-rg-8A5" id="rj9-pY-kWp"/>
                 <outlet property="spaceTextField" destination="vx5-jr-vgJ" id="f1k-fT-CIg"/>
+                <outlet property="titleLabel" destination="iW1-4q-8vN" id="rw8-1s-7I1"/>
                 <outlet property="typeSegmentControl" destination="vuh-uF-lUK" id="SjF-sW-1Fk"/>
             </connections>
             <point key="canvasLocation" x="450" y="-83"/>
@@ -153,6 +155,9 @@
     <resources>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="trash" catalog="system" width="121" height="128"/>
+        <namedColor name="mainDarkColor">
+            <color red="0.14901960784313725" green="0.25098039215686274" blue="0.24313725490196078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

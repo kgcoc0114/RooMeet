@@ -35,7 +35,7 @@
                     <rect key="frame" x="0.0" y="821" width="414" height="75"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PI8-Cm-ohC">
-                            <rect key="frame" x="10" y="10" width="394" height="55"/>
+                            <rect key="frame" x="20" y="10" width="374" height="55"/>
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Button"/>
                             <connections>
@@ -46,10 +46,10 @@
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="75" id="5bI-gc-bOs"/>
-                        <constraint firstItem="PI8-Cm-ohC" firstAttribute="leading" secondItem="X7p-XC-tEG" secondAttribute="leading" constant="10" id="NHP-7U-Q98"/>
+                        <constraint firstItem="PI8-Cm-ohC" firstAttribute="leading" secondItem="X7p-XC-tEG" secondAttribute="leading" constant="20" id="NHP-7U-Q98"/>
                         <constraint firstAttribute="bottom" secondItem="PI8-Cm-ohC" secondAttribute="bottom" constant="10" id="cMP-0t-OIG"/>
                         <constraint firstItem="PI8-Cm-ohC" firstAttribute="top" secondItem="X7p-XC-tEG" secondAttribute="top" constant="10" id="h0Z-IZ-OpU"/>
-                        <constraint firstAttribute="trailing" secondItem="PI8-Cm-ohC" secondAttribute="trailing" constant="10" id="ySR-LN-2cP"/>
+                        <constraint firstAttribute="trailing" secondItem="PI8-Cm-ohC" secondAttribute="trailing" constant="20" id="ySR-LN-2cP"/>
                     </constraints>
                 </view>
             </subviews>

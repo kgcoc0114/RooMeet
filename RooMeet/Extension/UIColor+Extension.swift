@@ -45,13 +45,14 @@ enum RMColor: String {
             return "#2C1115"
         case .mainBackground:
             return "#FDF3D8"
+        case .mainBackground:
+            return "#FDF3D8"
         }
     }
 }
 
 
 extension UIColor {
-
     static let B1 = RMColor(.B1)
 
     static let messageCUColor = RMColor(.palePink)
@@ -60,11 +61,16 @@ extension UIColor {
 
     static let messageBackgroundColor = RMColor(.darkSienna)
 
+    static let main = UIColor(named: "mainColor") ?? UIColor.darkGray
+    static let mainLightColor = UIColor(named: "mainLightColor") ?? UIColor.darkGray
+    static let mainBackgroundColor = UIColor(named: "backgroundColor") ?? UIColor.darkGray
+    static let subTitleColor = UIColor(named: "subTitleColor") ?? UIColor.darkGray
+    static let subColor = UIColor(named: "subColor") ?? UIColor.darkGray
+    static let mainDarkColor = UIColor(named: "mainDarkColor") ?? UIColor.darkGray
 
     // swiftlint:enable identifier_name
-
     private static func RMColor(_ color: RMColor) -> UIColor? {
-        return hexColor(hex: color.hex)//UIColor(named: color.rawValue)
+        return hexColor(hex: color.hex)
     }
 
     static func hexColor(hex: String) -> UIColor {

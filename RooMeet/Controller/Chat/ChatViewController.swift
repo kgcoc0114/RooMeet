@@ -26,13 +26,19 @@ class ChatViewController: UIViewController {
 
     var chatRoom: ChatRoom?
     var otherData: ChatMember?
-    var currentUserData = ChatMember(id: gCurrentUser.id, profilePhoto: gCurrentUser.profilePhoto, name: gCurrentUser.name)
+    var currentUserData = ChatMember(
+        id: UserDefaults.id,
+        profilePhoto: UserDefaults.profilePhoto,
+        name: UserDefaults.name
+    )
+
     var messages: [Message] = [] {
         didSet {
             updateDataSource()
             scrollToButtom(animated: false)
         }
     }
+
     @IBOutlet weak var otherFunctionButton: UIButton! {
         didSet {
             otherFunctionButton.setTitle("", for: .normal)
@@ -60,12 +66,14 @@ class ChatViewController: UIViewController {
             target: self,
             action: #selector(call))
 
-
+        tableView.delegate = self
         configureDataSource()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(#function)
+
         self.tabBarController?.tabBar.isHidden = true
 
         // listen
@@ -81,8 +89,9 @@ class ChatViewController: UIViewController {
         }
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print(#function)
         self.tabBarController?.tabBar.isHidden = false
     }
 
@@ -111,7 +120,7 @@ class ChatViewController: UIViewController {
             let message = Message(
                 id: messageRef.documentID,
                 messageType: 0,
-                sendBy: gCurrentUser.id,
+                sendBy: UserDefaults.id,
                 content: content,
                 createdTime: Timestamp()
             )
@@ -338,7 +347,13 @@ extension ChatViewController {
     private func updateDataSource() {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
-        newSnapshot.appendItems(messages.map({ Item.message($0) }), toSection: .message)
+        newSnapshot.appendItems(messages.map { Item.message($0) }, toSection: .message)
         dataSource.apply(newSnapshot, animatingDifferences: true)
+    }
+}
+
+extension ChatViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        view.endEditing(true)
     }
 }
