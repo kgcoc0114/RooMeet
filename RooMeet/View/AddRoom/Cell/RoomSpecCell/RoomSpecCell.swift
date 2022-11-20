@@ -40,6 +40,19 @@ class RoomSpecCell: UICollectionViewCell {
         }
     }
 
+        @IBOutlet weak var segmentControl: RMSegmentedControl! {
+        didSet {
+            segmentControl.items = RoomType.allCases.map { $0.rawValue }
+            segmentControl.borderColor = UIColor.mainLightColor
+            segmentControl.selectedLabelColor = UIColor.mainDarkColor
+            segmentControl.unselectedLabelColor = UIColor.mainColor
+            segmentControl.backgroundColor = .white
+            segmentControl.thumbColor = UIColor.mainLightColor
+            segmentControl.selectedIndex = 0
+            segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
+        }
+    }
+
     @IBOutlet weak var addButton: UIButton! {
         didSet {
             addButton.setTitle("", for: .normal)
@@ -107,7 +120,7 @@ class RoomSpecCell: UICollectionViewCell {
             if let dataRoomType = data.roomType,
                 let roomType = RoomType(rawValue: dataRoomType),
                 let roomTypeIndex = RoomType.allCases.firstIndex(of: roomType) {
-                typeSegmentControl.selectedSegmentIndex = roomTypeIndex
+                segmentControl.selectedIndex = roomTypeIndex
             }
         }
 
@@ -140,9 +153,13 @@ class RoomSpecCell: UICollectionViewCell {
             return
         }
 
-        let roomType = RoomType.allCases[typeSegmentControl.selectedSegmentIndex].rawValue
-
+        let roomType = RoomType.allCases[segmentControl.selectedIndex].rawValue
+        print("===", roomType)
         delegate?.didChangeData(self, data: RoomSpec(roomType: roomType, price: price, space: space))
+    }
+
+    @objc func segmentValueChanged(_ sender: RMSegmentedControl) {
+        passData()
     }
 
     @IBAction func addRoomSpecColumn(_ sender: Any) {
