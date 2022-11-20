@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -27,7 +28,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zlr-0k-PIu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2421" y="635"/>
+            <point key="canvasLocation" x="2320" y="1369"/>
         </scene>
         <!--Explore-->
         <scene sceneID="UTE-Xq-o5s">
@@ -63,40 +64,41 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WmN-ob-img">
-                                <rect key="frame" x="0.0" y="384" width="414" height="128"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vni-p0-mwb">
+                                <rect key="frame" x="53.5" y="174" width="307" height="199"/>
+                                <color key="backgroundColor" name="mainBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="414" id="BWc-5P-Xgy"/>
-                                    <constraint firstAttribute="height" constant="128" id="Mzk-nE-zj8"/>
+                                    <constraint firstAttribute="width" constant="307" id="ekk-Vb-7ei"/>
+                                    <constraint firstAttribute="height" constant="199" id="lF8-2I-VWM"/>
                                 </constraints>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nM2-f7-EV7">
-                                <rect key="frame" x="163" y="586" width="67" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <action selector="logOutAction:" destination="uHV-5y-lmu" eventType="touchUpInside" id="Q4T-Ef-C5Z"/>
-                                </connections>
-                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WmN-ob-img">
+                                <rect key="frame" x="137" y="732" width="140" height="30"/>
+                                <color key="backgroundColor" name="mainBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Bia-6T-KRw"/>
+                                    <constraint firstAttribute="width" constant="140" id="vjA-OU-fkQ"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="DG8-mR-lRB"/>
-                        <color key="backgroundColor" systemColor="systemGray6Color"/>
+                        <color key="backgroundColor" name="mainBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="WmN-ob-img" firstAttribute="centerY" secondItem="Gch-PD-6HC" secondAttribute="centerY" id="iuc-dJ-gu2"/>
+                            <constraint firstItem="DG8-mR-lRB" firstAttribute="bottom" secondItem="WmN-ob-img" secondAttribute="bottom" constant="100" id="4kY-Cq-0Ee"/>
+                            <constraint firstItem="Vni-p0-mwb" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="SNt-ea-EDC"/>
+                            <constraint firstItem="Vni-p0-mwb" firstAttribute="top" secondItem="DG8-mR-lRB" secondAttribute="top" constant="130" id="rmE-Na-D1s"/>
                             <constraint firstItem="WmN-ob-img" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="yTd-wo-Vog"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Soo-yR-9jV"/>
                     <connections>
-                        <outlet property="logout" destination="nM2-f7-EV7" id="Vgf-UX-lvJ"/>
+                        <outlet property="animationView" destination="Vni-p0-mwb" id="EVr-MT-Jgy"/>
                         <outlet property="signInWithAppleButtonView" destination="WmN-ob-img" id="8Qd-bQ-NRs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ccL-h3-gn8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1355" y="69"/>
+            <point key="canvasLocation" x="-655.07246376811599" y="655.58035714285711"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="r5D-Jv-gb5">
@@ -177,7 +179,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="279-dL-cdr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1826" y="570"/>
+            <point key="canvasLocation" x="2319" y="966"/>
         </scene>
         <!--Profile-->
         <scene sceneID="EMs-mG-Kv4">
@@ -187,7 +189,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5U-uh-Naj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2647.826086956522" y="1126.3392857142856"/>
+            <point key="canvasLocation" x="1458" y="1370"/>
         </scene>
         <!--Profile-->
         <scene sceneID="d7W-TU-ZzA">
@@ -237,11 +239,11 @@
         <image name="message.fill" catalog="system" width="128" height="113"/>
         <image name="person" catalog="system" width="128" height="117"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <namedColor name="mainBackgroundColor">
+            <color red="0.99599999189376831" green="0.98000001907348633" blue="0.93300002813339233" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

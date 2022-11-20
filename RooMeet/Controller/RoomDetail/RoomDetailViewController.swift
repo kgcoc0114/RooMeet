@@ -237,24 +237,24 @@ class RoomDetailViewController: UIViewController {
             print("ERROR: - Reservations Date got error.")
             return
         }
-        print(user)
-        print(gCurrentUser)
-        guard var user = user else {
+
+        guard
+            var user = user,
+            let roomID = room.roomID else {
             return
         }
 
-
-        if !user.reservations.contains(room.roomID!) {
+        if !user.reservations.contains(roomID) {
             ReservationService.shared.upsertReservationData(
                 status: .waiting,
                 requestTime: sDate,
-                period: selectedPeriod.descrption,
+                period: selectedPeriod.subDesc,
                 room: room,
                 senderID: UserDefaults.id,
                 receiverID: room.userID,
                 reservation: nil
             )
-            self.user?.reservations.append(room.roomID!)
+            self.user?.reservations.append(roomID)
             RMProgressHUD.showSuccess(view: self.view)
         } else {
             RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
@@ -291,8 +291,7 @@ extension RoomDetailViewController {
             forCellWithReuseIdentifier: BookingCell.identifier)
         collectionView.register(
             UINib(nibName: ItemsCell.reuseIdentifier, bundle: nil),
-            forCellWithReuseIdentifier: ItemsCell.reuseIdentifier
-        )
+            forCellWithReuseIdentifier: ItemsCell.reuseIdentifier)
         collectionView.register(
             UINib(nibName: "BookingDateCell", bundle: nil),
             forCellWithReuseIdentifier: BookingDateCell.identifier)
@@ -322,8 +321,9 @@ extension RoomDetailViewController {
                 cell.configureCell(images: data.roomImages)
                 cell.delegate = self
 
-                if let user = self.user {
-                    if user.favoriteRoomIDs.contains(data.roomID!) {
+                if let user = self.user,
+                    let roomID = data.roomID {
+                    if user.favoriteRoomIDs.contains(roomID) {
                         cell.isLike = true
                     }
                 } else {
@@ -359,7 +359,7 @@ extension RoomDetailViewController {
                 cell.delegate = self
                 cell.configureCell(date: data)
                 return cell
-            case .reservationPeriod(let data):
+            case .reservationPeriod(_):
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: BookingPeriodCell.identifier,
                     for: indexPath
@@ -381,9 +381,7 @@ extension RoomDetailViewController {
                     longitude: data.long ?? gCurrentPosition.longitude
                 )
                 return cell
-            case .highLight(let data), .gender(let data), .pet(let data),
-                    .elevator(let data), .cooking(let data), .bathroom(let data),
-                    .features(let data):
+            case .highLight(let data), .gender(let data), .pet(let data), .elevator(let data), .cooking(let data), .bathroom(let data), .features(let data):
                 return genTagCell(item: data, indexPath: indexPath)
             }
         }
@@ -413,8 +411,8 @@ extension RoomDetailViewController {
         }
 
         var tags: [String] = []
-        var mainColor: UIColor = UIColor.main
-        var lightColor: UIColor = UIColor.mainBackgroundColor
+        var mainColor = UIColor.main
+        var lightColor = UIColor.mainBackgroundColor
 
         let section = Section.allCases[indexPath.section]
         switch section {
@@ -616,12 +614,6 @@ extension RoomDetailViewController: RoomImagesCellDelegate {
             if like == true {
                 let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
                 user?.favoriteRooms.append(favoriteRoom)
-//                if user.like != nil {
-//                    gCurrentUser.like?.append(roomID)
-//                } else {
-//                    gCurrentUser.like = []
-//                    gCurrentUser.like?.append(roomID)
-//
             } else {
                 if let index = user?.favoriteRoomIDs.firstIndex(of: roomID) {
                     user?.favoriteRooms.remove(at: index)

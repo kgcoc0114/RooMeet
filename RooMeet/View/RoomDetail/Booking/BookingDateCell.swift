@@ -23,6 +23,17 @@ enum BookingPeriod: CaseIterable {
             return "晚上 (18:00 - 20:00)"
         }
     }
+
+    var subDesc: String {
+        switch self {
+        case .morning:
+            return "早上 (08 - 12 時)"
+        case .afternoon:
+            return "下午 (12 - 18 時)"
+        case .night:
+            return "晚上 (18 - 20 時)"
+        }
+    }
 }
 
 enum RMWeekday: Int, CaseIterable {

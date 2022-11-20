@@ -31,9 +31,15 @@ class OUCallCell: MessageBaseCell {
         }
     }
 
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.regularSubTitle()
+        }
+    }
+
     @IBOutlet weak var callTimeLabel: UILabel! {
         didSet {
-            callTimeLabel.font = UIFont.regular(size: RMConstants.shared.reservationStatusFontSize)
+            callTimeLabel.font = UIFont.regularText()
         }
     }
 
@@ -66,7 +72,5 @@ class OUCallCell: MessageBaseCell {
                 avatarView.image = UIImage.asset(.profile_user)
             }
         }
-
-
     }
 }

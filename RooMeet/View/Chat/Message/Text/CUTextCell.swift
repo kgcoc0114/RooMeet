@@ -21,6 +21,7 @@ class CUTextCell: MessageBaseCell {
             contentTextView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
             contentTextView.isScrollEnabled = false
             contentTextView.isEditable = false
+            contentTextView.font = UIFont.regularText()
         }
     }
 
@@ -28,8 +29,6 @@ class CUTextCell: MessageBaseCell {
         super.awakeFromNib()
         self.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
         selectionStyle = .none
-        addSubview(dateLabel)
-        addSubview(timeLabel)
     }
 
     override func layoutSubviews() {
@@ -51,14 +50,7 @@ class CUTextCell: MessageBaseCell {
     override func configureLayout() {
         if let message = message {
             contentTextView.text = message.content
-            let messageDate = message.createdTime.dateValue()
-
-            dateLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "MM/dd")
-            timeLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "HH:mm")
-
-            if isSameDate(date: messageDate) {
-                dateLabel.isHidden = true
-            }
+            assignDatetime(messageDate: message.createdTime.dateValue())
         }
     }
 }

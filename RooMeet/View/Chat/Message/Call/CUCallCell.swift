@@ -13,12 +13,19 @@ class CUCallCell: MessageBaseCell {
     @IBOutlet weak var messageView: UIView! {
         didSet {
             messageView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            messageView.backgroundColor = .hexColor(hex: RMColor.palePink.hex)        }
+            messageView.backgroundColor = .hexColor(hex: RMColor.palePink.hex)
+        }
+    }
+
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.regularSubTitle()
+        }
     }
 
     @IBOutlet weak var callTimeLabel: UILabel! {
         didSet {
-            callTimeLabel.font = UIFont.regular(size: RMConstants.shared.reservationStatusFontSize)
+            callTimeLabel.font = UIFont.regularText()
         }
     }
 
@@ -26,9 +33,11 @@ class CUCallCell: MessageBaseCell {
     var sendBy: ChatMember?
     var sendByMe = true
 
-
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+
+    override func layoutSubviews() {
         NSLayoutConstraint.activate([
             dateLabel.trailingAnchor.constraint(equalTo: messageView.leadingAnchor, constant: -5),
             timeLabel.trailingAnchor.constraint(equalTo: messageView.leadingAnchor, constant: -5),
@@ -39,8 +48,6 @@ class CUCallCell: MessageBaseCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
     override func configureLayout() {

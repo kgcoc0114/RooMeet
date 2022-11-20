@@ -348,7 +348,7 @@ extension ChatViewController {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
         newSnapshot.appendItems(messages.map { Item.message($0) }, toSection: .message)
-        dataSource.apply(newSnapshot, animatingDifferences: true)
+        dataSource.apply(newSnapshot, animatingDifferences: false)
     }
 }
 
