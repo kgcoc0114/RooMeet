@@ -19,6 +19,14 @@ class RMLottie {
         return animationView
     }()
 
+    lazy var loginAnimationView: LottieAnimationView = {
+        let animationView = LottieAnimationView(name: "LoginPageAnimation")
+
+        animationView.contentMode = .scaleAspectFit
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        return animationView
+    }()
+
     lazy var reservationAnimationView: LottieAnimationView = {
         let animationView = LottieAnimationView(name: "Reservation")
 
@@ -29,6 +37,14 @@ class RMLottie {
 
     func startAnimate(animationView: LottieAnimationView) {
         animationView.play()
+    }
+
+    func startLoopAnimate(animationView: LottieAnimationView, fromProgress: CGFloat = 0, toProgress: CGFloat = 30) {
+        animationView.play(fromProgress: fromProgress, toProgress: toProgress, loopMode: .loop)
+    }
+
+    func stopLoopAnimate(animationView: LottieAnimationView) {
+        animationView.stop()
     }
 
     func startCallAnimate(animationView: LottieAnimationView) {

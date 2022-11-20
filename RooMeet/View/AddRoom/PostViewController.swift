@@ -13,57 +13,98 @@ import FirebaseStorage
 enum PostSection: CaseIterable {
     case basic
     case roomSpec
-//    case otherFee
-//    case other
-    case rulesHeader
-    case rules
-    case amenitiesHeader
-    case amenities
+    case highLight
+    case gender
+    case pet
+    case elevator
+    case cooking
+    case bathroom
+    case features
     case feeHeader
     case feeDetail
     case images
+
+    var title: String {
+        switch self {
+        case .highLight:
+            return "亮點"
+        case .gender:
+            return "租客性別"
+        case .pet:
+            return "寵物"
+        case .elevator:
+            return "電梯"
+        case .cooking:
+            return "開伙"
+        case .features:
+            return "設施"
+        case .bathroom:
+            return "衛浴"
+        default:
+            return ""
+        }
+    }
+
+    var tags: [String] {
+        switch self {
+        case .highLight:
+            return RMConstants.shared.roomHighLights
+        case .gender:
+            return RMConstants.shared.roomGenderRules
+        case .pet:
+            return RMConstants.shared.roomPetsRules
+        case .elevator:
+            return RMConstants.shared.roomElevatorRules
+        case .cooking:
+            return RMConstants.shared.roomCookingRules
+        case .features:
+            return RMConstants.shared.roomFeatures
+        case .bathroom:
+            return RMConstants.shared.roomBathroomRules
+        default:
+            return []
+        }
+    }
 }
 
 class PostViewController: UIViewController {
-    private var roomSpecList: [RoomSpec] = [RoomSpec()] {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
-    var ruleSelection: [String] = [] {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    private var roomSpecList: [RoomSpec] = [RoomSpec()]
+    var roomHighLights: [String] = []
+    var roomGenderRules: [String] = []
+    var roomPetsRules: [String] = []
+    var roomElevatorRules: [String] = []
+    var roomCookingRules: [String] = []
+    var roomFeatures: [String] = []
+    var roomBathroomRules: [String] = []
+    var featureSelection: [String] = []
 
-    var amenitiesSelection: [String] = [] {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    var billInfo: BillInfo?
 
-    var billInfo: BillInfo? {
-        didSet {
-            collectionView.reloadData()
-        }
-    }
+    lazy var imagePickerController = UIImagePickerController()
 
     var postBasicData: PostBasicData?
 
     var waitForUpdateImageCell: PostImageCell?
-    
+
     var roomImagesUrl: [URL] = []
+    var oriRoomImagesUrl: [URL] = []
+    var checkImages: [Bool] = [false, false, false]
     var roomImages: [UIImage] = []
 
     var otherDescriction: String?
     var latitude: Double?
     var longitude: Double?
     var postalCode: String?
+    var createdTime = Timestamp()
+    var isDeleted = false
+    var room: Room?
 
-    var roommateGender: Int?
     @IBOutlet weak var submitButton: UIButton! {
         didSet {
             submitButton.setTitle("Add Post", for: .normal)
+            submitButton.backgroundColor = UIColor.mainColor
+            submitButton.tintColor = UIColor.mainBackgroundColor
+            submitButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
         }
     }
 
@@ -93,8 +134,12 @@ class PostViewController: UIViewController {
                 forCellWithReuseIdentifier: RulesCell.reuseIdentifier
             )
             collectionView.register(
-                UINib(nibName: RulesHeaderCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: RulesHeaderCell.reuseIdentifier
+                UINib(nibName: ItemsCell.reuseIdentifier, bundle: nil),
+                forCellWithReuseIdentifier: ItemsCell.reuseIdentifier
+            )
+            collectionView.register(
+                UINib(nibName: OtherFeeHeaderCell.reuseIdentifier, bundle: nil),
+                forCellWithReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier
             )
             collectionView.register(
                 UINib(nibName: FeeDetailCell.reuseIdentifier, bundle: nil),
@@ -103,10 +148,26 @@ class PostViewController: UIViewController {
         }
     }
 
+    var entryType: EntryType = .new
+
+    init(entryType: EntryType, data: Room?) {
+        super.init(nibName: "PostViewController", bundle: nil)
+
+        self.entryType = entryType
+        self.room = data
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.keyboardDismissMode = .interactive
         navigationItem.title = "Add Room Post"
+        if let room = room {
+            configureData(data: room)
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -119,9 +180,66 @@ class PostViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
 
-    @IBAction func submitAction(_ sender: Any) {
-        uploadImages(images: roomImages)
+    func configureData(data: Room) {
+        if entryType == .edit {
+            roomSpecList = data.rooms
+            roomHighLights = data.roomHighLights
+            roomGenderRules = data.roomGenderRules
+            roomPetsRules = data.roomPetsRules
+            roomElevatorRules = data.roomElevatorRules
+            roomCookingRules = data.roomCookingRules
+            roomFeatures = data.roomFeatures
+            roomBathroomRules = data.roomBathroomRules
+            featureSelection = data.roomFeatures
+            billInfo = data.billInfo
+            postBasicData = PostBasicData(
+                title: data.title,
+                county: data.county,
+                town: data.town,
+                address: data.address,
+                room: data.room,
+                parlor: data.parlor,
+                leaseMonth: data.leaseMonth,
+                movinDate: data.movinDate,
+                gender: nil
+            )
+            oriRoomImagesUrl = data.roomImages
+            roomImagesUrl = data.roomImages
+            otherDescriction = data.otherDescriction
+            latitude = data.lat
+            longitude = data.long
+            postalCode = data.postalCode
+            createdTime = data.createdTime
 
+            data.roomImages.forEach { url in
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    if let imageData = try? Data(contentsOf: url) {
+                        if let loadedImage = UIImage(data: imageData) {
+                            self.roomImages.append(loadedImage)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    @IBAction func submitAction(_ sender: Any) {
+        if let postBasicData = postBasicData,
+            postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
+            roomSpecList.isEmpty {
+            let alertController = UIAlertController(title: "有點問題唷！", message: "請填寫完整資訊", preferredStyle: .alert)
+            let alertAction = UIAlertAction(title: "好的", style: .default)
+            alertController.addAction(alertAction)
+            present(alertController, animated: false)
+        } else {
+            if roomImages.isEmpty {
+                room?.roomImages = []
+                saveData()
+            } else {
+                uploadImages(images: roomImages)
+            }
+        }
     }
 }
 
@@ -131,14 +249,10 @@ extension PostViewController: UICollectionViewDataSource {
         switch PostSection.allCases[section] {
         case .roomSpec:
             numberOfItems = roomSpecList.count
-        case .basic, .rulesHeader, .amenitiesHeader, .feeHeader, .feeDetail:
+        case .basic, .feeHeader, .feeDetail, .gender, .pet, .elevator, .cooking, .features, .bathroom, .highLight:
             numberOfItems = 1
         case .images:
-            numberOfItems = 5
-        case .rules:
-            numberOfItems = ruleSelection.count
-        case .amenities:
-            numberOfItems = amenitiesSelection.count
+            numberOfItems = 3
         }
         return numberOfItems
     }
@@ -155,55 +269,20 @@ extension PostViewController: UICollectionViewDataSource {
                 for: indexPath) as? PostBasicCell else {
                 fatalError("PostBasicCell Error")
             }
+            if entryType == .edit {
+                cell.configureCell(data: postBasicData)
+            }
             cell.delegate = self
             return cell
         case .roomSpec:
             return makeRoomSpecCell(collectionView: collectionView, indexPath: indexPath)
         case .images:
             return makePostImageCell(collectionView: collectionView, indexPath: indexPath)
-        case .rules:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RulesCell.reuseIdentifier,
-                for: indexPath) as? RulesCell else {
-                fatalError("RulesCell Error")
-            }
-            let title = ruleSelection[indexPath.item]
-            cell.layoutCell(title: title)
-            return cell
-        case .rulesHeader:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RulesHeaderCell.reuseIdentifier,
-                for: indexPath) as? RulesHeaderCell else {
-                fatalError("RulesHeaderCell Error")
-            }
-            cell.editAction.tag = PostSection.allCases.firstIndex(of: .rulesHeader)!
-            cell.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
-            cell.titleLabel.text = "Rules"
-            return cell
-        case .amenitiesHeader:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RulesHeaderCell.reuseIdentifier,
-                for: indexPath) as? RulesHeaderCell else {
-                fatalError("RulesHeaderCell Error")
-            }
-            cell.editAction.tag = PostSection.allCases.firstIndex(of: .amenitiesHeader)!
-            cell.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
-            cell.titleLabel.text = "Amenities"
-            return cell
-        case .amenities:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RulesCell.reuseIdentifier,
-                for: indexPath) as? RulesCell else {
-                fatalError("RulesCell Error")
-            }
-            let title = amenitiesSelection[indexPath.item]
-            cell.layoutCell(title: title)
-            return cell
         case .feeHeader:
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RulesHeaderCell.reuseIdentifier,
-                for: indexPath) as? RulesHeaderCell else {
-                fatalError("RulesHeaderCell Error")
+                withReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier,
+                for: indexPath) as? OtherFeeHeaderCell else {
+                fatalError("OtherFeeHeaderCell Error")
             }
             cell.editAction.tag = PostSection.allCases.firstIndex(of: .feeHeader)!
             cell.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
@@ -215,10 +294,50 @@ extension PostViewController: UICollectionViewDataSource {
                 for: indexPath) as? FeeDetailCell else {
                 fatalError("FeeDetailCell Error")
             }
-            cell.feeDetailLabel.text = billInfo?.description
             cell.completion = { [unowned self] otherDesc in
                 self.otherDescriction = otherDesc
             }
+            return cell
+        case .highLight, .gender, .pet, .elevator, .cooking, .features, .bathroom:
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ItemsCell.reuseIdentifier,
+                for: indexPath) as? ItemsCell else {
+                fatalError("OtherFeeHeaderCell Error")
+            }
+
+            let section = PostSection.allCases[indexPath.section]
+            let title = section.title
+            var selectedTags: [String] = []
+
+            switch section {
+            case .highLight:
+                selectedTags = roomHighLights
+            case .gender:
+                selectedTags = roomGenderRules
+            case .pet:
+                selectedTags = roomPetsRules
+            case .elevator:
+                selectedTags = roomElevatorRules
+            case .cooking:
+                selectedTags = roomCookingRules
+            case .bathroom:
+                selectedTags = roomBathroomRules
+            case .features:
+                selectedTags = roomFeatures
+            default:
+                break
+            }
+
+            cell.configureTagView(
+                ruleType: title,
+                tags: PostSection.allCases[indexPath.section].tags,
+                selectedTags: selectedTags,
+                mainColor: UIColor.mainColor,
+                lightColor: UIColor.mainBackgroundColor,
+                mainLightBackgroundColor: .white,
+                enableTagSelection: true
+            )
+            cell.delegate = self
             return cell
         }
     }
@@ -240,7 +359,7 @@ extension PostViewController: UICollectionViewDataSource {
                 let indexPath = collectionView.indexPath(for: cell) else { return }
             let roomSpec = RoomSpec()
             self.roomSpecList.insert(roomSpec, at: indexPath.item + 1)
-            print(self.roomSpecList)
+            self.collectionView.reloadData()
         }
 
         cell.delectColumnAction = { [weak self] cell in
@@ -249,6 +368,7 @@ extension PostViewController: UICollectionViewDataSource {
                 let indexPath = collectionView.indexPath(for: cell) else { return }
 
             self.roomSpecList.remove(at: indexPath.item)
+            self.collectionView.reloadData()
             print(self.roomSpecList)
         }
         return cell
@@ -261,6 +381,13 @@ extension PostViewController: UICollectionViewDataSource {
         ) as? PostImageCell else {
             fatalError("PostImageCell Error")
         }
+
+        if let room = room,
+            room.roomImages.count - 1 >= indexPath.item {
+            cell.imageView.image = roomImages[indexPath.item]
+        } else {
+            cell.imageView.image = UIImage.asset(.add_image)
+        }
         cell.delegate = self
         return cell
     }
@@ -268,29 +395,22 @@ extension PostViewController: UICollectionViewDataSource {
 
 extension PostViewController: UICollectionViewDelegate {
     @objc func showMultiChoosePage(_ sender: UIButton) {
-        var presentPage: UIViewController
         let postSection = PostSection.allCases[sender.tag]
         switch postSection {
-        case .rulesHeader, .amenitiesHeader:
-            let mutlipleChooseVC = MutlipleChooseController()
-            let pageType: MutlipleChooseType = postSection == .rulesHeader ? .rule : .amenities
-            let selectedOptions = postSection == .rulesHeader ? ruleSelection : amenitiesSelection
-
-            mutlipleChooseVC.setup(pageType: pageType, selectedOptions: selectedOptions)
-            mutlipleChooseVC.completion = { [self] selectedItem in
-                if postSection == .rulesHeader {
-                    ruleSelection = selectedItem
-                } else {
-                    amenitiesSelection = selectedItem
-                }
-            }
-            present(mutlipleChooseVC, animated: true)
-
         case .feeHeader:
-            let editFeeVC = EditFeeController()
+            var editFeeVC: EditFeeController
+
+            if entryType == .edit,
+                let billInfo = billInfo {
+                editFeeVC = EditFeeController(entryType: entryType, data: billInfo)
+            } else {
+                editFeeVC = EditFeeController(entryType: entryType, data: nil)
+            }
+
             editFeeVC.completion = { [weak self] billInfo in
                 self?.billInfo = billInfo
             }
+            editFeeVC.modalPresentationStyle = .overCurrentContext
             present(editFeeVC, animated: true)
         default:
             break
@@ -304,50 +424,40 @@ extension PostViewController {
             switch PostSection.allCases[sectionIndex] {
             case .images:
                 let itemSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(0.33),
+                    heightDimension: .absolute(100))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .estimated(80))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(0.3),
-                    heightDimension: .estimated(80))
-                let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitem: item, count: 1)
-                let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                return section
-            case .rules:
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(0.5),
-                    heightDimension: .absolute(50))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .absolute(50))
+                    heightDimension: .absolute(100))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20)
                 return section
             case .roomSpec:
                 let itemSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(200))
+                    heightDimension: .estimated(120))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(200))
+                    heightDimension: .estimated(120))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
                 return section
             default:
                 let itemSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(200))
+                    heightDimension: .estimated(100))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(200))
+                    heightDimension: .estimated(100))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
                 return section
             }
         }
@@ -358,18 +468,17 @@ extension PostViewController: PostBasicCellDelegate {
     func passData(cell: PostBasicCell, data: PostBasicData) {
         postBasicData = data
         if let county = postBasicData?.county,
-           let town = postBasicData?.town {
+            let town = postBasicData?.town {
             postalCode = LocationService.shared.postalCodeList?.filter({ postal in
                 postal.city == county && postal.area == town
             })[0].zip
             if let address = postBasicData?.address, !address.isEmpty {
-                print("\(county)\(town)\(address)")
                 LocationService.shared.getCoordinates(
                     fullAddress: "\(county)\(town)\(address)") { [weak self] location in
-                        self?.latitude = location.latitude
-                        self?.longitude = location.longitude
+                        guard let `self` = self else { return }
+                        self.latitude = location.latitude
+                        self.longitude = location.longitude
                         print("\(location.latitude),\(location.longitude)")
-
                     }
             }
         }
@@ -377,12 +486,14 @@ extension PostViewController: PostBasicCellDelegate {
 
     func showRegionPickerView(cell: PostBasicCell) {
         cell.regionSelectView.resignFirstResponder()
-        let regionPickerVC = RegionPickerViewController()
+        let regionPickerVC = LocationPickerViewController()
+        regionPickerVC.modalPresentationStyle = .overCurrentContext
+        // FIXME:
         regionPickerVC.completion = { county, town in
             cell.county = county
             cell.town = town
         }
-        present(regionPickerVC, animated: true)
+        present(regionPickerVC, animated: false)
     }
 }
 
@@ -398,7 +509,6 @@ extension PostViewController: RoomSpecCellDelegate {
 extension PostViewController: PostImageCellDelegate {
     func didClickImageView(_ cell: PostImageCell) {
         waitForUpdateImageCell = cell
-        let imagePickerController = UIImagePickerController()
         imagePickerController.delegate = self
 
         let imagePickerAlertController = UIAlertController(
@@ -407,17 +517,17 @@ extension PostViewController: PostImageCellDelegate {
             preferredStyle: .actionSheet
         )
 
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { _ in
+        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { [weak self] _ in
+            guard let self = self else { return }
             if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                imagePickerController.sourceType = .photoLibrary
-                self.present(imagePickerController, animated: true, completion: nil)
+                self.imagePickerController.sourceType = .photoLibrary
+                self.present(self.imagePickerController, animated: true, completion: nil)
             }
         }
-
         let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { _ in
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                imagePickerController.sourceType = .camera
-                self.present(imagePickerController, animated: true, completion: nil)
+                self.imagePickerController.sourceType = .camera
+                self.present(self.imagePickerController, animated: true, completion: nil)
             }
         }
 
@@ -442,104 +552,166 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         _ picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
-        var selectedImageFromPicker: UIImage?
-
         // 取得從 UIImagePickerController 選擇的檔案
         if let pickedImage = info[.originalImage] as? UIImage {
             waitForUpdateImageCell?.imageView.image = pickedImage
-            selectedImageFromPicker = pickedImage
-            self.insertRoomImages(cell: (self.waitForUpdateImageCell)!, image: pickedImage)
+            guard let cell = self.waitForUpdateImageCell else {
+                return
+            }
+            self.insertRoomImages(cell: cell, image: pickedImage)
         }
 
         picker.dismiss(animated: true)
     }
-    
+
     private func insertRoomImages(cell: UICollectionViewCell, image: UIImage) {
         guard let indexPath = collectionView.indexPath(for: cell) else {
             return
         }
+        print("indexPath.item", indexPath.item)
 
         if roomImages.count - 1 < indexPath.item {
             roomImages.append(image)
         } else {
-            roomImages.insert(image, at: indexPath.item)
+            roomImages[indexPath.item] = image
         }
+        print(roomImages)
     }
 
     private func uploadImages(images: [UIImage]) {
-//        ProgressHUD.showProgress(0.4)
+        RMProgressHUD.show(view: self.view)
+        let group = DispatchGroup()
 
-        DispatchQueue.global().async {
-            images.forEach { image in
-                
-                let uniqueString = NSUUID().uuidString
-                let storageRef = Storage.storage().reference(withPath: "RoomImages").child("\(uniqueString).png")
-                if let uploadData = image.scale(scaleFactor: 0.1).jpegData(compressionQuality: 0.1) {
-                    print("===",uploadData)
-                    storageRef.putData(uploadData, completion: {[weak self] data, error in
-                        if let error = error {
-                            // TODO: Error Handle
-                            print("Error: \(error.localizedDescription)")
+        roomImagesUrl = []
+
+        images.forEach { image in
+            group.enter()
+            var uploadData: Data?
+
+            let uniqueString = NSUUID().uuidString
+
+            let imageSize = image.getSizeIn(.kilobyte)
+            if imageSize > RMConstants.shared.compressSizeGap {
+                let factor = RMConstants.shared.compressSizeGap / imageSize
+                uploadData = image.jpegData(compressionQuality: factor)
+            } else {
+                uploadData = image.pngData()
+            }
+
+            let storageRef = Storage.storage().reference(withPath: "RoomImages").child("\(uniqueString).png")
+
+            if let uploadData = uploadData {
+                storageRef.putData(uploadData, completion: { [weak self] data, error in
+                    if let error = error {
+                        // TODO: Error Handle
+                        print("Error: \(error.localizedDescription)")
+                        return
+                    }
+                    storageRef.downloadURL { [weak self] (url, error) in
+                        guard let self = self else { return }
+                        guard let downloadURL = url else {
                             return
                         }
-
-                        storageRef.downloadURL { [weak self] (url, error) in
-                            guard let downloadURL = url else {
-                                return
-                            }
-                            print("Photo Url: \(downloadURL)")
-                            print(Thread.current)
-                            self?.saveData(url: downloadURL)
-                        }
-                    })
-                }
+                        print("Photo Url: \(downloadURL)")
+                        self.roomImagesUrl.append(downloadURL)
+                        group.leave()
+                    }
+                })
             }
+        }
+
+        group.notify(queue: DispatchQueue.main) { [weak self] in
+            guard let self = self else { return }
+            self.room?.roomImages = self.roomImagesUrl
+            self.saveData()
         }
     }
 
 
-    private func saveData(url: URL) {
-        print(Thread.current)
-        roomImagesUrl.append(url)
-        if roomImagesUrl.count == roomImages.count {
-            let docRef = Firestore.firestore().collection("Room").document()
-            print("docRef")
-            var room = Room(roomID: docRef.documentID,
-                            userID: gCurrentUser.id,
-                            createdTime: Timestamp(),
-                            modifiedTime: Timestamp(),
-                            title: (postBasicData?.title)!,
-                            roomImages: roomImagesUrl,
-                            rooms: roomSpecList,
-                            roommateGender: (postBasicData?.gender)!,
-                            rules: ruleSelection,
-                            publicAmenities: amenitiesSelection,
-                            town: (postBasicData?.town)!,
-                            county: (postBasicData?.county)!,
-                            address: (postBasicData?.address)!,
-                            lat: latitude,
-                            long: longitude,
-                            postalCode: postalCode,
-                            billInfo: billInfo,
-                            lease: Double((postBasicData?.lease)!),
-                            movinDate: (postBasicData?.movinDate)!,
-                            otherDescriction: otherDescriction,
-                            isDeleted: false)
-            room.roomMinPrice = room.getRoomMinPrice()
+    private func saveData() {
+        print(roomElevatorRules)
+        var inputRoom = Room(
+            userID: UserDefaults.id,
+            createdTime: createdTime,
+            modifiedTime: Timestamp(),
+            title: (postBasicData?.title)!,
+            roomImages: roomImagesUrl,
+            rooms: roomSpecList,
+            roomFeatures: roomFeatures,
+            roomPetsRules: roomPetsRules,
+            roomHighLights: roomHighLights,
+            roomGenderRules: roomGenderRules,
+            roomCookingRules: roomCookingRules,
+            roomElevatorRules: roomElevatorRules,
+            roomBathroomRules: roomBathroomRules,
+            town: postBasicData!.town!,
+            county: postBasicData!.county!,
+            address: (postBasicData?.address!)!,
+            billInfo: billInfo,
+            leaseMonth: postBasicData?.leaseMonth ?? 0,
+            room: postBasicData?.room ?? 0,
+            parlor: postBasicData?.parlor ?? 0,
+            movinDate: postBasicData?.movinDate ?? Date(),
+            isDeleted: isDeleted
+        )
 
-            do {
-                try docRef.setData(from: room, completion: { error in
-                    if let _ = error {
+        inputRoom.roomMinPrice = inputRoom.getRoomMinPrice()
+
+        if entryType == .new {
+            FirebaseService.shared.insertRoom(room: inputRoom) { error in
+                RMProgressHUD.dismiss()
+
+                if error != nil {
+                    RMProgressHUD.showFailure(view: self.view)
+                } else {
+                    RMProgressHUD.showSuccess(view: self.view)
+                }
+                self.navigationController?.popViewController(animated: true)
+            }
+        } else {
+            if let room = room,
+               let roomID = room.roomID {
+                FirebaseService.shared.updateRoomInfo(roomID: roomID, room: inputRoom) { error in
+                    RMProgressHUD.dismiss()
+
+                    if error != nil {
                         RMProgressHUD.showFailure(view: self.view)
                     } else {
                         RMProgressHUD.showSuccess(view: self.view)
                     }
-                })
-                self.navigationController?.popViewController(animated: true)
-            } catch {
-                print("error")
+                    self.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }
 }
 
+extension PostViewController: ItemsCellDelegate {
+    func itemsCell(cell: ItemsCell, selectedTags: [String]) {
+        switch cell.ruleType {
+        case "亮點":
+            roomHighLights = selectedTags
+        case "租客性別":
+            roomGenderRules = selectedTags
+        case "寵物":
+            roomPetsRules = selectedTags
+        case "電梯":
+            self.roomElevatorRules = selectedTags
+        case "開伙":
+            roomCookingRules = selectedTags
+        case "設施":
+            roomFeatures = selectedTags
+        case "衛浴":
+            roomBathroomRules = selectedTags
+        default:
+            break
+        }
+    }
+}
+
+extension Double {
+    public func roundedTo(places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded()
+    }
+}

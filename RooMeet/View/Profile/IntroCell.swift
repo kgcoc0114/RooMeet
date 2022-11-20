@@ -7,18 +7,8 @@
 
 import UIKit
 
-enum Habit {
-    case `switch`
-    case ps
-    case sport
-    case cook
-    case dessert
-    case climbing
-}
-
 protocol IntroCellDelegate: AnyObject {
     func showRegionPickerView(cell: IntroCell)
-    func showRulePickerView(cell: IntroCell)
     func passData(cell: IntroCell, data: User)
     func didClickImageView(_ cell: IntroCell)
 }
@@ -28,42 +18,67 @@ class IntroCell: UICollectionViewCell {
 
     @IBOutlet weak var imageView: UIImageView! {
         didSet {
-            let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
-
+            let tapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(imageTapped(tapGestureRecognizer:)))
+            imageView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+            imageView.contentMode = .scaleAspectFill
             imageView.isUserInteractionEnabled = true
             imageView.addGestureRecognizer(tapGestureRecognizer)
         }
     }
 
-    @IBOutlet weak var regionTextField: UITextField!
-    @IBOutlet weak var birthdayTextField: UITextField! {
+    @IBOutlet weak var genderSegmentedControl: RMSegmentedControl! {
         didSet {
-            let datePicker = UIDatePicker()
-            datePicker.datePickerMode = .date
-            datePicker.preferredDatePickerStyle = .inline
-
-            datePicker.addTarget(self, action: #selector(onDateValueChange), for: .valueChanged)
-
-            birthdayTextField.inputView = datePicker
-
+            genderSegmentedControl.items = Gender.allCases.map { $0.rawValue }
+            genderSegmentedControl.borderColor = UIColor.mainLightColor
+            genderSegmentedControl.selectedLabelColor = UIColor.mainDarkColor
+            genderSegmentedControl.unselectedLabelColor = UIColor.mainColor
+            genderSegmentedControl.backgroundColor = .white
+            genderSegmentedControl.thumbColor = UIColor.mainLightColor
+            genderSegmentedControl.selectedIndex = 0
+            genderSegmentedControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
+        }
+    }
+    @IBOutlet weak var regionTextField: RMBaseTextField!
+    @IBOutlet weak var birthdayTextField: RMBaseTextField! {
+        didSet {
             let toolbar = UIToolbar()
             toolbar.barStyle = .default
             toolbar.items = [
                 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-                UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(textFieldDone))
+                UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(datePickerDone))
             ]
             toolbar.sizeToFit()
-            birthdayTextField.inputAccessoryView = toolbar
+
+            let datePicker = UIDatePicker()
+            datePicker.datePickerMode = .date
+            datePicker.preferredDatePickerStyle = .inline
+            datePicker.tintColor = .mainColor
+
+            birthdayTextField.placeholder = "YYYY/MM/DD"
+            birthdayTextField.inputView = datePicker
+
+            datePicker.addTarget(self, action: #selector(onDateValueChange(_:)), for: .valueChanged)
         }
     }
 
-    @IBOutlet weak var nameTextField: UITextField!
+    @IBOutlet weak var nameTextField: RMBaseTextField!
 
-    @IBOutlet weak var ruleTextField: UITextField!
+    @IBOutlet weak var imageButton: UIButton! {
+        didSet {
+            imageButton.setTitle("", for: .normal)
+            imageButton.backgroundColor = .white
+            imageButton.tintColor = .mainColor
+        }
+    }
 
-    @IBOutlet weak var imageButton: UIButton!
-
-    @IBOutlet weak var introTextView: UITextView!
+    @IBOutlet weak var introTextView: UITextView! {
+        didSet {
+            introTextView.backgroundColor = .mainLightColor
+            introTextView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+        }
+    }
 
     var county: String? {
         didSet {
@@ -72,7 +87,7 @@ class IntroCell: UICollectionViewCell {
                 let town = town {
                 regionTextField.text = "\(county)\(town)"
             }
-            user?.favorateCounty = county
+            user?.favoriteCounty = county
         }
     }
 
@@ -83,7 +98,7 @@ class IntroCell: UICollectionViewCell {
                 let town = town {
                 regionTextField.text = "\(county)\(town)"
             }
-            user?.favorateTown = town
+            user?.favoriteTown = town
         }
     }
 
@@ -101,9 +116,12 @@ class IntroCell: UICollectionViewCell {
         super.awakeFromNib()
         nameTextField.delegate = self
         birthdayTextField.delegate = self
-        ruleTextField.delegate = self
         regionTextField.delegate = self
-        imageButton.setTitle("Edit", for: .normal)
+        introTextView.delegate = self
+    }
+
+    override func layoutSubviews() {
+        imageButton.layer.cornerRadius = imageView.bounds.width / 2
     }
 
     func configureCell(edit: Bool = true, data: User) {
@@ -113,15 +131,31 @@ class IntroCell: UICollectionViewCell {
                 return
             }
 
-            birthdayTextField.isEnabled = false
             nameTextField.text = user.name
-            birthdayTextField.text = RMDateFormatter.shared.dateString(date: user.birthday)
-            if user.favorateTown != nil {
-                regionTextField.text = "\( user.favorateCounty)\(user.favorateTown)"
+
+            if let birthday = user.birthday {
+                birthdayTextField.text = RMDateFormatter.shared.dateString(date: birthday)
+            } else {
+                birthdayTextField.text = ""
             }
 
-            if user.introduction != nil {
-                introTextView.text = "\( user.introduction)"
+            if let gender = user.gender {
+                genderSegmentedControl.selectedIndex = gender
+            }
+
+            if let profilePhoto = user.profilePhoto {
+                imageView.setImage(urlString: profilePhoto)
+            } else {
+                imageView.image = UIImage.asset(.profile_user)
+            }
+
+            if let favoriteCounty = user.favoriteCounty,
+                let favoriteTown = user.favoriteTown {
+                regionTextField.text = "\(favoriteCounty)\(favoriteTown)"
+            }
+
+            if let introduction = user.introduction {
+                introTextView.text = "\(introduction)"
             }
 
             guard let rules = user.rules else {
@@ -129,14 +163,20 @@ class IntroCell: UICollectionViewCell {
             }
 
             self.rules = rules
-            print("gCurrentUser.profilePhoto = ", user.profilePhoto)
         }
     }
 
     @objc func textFieldDone(_ sender: UIBarButtonItem) {
         self.endEditing(true)
-        delegate?.passData(cell: self, data: user!)
+
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
     }
+
+    @objc private func datePickerDone() {
+        self.endEditing(true)
+    }
+
 
     @objc func onDateValueChange(_ datePicker: UIDatePicker) {
         birthday = datePicker.date
@@ -145,11 +185,19 @@ class IntroCell: UICollectionViewCell {
         }
         birthdayTextField.text = RMDateFormatter.shared.dateString(date: birthday)
         user?.birthday = birthday
-        delegate?.passData(cell: self, data: user!)
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
     }
 
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         delegate?.didClickImageView(self)
+    }
+
+    @objc func segmentValueChanged(_ sender: RMSegmentedControl) {
+        user?.gender = genderSegmentedControl.selectedIndex
+
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
     }
 }
 
@@ -157,13 +205,22 @@ extension IntroCell: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == regionTextField {
             delegate?.showRegionPickerView(cell: self)
-        } else if textField == ruleTextField {
-            delegate?.showRulePickerView(cell: self)
         }
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         user?.name = nameTextField.text ?? ""
-        delegate?.passData(cell: self, data: user!)
+
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
+    }
+}
+
+extension IntroCell: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        user?.introduction = textView.text
+
+        guard let user = user else { return }
+        delegate?.passData(cell: self, data: user)
     }
 }

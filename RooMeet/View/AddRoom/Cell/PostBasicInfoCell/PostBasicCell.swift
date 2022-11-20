@@ -14,7 +14,7 @@ struct PostBasicData {
     var address: String?
     var room: Int?
     var parlor: Int?
-    var lease: Double?
+    var leaseMonth: Int?
     var movinDate: Date?
     var gender: Int?
 }
@@ -52,26 +52,45 @@ class PostBasicCell: UICollectionViewCell {
 
     weak var delegate: PostBasicCellDelegate?
 
-    @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var addressTextField: UITextField!
-    @IBOutlet weak var movinDatePicker: UIDatePicker! {
-        didSet {
-            postBasicData.movinDate = movinDatePicker.date
-        }
-    }
+    @IBOutlet weak var titleTextField: RMBaseTextField!
+    @IBOutlet weak var addressTextField: RMBaseTextField!
 
-    @IBOutlet weak var regionSelectView: UITextField!
-    @IBOutlet weak var leaseTextField: UITextField!
+    @IBOutlet weak var regionSelectView: RMBaseTextField!
     @IBOutlet weak var parlorCountView: NumberPickerView! {
         didSet {
             postBasicData.parlor = 0
         }
     }
+
     @IBOutlet weak var roomCountView: NumberPickerView! {
         didSet {
             postBasicData.room = 0
         }
     }
+
+    @IBOutlet weak var datePickerTextField: RMBaseTextField! {
+        didSet {
+            let toolbar = UIToolbar()
+            toolbar.barStyle = .default
+            toolbar.items = [
+                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+                UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(datePickerDone))
+            ]
+            toolbar.sizeToFit()
+
+            let datePicker = UIDatePicker()
+            datePicker.datePickerMode = .date
+            datePicker.preferredDatePickerStyle = .inline
+            datePicker.tintColor = .mainColor
+
+            datePickerTextField.placeholder = "YYYY/MM/DD"
+            datePickerTextField.inputView = datePicker
+
+            datePicker.addTarget(self, action: #selector(movinDateChanged(_:)), for: .valueChanged)
+        }
+    }
+
+    @IBOutlet weak var leasePickerView: NumberPickerView!
     @IBOutlet weak var genderSegmentControl: UISegmentedControl! {
         didSet {
             postBasicData.gender = genderSegmentControl.selectedSegmentIndex
@@ -82,20 +101,63 @@ class PostBasicCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        roomCountView.configurateLayout(placeholder: "Room")
-        parlorCountView.configurateLayout(placeholder: "Parlor")
+        roomCountView.configurateLayout(placeholder: "0", type: "number", maxNumber: 5)
+        parlorCountView.configurateLayout(placeholder: "0", type: "number", maxNumber: 5)
+        leasePickerView.configurateLayout(placeholder: "年月", type: "lease", maxNumber: 12)
+
         regionSelectView.delegate = self
         titleTextField.delegate = self
-        leaseTextField.delegate = self
         addressTextField.delegate = self
+
         parlorCountView.delegate = self
         roomCountView.delegate = self
-        movinDatePicker.addTarget(self, action: #selector(movinDateChanged), for: .valueChanged)
+        leasePickerView.delegate = self
     }
 
-    @objc private func movinDateChanged() {
-        postBasicData.movinDate = movinDatePicker.date
+    func configureCell(data: PostBasicData?) {
+        guard let basicData = data else {
+            return
+        }
+        postBasicData = basicData
+
+        titleTextField.text = postBasicData.title
+        addressTextField.text = postBasicData.address
+
+        if let county = postBasicData.county,
+            let town = postBasicData.town {
+            regionSelectView.text = "\(county)\(town)"
+        }
+
+        if let parlor = postBasicData.parlor {
+            parlorCountView.quantityField.text = "\(parlor)"
+        }
+
+        if let room = postBasicData.room {
+            roomCountView.quantityField.text = "\(room)"
+        }
+
+        if let movinDate = postBasicData.movinDate {
+            datePickerTextField.text = RMDateFormatter.shared.dateString(date: movinDate)
+        }
+
+        if let leaseMonth = postBasicData.leaseMonth {
+            if leaseMonth >= 12 {
+                let year = leaseMonth / 12
+                leasePickerView.quantityField.text = "\(year)年"
+            } else {
+                leasePickerView.quantityField.text = "\(leaseMonth)月"
+            }
+        }
+    }
+
+    @objc private func movinDateChanged(_ sender: UIDatePicker) {
+        postBasicData.movinDate = sender.date
+        datePickerTextField.text = RMDateFormatter.shared.dateString(date: sender.date)
         delegate?.passData(cell: self, data: postBasicData)
+    }
+
+    @objc private func datePickerDone() {
+        self.endEditing(true)
     }
 }
 
@@ -109,17 +171,16 @@ extension PostBasicCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         postBasicData.title = titleTextField.text
         postBasicData.address = addressTextField.text
-
-        if leaseTextField.hasText,
-            let leaseText = leaseTextField.text {
-            postBasicData.lease = Double(leaseText)
-        }
-
         delegate?.passData(cell: self, data: postBasicData)
     }
 }
 
 extension PostBasicCell: NumberPickerViewDelegate {
+    func didPickLease(picker: NumberPickerView, lease: Int, unit: String) {
+        var leaseMon = lease * 12
+        postBasicData.leaseMonth = unit == "年" ? leaseMon : lease
+    }
+
     func didPickNumber(picker: NumberPickerView, number: Int) {
         if picker == roomCountView {
             room = number

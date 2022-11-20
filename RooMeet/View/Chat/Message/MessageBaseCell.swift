@@ -27,7 +27,7 @@ class MessageBaseCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
+        self.backgroundColor = UIColor.mainBackgroundColor
         addSubview(dateLabel)
         addSubview(timeLabel)
     }
@@ -52,5 +52,3 @@ class MessageBaseCell: UITableViewCell {
     func configureLayout() {
     }
 }
-
-

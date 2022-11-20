@@ -11,13 +11,10 @@ import FirebaseFirestore
 class ChatViewController: UIViewController {
     enum Section: CaseIterable {
         case message
-//        case reservation
     }
 
     enum Item: Hashable {
         case message(Message)
-//        case reservation(Message)
-//        case call(Message)
     }
 
     typealias DataSource = UITableViewDiffableDataSource<Section, Item>
@@ -26,13 +23,19 @@ class ChatViewController: UIViewController {
 
     var chatRoom: ChatRoom?
     var otherData: ChatMember?
-    var currentUserData = ChatMember(id: gCurrentUser.id, profilePhoto: gCurrentUser.profilePhoto, name: gCurrentUser.name)
+    var currentUserData = ChatMember(
+        id: UserDefaults.id,
+        profilePhoto: UserDefaults.profilePhoto,
+        name: UserDefaults.name
+    )
+
     var messages: [Message] = [] {
         didSet {
             updateDataSource()
             scrollToButtom(animated: false)
         }
     }
+
     @IBOutlet weak var otherFunctionButton: UIButton! {
         didSet {
             otherFunctionButton.setTitle("", for: .normal)
@@ -41,31 +44,50 @@ class ChatViewController: UIViewController {
 
     private var listener: ListenerRegistration?
 
-    @IBOutlet weak var contentTextField: UITextField!
+    @IBOutlet weak var contentTextField: UITextField! {
+        didSet {
+            contentTextField.placeholder = "Aa"
+        }
+    }
+    @IBOutlet weak var sendButton: UIButton! {
+        didSet {
+            sendButton.setTitle("", for: .normal)
+        }
+    }
 
     @IBOutlet weak var tableView: UITableView! {
         didSet {
             tableView.separatorStyle = .none
             tableView.showsVerticalScrollIndicator = false
-            tableView.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
+            tableView.backgroundColor = UIColor.mainBackgroundColor
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
+        let phoneBarButton = UIBarButtonItem(
             image: UIImage(systemName: "phone"),
             style: .plain,
             target: self,
-            action: #selector(call))
+            action: #selector(audioCall))
 
+        let videoCallBarButton = UIBarButtonItem(
+            image: UIImage(systemName: "video"),
+            style: .plain,
+            target: self,
+            action: #selector(videoCall))
 
+        navigationItem.rightBarButtonItems = [phoneBarButton]
+
+        tableView.delegate = self
         configureDataSource()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(#function)
+
         self.tabBarController?.tabBar.isHidden = true
 
         // listen
@@ -81,8 +103,9 @@ class ChatViewController: UIViewController {
         }
     }
 
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        print(#function)
         self.tabBarController?.tabBar.isHidden = false
     }
 
@@ -111,7 +134,7 @@ class ChatViewController: UIViewController {
             let message = Message(
                 id: messageRef.documentID,
                 messageType: 0,
-                sendBy: gCurrentUser.id,
+                sendBy: UserDefaults.id,
                 content: content,
                 createdTime: Timestamp()
             )
@@ -142,11 +165,10 @@ class ChatViewController: UIViewController {
         tableView.scrollToButtom(at: .bottom, animated: animated)
     }
 
-    @IBAction func addReservation(_ sender: Any) {
-
+    @IBAction func showRuler(_ sender: Any) {
     }
 
-    @objc private func call(_ sender: Any) {
+    @objc private func audioCall(_ sender: Any) {
         guard let chatRoom = chatRoom else {
             return
         }
@@ -166,6 +188,34 @@ class ChatViewController: UIViewController {
             callerData: currentUserData,
             calleeData: otherData!
         )
+
+        callViewController.otherUserData = otherData
+        callViewController.currentUserData = currentUserData
+        callViewController.modalPresentationStyle = .fullScreen
+        present(callViewController, animated: true)
+    }
+
+    @objc private func videoCall(_ sender: Any) {
+        guard let chatRoom = chatRoom else {
+            return
+        }
+
+        // 清空通話資料
+        Firestore.firestore().collection("Call").document(chatRoom.id).delete() { err in
+            if let err = err {
+                print("Error removing document: \(err)")
+            } else {
+                print("Document successfully removed!")
+            }
+        }
+
+        let callViewController = CallViewController(
+            callRoomId: chatRoom.id,
+            callType: .offer,
+            callerData: currentUserData,
+            calleeData: otherData!
+        )
+
         callViewController.otherUserData = otherData
         callViewController.currentUserData = currentUserData
         callViewController.modalPresentationStyle = .fullScreen
@@ -338,7 +388,13 @@ extension ChatViewController {
     private func updateDataSource() {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
-        newSnapshot.appendItems(messages.map({ Item.message($0) }), toSection: .message)
-        dataSource.apply(newSnapshot, animatingDifferences: true)
+        newSnapshot.appendItems(messages.map { Item.message($0) }, toSection: .message)
+        dataSource.apply(newSnapshot, animatingDifferences: false)
+    }
+}
+
+extension ChatViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        view.endEditing(true)
     }
 }

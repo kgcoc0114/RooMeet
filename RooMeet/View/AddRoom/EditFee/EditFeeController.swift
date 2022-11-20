@@ -8,20 +8,46 @@
 import UIKit
 
 class EditFeeController: UIViewController {
+    @IBOutlet weak var dismissButton: UIButton! {
+        didSet {
+            dismissButton.setTitle("", for: .normal)
+        }
+    }
+    @IBOutlet weak var confirmButton: UIButton! {
+        didSet {
+            confirmButton.backgroundColor = UIColor.mainColor
+            confirmButton.tintColor = UIColor.mainBackgroundColor
+            confirmButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+        }
+    }
 
-    @IBOutlet weak var confirmButton: UIButton!
     @IBOutlet weak var tableView: UITableView!
-    
-    var completion: ((BillInfo) -> Void)?
 
-    var billInfo: BillInfo = BillInfo(
+    var completion: ((BillInfo) -> Void)?
+    var entryType: EntryType = .new
+
+    var billInfo = BillInfo(
         water: FeeDetail(),
         electricity: FeeDetail(),
         cable: FeeDetail(),
         internet: FeeDetail(),
         management: FeeDetail()
     )
-    
+
+    init(entryType: EntryType, data: BillInfo?) {
+        super.init(nibName: "EditFeeController", bundle: nil)
+
+        if entryType == .edit,
+            let data = data {
+            self.billInfo = data
+        }
+        self.entryType = entryType
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
@@ -35,24 +61,49 @@ class EditFeeController: UIViewController {
         self.completion?(billInfo)
         dismiss(animated: true)
     }
+
+    @IBAction func dismissAction(_ sender: Any) {
+        dismiss(animated: true)
+    }
 }
 
 extension EditFeeController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FeeInfoCell.reuseIdentifier, for: indexPath) as? FeeInfoCell else {
-            fatalError()
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: FeeInfoCell.reuseIdentifier,
+            for: indexPath) as? FeeInfoCell else {
+            fatalError("ERROR: - Create FeeInfoCell ERROR")
         }
 
         let feeType = FeeType.allCases[indexPath.item]
-        cell.initialView(feeType: feeType)
+        var feeDetail = FeeDetail()
+
+        switch feeType {
+        case .electricity:
+            feeDetail = billInfo.electricity
+        case .water:
+            feeDetail = billInfo.water
+        case .cable:
+            feeDetail = billInfo.cable
+        case .internet:
+            feeDetail = billInfo.internet
+        case .management:
+            feeDetail = billInfo.management
+        }
+
+        cell.configureCell(
+            feeType: feeType,
+            entryType: entryType,
+            data: feeDetail
+        )
+
         cell.delegate = self
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         FeeType.allCases.count
     }
-    
 }
 
 extension EditFeeController: FeeInfoCellDelegate {

@@ -123,7 +123,8 @@ class ExploreViewController: UIViewController {
                 self.rooms = rooms
             }
         }
-        present(filterVC, animated: true)
+        filterVC.modalPresentationStyle = .overCurrentContext
+        present(filterVC, animated: false)
     }
 
     @objc private func setMapCenter(_ sender: Any) {

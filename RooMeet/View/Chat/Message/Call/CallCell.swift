@@ -51,7 +51,11 @@ class CallCell: UITableViewCell {
         }
 
         if let sendBy = sendBy {
-            avatarView.setImage(urlString: sendBy.profilePhoto)
+            if let profilePhoto = sendBy.profilePhoto {
+                avatarView.setImage(urlString: profilePhoto)
+            } else {
+                avatarView.image = UIImage.asset(.profile_user)
+            }
         }
     }
 }

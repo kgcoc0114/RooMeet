@@ -10,9 +10,27 @@ import UIKit
 class RoomFeeCell: UICollectionViewCell {
     static let identifier = "RoomFeeCell"
 
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var affordTypeLabel: UILabel!
-    @IBOutlet weak var feeLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.textColor = UIColor.mainDarkColor
+            titleLabel.font = UIFont.regularSubTitle()
+        }
+    }
+
+    @IBOutlet weak var affordTypeLabel: UILabel!  {
+        didSet {
+            affordTypeLabel.textColor = UIColor.mainDarkColor
+            affordTypeLabel.font = UIFont.regularSubTitle()
+        }
+    }
+
+    @IBOutlet weak var feeLabel: UILabel! {
+        didSet {
+            feeLabel.textColor = UIColor.mainDarkColor
+            feeLabel.font = UIFont.regularSubTitle()
+        }
+    }
+
     @IBOutlet weak var iconImageView: UIImageView!
 
     override func awakeFromNib() {

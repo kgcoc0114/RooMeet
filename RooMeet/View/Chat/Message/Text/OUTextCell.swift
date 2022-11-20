@@ -14,7 +14,7 @@ enum MsgType {
     var backgroundColor: UIColor {
         switch self {
         case .currentUser:
-            return UIColor.hexColor(hex: RMColor.palePink.hex)
+            return UIColor.msgBackgroundColor
         case .other:
             return UIColor.white
         }
@@ -35,6 +35,7 @@ class OUTextCell: MessageBaseCell {
             contentTextView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
             contentTextView.isScrollEnabled = false
             contentTextView.isEditable = false
+            contentTextView.font = UIFont.regularText()
         }
     }
 
@@ -48,7 +49,7 @@ class OUTextCell: MessageBaseCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        self.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
+        self.backgroundColor = UIColor.mainBackgroundColor
 
         NSLayoutConstraint.activate([
             dateLabel.leadingAnchor.constraint(equalTo: contentTextView.trailingAnchor, constant: 5),
@@ -66,16 +67,14 @@ class OUTextCell: MessageBaseCell {
     override func configureLayout() {
         if let message = message,
             let sendBy = sendBy {
-            avatarView.setImage(urlString: sendBy.profilePhoto)
-            contentTextView.text = message.content
-            let messageDate = message.createdTime.dateValue()
-
-            dateLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "MM/dd")
-            timeLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "HH:mm")
-
-            if isSameDate(date: messageDate) {
-                dateLabel.isHidden = true
+            if let profilePhoto = sendBy.profilePhoto {
+                avatarView.setImage(urlString: profilePhoto)
+            } else {
+                avatarView.image = UIImage.asset(.profile_user)
             }
+
+            contentTextView.text = message.content
+            assignDatetime(messageDate: message.createdTime.dateValue())
         }
     }
 }

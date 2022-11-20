@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -43,7 +44,7 @@
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="phone" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="h9F-cE-M0U">
                                 <rect key="frame" x="10" y="15.5" width="25" height="23.5"/>
-                                <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" name="mainDarkColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="25" id="g35-b3-3Qv"/>
                                     <constraint firstAttribute="width" constant="25" id="sJK-5g-OI4"/>
@@ -83,12 +84,16 @@
                 <outlet property="avatarView" destination="wJb-8f-Egs" id="AK9-Ai-hgo"/>
                 <outlet property="callTimeLabel" destination="cDO-HI-zeY" id="c12-WR-eMD"/>
                 <outlet property="messageView" destination="eY2-Y1-ywz" id="bqA-LQ-F18"/>
+                <outlet property="titleLabel" destination="Q25-cq-TnH" id="sH5-UI-eUS"/>
             </connections>
             <point key="canvasLocation" x="192.75362318840581" y="157.03125"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="phone" catalog="system" width="128" height="115"/>
+        <namedColor name="mainDarkColor">
+            <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
