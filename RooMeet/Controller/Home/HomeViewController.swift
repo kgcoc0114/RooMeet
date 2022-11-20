@@ -12,6 +12,7 @@ import MapKit
 class HomeViewController: ViewController {
     enum Section {
         case main
+        case guess
     }
 
     typealias HomeDataSource = UICollectionViewDiffableDataSource<Section, Room>
@@ -28,9 +29,9 @@ class HomeViewController: ViewController {
         }
     }
 
-
-    @IBOutlet weak var collectionView: UICollectionView!  {
+    @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
+            collectionView.backgroundColor = UIColor.mainBackgroundColor
             collectionView.translatesAutoresizingMaskIntoConstraints = false
         }
     }
@@ -63,15 +64,11 @@ class HomeViewController: ViewController {
         collectionView.delegate = self
 
         configureCollectionView()
-
-        // fetch room to display
-//        fetchRooms()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchRooms()
-//        navigationController?.navigationBar.isHidden = true
     }
 
     private func configureCollectionView() {
@@ -86,7 +83,6 @@ class HomeViewController: ViewController {
                 return UICollectionViewCell()
             }
 
-//            cell.checkImageView.isHidden = true
             cell.configureCell(data: room)
             return cell
         }
@@ -95,7 +91,7 @@ class HomeViewController: ViewController {
 
         collectionView.addPullToRefresh {[weak self] in
             self?.fetchRooms()
-            FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, index in
+            FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
                 if let user = user {
                     gCurrentUser = user
                 }
@@ -127,7 +123,8 @@ class HomeViewController: ViewController {
                 self.rooms = rooms
             }
         }
-        present(filterVC, animated: true)
+        filterVC.modalPresentationStyle = .overCurrentContext
+        present(filterVC, animated: false)
     }
 }
 
@@ -156,7 +153,7 @@ extension HomeViewController {
     private func updateDataSource() {
         var newSnapshot = HomeSnapshot()
         newSnapshot.appendSections([Section.main])
-        newSnapshot.appendItems(rooms.map { $0 }, toSection: .main)
+        newSnapshot.appendItems(rooms, toSection: .main)
         dataSource.apply(newSnapshot)
     }
 }

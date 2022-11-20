@@ -23,7 +23,7 @@ struct User: Codable, Hashable {
     var favoriteTown: String?
     var favoriteRooms: [FavoriteRoom] = []
     var reservations: [String] = []
-    var chatRooms: [String] = []
+    var chatRooms: [String]? = []
 
     var postCount: Int?
 

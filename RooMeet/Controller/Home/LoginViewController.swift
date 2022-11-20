@@ -11,6 +11,9 @@ import CryptoKit
 
 class LoginViewController: UIViewController {
     var currentNonce: String?
+    lazy var loginAnimationView =  RMLottie.shared.loginAnimationView
+
+    @IBOutlet weak var animationView: UIView!
 
     @IBOutlet weak var signInWithAppleButtonView: UIView! {
         didSet {
@@ -18,33 +21,50 @@ class LoginViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var logout: UIButton!
-
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        configureAnimationView()
         let authAppleIDButton = ASAuthorizationAppleIDButton()
         authAppleIDButton.addTarget(self, action: #selector(pressSignInWithApple), for: .touchUpInside)
 
         signInWithAppleButtonView.addSubview(authAppleIDButton)
 
         NSLayoutConstraint.activate([
+            signInWithAppleButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             authAppleIDButton.centerXAnchor.constraint(equalTo: signInWithAppleButtonView.centerXAnchor),
             authAppleIDButton.centerYAnchor.constraint(equalTo: signInWithAppleButtonView.centerYAnchor),
-            authAppleIDButton.widthAnchor.constraint(equalTo: signInWithAppleButtonView.widthAnchor, multiplier: 0.8),
-            authAppleIDButton.heightAnchor.constraint(equalTo: signInWithAppleButtonView.heightAnchor, multiplier: 0.8)
+            authAppleIDButton.widthAnchor.constraint(equalTo: signInWithAppleButtonView.widthAnchor),
+            authAppleIDButton.heightAnchor.constraint(equalTo: signInWithAppleButtonView.heightAnchor)
         ])
 
         AuthService.shared.delegate = self
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
+        RMLottie.shared.startLoopAnimate(animationView: loginAnimationView)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+        RMLottie.shared.stopLoopAnimate(animationView: loginAnimationView)
+    }
+
+    private func configureAnimationView() {
+        animationView.addSubview(loginAnimationView)
+
+        NSLayoutConstraint.activate([
+            loginAnimationView.widthAnchor.constraint(equalTo: animationView.widthAnchor),
+            loginAnimationView.heightAnchor.constraint(equalTo: animationView.heightAnchor),
+            loginAnimationView.centerXAnchor.constraint(equalTo: animationView.centerXAnchor),
+            loginAnimationView.centerYAnchor.constraint(equalTo: animationView.centerYAnchor)
+        ])
     }
 
     @objc func pressSignInWithApple() {
         signInWithApple()
-    }
-
-    @IBAction func logOutAction(_ sender: Any) {
-        AuthService.shared.logOut()
     }
 }
 
@@ -157,10 +177,13 @@ extension LoginViewController: UserServiceDelegate {
     func userService(isNewUser: Bool, user: User) {
         if isNewUser {
             let profileVC = IntroViewController(entryType: EntryType.new, user: user)
+            profileVC.modalPresentationStyle = .overCurrentContext
             present(profileVC, animated: true)
         } else {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            guard let RMTabBarVC = storyBoard.instantiateViewController(withIdentifier: "RMTabBarController") as? RMTabBarController else {
+            guard let RMTabBarVC = storyBoard.instantiateViewController(
+                withIdentifier: "RMTabBarController"
+            ) as? RMTabBarController else {
                 return
             }
             UIApplication.shared.windows.first?.rootViewController = RMTabBarVC

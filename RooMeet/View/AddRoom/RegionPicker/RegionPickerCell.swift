@@ -12,7 +12,7 @@ class RegionPickerCell: UITableViewCell {
     @IBOutlet weak var regionLabel: UILabel!
     var isPicked = false {
         didSet {
-            self.backgroundColor = isPicked == true ? UIColor.subColor : UIColor.mainLightColor
+            self.backgroundColor = isPicked == true ? UIColor.mainColor : UIColor.mainLightColor
             regionLabel.textColor = isPicked == true ? UIColor.white : UIColor.mainDarkColor
         }
     }

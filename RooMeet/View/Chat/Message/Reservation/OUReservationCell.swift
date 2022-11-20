@@ -11,37 +11,42 @@ import FirebaseFirestoreSwift
 
 class OUReservationCell: MessageBaseCell {
     static let reuseIdentifier = "\(OUReservationCell.self)"
+    var msgType: MsgType = .other
 
     @IBOutlet weak var denyButton: UIButton! {
         didSet {
             denyButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            denyButton.backgroundColor = .hexColor(hex: RMColor.mainDark.hex)
+            denyButton.backgroundColor = UIColor.mainDarkColor
             denyButton.tintColor = .white
-            denyButton.titleLabel!.font =  UIFont.regular(size: 15)
+            denyButton.titleLabel!.font = UIFont.regularSubTitle()
         }
     }
 
     @IBOutlet weak var agreeButton: UIButton! {
         didSet {
             agreeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            agreeButton.backgroundColor = .hexColor(hex: RMColor.mainBlue.hex)
+            agreeButton.backgroundColor = UIColor.mainColor
             agreeButton.tintColor = .white
-            agreeButton.titleLabel!.font =  UIFont.regular(size: 15)
+            agreeButton.titleLabel!.font = UIFont.regularSubTitle()
         }
     }
 
     @IBOutlet weak var statusLabel: UILabel! {
         didSet {
-            statusLabel.font = UIFont.regular(size: RMConstants.shared.reservationStatusFontSize)
+            statusLabel.font = UIFont.regularText()
         }
     }
 
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.regularSubTitle()
+        }
+    }
 
     @IBOutlet weak var cellView: UIView! {
         didSet {
             cellView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            cellView.backgroundColor = MsgType.other.backgroundColor
+            cellView.backgroundColor = msgType.backgroundColor
         }
     }
 
@@ -64,7 +69,9 @@ class OUReservationCell: MessageBaseCell {
         agreeButton.isHidden = true
         denyButton.addTarget(self, action: #selector(deny), for: .touchUpInside)
         agreeButton.addTarget(self, action: #selector(accept), for: .touchUpInside)
+    }
 
+    override func layoutSubviews() {
         NSLayoutConstraint.activate([
             dateLabel.leadingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: 5),
             timeLabel.leadingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: 5),
@@ -106,7 +113,7 @@ class OUReservationCell: MessageBaseCell {
                     statusLabel.isHidden = true
                     denyButton.isHidden = true
                     agreeButton.isHidden = true
-                    
+
                 } else {
                     titleLabel.text = "\(otherUser.name) 已發來預約"
                     let dateString = RMDateFormatter.shared.dateString(date: reservation.requestTime!.dateValue())

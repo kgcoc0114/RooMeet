@@ -268,8 +268,7 @@ class FirebaseService {
         FirestoreEndpoint.room.colRef
             .whereField("lat", isLessThanOrEqualTo: northWest.latitude)
             .whereField("lat", isGreaterThanOrEqualTo: southEast.latitude)
-            .getDocuments() {
-                querySnapshot, error in
+            .getDocuments() { querySnapshot, error in
                 if let error = error {
                     print("Error getting documents: \(error.localizedDescription)")
                 }
@@ -280,7 +279,9 @@ class FirebaseService {
                         do {
                             let item = try document.data(as: Room.self)
                             if let long = item.long {
-                                if long >= northWest.longitude && long <= southEast.longitude {
+                                if long >= northWest.longitude
+                                    && long <= southEast.longitude
+                                    && item.userID != UserDefaults.id {
                                     roomsWithoutOwnerData.append(item)
                                 }
                             }
@@ -312,13 +313,17 @@ class FirebaseService {
     // FIXME: add offset for paginate
     func fetchRooms(county: String? = nil, completion: @escaping (([Room]) -> Void)) {
         var query: Query
+        print("===", UserDefaults.id)
         if let county = county {
-            query = FirestoreEndpoint.room.colRef.whereField("county", isEqualTo: county)
+            query = FirestoreEndpoint.room.colRef
+                .whereField("county", isEqualTo: county)
+                .whereField("userID", isNotEqualTo: UserDefaults.id)
         } else {
             query = FirestoreEndpoint.room.colRef
+                .whereField("userID", isNotEqualTo: UserDefaults.id)
         }
 
-        query = query.order(by: "createdTime", descending: true)
+        query = query.order(by: "userID", descending: true)
 
         let group = DispatchGroup()
         getDocuments(query) { (rooms: [Room]) in
@@ -335,7 +340,10 @@ class FirebaseService {
                 }
             }
             group.notify(queue: DispatchQueue.main) {
-                completion(rooms)
+                let sortedRooms  = rooms.sorted { roomA, roomB in
+                    roomA.createdTime.seconds > roomB.createdTime.seconds
+                }
+                completion(sortedRooms)
             }
         }
     }

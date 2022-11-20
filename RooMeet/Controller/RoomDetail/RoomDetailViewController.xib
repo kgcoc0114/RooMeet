@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RoomDetailViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
                 <outlet property="ageLabel" destination="8Yx-eg-3E7" id="Ur7-at-uPG"/>
+                <outlet property="buttomView" destination="iCj-6q-Kkl" id="s6d-uK-yIZ"/>
                 <outlet property="chatButton" destination="S4q-yG-jyE" id="kHj-eA-pmh"/>
                 <outlet property="collectionView" destination="PBa-7D-EYM" id="beV-Su-MTH"/>
                 <outlet property="genderImageView" destination="ysc-me-dlp" id="TgX-K1-STb"/>
@@ -89,7 +91,7 @@
                             </constraints>
                         </imageView>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="backgroundColor" name="mainLightColor"/>
                     <constraints>
                         <constraint firstItem="CqM-NU-BMi" firstAttribute="height" secondItem="iCj-6q-Kkl" secondAttribute="height" multiplier="0.6" id="48T-Zf-NYy"/>
                         <constraint firstAttribute="height" constant="90" id="67H-yM-RV1"/>
@@ -123,6 +125,9 @@
         </view>
     </objects>
     <resources>
+        <namedColor name="mainLightColor">
+            <color red="0.93333333333333335" green="0.94901960784313721" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

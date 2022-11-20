@@ -21,21 +21,23 @@ class CUTextCell: MessageBaseCell {
             contentTextView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
             contentTextView.isScrollEnabled = false
             contentTextView.isEditable = false
+            contentTextView.font = UIFont.regularText()
         }
     }
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
         selectionStyle = .none
-        addSubview(dateLabel)
-        addSubview(timeLabel)
     }
 
     override func layoutSubviews() {
         NSLayoutConstraint.activate([
-            contentTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: RMConstants.shared.CUTrailing),
-            contentTextView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: RMConstants.shared.OULeading),
+            contentTextView.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant: RMConstants.shared.CUTrailing),
+            contentTextView.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: RMConstants.shared.OULeading),
             contentTextView.heightAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5),
             dateLabel.trailingAnchor.constraint(equalTo: contentTextView.leadingAnchor, constant: -5),
             timeLabel.trailingAnchor.constraint(equalTo: contentTextView.leadingAnchor, constant: -5),
@@ -51,14 +53,7 @@ class CUTextCell: MessageBaseCell {
     override func configureLayout() {
         if let message = message {
             contentTextView.text = message.content
-            let messageDate = message.createdTime.dateValue()
-
-            dateLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "MM/dd")
-            timeLabel.text = RMDateFormatter.shared.datetimeWithLocaleString(date: messageDate, dateFormat: "HH:mm")
-
-            if isSameDate(date: messageDate) {
-                dateLabel.isHidden = true
-            }
+            assignDatetime(messageDate: message.createdTime.dateValue())
         }
     }
 }

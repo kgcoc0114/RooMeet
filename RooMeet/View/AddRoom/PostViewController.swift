@@ -102,8 +102,8 @@ class PostViewController: UIViewController {
     @IBOutlet weak var submitButton: UIButton! {
         didSet {
             submitButton.setTitle("Add Post", for: .normal)
-            submitButton.backgroundColor = RMConstants.shared.mainColor
-            submitButton.tintColor = RMConstants.shared.mainLightColor
+            submitButton.backgroundColor = UIColor.mainColor
+            submitButton.tintColor = UIColor.mainBackgroundColor
             submitButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
         }
     }
@@ -332,8 +332,8 @@ extension PostViewController: UICollectionViewDataSource {
                 ruleType: title,
                 tags: PostSection.allCases[indexPath.section].tags,
                 selectedTags: selectedTags,
-                mainColor: RMConstants.shared.mainColor,
-                lightColor: RMConstants.shared.mainLightBackgroundColor,
+                mainColor: UIColor.mainColor,
+                lightColor: UIColor.mainBackgroundColor,
                 mainLightBackgroundColor: .white,
                 enableTagSelection: true
             )
@@ -666,7 +666,6 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                 } else {
                     RMProgressHUD.showSuccess(view: self.view)
                 }
-                RMProgressHUD.dismiss()
                 self.navigationController?.popViewController(animated: true)
             }
         } else {
@@ -680,9 +679,8 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                     } else {
                         RMProgressHUD.showSuccess(view: self.view)
                     }
+                    self.navigationController?.popViewController(animated: true)
                 }
-                RMProgressHUD.dismiss()
-                self.navigationController?.popViewController(animated: true)
             }
         }
     }

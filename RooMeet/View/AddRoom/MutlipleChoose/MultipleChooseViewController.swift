@@ -29,7 +29,7 @@ class MultipleChooseViewController: RMButtomSheetViewController {
     lazy var titleLabel: UILabel! = {
         let label = UILabel()
         label.font = UIFont.bold(size: 18)
-        label.textColor = UIColor.main
+        label.textColor = UIColor.mainColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

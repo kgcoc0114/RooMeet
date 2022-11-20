@@ -10,6 +10,22 @@ import FirebaseStorage
 
 class IntroViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
+
+    @IBOutlet weak var dismissButton: UIButton! {
+        didSet {
+            dismissButton.setTitle("", for: .normal)
+        }
+    }
+
+    @IBOutlet weak var subnitButton: UIButton! {
+        didSet {
+            subnitButton.setTitle("Save", for: .normal)
+            subnitButton.backgroundColor = UIColor.mainColor
+            subnitButton.tintColor = UIColor.mainBackgroundColor
+            subnitButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+        }
+    }
+
     enum Section: CaseIterable {
         case main
         case rules
@@ -58,11 +74,18 @@ class IntroViewController: UIViewController {
             guard let self = self else { return }
             self.user = user
         }
+        dismissButton.isHidden = entryType == .new
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        self.tabBarController?.tabBar.isHidden = true
         updateDataSource()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
     }
 
     private func configureCollectionView() {
@@ -89,8 +112,10 @@ class IntroViewController: UIViewController {
                 }
                 cell.configureCell(data: data)
                 return cell
-            case .rules(_):
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemsCell.reuseIdentifier, for: indexPath) as? ItemsCell else {
+            case .rules:
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: ItemsCell.reuseIdentifier,
+                    for: indexPath) as? ItemsCell else {
                     return UICollectionViewCell()
                 }
 
@@ -98,7 +123,7 @@ class IntroViewController: UIViewController {
                     ruleType: "要求",
                     tags: self.rules,
                     selectedTags: self.user?.rules ?? [],
-                    mainColor: UIColor.main,
+                    mainColor: UIColor.mainColor,
                     lightColor: UIColor.mainLightColor,
                     mainLightBackgroundColor: UIColor.mainBackgroundColor,
                     enableTagSelection: true
@@ -125,6 +150,10 @@ class IntroViewController: UIViewController {
         uploadImages(image: profileImage)
     }
 
+    @IBAction func dismissAction(_ sender: Any) {
+        dismiss(animated: true)
+    }
+
     func updateUserDefault(user: User) {
         if let rules = user.rules {
             UserDefaults.rules = rules
@@ -136,6 +165,10 @@ class IntroViewController: UIViewController {
 
         if let birthday = user.birthday {
             UserDefaults.birthday = birthday
+        }
+
+        if let profilePhoto = user.profilePhoto {
+            UserDefaults.profilePhoto = profilePhoto
         }
 
         if let favoriteCounty = user.favoriteCounty {
@@ -164,7 +197,7 @@ extension IntroViewController {
                     heightDimension: .estimated(30))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20)
                 return section
             case .rules:
                 let itemSize = NSCollectionLayoutSize(
@@ -177,6 +210,7 @@ extension IntroViewController {
                     heightDimension: .estimated(30))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20)
                 return section
             }
         }
@@ -279,14 +313,14 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
             let uniqueString = NSUUID().uuidString
             let storageRef = Storage.storage().reference(withPath: "Profile").child("\(uniqueString).png")
             if let uploadData = image.scale(scaleFactor: 0.1).jpegData(compressionQuality: 0.1) {
-                storageRef.putData(uploadData, completion: {[weak self] data, error in
+                storageRef.putData(uploadData, completion: { [weak self] data, error in
                     if let error = error {
                         // TODO: Error Handle
                         print("Error: \(error.localizedDescription)")
                         return
                     }
 
-                    storageRef.downloadURL { [weak self] (url, error) in
+                    storageRef.downloadURL { [weak self] url, error in
                         guard let downloadURL = url else {
                             return
                         }
@@ -324,8 +358,8 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
         }
 
         userRef.updateData(updateData)
-        completion?(user)
         updateUserDefault(user: user)
+        completion?(user)
         if entryType == .new {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
             guard let RMTabBarVC = storyBoard.instantiateViewController(
