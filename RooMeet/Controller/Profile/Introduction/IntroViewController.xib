@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,6 +13,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="IntroViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="cOi-e8-DTc" id="fvh-bI-bTL"/>
+                <outlet property="dismissButton" destination="wsG-Sv-VtU" id="9ez-Nk-lYU"/>
+                <outlet property="subnitButton" destination="orC-K6-nBf" id="6rv-D7-8NN"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -21,7 +24,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="cOi-e8-DTc">
-                    <rect key="frame" x="0.0" y="44" width="414" height="787"/>
+                    <rect key="frame" x="0.0" y="59" width="414" height="762"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="URW-qK-gxt">
                         <size key="itemSize" width="128" height="128"/>
@@ -30,30 +33,58 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3PJ-fN-lbT">
-                    <rect key="frame" x="10" y="831" width="394" height="31"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Zj-jF-36q">
+                    <rect key="frame" x="0.0" y="821" width="414" height="75"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="orC-K6-nBf">
+                            <rect key="frame" x="20" y="10" width="374" height="55"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Confirm"/>
+                            <connections>
+                                <action selector="submitAction:" destination="-1" eventType="touchUpInside" id="29u-Uv-Bgy"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="orC-K6-nBf" firstAttribute="leading" secondItem="9Zj-jF-36q" secondAttribute="leading" constant="20" id="S0T-gA-naN"/>
+                        <constraint firstAttribute="trailing" secondItem="orC-K6-nBf" secondAttribute="trailing" constant="20" id="SQH-vb-KnZ"/>
+                        <constraint firstAttribute="height" constant="75" id="Xc0-He-ClN"/>
+                        <constraint firstItem="orC-K6-nBf" firstAttribute="top" secondItem="9Zj-jF-36q" secondAttribute="top" constant="10" id="nKt-wl-zpg"/>
+                        <constraint firstAttribute="bottom" secondItem="orC-K6-nBf" secondAttribute="bottom" constant="10" id="w1P-nb-6Rs"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wsG-Sv-VtU">
+                    <rect key="frame" x="321" y="54" width="83" height="31"/>
+                    <color key="tintColor" name="mainColor"/>
                     <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" image="multiply" catalog="system" title="Button"/>
                     <connections>
-                        <action selector="submitAction:" destination="-1" eventType="touchUpInside" id="Je2-HB-YzI"/>
+                        <action selector="dismissAction:" destination="-1" eventType="touchUpInside" id="5Ai-JE-e8T"/>
                     </connections>
                 </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="cOi-e8-DTc" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="1g0-eo-DUN"/>
-                <constraint firstItem="3PJ-fN-lbT" firstAttribute="top" secondItem="cOi-e8-DTc" secondAttribute="bottom" id="4Vz-fp-Dah"/>
+                <constraint firstItem="cOi-e8-DTc" firstAttribute="top" secondItem="wsG-Sv-VtU" secondAttribute="top" constant="5" id="1g0-eo-DUN"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="cOi-e8-DTc" secondAttribute="trailing" id="525-4w-1S6"/>
-                <constraint firstItem="3PJ-fN-lbT" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="FD1-7b-aFR"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="3PJ-fN-lbT" secondAttribute="trailing" constant="10" id="OIB-md-wqx"/>
+                <constraint firstAttribute="bottom" secondItem="9Zj-jF-36q" secondAttribute="bottom" id="5Y4-4i-pBR"/>
+                <constraint firstItem="9Zj-jF-36q" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="FVv-2X-ysg"/>
                 <constraint firstItem="cOi-e8-DTc" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="RbQ-2N-dxV"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="3PJ-fN-lbT" secondAttribute="bottom" id="SvH-6v-EqB"/>
+                <constraint firstItem="wsG-Sv-VtU" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="10" id="i0D-EN-Hmx"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="wsG-Sv-VtU" secondAttribute="trailing" constant="10" id="kmz-Oh-Hcq"/>
+                <constraint firstItem="9Zj-jF-36q" firstAttribute="top" secondItem="cOi-e8-DTc" secondAttribute="bottom" id="sky-qW-jQ7"/>
+                <constraint firstItem="9Zj-jF-36q" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="zYf-NI-hh8"/>
             </constraints>
             <point key="canvasLocation" x="131.8840579710145" y="91.741071428571431"/>
         </view>
     </objects>
     <resources>
+        <image name="multiply" catalog="system" width="128" height="111"/>
+        <namedColor name="mainColor">
+            <color red="0.3919999897480011" green="0.53299999237060547" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

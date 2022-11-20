@@ -10,50 +10,66 @@ import UIKit
 class RoomCell: UICollectionViewCell {
     static let identifier = "RoomCell"
 
-    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel! {
+        didSet {
+            priceLabel.textColor = UIColor.subTitleRedColor
+            priceLabel.font = UIFont.regularText()
+        }
+    }
+
     @IBOutlet weak var featuteTagButton: UIButton! {
         didSet {
-            featuteTagButton.titleLabel!.font = UIFont.regular(size: 15)
-            featuteTagButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
-            featuteTagButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+            featuteTagButton.titleLabel!.font = UIFont.regularText()
+            featuteTagButton.contentEdgeInsets = UIEdgeInsets(top: 1, left: 6, bottom: 1, right: 6)
+            featuteTagButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
             featuteTagButton.isEnabled = false
             featuteTagButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
-            featuteTagButton.setTitleColor(.hexColor(hex: "#FEF9EB"), for: .disabled)
-            featuteTagButton.backgroundColor = .hexColor(hex: "#FAC748")
+            featuteTagButton.setTitleColor(.white, for: .disabled)
+            featuteTagButton.backgroundColor = .subTitleOrangeColor
         }
     }
 
     @IBOutlet weak var leftTagButton: UIButton! {
         didSet {
-            leftTagButton.titleLabel!.font = UIFont.regular(size: 15)
-            leftTagButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 8, bottom: 5, right: 8)
+            leftTagButton.titleLabel!.font = UIFont.regularText()
+            leftTagButton.contentEdgeInsets = UIEdgeInsets(top: 1, left: 6, bottom: 1, right: 6)
             leftTagButton.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
             leftTagButton.isEnabled = false
             leftTagButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
-            leftTagButton.setTitleColor(.hexColor(hex: "#93393F"), for: .disabled)
-            leftTagButton.backgroundColor = .hexColor(hex: "#F9F0F1")
+            leftTagButton.setTitleColor(.subTitleRedBGColor, for: .disabled)
+            leftTagButton.backgroundColor = .subTitleRedColor
         }
     }
+
     @IBOutlet weak var regionLabel: UILabel! {
         didSet {
-            regionLabel.textColor = .hexColor(hex: "#274156")
-            regionLabel.font = UIFont.bold(size: 16)
+            regionLabel.textColor = UIColor.mainColor
+            regionLabel.font = UIFont.boldText()
         }
     }
+
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.textColor = UIColor.mainDarkColor
+            titleLabel.font = UIFont.boldTitle()
+            titleLabel.numberOfLines = 1
+        }
+    }
+
     @IBOutlet weak var imageView: UIImageView! {
         didSet {
             imageView.contentMode = .scaleAspectFill
             imageView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
             imageView.clipsToBounds = true
-            imageView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            imageView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
         }
     }
 
     @IBOutlet weak var roomCardView: UIView! {
         didSet {
-            roomCardView.layer.borderWidth = 0.1
-            roomCardView.layer.borderColor = UIColor.lightGray.cgColor
-            roomCardView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            roomCardView.layer.borderWidth = 0.5
+            roomCardView.layer.borderColor = UIColor.mainLightColor.cgColor
+            roomCardView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
         }
     }
 
@@ -70,12 +86,22 @@ class RoomCell: UICollectionViewCell {
             imageView.image = UIImage(systemName: "house")?.withTintColor(.systemGray6)
         }
 
+        if !data.title.isEmpty {
+            titleLabel.text = "\(data.title)"
+        }
+
         if !data.county.isEmpty && !data.town.isEmpty {
             regionLabel.text = "\(data.county)\(data.town)"
         }
 
         if let price = data.roomMinPrice {
             priceLabel.text = "\(price)"
+        }
+
+        if !data.roomHighLights.isEmpty {
+            featuteTagButton.setTitle(data.roomHighLights.first, for: .disabled)
+        } else {
+            featuteTagButton.isHidden = true
         }
 
         let count = data.rooms.count

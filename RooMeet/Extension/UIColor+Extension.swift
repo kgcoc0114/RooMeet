@@ -70,6 +70,7 @@ extension UIColor {
     static let msgBackgroundColor = UIColor(named: "msgBackgroundColor") ?? UIColor.darkGray
     static let subTitleOrangeColor = UIColor(named: "subTitleOrangeColor") ?? UIColor.darkGray
     static let subTitleRedColor = UIColor(named: "subTitleRedColor") ?? UIColor.darkGray
+    static let subTitleRedBGColor = UIColor(named: "subTitleRedBGColor") ?? UIColor.darkGray
 
     // swiftlint:enable identifier_name
     private static func RMColor(_ color: RMColor) -> UIColor? {

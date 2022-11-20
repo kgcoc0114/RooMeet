@@ -81,7 +81,7 @@ class PostBasicCell: UICollectionViewCell {
             let datePicker = UIDatePicker()
             datePicker.datePickerMode = .date
             datePicker.preferredDatePickerStyle = .inline
-            datePicker.tintColor = .hexColor(hex: "#437471")
+            datePicker.tintColor = .mainColor
 
             datePickerTextField.placeholder = "YYYY/MM/DD"
             datePickerTextField.inputView = datePicker

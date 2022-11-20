@@ -134,8 +134,6 @@
 		E5DC0FE32911FFB300EB57FD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC0FE22911FFB300EB57FD /* LocationService.swift */; };
 		E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */; };
 		E5DEEEB52921150A00A649C1 /* Reservation.json in Resources */ = {isa = PBXBuildFile; fileRef = E5DEEEB42921150A00A649C1 /* Reservation.json */; };
-		E5DEEEB829221A0600A649C1 /* EditOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEEEB629221A0600A649C1 /* EditOptionViewController.swift */; };
-		E5DEEEB929221A0600A649C1 /* EditOptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DEEEB729221A0600A649C1 /* EditOptionViewController.xib */; };
 		E5DEEEBD292226E800A649C1 /* RoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEEEBB292226E800A649C1 /* RoomCell.swift */; };
 		E5DEEEBE292226E800A649C1 /* RoomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DEEEBC292226E800A649C1 /* RoomCell.xib */; };
 		E5DEEEC82922814900A649C1 /* Regions.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5DEEEC72922814900A649C1 /* Regions.plist */; };
@@ -314,8 +312,6 @@
 		E5DC0FE22911FFB300EB57FD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		E5DEEEB42921150A00A649C1 /* Reservation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Reservation.json; sourceTree = "<group>"; };
-		E5DEEEB629221A0600A649C1 /* EditOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditOptionViewController.swift; sourceTree = "<group>"; };
-		E5DEEEB729221A0600A649C1 /* EditOptionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditOptionViewController.xib; sourceTree = "<group>"; };
 		E5DEEEBB292226E800A649C1 /* RoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCell.swift; sourceTree = "<group>"; };
 		E5DEEEBC292226E800A649C1 /* RoomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomCell.xib; sourceTree = "<group>"; };
 		E5DEEEC72922814900A649C1 /* Regions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Regions.plist; sourceTree = "<group>"; };
@@ -548,8 +544,6 @@
 		E587293F291CFFE900C12E9E /* RoomDetail */ = {
 			isa = PBXGroup;
 			children = (
-				E5DEEEB629221A0600A649C1 /* EditOptionViewController.swift */,
-				E5DEEEB729221A0600A649C1 /* EditOptionViewController.xib */,
 				E5EEE2082912BCC600CAAE84 /* RoomDetailViewController.swift */,
 				E5EEE2092912BCC600CAAE84 /* RoomDetailViewController.xib */,
 				E5B984C7291BD2E4006DD8D7 /* ReservationViewController.swift */,
@@ -1038,7 +1032,6 @@
 				E51419C92920D52100813D25 /* CallWaitingView.json in Resources */,
 				E59B82F32919117300F02CEC /* CallViewController.xib in Resources */,
 				E5EEE20D2913A8C900CAAE84 /* Chat.storyboard in Resources */,
-				E5DEEEB929221A0600A649C1 /* EditOptionViewController.xib in Resources */,
 				E5D76D04291D21900074DFD7 /* ProfileRSVNViewController.xib in Resources */,
 				E5B018AF2915692600A09788 /* OUTextCell.xib in Resources */,
 				E5B984C6291B905F006DD8D7 /* DateCell.xib in Resources */,
@@ -1157,7 +1150,6 @@
 				E5604FE32918EC22007AE655 /* WebRTCClient.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
 				E560135A292771D600EE0083 /* LocationPickerViewController.swift in Sources */,
-				E5DEEEB829221A0600A649C1 /* EditOptionViewController.swift in Sources */,
 				E5B018C02916351300A09788 /* RoomImagesCell.swift in Sources */,
 				E593F013291012DF00B35550 /* OtherFeeHeaderCell.swift in Sources */,
 				E593F0092910065C00B35550 /* RulesCell.swift in Sources */,

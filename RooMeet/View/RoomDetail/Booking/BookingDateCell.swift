@@ -90,8 +90,8 @@ protocol BookingDateCellDelegate: AnyObject {
 
 class BookingDateCell: UICollectionViewCell {
     static let identifier = "BookingDateCell"
-    private let selectedColor = UIColor.hexColor(hex: "#264054")
-    private let unselectedColor = UIColor.hexColor(hex: "#D89A9E")
+    private let selectedColor = UIColor.mainDarkColor
+    private let unselectedColor = UIColor.subTitleRedColor
 
 
     weak var delegate: BookingDateCellDelegate?
@@ -110,7 +110,7 @@ class BookingDateCell: UICollectionViewCell {
         didSet {
             dateView.layer.borderWidth = 1
             dateView.layer.borderColor = unselectedColor.cgColor
-            dateView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+            dateView.layer.cornerRadius = RMConstants.shared.dataPickerCornerRadius
             dateView.backgroundColor = .clear
             // action
             dateView.isUserInteractionEnabled = true
