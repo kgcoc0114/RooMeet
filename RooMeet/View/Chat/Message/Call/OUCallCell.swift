@@ -9,7 +9,7 @@ import UIKit
 
 class OUCallCell: MessageBaseCell {
     static let reuseIdentifier = "\(OUCallCell.self)"
-
+    var msgType: MsgType = .other
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -27,13 +27,19 @@ class OUCallCell: MessageBaseCell {
     @IBOutlet weak var messageView: UIView! {
         didSet {
             messageView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            messageView.backgroundColor = .white
+            messageView.backgroundColor = msgType.backgroundColor
+        }
+    }
+
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.regularSubTitle()
         }
     }
 
     @IBOutlet weak var callTimeLabel: UILabel! {
         didSet {
-            callTimeLabel.font = UIFont.regular(size: RMConstants.shared.reservationStatusFontSize)
+            callTimeLabel.font = UIFont.regularText()
         }
     }
 
@@ -66,7 +72,5 @@ class OUCallCell: MessageBaseCell {
                 avatarView.image = UIImage.asset(.profile_user)
             }
         }
-
-
     }
 }

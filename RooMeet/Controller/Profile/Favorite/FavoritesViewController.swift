@@ -63,8 +63,10 @@ class FavoritesViewController: UIViewController {
             UINib(nibName: "RoomDisplayCell", bundle: nil),
             forCellWithReuseIdentifier: RoomDisplayCell.identifier)
 
-        dataSource = FavoriteDataSource(collectionView: collectionView) { collectionView, indexPath, room in
-            guard let cell = collectionView.dequeueReusableCell(
+        dataSource = FavoriteDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, room in
+            guard
+                let self = self,
+                let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: RoomDisplayCell.identifier,
                 for: indexPath) as? RoomDisplayCell else {
                 return UICollectionViewCell()
@@ -72,6 +74,7 @@ class FavoritesViewController: UIViewController {
 
             cell.configureCell(data: room)
             cell.isLike = true
+            cell.likeButton.isHidden = self.entryPage == .ownPost
             cell.delegate = self
             return cell
         }

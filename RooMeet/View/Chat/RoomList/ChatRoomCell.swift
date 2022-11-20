@@ -29,7 +29,7 @@ class ChatRoomCell: UITableViewCell {
         userNameLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         contentLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         timeLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
-        profileImageView.contentMode = .scaleToFill
+        profileImageView.contentMode = .scaleAspectFill
     }
     override func layoutSubviews() {
         super.layoutSubviews()

@@ -15,8 +15,8 @@ class EditFeeController: UIViewController {
     }
     @IBOutlet weak var confirmButton: UIButton! {
         didSet {
-            confirmButton.backgroundColor = RMConstants.shared.mainColor
-            confirmButton.tintColor = RMConstants.shared.mainLightColor
+            confirmButton.backgroundColor = UIColor.mainColor
+            confirmButton.tintColor = UIColor.mainBackgroundColor
             confirmButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
         }
     }
@@ -38,7 +38,7 @@ class EditFeeController: UIViewController {
         super.init(nibName: "EditFeeController", bundle: nil)
 
         if entryType == .edit,
-           let data = data {
+            let data = data {
             self.billInfo = data
         }
         self.entryType = entryType
@@ -72,7 +72,7 @@ extension EditFeeController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(
             withIdentifier: FeeInfoCell.reuseIdentifier,
             for: indexPath) as? FeeInfoCell else {
-            fatalError()
+            fatalError("ERROR: - Create FeeInfoCell ERROR")
         }
 
         let feeType = FeeType.allCases[indexPath.item]

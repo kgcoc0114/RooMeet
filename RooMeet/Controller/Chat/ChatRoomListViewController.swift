@@ -93,7 +93,7 @@ extension ChatRoomListViewController {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
         newSnapshot.appendItems(chatRooms.map({ $0 }), toSection: .chatRoom)
-        dataSource.apply(newSnapshot, animatingDifferences: true)
+        dataSource.apply(newSnapshot, animatingDifferences: false)
     }
 }
 

@@ -58,6 +58,18 @@ extension UIFont {
         return RMFont(.regular, size: RMFontSize.text.rawValue)
     }
 
+    static func boldTitle() -> UIFont {
+        return self.bold(size: RMFontSize.title.rawValue) ?? UIFont.systemFont(ofSize: 18)
+    }
+
+    static func boldSubTitle() -> UIFont {
+        return self.bold(size: RMFontSize.subTitle.rawValue) ?? UIFont.systemFont(ofSize: 16)
+    }
+
+    static func boldText() -> UIFont {
+        return self.bold(size: RMFontSize.text.rawValue) ?? UIFont.systemFont(ofSize: 14)
+    }
+
 
     private static func RMFont(_ font: RMFontName, size: CGFloat) -> UIFont {
         return UIFont(name: font.rawValue, size: size) ?? UIFont.systemFont(ofSize: 16)

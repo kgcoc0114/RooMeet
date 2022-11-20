@@ -13,7 +13,7 @@ class RoomDetailHeaderView: UICollectionReusableView {
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.regularTitle()
-            titleLabel.textColor = UIColor.main
+            titleLabel.textColor = UIColor.mainDarkColor
         }
     }
     override func awakeFromNib() {

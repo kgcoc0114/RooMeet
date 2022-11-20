@@ -22,7 +22,7 @@ class RoomDisplayCell: UICollectionViewCell {
             likeButton.backgroundColor = .clear
             likeButton.setTitle("", for: .normal)
             likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            likeButton.tintColor = UIColor.subTitleColor
+            likeButton.tintColor = UIColor.subTitleRedColor
         }
     }
 
@@ -51,7 +51,7 @@ class RoomDisplayCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         titleLabel.font = UIFont.regular(size: 16)
-        titleLabel.textColor = UIColor.main
+        titleLabel.textColor = UIColor.mainColor
         displayBackgroundView.layer.cornerRadius = 10
         imageView.layer.cornerRadius = 10
         imageView.contentMode = .scaleAspectFill
