@@ -41,7 +41,7 @@ class ItemsCell: UICollectionViewCell {
 
     func configureTitleInDetailPage() {
         titleLabel.font = UIFont.regularTitle()
-        titleLabel.textColor = UIColor.main
+        titleLabel.textColor = UIColor.mainColor
     }
 
     func configureTagView(ruleType: String, tags: [String], selectedTags: [String], mainColor: UIColor, lightColor: UIColor, mainLightBackgroundColor: UIColor, enableTagSelection: Bool) {

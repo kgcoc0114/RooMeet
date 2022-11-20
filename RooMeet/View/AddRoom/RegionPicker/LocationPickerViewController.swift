@@ -13,7 +13,7 @@ class LocationPickerViewController: RMButtomSheetViewController {
         let label = UILabel()
         label.text = "選擇地區"
         label.font = UIFont.bold(size: 18)
-        label.textColor = UIColor.main
+        label.textColor = UIColor.mainColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

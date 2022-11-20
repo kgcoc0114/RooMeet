@@ -51,11 +51,11 @@ class FeeInfoCell: UITableViewCell {
     @IBOutlet weak var segmentControl: RMSegmentedControl! {
         didSet {
             segmentControl.items = AffordType.allCases.map { $0.description }
-            segmentControl.borderColor = RMConstants.shared.mainLightBackgroundColor
-            segmentControl.selectedLabelColor = RMConstants.shared.mainColor
-            segmentControl.unselectedLabelColor = RMConstants.shared.mainColor
+            segmentControl.borderColor = UIColor.mainLightColor
+            segmentControl.selectedLabelColor = UIColor.mainDarkColor
+            segmentControl.unselectedLabelColor = UIColor.mainColor
             segmentControl.backgroundColor = .white
-            segmentControl.thumbColor = RMConstants.shared.mainLightBackgroundColor
+            segmentControl.thumbColor = UIColor.mainLightColor
             segmentControl.selectedIndex = 0
             segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
         }
@@ -63,25 +63,25 @@ class FeeInfoCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var govTypeButton: FeeButton! {
         didSet {
-            govTypeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            govTypeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius * 0.9
             govTypeButton.isSelected = false
         }
     }
     @IBOutlet weak var priceTextField: RMBaseTextField!
     @IBOutlet weak var priceUnitLabel: UILabel!
-    @IBOutlet weak var shareButton: FeeButton! {
-        didSet {
-            shareButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            shareButton.isSelected = false
-        }
-    }
-
-    @IBOutlet weak var sperateButton: FeeButton! {
-        didSet {
-            sperateButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            sperateButton.isSelected = false
-        }
-    }
+//    @IBOutlet weak var shareButton: FeeButton! {
+//        didSet {
+//            shareButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+//            shareButton.isSelected = false
+//        }
+//    }
+//
+//    @IBOutlet weak var sperateButton: FeeButton! {
+//        didSet {
+//            sperateButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+//            sperateButton.isSelected = false
+//        }
+//    }
 
     var feeType: FeeType?
     var affordType: AffordType?
@@ -113,7 +113,7 @@ class FeeInfoCell: UITableViewCell {
             govTypeButton.setTitle(feeType.isGovString(), for: .normal)
             if entryType == .edit,
                 let data = data,
-                let isGov = data.isGov  {
+                let isGov = data.isGov {
                 govTypeButton.isSelected = isGov
             }
         case .cable, .internet, .management:
@@ -129,39 +129,39 @@ class FeeInfoCell: UITableViewCell {
             }
 
             if let fee = feeDetail.fee,
-               fee != 0 {
+                fee != 0 {
                 priceTextField.text = "\(fee)"
             }
         }
     }
 
-    @IBAction func tapSperateButton(_ sender: Any) {
-        if affordType == .sperate && sperateButton.isSelected == true {
-            sperateButton.isSelected.toggle()
-        } else {
-            sperateButton.isSelected.toggle()
-            shareButton.isSelected = !sperateButton.isSelected
-        }
-        affordType = .sperate
-
-        guard let affordType = affordType else { return }
-        feeDetail.affordType = affordType.rawValue
-        delegate?.passData(self)
-    }
-
-    @IBAction func tapShareButton(_ sender: Any) {
-        if affordType == .share && shareButton.isSelected == true {
-            shareButton.isSelected.toggle()
-        } else {
-            shareButton.isSelected.toggle()
-            sperateButton.isSelected = !shareButton.isSelected
-        }
-        affordType = .share
-
-        guard let affordType = affordType else { return }
-        feeDetail.affordType = affordType.rawValue
-        delegate?.passData(self)
-    }
+//    @IBAction func tapSperateButton(_ sender: Any) {
+//        if affordType == .sperate && sperateButton.isSelected == true {
+//            sperateButton.isSelected.toggle()
+//        } else {
+//            sperateButton.isSelected.toggle()
+//            shareButton.isSelected = !sperateButton.isSelected
+//        }
+//        affordType = .sperate
+//
+//        guard let affordType = affordType else { return }
+//        feeDetail.affordType = affordType.rawValue
+//        delegate?.passData(self)
+//    }
+//
+//    @IBAction func tapShareButton(_ sender: Any) {
+//        if affordType == .share && shareButton.isSelected == true {
+//            shareButton.isSelected.toggle()
+//        } else {
+//            shareButton.isSelected.toggle()
+//            sperateButton.isSelected = !shareButton.isSelected
+//        }
+//        affordType = .share
+//
+//        guard let affordType = affordType else { return }
+//        feeDetail.affordType = affordType.rawValue
+//        delegate?.passData(self)
+//    }
 
     @IBAction func tapGovTypeButton(_ sender: Any) {
         govTypeButton.isSelected.toggle()
@@ -190,11 +190,11 @@ class FeeButton: UIButton {
     override var isSelected: Bool {
         didSet {
             if isSelected == true {
-                self.backgroundColor = RMConstants.shared.mainColor
-                self.tintColor = RMConstants.shared.mainLightColor
+                self.backgroundColor = UIColor.mainColor
+                self.tintColor = UIColor.mainLightColor
             } else {
-                self.backgroundColor = RMConstants.shared.mainLightColor
-                self.tintColor = RMConstants.shared.mainColor
+                self.backgroundColor = UIColor.mainLightColor
+                self.tintColor = UIColor.mainColor
             }
         }
     }

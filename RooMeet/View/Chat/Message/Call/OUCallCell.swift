@@ -9,7 +9,7 @@ import UIKit
 
 class OUCallCell: MessageBaseCell {
     static let reuseIdentifier = "\(OUCallCell.self)"
-
+    var msgType: MsgType = .other
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -27,7 +27,7 @@ class OUCallCell: MessageBaseCell {
     @IBOutlet weak var messageView: UIView! {
         didSet {
             messageView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            messageView.backgroundColor = .white
+            messageView.backgroundColor = msgType.backgroundColor
         }
     }
 

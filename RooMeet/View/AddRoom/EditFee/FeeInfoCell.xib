@@ -19,13 +19,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vY4-ez-he1">
-                        <rect key="frame" x="35" y="22.5" width="37.5" height="18"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                        <rect key="frame" x="35" y="22" width="39.5" height="19.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="R7j-Nv-qe5">
-                        <rect key="frame" x="100" y="15" width="152.5" height="34"/>
+                        <rect key="frame" x="100" y="15" width="154.5" height="34"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Gl-qQ-gJ6" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="100" height="34"/>
@@ -37,8 +37,8 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="arU-cs-doI">
-                                <rect key="frame" x="115" y="0.0" width="37.5" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <rect key="frame" x="115" y="0.0" width="39.5" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -52,16 +52,18 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8f-Zk-Y5g" customClass="FeeButton" customModule="RooMeet" customModuleProvider="target">
-                        <rect key="frame" x="287.5" y="19.5" width="44.5" height="25"/>
+                        <rect key="frame" x="289.5" y="19.5" width="57" height="25"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="25" id="qcr-8I-Qdt"/>
                         </constraints>
-                        <state key="normal" title="Button"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="台電"/>
                         <buttonConfiguration key="configuration" style="plain" title="台電">
-                            <fontDescription key="titleFontDescription" type="system" pointSize="10"/>
+                            <fontDescription key="titleFontDescription" type="system" pointSize="16"/>
                         </buttonConfiguration>
                         <connections>
-                            <action selector="tapGovTypeButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Tpt-Ks-zy2"/>
+                            <action selector="tapGovTypeButton:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="mW9-sR-33a"/>
                         </connections>
                     </button>
                 </subviews>
@@ -82,7 +84,7 @@
                 <constraint firstItem="R7j-Nv-qe5" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="100" id="ov1-SE-vZB"/>
             </constraints>
             <connections>
-                <outlet property="govTypeButton" destination="A8f-Zk-Y5g" id="UPc-BV-6Dw"/>
+                <outlet property="govTypeButton" destination="A8f-Zk-Y5g" id="qYv-eK-riM"/>
                 <outlet property="priceTextField" destination="6Gl-qQ-gJ6" id="GsA-gN-Is4"/>
                 <outlet property="priceUnitLabel" destination="arU-cs-doI" id="Akf-nD-4Kh"/>
                 <outlet property="segmentControl" destination="GeH-dT-5wT" id="z2f-5Y-h19"/>

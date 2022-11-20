@@ -11,10 +11,12 @@ import FirebaseFirestoreSwift
 
 class CUReservationCell: MessageBaseCell {
     static let reuseIdentifier = "\(CUReservationCell.self)"
+    var msgType: MsgType = .currentUser
+
     @IBOutlet weak var messageView: UIView! {
         didSet {
             messageView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            messageView.backgroundColor = .hexColor(hex: RMColor.palePink.hex)
+            messageView.backgroundColor = msgType.backgroundColor
         }
     }
 
@@ -38,7 +40,7 @@ class CUReservationCell: MessageBaseCell {
     @IBOutlet weak var agreeButton: UIButton! {
         didSet {
             agreeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            agreeButton.backgroundColor = UIColor.main
+            agreeButton.backgroundColor = UIColor.mainColor
             agreeButton.tintColor = .white
             agreeButton.titleLabel!.font = UIFont.regularSubTitle()
         }

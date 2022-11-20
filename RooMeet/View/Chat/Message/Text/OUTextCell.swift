@@ -14,7 +14,7 @@ enum MsgType {
     var backgroundColor: UIColor {
         switch self {
         case .currentUser:
-            return UIColor.hexColor(hex: RMColor.palePink.hex)
+            return UIColor.msgBackgroundColor
         case .other:
             return UIColor.white
         }

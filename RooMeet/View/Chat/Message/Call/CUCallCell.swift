@@ -9,11 +9,12 @@ import UIKit
 
 class CUCallCell: MessageBaseCell {
     static let reuseIdentifier = "\(CUCallCell.self)"
+    var msgType: MsgType = .currentUser
 
     @IBOutlet weak var messageView: UIView! {
         didSet {
             messageView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            messageView.backgroundColor = .hexColor(hex: RMColor.palePink.hex)
+            messageView.backgroundColor = msgType.backgroundColor
         }
     }
 

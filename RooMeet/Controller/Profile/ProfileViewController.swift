@@ -66,11 +66,11 @@ enum Profile: CaseIterable {
     var color: ColorSet {
         switch self {
         case .favorite:
-            return firstLineColorSet
+            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.mainColor)
         case .reservations:
-            return firstLineColorSet
+            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleOrangeColor)
         case .post:
-            return firstLineColorSet
+            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleRedColor)
         case .delete:
             return secondLineColorSet
         case .blockade:

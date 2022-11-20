@@ -11,6 +11,7 @@ import FirebaseFirestoreSwift
 
 class OUReservationCell: MessageBaseCell {
     static let reuseIdentifier = "\(OUReservationCell.self)"
+    var msgType: MsgType = .other
 
     @IBOutlet weak var denyButton: UIButton! {
         didSet {
@@ -24,7 +25,7 @@ class OUReservationCell: MessageBaseCell {
     @IBOutlet weak var agreeButton: UIButton! {
         didSet {
             agreeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            agreeButton.backgroundColor = UIColor.main
+            agreeButton.backgroundColor = UIColor.mainColor
             agreeButton.tintColor = .white
             agreeButton.titleLabel!.font = UIFont.regularSubTitle()
         }
@@ -45,7 +46,7 @@ class OUReservationCell: MessageBaseCell {
     @IBOutlet weak var cellView: UIView! {
         didSet {
             cellView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-            cellView.backgroundColor = MsgType.other.backgroundColor
+            cellView.backgroundColor = msgType.backgroundColor
         }
     }
 

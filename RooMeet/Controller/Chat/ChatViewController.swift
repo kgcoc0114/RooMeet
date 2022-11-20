@@ -11,13 +11,10 @@ import FirebaseFirestore
 class ChatViewController: UIViewController {
     enum Section: CaseIterable {
         case message
-//        case reservation
     }
 
     enum Item: Hashable {
         case message(Message)
-//        case reservation(Message)
-//        case call(Message)
     }
 
     typealias DataSource = UITableViewDiffableDataSource<Section, Item>
@@ -53,13 +50,13 @@ class ChatViewController: UIViewController {
         didSet {
             tableView.separatorStyle = .none
             tableView.showsVerticalScrollIndicator = false
-            tableView.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
+            tableView.backgroundColor = UIColor.mainBackgroundColor
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+         
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "phone"),
             style: .plain,
@@ -151,7 +148,7 @@ class ChatViewController: UIViewController {
         tableView.scrollToButtom(at: .bottom, animated: animated)
     }
 
-    @IBAction func addReservation(_ sender: Any) {
+    @IBAction func showRuler(_ sender: Any) {
 
     }
 
