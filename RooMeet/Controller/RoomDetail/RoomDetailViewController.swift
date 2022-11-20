@@ -19,11 +19,6 @@ class RoomDetailViewController: UIViewController {
         case images
         case basicInfo
         case map
-//        case amenities
-//        case rules
-        case feeDetail
-        case reservationDays
-        case reservationPeriod
         case highLight
         case gender
         case pet
@@ -31,6 +26,9 @@ class RoomDetailViewController: UIViewController {
         case cooking
         case bathroom
         case features
+        case feeDetail
+        case reservationDays
+        case reservationPeriod
 
         var title: String {
             switch self {
@@ -246,7 +244,7 @@ class RoomDetailViewController: UIViewController {
         }
 
 
-        if !user.reservations.contains(room.roomID) {
+        if !user.reservations.contains(room.roomID!) {
             ReservationService.shared.upsertReservationData(
                 status: .waiting,
                 requestTime: sDate,
@@ -256,7 +254,7 @@ class RoomDetailViewController: UIViewController {
                 receiverID: room.userID,
                 reservation: nil
             )
-            self.user?.reservations.append(room.roomID)
+            self.user?.reservations.append(room.roomID!)
             RMProgressHUD.showSuccess(view: self.view)
         } else {
             RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
@@ -325,7 +323,7 @@ extension RoomDetailViewController {
                 cell.delegate = self
 
                 if let user = self.user {
-                    if user.favoriteRoomIDs.contains(data.roomID) {
+                    if user.favoriteRoomIDs.contains(data.roomID!) {
                         cell.isLike = true
                     }
                 } else {
@@ -407,7 +405,7 @@ extension RoomDetailViewController {
 
     func genTagCell(item: Room, indexPath: IndexPath) -> ItemsCell {
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: TagCell.identifier,
+            withReuseIdentifier: ItemsCell.reuseIdentifier,
             for: indexPath
         ) as? ItemsCell,
             let room = room else {
@@ -415,50 +413,38 @@ extension RoomDetailViewController {
         }
 
         var tags: [String] = []
-        var mainColor: UIColor = .white
-        var lightColor: UIColor = .white
+        var mainColor: UIColor = UIColor.main
+        var lightColor: UIColor = UIColor.mainBackgroundColor
 
         let section = Section.allCases[indexPath.section]
         switch section {
         case .highLight:
             tags = room.roomHighLights
-            mainColor = UIColor.main!
-            lightColor = UIColor.mainBackgroundColor!
         case .gender:
             tags = room.roomGenderRules
-            mainColor = UIColor.main!
-            lightColor = UIColor.mainBackgroundColor!
         case .pet:
             tags = room.roomPetsRules
-            mainColor = UIColor.main!
-            lightColor = UIColor.mainBackgroundColor!
         case .elevator:
             tags = room.roomElevatorRules
-            mainColor = UIColor.main!
-            lightColor = UIColor.mainBackgroundColor!
         case .cooking:
             tags = room.roomCookingRules
-            mainColor = UIColor.main!
-            lightColor = UIColor.mainBackgroundColor!
         case .bathroom:
             tags = room.roomBathroomRules
-            mainColor = UIColor.main!
-            lightColor = UIColor.mainBackgroundColor!
         case .features:
-            tags = room.roomBathroomRules
-            mainColor = UIColor.subTitleColor!
-            lightColor = UIColor.mainBackgroundColor!
+            tags = room.roomFeatures
+            mainColor = UIColor.subTitleColor
+            lightColor = UIColor.mainBackgroundColor
         default:
             break
         }
-
+        cell.configureTitleInDetailPage()
         cell.configureTagView(
             ruleType: section.title,
             tags: tags,
             selectedTags: tags,
             mainColor: mainColor,
             lightColor: lightColor,
-            mainLightBackgroundColor: .white,
+            mainLightBackgroundColor: UIColor.white,
             enableTagSelection: false)
 
         return cell
@@ -470,40 +456,15 @@ extension RoomDetailViewController {
     func createBasicInfoSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(100)))
+            heightDimension: .estimated(1)))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(100)), subitems: [item])
+                heightDimension: .estimated(1)), subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 
-        return section    }
-
-    func createItemsSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .estimated(1),
-            heightDimension: .fractionalHeight(1)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .estimated(1),
-            heightDimension: .absolute(30)
-        )
-
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
-
-        // SectionHeader
-        section.boundarySupplementaryItems = [createSectionHeader()]
         return section
     }
 

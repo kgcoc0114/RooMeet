@@ -36,6 +36,10 @@ class FeeDetailCell: UICollectionViewCell {
         otherDescTextView.delegate = self
     }
 
+    override func layoutSubviews() {
+        otherDescTextView.layer.cornerRadius = otherDescTextView.bounds.height * 0.1
+    }
+
     @objc func doneButtonAction() {
         otherDescTextView.resignFirstResponder()
     }

@@ -55,11 +55,11 @@ enum Profile: CaseIterable {
     }
 
     var firstLineColorSet: ColorSet {
-        return ColorSet(font: UIColor.mainBackgroundColor!, background: UIColor.subColor!)
+        return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subColor)
     }
 
     var secondLineColorSet: ColorSet {
-        return ColorSet(font: UIColor.mainDarkColor!, background: UIColor.mainLightColor!)
+        return ColorSet(font: UIColor.mainDarkColor, background: UIColor.mainLightColor)
     }
 
 
@@ -83,7 +83,7 @@ enum Profile: CaseIterable {
     var viewConroller: UIViewController {
         switch self {
         case .favorite:
-            return FavoritesViewController()
+            return FavoritesViewController(entryPage: .fav)
         case .reservations:
             return ProfileRSVNViewController()
         case .blockade:
@@ -91,7 +91,7 @@ enum Profile: CaseIterable {
         case .logout:
             return UIViewController()
         case .post:
-            return FavoritesViewController()
+            return FavoritesViewController(entryPage: .ownPost)
         case .delete:
             return UIViewController()
         }

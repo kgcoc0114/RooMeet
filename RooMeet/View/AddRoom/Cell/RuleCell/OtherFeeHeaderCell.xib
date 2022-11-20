@@ -4,13 +4,14 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="RulesHeaderCell" customModule="RooMeet" customModuleProvider="target">
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="OtherFeeHeaderCell" customModule="RooMeet" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="192" height="154"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -18,14 +19,14 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QMu-2l-9FE">
-                        <rect key="frame" x="30" y="15" width="42" height="124"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <nil key="textColor"/>
+                        <rect key="frame" x="0.0" y="15" width="39.5" height="124"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" name="mainDarkColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PMa-3O-xCJ">
-                        <rect key="frame" x="102" y="15" width="53" height="124"/>
-                        <color key="tintColor" red="0.29411764709999999" green="0.50196078430000002" blue="0.4941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <rect key="frame" x="69.5" y="15" width="53" height="124"/>
+                        <color key="tintColor" name="subColor"/>
                         <state key="normal" title="Button"/>
                         <buttonConfiguration key="configuration" style="plain" title="更多"/>
                     </button>
@@ -33,7 +34,7 @@
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstItem="QMu-2l-9FE" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="30" id="FbH-tK-5di"/>
+                <constraint firstItem="QMu-2l-9FE" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="3g1-sq-syW"/>
                 <constraint firstItem="QMu-2l-9FE" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="15" id="LRE-ON-q2f"/>
                 <constraint firstItem="PMa-3O-xCJ" firstAttribute="leading" secondItem="QMu-2l-9FE" secondAttribute="trailing" constant="30" id="Rg4-25-TNE"/>
                 <constraint firstAttribute="bottom" secondItem="QMu-2l-9FE" secondAttribute="bottom" constant="15" id="WQe-DM-Tqx"/>
@@ -48,4 +49,12 @@
             <point key="canvasLocation" x="234.78260869565219" y="114.50892857142857"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <namedColor name="mainDarkColor">
+            <color red="0.14901960784313725" green="0.25098039215686274" blue="0.24313725490196078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="subColor">
+            <color red="0.35686274509803922" green="0.60392156862745094" blue="0.58431372549019611" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
 </document>

@@ -27,14 +27,15 @@ class ReservationService {
                   let receiverID = receiverID,
                   let room = room,
                   let requestTime = requestTime,
-                  let period = period else {
+                  let period = period,
+                  let roomID = room.roomID else {
                 return
             }
 
             insertReservation(
                 senderID: senderID,
                 receiverID: receiverID,
-                roomID: room.roomID,
+                roomID: roomID,
                 status: .waiting,
                 requestTime: requestTime,
                 period: period

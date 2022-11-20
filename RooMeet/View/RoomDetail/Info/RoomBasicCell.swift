@@ -18,13 +18,24 @@ class RoomBasicCell: UICollectionViewCell {
         }
     }
 
-    @IBOutlet weak var areaLabel: UILabel!
-    @IBOutlet weak var priceLabel: UILabel!
-    @IBOutlet weak var titleLabel: UILabel! {
+    @IBOutlet weak var areaLabel: UILabel! {
         didSet {
-            titleLabel.numberOfLines = 0
+            areaLabel.font = UIFont.regularSubTitle()
         }
     }
+    @IBOutlet weak var priceLabel: UILabel! {
+        didSet {
+            priceLabel.font = UIFont.regularSubTitle()
+        }
+    }
+
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.numberOfLines = 2
+            titleLabel.font = UIFont.regularTitle()
+        }
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -43,14 +54,14 @@ class RoomBasicCell: UICollectionViewCell {
 
     func genPriceString(roomSpecs: [RoomSpec]) -> String {
         if !roomSpecs.isEmpty {
-            let minPriceItem = roomSpecs.min { $0.price! > $1.price! }
+            let minPriceItem = roomSpecs.min { $0.price! < $1.price! }
 
-            let maxPriceItem = roomSpecs.max { $0.price! < $1.price! }
+            let maxPriceItem = roomSpecs.max { $0.price! > $1.price! }
 
             if let minPrice = minPriceItem,
-               let maxPrice = maxPriceItem,
-               let min = minPrice.price,
-               let max = maxPrice.price {
+                let maxPrice = maxPriceItem,
+                let min = minPrice.price,
+                let max = maxPrice.price {
                 if min == max {
                     return "\(min) 元/月"
                 } else {

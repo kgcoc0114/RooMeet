@@ -17,12 +17,16 @@ class ItemsCell: UICollectionViewCell {
     static let reuseIdentifier = "\(ItemsCell.self)"
     var tags: [String] = []
     var ruleType: String = ""
-    var textFont: CGFloat = 15
     var previousSelection: UInt?
 
     weak var delegate: ItemsCellDelegate?
 
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.font = UIFont.regularSubTitle()
+            titleLabel.tintColor = UIColor.mainDarkColor
+        }
+    }
     @IBOutlet weak var tagView: TTGTextTagCollectionView!
 
     override func prepareForReuse() {
@@ -31,16 +35,31 @@ class ItemsCell: UICollectionViewCell {
     }
 
     override func awakeFromNib() {
+        super.awakeFromNib()
         tagView.delegate = self
     }
 
+    func configureTitleInDetailPage() {
+        titleLabel.font = UIFont.regularTitle()
+        titleLabel.textColor = UIColor.main
+    }
+
     func configureTagView(ruleType: String, tags: [String], selectedTags: [String], mainColor: UIColor, lightColor: UIColor, mainLightBackgroundColor: UIColor, enableTagSelection: Bool) {
+
+        if tags.isEmpty {
+            self.isHidden = true
+            self.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                self.heightAnchor.constraint(equalToConstant: 0)
+            ])
+        }
+        self.ruleType = ruleType
         titleLabel.text = ruleType
         tagView.enableTagSelection = enableTagSelection
         for text in tags {
             let content = TTGTextTagStringContent.init(text: text)
             content.textColor = .darkGray
-            content.textFont = UIFont.regular(size: textFont)!
+            content.textFont = UIFont.regularText()
 
             let normalStyle = TTGTextTagStyle.init()
             normalStyle.backgroundColor = .white
@@ -51,7 +70,8 @@ class ItemsCell: UICollectionViewCell {
 
             let selectedContent = TTGTextTagStringContent.init(text: text)
             selectedContent.textColor = lightColor
-            selectedContent.textFont = UIFont.regular(size: textFont)!
+            selectedContent.textFont = UIFont.regularText()
+
             let selectedStyle = TTGTextTagStyle.init()
             selectedStyle.backgroundColor = mainColor
             selectedStyle.shadowColor = .clear
@@ -77,13 +97,14 @@ class ItemsCell: UICollectionViewCell {
 extension ItemsCell: TTGTextTagCollectionViewDelegate {
     func textTagCollectionView(_ textTagCollectionView: TTGTextTagCollectionView!, didTap tag: TTGTextTag!, at index: UInt) {
         var selectedTags: [String] = []
-
-        tagView.allSelectedTags().forEach({ tag in
-            guard let tag = tag as? RMTag else {
+        tagView.allSelectedTags().forEach { tag in
+            guard
+                let tag = tag as? RMTag,
+                let title = tag.title else {
                 return
             }
-            selectedTags.append(tag.title!)
-        })
+            selectedTags.append(title)
+        }
 
         delegate?.itemsCell(cell: self, selectedTags: selectedTags)
     }

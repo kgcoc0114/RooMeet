@@ -98,9 +98,9 @@ class IntroViewController: UIViewController {
                     ruleType: "要求",
                     tags: self.rules,
                     selectedTags: self.user?.rules ?? [],
-                    mainColor: UIColor.main!,
-                    lightColor: UIColor.mainLightColor!,
-                    mainLightBackgroundColor: UIColor.mainBackgroundColor!,
+                    mainColor: UIColor.main,
+                    lightColor: UIColor.mainLightColor,
+                    mainLightBackgroundColor: UIColor.mainBackgroundColor,
                     enableTagSelection: true
                 )
                 cell.delegate = self

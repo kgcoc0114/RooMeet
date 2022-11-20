@@ -46,20 +46,20 @@ extension UIFont {
         return RMFont(.regular, size: size)
     }
 
-    static func regularTitle() -> UIFont? {
+    static func regularTitle() -> UIFont {
         return RMFont(.regular, size: RMFontSize.title.rawValue)
     }
 
-    static func regularSubTitle() -> UIFont? {
+    static func regularSubTitle() -> UIFont {
         return RMFont(.regular, size: RMFontSize.subTitle.rawValue)
     }
 
-    static func regularText() -> UIFont? {
+    static func regularText() -> UIFont {
         return RMFont(.regular, size: RMFontSize.text.rawValue)
     }
 
 
-    private static func RMFont(_ font: RMFontName, size: CGFloat) -> UIFont? {
-        return UIFont(name: font.rawValue, size: size)
+    private static func RMFont(_ font: RMFontName, size: CGFloat) -> UIFont {
+        return UIFont(name: font.rawValue, size: size) ?? UIFont.systemFont(ofSize: 16)
     }
 }
