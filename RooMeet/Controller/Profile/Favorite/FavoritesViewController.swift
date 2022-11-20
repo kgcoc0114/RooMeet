@@ -12,11 +12,16 @@ class FavoritesViewController: UIViewController {
         case main
     }
 
-    typealias FavoriteDataSource = UICollectionViewDiffableDataSource<Section, FavoriteRoom>
-    typealias FavoriteSnapshot = NSDiffableDataSourceSnapshot<Section, FavoriteRoom>
+    enum EntryPage {
+        case fav
+        case ownPost
+    }
+
+    typealias FavoriteDataSource = UICollectionViewDiffableDataSource<Section, Room>
+    typealias FavoriteSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
     private var dataSource: FavoriteDataSource!
 
-    var rooms: [FavoriteRoom] = [] {
+    var rooms: [Room] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
                 self?.collectionView.stopPullToRefresh()
@@ -24,15 +29,28 @@ class FavoritesViewController: UIViewController {
             }
         }
     }
+
+    var entryPage: EntryPage = .fav
+
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Favorites"
+        navigationItem.title = entryPage == .fav ? "Favorites" : "My Post"
 
         collectionView.delegate = self
 
         configureCollectionView()
+    }
+
+    init(entryPage: EntryPage) {
+        super.init(nibName: "FavoritesViewController", bundle: nil)
+
+        self.entryPage = entryPage
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -45,11 +63,10 @@ class FavoritesViewController: UIViewController {
             UINib(nibName: "RoomDisplayCell", bundle: nil),
             forCellWithReuseIdentifier: RoomDisplayCell.identifier)
 
-        dataSource = FavoriteDataSource(collectionView: collectionView) { collectionView, indexPath, favRoom in
+        dataSource = FavoriteDataSource(collectionView: collectionView) { collectionView, indexPath, room in
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: RoomDisplayCell.identifier,
-                for: indexPath) as? RoomDisplayCell,
-                let room = favRoom.room else {
+                for: indexPath) as? RoomDisplayCell else {
                 return UICollectionViewCell()
             }
 
@@ -67,9 +84,17 @@ class FavoritesViewController: UIViewController {
     }
 
     private func fetchRooms() {
-        FirebaseService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
-            guard let self = self else { return }
-            self.rooms = rooms
+        if entryPage == .fav {
+            FirebaseService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
+                guard let self = self else { return }
+                self.rooms = rooms
+            }
+        } else {
+            FirebaseService.shared.fetchRoomsByUserID(userID: UserDefaults.id) {
+                [weak self] rooms in
+                guard let self = self else { return }
+                self.rooms = rooms
+            }
         }
     }
 }
@@ -108,11 +133,15 @@ extension FavoritesViewController {
 extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
-            let favRoom = dataSource.itemIdentifier(for: indexPath),
-            let room = favRoom.room
+            let room = dataSource.itemIdentifier(for: indexPath)
         else { return }
-        let detailViewController = RoomDetailViewController(room: room)
-        navigationController?.pushViewController(detailViewController, animated: true)
+        if entryPage == .fav {
+            let detailViewController = RoomDetailViewController(room: room)
+            navigationController?.pushViewController(detailViewController, animated: true)
+        } else {
+            let postViewController = PostViewController(entryType: .edit, data: room)
+            navigationController?.pushViewController(postViewController, animated: true)
+        }
     }
 }
 

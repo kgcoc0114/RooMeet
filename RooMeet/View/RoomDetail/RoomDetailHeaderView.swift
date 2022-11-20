@@ -12,8 +12,8 @@ class RoomDetailHeaderView: UICollectionReusableView {
 
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
-            titleLabel.font = UIFont.medium(size: 20)
-            titleLabel.textColor = RMConstants.shared.title2FontColor
+            titleLabel.font = UIFont.regularTitle()
+            titleLabel.textColor = UIColor.main
         }
     }
     override func awakeFromNib() {

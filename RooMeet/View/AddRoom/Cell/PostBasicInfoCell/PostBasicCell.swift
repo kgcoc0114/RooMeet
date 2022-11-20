@@ -114,6 +114,42 @@ class PostBasicCell: UICollectionViewCell {
         leasePickerView.delegate = self
     }
 
+    func configureCell(data: PostBasicData?) {
+        guard let basicData = data else {
+            return
+        }
+        postBasicData = basicData
+
+        titleTextField.text = postBasicData.title
+        addressTextField.text = postBasicData.address
+
+        if let county = postBasicData.county,
+            let town = postBasicData.town {
+            regionSelectView.text = "\(county)\(town)"
+        }
+
+        if let parlor = postBasicData.parlor {
+            parlorCountView.quantityField.text = "\(parlor)"
+        }
+
+        if let room = postBasicData.room {
+            roomCountView.quantityField.text = "\(room)"
+        }
+
+        if let movinDate = postBasicData.movinDate {
+            datePickerTextField.text = RMDateFormatter.shared.dateString(date: movinDate)
+        }
+
+        if let leaseMonth = postBasicData.leaseMonth {
+            if leaseMonth >= 12 {
+                let year = leaseMonth / 12
+                leasePickerView.quantityField.text = "\(year)年"
+            } else {
+                leasePickerView.quantityField.text = "\(leaseMonth)月"
+            }
+        }
+    }
+
     @objc private func movinDateChanged(_ sender: UIDatePicker) {
         postBasicData.movinDate = sender.date
         datePickerTextField.text = RMDateFormatter.shared.dateString(date: sender.date)
@@ -142,10 +178,7 @@ extension PostBasicCell: UITextFieldDelegate {
 extension PostBasicCell: NumberPickerViewDelegate {
     func didPickLease(picker: NumberPickerView, lease: Int, unit: String) {
         var leaseMon = lease * 12
-
         postBasicData.leaseMonth = unit == "年" ? leaseMon : lease
-        print(postBasicData
-        )
     }
 
     func didPickNumber(picker: NumberPickerView, number: Int) {

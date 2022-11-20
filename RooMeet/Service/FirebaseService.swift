@@ -366,7 +366,7 @@ class FirebaseService {
         }
     }
 
-    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([FavoriteRoom]) -> Void)) {
+    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
         fetchUserByID(userID: userID) { [unowned self] user, _ in
             guard let user = user else {
                 completion([])
@@ -378,23 +378,26 @@ class FirebaseService {
         }
     }
 
-    func fetchFavoriteRoomsByRoomID(roomIDList: [String]?, completion: @escaping (([FavoriteRoom]) -> Void)) {
+    func fetchFavoriteRoomsByRoomID(roomIDList: [String]?, completion: @escaping (([Room]) -> Void)) {
         guard let roomIDList = roomIDList else {
             return
         }
-//        var rooms: [Room] = []
         let group = DispatchGroup()
         roomIDList.forEach { roomID in
             group.enter()
             fetchRoomByRoomID(roomID: roomID) { room in
-                let index = roomIDList.firstIndex(of: room.roomID)
+                guard let roomID = room.roomID else { return }
+                let index = roomIDList.firstIndex(of: roomID)
                 gCurrentUser.favoriteRooms[index!].room = room
                 group.leave()
             }
         }
 
         group.notify(queue: DispatchQueue.main) {
-            completion(gCurrentUser.favoriteRooms)
+            let rooms = gCurrentUser.favoriteRooms.map { favRoom in
+                return favRoom.room!
+            }
+            completion(rooms)
         }
     }
 
@@ -670,7 +673,6 @@ extension FirebaseService {
 
     func updateUserFavRsvnData(reservations: [String], favoriteRooms: [FavoriteRoom]) {
         let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
-        
 
         query.updateData([
             "reservations": reservations,
@@ -684,5 +686,42 @@ extension FirebaseService {
         query.updateData([
             "favoriteRooms": FieldValue.arrayUnion(favoriteRoomsMap)
         ])
+    }
+}
+
+// MARK: - room
+extension FirebaseService {
+    func updateRoomInfo(roomID: String, room: Room, completion: @escaping ((Error?) -> Void)) {
+        FirestoreEndpoint.room.colRef.document(roomID).delete() { [weak self] error in
+            guard let self = self else { return }
+
+            if let error = error {
+                completion(error)
+            } else {
+                self.insertRoom(room: room, roomID: roomID) { error in
+                    completion(error)
+                }
+            }
+        }
+    }
+
+    func insertRoom(room: Room, roomID: String? = nil, completion: @escaping ((Error?) -> Void)) {
+        var docRef = FirestoreEndpoint.room.colRef.document()
+
+        var room = room
+
+        if let roomID = roomID {
+            docRef = FirestoreEndpoint.room.colRef.document(roomID)
+        }
+
+        room.roomID = roomID ?? docRef.documentID
+
+        do {
+            try docRef.setData(from: room, completion: { error in
+                completion(error)
+            })
+        } catch {
+            completion(error)
+        }
     }
 }

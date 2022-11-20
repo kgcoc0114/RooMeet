@@ -36,4 +36,36 @@ enum ImageAsset: String {
     case home
     case dollar
     case profile_user
+    case add_image
+}
+
+extension UIImage {
+
+    public enum DataUnits: String {
+        case byte, kilobyte, megabyte, gigabyte
+    }
+
+    func getSizeIn(_ type: DataUnits)-> Double {
+
+        guard let data = self.pngData() else {
+            return 0
+        }
+
+        var size: Double = 0.0
+
+        switch type {
+        case .byte:
+            size = Double(data.count)
+        case .kilobyte:
+            size = Double(data.count) / 1024
+        case .megabyte:
+            size = Double(data.count) / 1024 / 1024
+        case .gigabyte:
+            size = Double(data.count) / 1024 / 1024 / 1024
+        }
+
+        print(String(format: "%.2f", size))
+
+        return size
+    }
 }

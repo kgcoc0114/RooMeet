@@ -50,7 +50,7 @@ class FeeInfoCell: UITableViewCell {
 
     @IBOutlet weak var segmentControl: RMSegmentedControl! {
         didSet {
-            segmentControl.items = ["獨立支付", "費用均分"]
+            segmentControl.items = AffordType.allCases.map { $0.description }
             segmentControl.borderColor = RMConstants.shared.mainLightBackgroundColor
             segmentControl.selectedLabelColor = RMConstants.shared.mainColor
             segmentControl.unselectedLabelColor = RMConstants.shared.mainColor
@@ -101,11 +101,9 @@ class FeeInfoCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
 
-    func initialView(feeType: FeeType) {
+    func configureCell(feeType: FeeType, entryType: EntryType, data: FeeDetail?) {
         self.feeType = feeType
         titleLabel.text = feeType.rawValue
         priceUnitLabel.text = feeType.priceUnit()
@@ -113,14 +111,31 @@ class FeeInfoCell: UITableViewCell {
         switch feeType {
         case .water, .electricity:
             govTypeButton.setTitle(feeType.isGovString(), for: .normal)
+            if entryType == .edit,
+                let data = data,
+                let isGov = data.isGov  {
+                govTypeButton.isSelected = isGov
+            }
         case .cable, .internet, .management:
             govTypeButton.isHidden = true
+        }
+
+        if entryType == .edit,
+            let data = data {
+            feeDetail = data
+            if feeDetail.paid == true {
+                segmentControl.selectedIndex
+                = AffordType.allCases.firstIndex(of: AffordType(rawValue: feeDetail.affordType ?? "sperate")!) ?? 0
+            }
+
+            if let fee = feeDetail.fee,
+               fee != 0 {
+                priceTextField.text = "\(fee)"
+            }
         }
     }
 
     @IBAction func tapSperateButton(_ sender: Any) {
-        print("=======")
-        print(#function)
         if affordType == .sperate && sperateButton.isSelected == true {
             sperateButton.isSelected.toggle()
         } else {
