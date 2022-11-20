@@ -10,7 +10,7 @@ class RMConstants {
     static let shared = RMConstants()
     let screenVerticalPadding: CGFloat = 30
 
-    let buttonCornerRadius: CGFloat = 10
+    let buttonCornerRadius: CGFloat = 28
     let tagCornerRadius: CGFloat = 8
     let reservationDays: Int = 6
     let textFontSize: CGFloat = 12

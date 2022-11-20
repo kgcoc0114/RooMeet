@@ -411,7 +411,7 @@ extension RoomDetailViewController {
         }
 
         var tags: [String] = []
-        var mainColor = UIColor.main
+        var mainColor = UIColor.mainColor
         var lightColor = UIColor.mainBackgroundColor
 
         let section = Section.allCases[indexPath.section]

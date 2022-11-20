@@ -12,6 +12,7 @@ import MapKit
 class HomeViewController: ViewController {
     enum Section {
         case main
+        case guess
     }
 
     typealias HomeDataSource = UICollectionViewDiffableDataSource<Section, Room>
@@ -27,7 +28,6 @@ class HomeViewController: ViewController {
             }
         }
     }
-
 
     @IBOutlet weak var collectionView: UICollectionView!  {
         didSet {
@@ -127,7 +127,8 @@ class HomeViewController: ViewController {
                 self.rooms = rooms
             }
         }
-        present(filterVC, animated: true)
+        filterVC.modalPresentationStyle = .overCurrentContext
+        present(filterVC, animated: false)
     }
 }
 
@@ -156,7 +157,7 @@ extension HomeViewController {
     private func updateDataSource() {
         var newSnapshot = HomeSnapshot()
         newSnapshot.appendSections([Section.main])
-        newSnapshot.appendItems(rooms.map { $0 }, toSection: .main)
+        newSnapshot.appendItems(rooms, toSection: .main)
         dataSource.apply(newSnapshot)
     }
 }

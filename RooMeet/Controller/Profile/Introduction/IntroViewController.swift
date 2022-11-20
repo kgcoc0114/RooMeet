@@ -98,7 +98,7 @@ class IntroViewController: UIViewController {
                     ruleType: "要求",
                     tags: self.rules,
                     selectedTags: self.user?.rules ?? [],
-                    mainColor: UIColor.main,
+                    mainColor: UIColor.mainColor,
                     lightColor: UIColor.mainLightColor,
                     mainLightBackgroundColor: UIColor.mainBackgroundColor,
                     enableTagSelection: true

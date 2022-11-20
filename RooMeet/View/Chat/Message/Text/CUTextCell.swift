@@ -27,14 +27,17 @@ class CUTextCell: MessageBaseCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.backgroundColor = UIColor.hexColor(hex: RMColor.snow.hex)
         selectionStyle = .none
     }
 
     override func layoutSubviews() {
         NSLayoutConstraint.activate([
-            contentTextView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: RMConstants.shared.CUTrailing),
-            contentTextView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: RMConstants.shared.OULeading),
+            contentTextView.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant: RMConstants.shared.CUTrailing),
+            contentTextView.topAnchor.constraint(
+                equalTo: contentView.topAnchor,
+                constant: RMConstants.shared.OULeading),
             contentTextView.heightAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5),
             dateLabel.trailingAnchor.constraint(equalTo: contentTextView.leadingAnchor, constant: -5),
             timeLabel.trailingAnchor.constraint(equalTo: contentTextView.leadingAnchor, constant: -5),

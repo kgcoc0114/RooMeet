@@ -111,7 +111,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <color key="tintColor" red="0.29411764709999999" green="0.50196078430000002" blue="0.4941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="selectedImageTintColor" red="0.29411764709999999" green="0.50196078430000002" blue="0.4941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="selectedImageTintColor" name="mainColor"/>
                     </tabBar>
                     <connections>
                         <segue destination="fYg-EL-xGZ" kind="relationship" relationship="viewControllers" id="qVL-kJ-azh"/>
@@ -229,7 +229,7 @@
             <point key="canvasLocation" x="-97.101449275362327" y="-349.55357142857139"/>
         </scene>
     </scenes>
-    <color key="tintColor" red="0.29411764709999999" green="0.50196078430000002" blue="0.4941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+    <color key="tintColor" name="mainBackgroundColor"/>
     <resources>
         <image name="house" catalog="system" width="128" height="106"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
@@ -240,7 +240,10 @@
         <image name="person" catalog="system" width="128" height="117"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <namedColor name="mainBackgroundColor">
-            <color red="0.99599999189376831" green="0.98000001907348633" blue="0.93300002813339233" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="1" green="0.97647058823529409" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="mainColor">
+            <color red="0.3919999897480011" green="0.53299999237060547" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
