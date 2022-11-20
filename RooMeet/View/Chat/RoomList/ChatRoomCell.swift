@@ -29,7 +29,7 @@ class ChatRoomCell: UITableViewCell {
         userNameLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         contentLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         timeLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
-        profileImageView.contentMode = .scaleToFill
+        profileImageView.contentMode = .scaleAspectFill
     }
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -46,7 +46,13 @@ class ChatRoomCell: UITableViewCell {
         }
         if let member = chatRoom.member {
             userNameLabel.text = member.name
-            profileImageView.setImage(urlString: member.profilePhoto)
+
+            if let profilePhoto = member.profilePhoto {
+                profileImageView.setImage(urlString: profilePhoto)
+            } else {
+                profileImageView.image = UIImage.asset(.profile_user)
+            }
+
         } else {
             userNameLabel.text = ""
             profileImageView.setImage(urlString: "https://github.com/developerjet/JetChat/raw/master/ScreenShot/JetChatSmall.png")

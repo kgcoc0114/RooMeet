@@ -13,7 +13,6 @@ enum Gender: String, CaseIterable {
     case male = "Male"
     case female = "Female"
     case nonBinary = "Non Binary"
-    case all = "All"
 
     var image: UIImage {
         switch self {
@@ -23,8 +22,6 @@ enum Gender: String, CaseIterable {
             return UIImage.asset(.gender_female)
         case .nonBinary:
             return UIImage.asset(.gender_non_binary)
-        case .all:
-            return UIImage(systemName: "all")!
         }
     }
 }

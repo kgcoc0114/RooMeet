@@ -12,10 +12,14 @@ import WebRTC
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         IQKeyboardManager.shared.enable = true
+
+        let barAppearance = UINavigationBarAppearance()
+        barAppearance.backgroundColor = UIColor.mainColor
+        barAppearance.titleTextAttributes = [.foregroundColor: UIColor.mainBackgroundColor]
+        UINavigationBar.appearance().standardAppearance = barAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = barAppearance
 
         FirebaseApp.configure()
 

@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 
 struct ChatMember: Codable, Hashable {
     let id: String
-    let profilePhoto: String
+    let profilePhoto: String?
     let name: String
 }
 

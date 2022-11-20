@@ -8,9 +8,11 @@
 import UIKit
 import MapKit
 
-class HomeViewController: UIViewController {
+
+class HomeViewController: ViewController {
     enum Section {
         case main
+        case guess
     }
 
     typealias HomeDataSource = UICollectionViewDiffableDataSource<Section, Room>
@@ -27,10 +29,16 @@ class HomeViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var collectionView: UICollectionView! {
+        didSet {
+            collectionView.backgroundColor = UIColor.mainBackgroundColor
+            collectionView.translatesAutoresizingMaskIntoConstraints = false
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("============", gCurrentUser.id)
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "plus"),
             style: .plain,
@@ -56,24 +64,25 @@ class HomeViewController: UIViewController {
         collectionView.delegate = self
 
         configureCollectionView()
+    }
 
-        // fetch room to display
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchRooms()
     }
 
     private func configureCollectionView() {
         collectionView.register(
-            UINib(nibName: "RoomDisplayCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomDisplayCell.identifier)
+            UINib(nibName: "RoomCell", bundle: nil),
+            forCellWithReuseIdentifier: RoomCell.identifier)
 
         dataSource = HomeDataSource(collectionView: collectionView) { collectionView, indexPath, room in
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: RoomDisplayCell.identifier,
-                for: indexPath) as? RoomDisplayCell else {
+                withReuseIdentifier: RoomCell.identifier,
+                for: indexPath) as? RoomCell else {
                 return UICollectionViewCell()
             }
 
-            cell.checkImageView.isHidden = true
             cell.configureCell(data: room)
             return cell
         }
@@ -82,7 +91,7 @@ class HomeViewController: UIViewController {
 
         collectionView.addPullToRefresh {[weak self] in
             self?.fetchRooms()
-            FirebaseService.shared.fetchUserByID(userID: gCurrentUser.id) { user, index in
+            FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
                 if let user = user {
                     gCurrentUser = user
                 }
@@ -98,8 +107,8 @@ class HomeViewController: UIViewController {
     }
 
     @objc private func addRoomPost(_ sender: Any) {
-        let postVC = PostViewController()
-        navigationController?.pushViewController(postVC, animated: true)
+        let postViewController = PostViewController(entryType: .new, data: nil)
+        navigationController?.pushViewController(postViewController, animated: true)
     }
 
     @objc private func showFilterPage() {
@@ -114,7 +123,8 @@ class HomeViewController: UIViewController {
                 self.rooms = rooms
             }
         }
-        present(filterVC, animated: true)
+        filterVC.modalPresentationStyle = .overCurrentContext
+        present(filterVC, animated: false)
     }
 }
 
@@ -123,12 +133,12 @@ extension HomeViewController {
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .absolute(300))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .fractionalWidth(0.3))
+            heightDimension: .absolute(300))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item])
@@ -143,7 +153,7 @@ extension HomeViewController {
     private func updateDataSource() {
         var newSnapshot = HomeSnapshot()
         newSnapshot.appendSections([Section.main])
-        newSnapshot.appendItems(rooms.map { $0 }, toSection: .main)
+        newSnapshot.appendItems(rooms, toSection: .main)
         dataSource.apply(newSnapshot)
     }
 }

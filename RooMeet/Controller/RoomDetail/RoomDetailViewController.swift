@@ -19,8 +19,13 @@ class RoomDetailViewController: UIViewController {
         case images
         case basicInfo
         case map
-        case amenities
-        case rules
+        case highLight
+        case gender
+        case pet
+        case elevator
+        case cooking
+        case bathroom
+        case features
         case feeDetail
         case reservationDays
         case reservationPeriod
@@ -31,10 +36,20 @@ class RoomDetailViewController: UIViewController {
                 return ""
             case .basicInfo:
                 return ""
-            case .amenities:
+            case .highLight:
                 return "亮點"
-            case .rules:
-                return "注意"
+            case .gender:
+                return "租客性別"
+            case .pet:
+                return "寵物"
+            case .elevator:
+                return "電梯"
+            case .cooking:
+                return "開伙"
+            case .features:
+                return "設施"
+            case .bathroom:
+                return "衛浴"
             case .feeDetail:
                 return "費用明細"
             case .reservationDays:
@@ -50,8 +65,13 @@ class RoomDetailViewController: UIViewController {
     enum Item: Hashable {
         case images(Room)
         case basicInfo(Room)
-        case amenities(String)
-        case rules(String)
+        case highLight(Room)
+        case gender(Room)
+        case pet(Room)
+        case elevator(Room)
+        case cooking(Room)
+        case bathroom(Room)
+        case features(Room)
         case feeDetail(RoomDetailFee)
         case reservationDays(DateComponents)
         case reservationPeriod(Room)
@@ -63,6 +83,7 @@ class RoomDetailViewController: UIViewController {
     private var dataSource: DetailDataSource!
 
     var room: Room?
+    var user: User?
     var selectedPeriod: BookingPeriod?
     var selectedDate: DateComponents?
     var selectedDateCell: BookingDateCell?
@@ -78,9 +99,9 @@ class RoomDetailViewController: UIViewController {
             chatButton.setImage(UIImage(systemName: "message"), for: .normal)
             chatButton.titleLabel?.font = UIFont.regular(size: 18)
             chatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-            chatButton.backgroundColor = .darkGray
-            chatButton.tintColor = .white
-            chatButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+            chatButton.backgroundColor = .mainColor
+            chatButton.tintColor = .mainBackgroundColor
+            chatButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius * 0.8
         }
     }
 
@@ -90,9 +111,9 @@ class RoomDetailViewController: UIViewController {
             reservationButton.setImage(UIImage(systemName: "calendar"), for: .normal)
             reservationButton.titleLabel?.font = UIFont.regular(size: 18)
             reservationButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-            reservationButton.backgroundColor = .darkGray
-            reservationButton.tintColor = .white
-            reservationButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+            reservationButton.backgroundColor = .mainColor
+            reservationButton.tintColor = .mainBackgroundColor
+            reservationButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius * 0.8
         }
     }
 
@@ -122,6 +143,11 @@ class RoomDetailViewController: UIViewController {
         super.init(nibName: "RoomDetailViewController", bundle: nil)
 
         self.room = room
+
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self else { return }
+            self.user = user
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -143,18 +169,31 @@ class RoomDetailViewController: UIViewController {
         collectionView.collectionViewLayout = createLayout()
     }
 
+    @IBOutlet weak var buttomView: UIView! {
+        didSet {
+            buttomView.backgroundColor = .mainLightColor
+            buttomView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+            buttomView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+        }
+    }
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if let room = room,
             let userData = room.userData {
             nameLabel.text = userData.name
             ageLabel.text = "\(userData.age)"
-            genderImageView.image = Gender.allCases[userData.gender].image
-            ownerAvatarView.setImage(urlString: userData.profilePhoto)
+            genderImageView.image = Gender.allCases[userData.gender ?? 0].image
+            if let profilePhoto = userData.profilePhoto {
+                ownerAvatarView.setImage(urlString: profilePhoto)
+            } else {
+                ownerAvatarView.image = UIImage.asset(.profile_user)
+            }
         }
+        user = gCurrentUser
         dealWithBillInfo()
-        self.tabBarController?.tabBar.isHidden = true
         updateDataSource()
+        self.tabBarController?.tabBar.isHidden = true
     }
 
     override func viewDidLayoutSubviews() {
@@ -182,7 +221,13 @@ class RoomDetailViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        FirebaseService.shared.updateUserLikeData()
+        guard let user = user else {
+            return
+        }
+
+        gCurrentUser = user
+        FirebaseService.shared.updateUserFavRsvnData(reservations: user.reservations, favoriteRooms: user.favoriteRooms)
+
         self.tabBarController?.tabBar.isHidden = false
     }
 
@@ -201,34 +246,26 @@ class RoomDetailViewController: UIViewController {
             return
         }
 
-        if let reservations = gCurrentUser.reservations {
-            if !reservations.contains(room.roomID) {
-                ReservationService.shared.upsertReservationData(
-                    status: .waiting,
-                    requestTime: sDate,
-                    period: selectedPeriod.descrption,
-                    room: room,
-                    senderID: gCurrentUser.id,
-                    receiverID: room.userID,
-                    reservation: nil
-                )
-                gCurrentUser.reservations?.append(room.roomID)
-                RMProgressHUD.showSuccess(view: self.view)
-            } else {
-                RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
-            }
-        } else {
+        guard
+            var user = user,
+            let roomID = room.roomID else {
+            return
+        }
+
+        if !user.reservations.contains(roomID) {
             ReservationService.shared.upsertReservationData(
                 status: .waiting,
                 requestTime: sDate,
-                period: selectedPeriod.descrption,
+                period: selectedPeriod.subDesc,
                 room: room,
-                senderID: gCurrentUser.id,
+                senderID: UserDefaults.id,
                 receiverID: room.userID,
                 reservation: nil
             )
-            gCurrentUser.reservations? = [room.roomID]
+            self.user?.reservations.append(roomID)
             RMProgressHUD.showSuccess(view: self.view)
+        } else {
+            RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
         }
     }
 
@@ -238,7 +275,7 @@ class RoomDetailViewController: UIViewController {
             return
         }
 
-        FirebaseService.shared.upsertChatRoomByUserID(userA: gCurrentUser.id, userB: room.userID) { [weak self] chatRoom in
+        FirebaseService.shared.getChatRoomByUserID(userA: UserDefaults.id, userB: room.userID) { [weak self] chatRoom in
             let detailVC = ChatViewController()
             detailVC.setup(chatRoom: chatRoom)
             self?.navigationController?.pushViewController(detailVC, animated: false)
@@ -261,8 +298,8 @@ extension RoomDetailViewController {
             UINib(nibName: "BookingCell", bundle: nil),
             forCellWithReuseIdentifier: BookingCell.identifier)
         collectionView.register(
-            UINib(nibName: "TagCell", bundle: nil),
-            forCellWithReuseIdentifier: TagCell.identifier)
+            UINib(nibName: ItemsCell.reuseIdentifier, bundle: nil),
+            forCellWithReuseIdentifier: ItemsCell.reuseIdentifier)
         collectionView.register(
             UINib(nibName: "BookingDateCell", bundle: nil),
             forCellWithReuseIdentifier: BookingDateCell.identifier)
@@ -277,7 +314,7 @@ extension RoomDetailViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: RoomDetailHeaderView.identifier)
 
-        dataSource = DetailDataSource(collectionView: collectionView) { collectionView, indexPath, item in
+        dataSource = DetailDataSource(collectionView: collectionView) { [self] collectionView, indexPath, item in
             switch item {
             case .images(let data):
                 guard
@@ -291,8 +328,10 @@ extension RoomDetailViewController {
 
                 cell.configureCell(images: data.roomImages)
                 cell.delegate = self
-                if let likeRooms = gCurrentUser.like {
-                    if likeRooms.contains(data.roomID) {
+
+                if let user = self.user,
+                    let roomID = data.roomID {
+                    if user.favoriteRoomIDs.contains(roomID) {
                         cell.isLike = true
                     }
                 } else {
@@ -307,26 +346,6 @@ extension RoomDetailViewController {
                 ) as? RoomBasicCell else {
                     return UICollectionViewCell()
                 }
-                cell.configureCell(data: data)
-                return cell
-            case .rules(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: TagCell.identifier,
-                    for: indexPath
-                ) as? TagCell else {
-                    return UICollectionViewCell()
-                }
-                cell.styleCell(backgroundColor: .hexColor(hex: "#D89A9E"), tintColor: .black)
-                cell.configureCell(data: data)
-                return cell
-            case .amenities(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: TagCell.identifier,
-                    for: indexPath
-                ) as? TagCell else {
-                    return UICollectionViewCell()
-                }
-                cell.styleCell(backgroundColor: .hexColor(hex: "#1C6E8C"), tintColor: .white)
                 cell.configureCell(data: data)
                 return cell
             case .feeDetail(let data):
@@ -348,7 +367,7 @@ extension RoomDetailViewController {
                 cell.delegate = self
                 cell.configureCell(date: data)
                 return cell
-            case .reservationPeriod(let data):
+            case .reservationPeriod(_):
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: BookingPeriodCell.identifier,
                     for: indexPath
@@ -370,6 +389,14 @@ extension RoomDetailViewController {
                     longitude: data.long ?? gCurrentPosition.longitude
                 )
                 return cell
+            case .highLight(let data),
+                    .gender(let data),
+                    .pet(let data),
+                    .elevator(let data),
+                    .cooking(let data),
+                    .bathroom(let data),
+                    .features(let data):
+                return genTagCell(item: data, indexPath: indexPath)
             }
         }
 
@@ -387,6 +414,53 @@ extension RoomDetailViewController {
 
         collectionView.collectionViewLayout = createLayout()
     }
+
+    func genTagCell(item: Room, indexPath: IndexPath) -> ItemsCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: ItemsCell.reuseIdentifier,
+            for: indexPath
+        ) as? ItemsCell,
+            let room = room else {
+            return UICollectionViewCell() as! ItemsCell
+        }
+
+        var tags: [String] = []
+        var mainColor = UIColor.mainColor
+        var lightColor = UIColor.mainBackgroundColor
+
+        let section = Section.allCases[indexPath.section]
+        switch section {
+        case .highLight:
+            tags = room.roomHighLights
+        case .gender:
+            tags = room.roomGenderRules
+        case .pet:
+            tags = room.roomPetsRules
+        case .elevator:
+            tags = room.roomElevatorRules
+        case .cooking:
+            tags = room.roomCookingRules
+        case .bathroom:
+            tags = room.roomBathroomRules
+        case .features:
+            tags = room.roomFeatures
+            mainColor = UIColor.subTitleColor
+            lightColor = UIColor.mainBackgroundColor
+        default:
+            break
+        }
+        cell.configureTitleInDetailPage()
+        cell.configureTagView(
+            ruleType: section.title,
+            tags: tags,
+            selectedTags: tags,
+            mainColor: mainColor,
+            lightColor: lightColor,
+            mainLightBackgroundColor: UIColor.white,
+            enableTagSelection: false)
+
+        return cell
+    }
 }
 
 // MARK: Layout
@@ -394,41 +468,15 @@ extension RoomDetailViewController {
     func createBasicInfoSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(100)))
+            heightDimension: .estimated(1)))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(100)), subitems: [item])
+                heightDimension: .estimated(1)), subitems: [item])
 
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
 
-        return section    }
-
-    func createItemsSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(
-            widthDimension: .estimated(20),
-            heightDimension: .fractionalHeight(1)
-        )
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .estimated(20),
-            heightDimension: .absolute(30)
-        )
-
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [item]
-        )
-
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
-
-        // SectionHeader
-        section.boundarySupplementaryItems = [createSectionHeader()]
         return section
     }
 
@@ -552,12 +600,10 @@ extension RoomDetailViewController {
     func sectionFor(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let section = Section.allCases[index]
         switch section {
-        case .basicInfo:
+        case .basicInfo, .highLight, .gender, .pet, .elevator, .cooking, .bathroom, .features:
             return createBasicInfoSection()
         case .feeDetail:
             return createFeeDetailSection()
-        case .amenities, .rules:
-            return createItemsSection()
         case .images:
             return createImagesSection()
         case .reservationDays:
@@ -580,15 +626,11 @@ extension RoomDetailViewController: RoomImagesCellDelegate {
     func didClickedLike(like: Bool) {
         if let roomID = room?.roomID {
             if like == true {
-                if gCurrentUser.like != nil {
-                    gCurrentUser.like?.append(roomID)
-                } else {
-                    gCurrentUser.like = []
-                    gCurrentUser.like?.append(roomID)
-                }
+                let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
+                user?.favoriteRooms.append(favoriteRoom)
             } else {
-                if let index = gCurrentUser.like?.firstIndex(of: roomID) {
-                    gCurrentUser.like?.remove(at: index)
+                if let index = user?.favoriteRoomIDs.firstIndex(of: roomID) {
+                    user?.favoriteRooms.remove(at: index)
                 }
             }
         }
@@ -604,9 +646,13 @@ extension RoomDetailViewController {
         }
         newSnapshot.appendSections(Section.allCases)
         newSnapshot.appendItems([.images(room)], toSection: .images)
-
-        newSnapshot.appendItems(room.rules.map { Item.rules($0) }, toSection: .rules)
-        newSnapshot.appendItems(room.publicAmenities.map { Item.amenities($0) }, toSection: .amenities)
+        newSnapshot.appendItems([.pet(room)], toSection: .pet)
+        newSnapshot.appendItems([.elevator(room)], toSection: .elevator)
+        newSnapshot.appendItems([.cooking(room)], toSection: .cooking)
+        newSnapshot.appendItems([.bathroom(room)], toSection: .bathroom)
+        newSnapshot.appendItems([.features(room)], toSection: .features)
+        newSnapshot.appendItems([.gender(room)], toSection: .gender)
+        newSnapshot.appendItems([.highLight(room)], toSection: .highLight)
         newSnapshot.appendItems([.basicInfo(room)], toSection: .basicInfo)
         if room.billInfo != nil {
             newSnapshot.appendItems(

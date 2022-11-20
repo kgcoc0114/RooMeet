@@ -7,27 +7,59 @@
 
 import UIKit
 
+protocol RoomDisplayCellDelegate: AnyObject {
+    func didClickedLike(_ cell: RoomDisplayCell, like: Bool)
+}
+
 class RoomDisplayCell: UICollectionViewCell {
     static let identifier = "RoomDisplayCell"
-    @IBOutlet weak var checkImageView: UIImageView!
-    @IBOutlet weak var tagLabel: UILabel!
-    @IBOutlet weak var tagView: UIView!
+
+    @IBOutlet weak var rsvnInfoView: UIView!
+    @IBOutlet weak var favoriteInfoView: UIView!
+    @IBOutlet weak var likeButton: UIButton! {
+        didSet {
+            likeButton.translatesAutoresizingMaskIntoConstraints = false
+            likeButton.backgroundColor = .clear
+            likeButton.setTitle("", for: .normal)
+            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            likeButton.tintColor = UIColor.subTitleRedColor
+        }
+    }
+
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var displayBackgroundView: CardView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var ownerLabel: UILabel!
+    @IBOutlet weak var displayBackgroundView: UIView!
     @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var regionLabel: UILabel!
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var roomSpecLabel: UILabel!
+    @IBOutlet weak var rsvnDateLabel: UILabel!
+    @IBOutlet weak var rsvnTimeLabel: UILabel!
+    @IBOutlet weak var rsvnStatusTagButton: UIButton!
+
+    var isLike = false {
+        didSet {
+            if isLike == true {
+                likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+            } else {
+                likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            }
+        }
+    }
+
+    weak var delegate: RoomDisplayCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        displayBackgroundView.cornerRadius = 10
+        titleLabel.font = UIFont.regular(size: 16)
+        titleLabel.textColor = UIColor.mainColor
+        displayBackgroundView.layer.cornerRadius = 10
         imageView.layer.cornerRadius = 10
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
 
-        tagView.layer.cornerRadius = 15
-        tagView.backgroundColor = .orange
-        tagLabel.tintColor = .white
+        regionLabel.font = UIFont.regular(size: 14)
+        priceLabel.font = UIFont.regular(size: 14)
+        roomSpecLabel.font = UIFont.regular(size: 14)
     }
 
     func configureCell(data: Room) {
@@ -36,22 +68,36 @@ class RoomDisplayCell: UICollectionViewCell {
                 with: data.roomImages[0],
                 placeholder: UIImage(systemName: "house")?.withTintColor(.systemGray6))
         } else {
-            imageView.image = UIImage(systemName: "house")
+            imageView.image = UIImage(systemName: "house")?.withTintColor(.systemGray6)
         }
+
+        titleLabel.text = data.title
 
         if !data.county.isEmpty && !data.town.isEmpty {
-            titleLabel.text = "\(data.county)\(data.town)找室友"
+            regionLabel.text = "\(data.county)\(data.town)"
         }
 
-        if let owner = data.userData {
-            let gender = Gender.allCases[owner.gender].rawValue
-            ownerLabel.text = "\(owner.name) / \(owner.age) / \(gender)"
-        }
+        regionLabel.text = "\(data.county)\(data.town)"
+
 
         if let price = data.roomMinPrice {
-            priceLabel.text = "$ \(price) / Month"
+            priceLabel.text = "\(price) 元/月"
         }
 
-        tagLabel.text = "缺 \(data.rooms.count)"
+        if !data.rooms.isEmpty {
+            data.rooms.forEach { room in
+                if room.price == data.roomMinPrice {
+                    guard
+                        let roomType = room.roomType,
+                        let space = room.space else { return }
+                    roomSpecLabel.text = "\(roomType) \(space) 坪"
+                }
+            }
+        }
+    }
+
+    @IBAction func likeAction(_ sender: Any) {
+        isLike.toggle()
+        delegate?.didClickedLike(self, like: isLike)
     }
 }
