@@ -39,6 +39,7 @@ class IntroViewController: UIViewController {
     let imagePickerController = UIImagePickerController()
 
     var user: User?
+
     var rules: [String] = RMConstants.shared.roomHighLights
         + RMConstants.shared.roomCookingRules
         + RMConstants.shared.roomElevatorRules
@@ -95,6 +96,7 @@ class IntroViewController: UIViewController {
         collectionView.register(
             UINib(nibName: "ItemsCell", bundle: nil),
             forCellWithReuseIdentifier: ItemsCell.reuseIdentifier)
+
         dataSource = IntroDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
             guard let self = self else { return UICollectionViewCell() }
             switch item {
@@ -110,13 +112,17 @@ class IntroViewController: UIViewController {
                 } else {
                     cell.imageView.image = UIImage.asset(.profile_user)
                 }
-                cell.configureCell(data: data)
+                cell.configureCell(edit: self.entryType == .edit, data: data)
                 return cell
             case .rules:
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: ItemsCell.reuseIdentifier,
                     for: indexPath) as? ItemsCell else {
                     return UICollectionViewCell()
+                }
+
+                if let tmpRemoveIndex = self.rules.firstIndex(of: "可議") {
+                    self.rules.remove(at: tmpRemoveIndex)
                 }
 
                 cell.configureTagView(
@@ -320,7 +326,7 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
                         return
                     }
 
-                    storageRef.downloadURL { [weak self] url, error in
+                    storageRef.downloadURL { [weak self] url, _ in
                         guard let downloadURL = url else {
                             return
                         }
@@ -351,6 +357,11 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
             "favoriteCounty": user.favoriteCounty as Any,
             "favoriteTown": user.favoriteTown as Any
         ]
+
+        if entryType == .new {
+            updateData["favoriteRooms"] = []
+            updateData["reservations"] = []
+        }
 
         if let url = url {
             updateData["profilePhoto"] = url.absoluteString
