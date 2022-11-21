@@ -75,6 +75,7 @@ class IntroCell: UICollectionViewCell {
 
     @IBOutlet weak var introTextView: UITextView! {
         didSet {
+            introTextView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             introTextView.backgroundColor = .mainLightColor
             introTextView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
         }
@@ -163,6 +164,8 @@ class IntroCell: UICollectionViewCell {
             }
 
             self.rules = rules
+        } else {
+            introTextView.text = ""
         }
     }
 

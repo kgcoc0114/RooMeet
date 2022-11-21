@@ -10,9 +10,26 @@ import UIKit
 class ChatRoomCell: UITableViewCell {
     static let reuseIdentifier = "\(ChatRoomCell.self)"
 
-    @IBOutlet weak var timeLabel: UILabel!
-    @IBOutlet weak var contentLabel: UILabel!
-    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var timeLabel: UILabel! {
+        didSet {
+            timeLabel.textColor = .mainDarkColor
+        }
+    }
+
+    @IBOutlet weak var contentLabel: UILabel! {
+        didSet {
+            contentLabel.textColor = .mainDarkColor
+            contentLabel.font = UIFont.regularSubTitle()
+        }
+    }
+
+    @IBOutlet weak var userNameLabel: UILabel! {
+        didSet {
+            userNameLabel.textColor = .mainDarkColor
+            userNameLabel.font = UIFont.regularTitle()
+        }
+    }
+
     @IBOutlet weak var profileImageView: UIImageView!
 
     override func awakeFromNib() {
@@ -26,11 +43,10 @@ class ChatRoomCell: UITableViewCell {
     }
 
     private func styleCell() {
-        userNameLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
-        contentLabel.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        timeLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
+        timeLabel.font = UIFont.regular(size: 10)
         profileImageView.contentMode = .scaleAspectFill
     }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         profileImageView.layer.cornerRadius = profileImageView.bounds.height / 2
@@ -52,9 +68,8 @@ class ChatRoomCell: UITableViewCell {
             } else {
                 profileImageView.image = UIImage.asset(.profile_user)
             }
-
         } else {
-            userNameLabel.text = ""
+            userNameLabel.text = "User Name"
             profileImageView.setImage(urlString: "https://github.com/developerjet/JetChat/raw/master/ScreenShot/JetChatSmall.png")
         }
     }

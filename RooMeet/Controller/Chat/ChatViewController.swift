@@ -86,9 +86,6 @@ class ChatViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function)
-
-        self.tabBarController?.tabBar.isHidden = true
 
         // listen
         guard let chatRoom = chatRoom else {
@@ -101,12 +98,6 @@ class ChatViewController: UIViewController {
             }
             self.messages = messages ?? []
         }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        print(#function)
-        self.tabBarController?.tabBar.isHidden = false
     }
 
     func setup(chatRoom: ChatRoom) {
@@ -196,7 +187,8 @@ class ChatViewController: UIViewController {
     }
 
     @objc private func videoCall(_ sender: Any) {
-        guard let chatRoom = chatRoom else {
+        guard let chatRoom = chatRoom,
+            let otherData = otherData else {
             return
         }
 
@@ -213,7 +205,7 @@ class ChatViewController: UIViewController {
             callRoomId: chatRoom.id,
             callType: .offer,
             callerData: currentUserData,
-            calleeData: otherData!
+            calleeData: otherData
         )
 
         callViewController.otherUserData = otherData

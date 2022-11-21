@@ -261,7 +261,10 @@ extension PostViewController: UICollectionViewDataSource {
         PostSection.allCases.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         switch PostSection.allCases[indexPath.section] {
         case .basic:
             guard let cell = collectionView.dequeueReusableCell(
@@ -493,6 +496,7 @@ extension PostViewController: PostBasicCellDelegate {
             cell.county = county
             cell.town = town
         }
+        regionPickerVC.modalPresentationStyle = .overCurrentContext
         present(regionPickerVC, animated: false)
     }
 }
@@ -601,13 +605,14 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             let storageRef = Storage.storage().reference(withPath: "RoomImages").child("\(uniqueString).png")
 
             if let uploadData = uploadData {
-                storageRef.putData(uploadData, completion: { [weak self] data, error in
+                storageRef.putData(uploadData, completion: { [weak self] _, error in
                     if let error = error {
                         // TODO: Error Handle
                         print("Error: \(error.localizedDescription)")
                         return
                     }
-                    storageRef.downloadURL { [weak self] (url, error) in
+
+                    storageRef.downloadURL { [weak self] url, _ in
                         guard let self = self else { return }
                         guard let downloadURL = url else {
                             return
@@ -629,12 +634,15 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
 
 
     private func saveData() {
-        print(roomElevatorRules)
+        guard let postBasicData = postBasicData else {
+            return
+        }
+
         var inputRoom = Room(
             userID: UserDefaults.id,
             createdTime: createdTime,
             modifiedTime: Timestamp(),
-            title: (postBasicData?.title)!,
+            title: postBasicData.title ?? "房間出租",
             roomImages: roomImagesUrl,
             rooms: roomSpecList,
             roomFeatures: roomFeatures,
@@ -644,14 +652,16 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             roomCookingRules: roomCookingRules,
             roomElevatorRules: roomElevatorRules,
             roomBathroomRules: roomBathroomRules,
-            town: postBasicData!.town!,
-            county: postBasicData!.county!,
-            address: (postBasicData?.address!)!,
+            town: postBasicData.town ?? "中正區",
+            county: postBasicData.county ?? "臺北市",
+            address: postBasicData.address ?? "",
+            lat: latitude,
+            long: longitude,
             billInfo: billInfo,
-            leaseMonth: postBasicData?.leaseMonth ?? 0,
-            room: postBasicData?.room ?? 0,
-            parlor: postBasicData?.parlor ?? 0,
-            movinDate: postBasicData?.movinDate ?? Date(),
+            leaseMonth: postBasicData.leaseMonth ?? 0,
+            room: postBasicData.room ?? 0,
+            parlor: postBasicData.parlor ?? 0,
+            movinDate: postBasicData.movinDate ?? Date(),
             isDeleted: isDeleted
         )
 
@@ -670,7 +680,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             }
         } else {
             if let room = room,
-               let roomID = room.roomID {
+                let roomID = room.roomID {
                 FirebaseService.shared.updateRoomInfo(roomID: roomID, room: inputRoom) { error in
                     RMProgressHUD.dismiss()
 

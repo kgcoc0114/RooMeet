@@ -33,6 +33,7 @@ class OUTextCell: MessageBaseCell {
             contentTextView.translatesAutoresizingMaskIntoConstraints = false
             contentTextView.backgroundColor = msgType.backgroundColor
             contentTextView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            contentTextView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             contentTextView.isScrollEnabled = false
             contentTextView.isEditable = false
             contentTextView.font = UIFont.regularText()
