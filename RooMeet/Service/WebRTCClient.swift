@@ -26,7 +26,7 @@ final class WebRTCClient: NSObject {
 
     weak var delegate: WebRTCClientDelegate?
     private let peerConnection: RTCPeerConnection
-    private let rtcAudioSession =  RTCAudioSession.sharedInstance()
+    private let rtcAudioSession = RTCAudioSession.sharedInstance()
     private let audioQueue = DispatchQueue(label: "audio")
     private let mediaConstrains = [
         kRTCMediaConstraintsOfferToReceiveAudio: kRTCMediaConstraintsValueTrue,
@@ -59,8 +59,7 @@ final class WebRTCClient: NSObject {
             optionalConstraints: ["DtlsSrtpKeyAgreement": kRTCMediaConstraintsValueTrue]
         )
 
-        let peerConnection =
-        WebRTCClient.factory.peerConnection(with: config, constraints: constraints, delegate: nil)
+        let peerConnection = WebRTCClient.factory.peerConnection(with: config, constraints: constraints, delegate: nil)
 
         self.peerConnection = peerConnection
 
@@ -77,30 +76,29 @@ final class WebRTCClient: NSObject {
             optionalConstraints: nil
         )
 
-        self.peerConnection.offer(for: constrains) { (sdp, error) in
+        self.peerConnection.offer(for: constrains) { sdp, _ in
             guard let sdp = sdp else {
                 return
             }
 
-            self.peerConnection.setLocalDescription(sdp, completionHandler: { (error) in
-                print(sdp)
+            self.peerConnection.setLocalDescription(sdp, completionHandler: { _ in
                 completion(sdp)
             })
         }
     }
 
-    func answer(completion: @escaping (_ sdp: RTCSessionDescription) -> Void)  {
+    func answer(completion: @escaping (_ sdp: RTCSessionDescription) -> Void) {
         let constrains = RTCMediaConstraints(
             mandatoryConstraints: self.mediaConstrains,
             optionalConstraints: nil
         )
 
-        self.peerConnection.answer(for: constrains) { (sdp, error) in
+        self.peerConnection.answer(for: constrains) { sdp, error in
             guard let sdp = sdp else {
                 return
             }
 
-            self.peerConnection.setLocalDescription(sdp, completionHandler: { (error) in
+            self.peerConnection.setLocalDescription(sdp, completionHandler: { error in
                 completion(sdp)
             })
         }
@@ -111,8 +109,6 @@ final class WebRTCClient: NSObject {
     }
 
     func set(remoteCandidate: RTCIceCandidate, completion: @escaping (Error?) -> ()) {
-        //        print(remoteCandidate), completionHandler: completion
-        print(peerConnection.iceConnectionState)
         self.peerConnection.add(remoteCandidate)
     }
 
@@ -194,7 +190,6 @@ final class WebRTCClient: NSObject {
 #else
         self.videoCapturer = RTCCameraVideoCapturer(delegate: videoSource)
 #endif
-
         let videoTrack = WebRTCClient.factory.videoTrack(with: videoSource, trackId: "video0")
         return videoTrack
     }
@@ -246,7 +241,7 @@ extension WebRTCClient: RTCPeerConnectionDelegate {
     }
 
     func peerConnection(_ peerConnection: RTCPeerConnection, didGenerate candidate: RTCIceCandidate) {
-        if candidate.sdpMid !=  nil {
+        if candidate.sdpMid != nil {
             self.delegate?.webRTCClient(self, didDiscoverLocalCandidate: candidate)
         } else {
             print("empty ice event")
@@ -301,7 +296,8 @@ extension WebRTCClient {
         setTrackEnabled(RTCVideoTrack.self, isEnabled: isEnabled)
     }
 }
-// MARK:- Audio control
+
+// MARK: - Audio control
 extension WebRTCClient {
     func muteAudio() {
         self.setAudioEnabled(false)

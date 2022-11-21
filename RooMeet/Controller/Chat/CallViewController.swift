@@ -13,6 +13,7 @@ import FirebaseFirestoreSwift
 class CallViewController: UIViewController {
     // for webRTC
     private let webRTCClient = WebRTCClient(iceServers: Config.default.webRTCIceServers)
+
     private var hasLocalSdp = false
     var state: RTCIceConnectionState?
 
@@ -65,8 +66,21 @@ class CallViewController: UIViewController {
             statusLabel.translatesAutoresizingMaskIntoConstraints = false
         }
     }
+    @IBOutlet weak var localVideoView: UIView! {
+        didSet {
+            localVideoView.isHidden = true
+        }
+    }
+
+    @IBOutlet weak var remoteVideoView: UIView! {
+        didSet {
+            remoteVideoView.isHidden = true
+        }
+    }
+
     @IBOutlet weak var answerButton: UIButton!
     @IBOutlet weak var hangUpButton: UIButton!
+    @IBOutlet weak var videoButton: UIButton!
     @IBOutlet weak var callTimeLabel: UILabel! {
         didSet {
             callTimeLabel.text = ""
@@ -145,11 +159,11 @@ class CallViewController: UIViewController {
     func listenCall() {
         FirestoreEndpoint.call.colRef.document(callRoomId!)
             .addSnapshotListener { [weak self] documentSnapshot, error in
-                guard let `self` = self else { return }
+                guard let self = self else { return }
 
                 guard
                     let document = documentSnapshot,
-                    let _ = document.data() else {
+                    document.data() != nil else {
                     print("Document data was empty.")
                     return
                 }
@@ -161,9 +175,16 @@ class CallViewController: UIViewController {
                     self.callStatus = call.status
 
                     switch call.status {
+                    case "startVideo":
+                        print("startVideo")
+                        self.startVideo()
                     case "close":
                         status = "結束通話"
                         self.updateComponentStatus(answer: true)
+                        DispatchQueue.global(qos: .background).async { [weak self] in
+                            self?.webRTCClient.closeConnection()
+                        }
+                        self.dismiss(animated: true)
                     case "answer":
                         self.startTime = call.startTime
                         self.updateComponentStatus(answer: true)
@@ -217,6 +238,14 @@ class CallViewController: UIViewController {
     }
 
     @objc private func hangUpTapped() {
+        remoteVideoView.subviews.forEach { view in
+            view.removeFromSuperview()
+        }
+
+        localVideoView.subviews.forEach { view in
+            view.removeFromSuperview()
+        }
+
         if state == .closed || state == .failed {
             print("被掛電話")
         } else {
@@ -258,6 +287,44 @@ class CallViewController: UIViewController {
         joinARoom()
     }
 
+    @IBAction private func videoDidTap(_ sender: UIButton) {
+        updateVideoCallData(status: "startVideo")
+        startVideo()
+    }
+
+    private func startVideo() {
+        let localRenderer = RTCMTLVideoView(frame: localVideoView?.frame ?? CGRect.zero)
+        let remoteRenderer = RTCMTLVideoView(frame: remoteVideoView.frame)
+        localRenderer.videoContentMode = .scaleAspectFill
+        remoteRenderer.videoContentMode = .scaleAspectFill
+
+        webRTCClient.startCaptureLocalVideo(renderer: localRenderer)
+        webRTCClient.renderRemoteVideo(to: remoteRenderer)
+
+        if let localVideoView = localVideoView {
+            self.embedView(localRenderer, into: localVideoView)
+        }
+
+        embedView(remoteRenderer, into: remoteVideoView)
+        remoteVideoView.sendSubviewToBack(remoteRenderer)
+
+        remoteVideoView.isHidden = false
+        localVideoView.isHidden = false
+        self.webRTCClient.speakerOn()
+    }
+
+    private func embedView(_ view: UIView, into containerView: UIView) {
+        containerView.addSubview(view)
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalTo: containerView.heightAnchor),
+            view.widthAnchor.constraint(equalTo: containerView.widthAnchor),
+            view.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
+        ])
+        containerView.layoutIfNeeded()
+    }
 
     private func dealWithHangUp() {
         DispatchQueue.global(qos: .background).async { [weak self] in
@@ -272,6 +339,19 @@ class CallViewController: UIViewController {
         }
         callTime = RMDateFormatter.shared.getTimeIntervalString(startTimestamp: sTime, endTimestamp: eTime)
         updateCallData(status: "close", content: callTime ?? "")
+    }
+
+
+    func updateVideoCallData(status: String) {
+        guard
+            let callRoomId = self.callRoomId
+        else { return }
+
+        let docRef = FirestoreEndpoint.call.colRef.document(callRoomId)
+        let updateData = [
+            "status": status
+        ]
+        docRef.updateData(updateData)
     }
 
     func updateCallData(status: String, content: String) {
