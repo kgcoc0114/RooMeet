@@ -11,7 +11,7 @@ import CryptoKit
 
 class LoginViewController: UIViewController {
     var currentNonce: String?
-    lazy var loginAnimationView =  RMLottie.shared.loginAnimationView
+    lazy var loginAnimationView = RMLottie.shared.loginAnimationView
 
     @IBOutlet weak var animationView: UIView!
 

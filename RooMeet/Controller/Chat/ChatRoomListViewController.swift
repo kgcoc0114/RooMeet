@@ -74,14 +74,13 @@ class ChatRoomListViewController: UIViewController {
 extension ChatRoomListViewController {
     private func configureDataSource() {
         dataSource = DataSource(tableView: tableView,
-                                cellProvider: { [unowned self] tableView, indexPath, itemIdentifier in
+                                cellProvider: { [unowned self] tableView, indexPath, chatRoom in
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ChatRoomCell.reuseIdentifier,
                 for: indexPath
             ) as? ChatRoomCell else {
                 return UITableViewCell()
             }
-            let chatRoom = self.chatRooms[indexPath.item]
             cell.layoutCell(UserDefaults.id, chatRoom: chatRoom)
             return cell
         })
@@ -92,7 +91,7 @@ extension ChatRoomListViewController {
     private func updateDataSource() {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
-        newSnapshot.appendItems(chatRooms.map({ $0 }), toSection: .chatRoom)
+        newSnapshot.appendItems(chatRooms, toSection: .chatRoom)
         dataSource.apply(newSnapshot, animatingDifferences: false)
     }
 }
@@ -102,6 +101,10 @@ extension ChatRoomListViewController: UITableViewDelegate {
         let chatRoom = chatRooms[indexPath.item]
         let detailVC = ChatViewController()
         detailVC.setup(chatRoom: chatRoom)
+        self.hidesBottomBarWhenPushed = true
+        DispatchQueue.main.async {
+            self.hidesBottomBarWhenPushed = false
+        }
         navigationController?.pushViewController(detailVC, animated: false)
     }
 }

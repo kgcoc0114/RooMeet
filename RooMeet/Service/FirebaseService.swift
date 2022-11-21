@@ -103,9 +103,9 @@ class FirebaseService {
 
     func upsertUser(uid: String, email: String?, user: User? = nil, completion: @escaping ((Bool) -> Void)) {
         let docRef = FirestoreEndpoint.user.colRef.document(uid)
-
+        print("upserUser ", uid)
         docRef.getDocument { [weak self] document, _ in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             if let document = document, document.exists {
                 guard let user = user else {
                     // get user info
@@ -184,6 +184,8 @@ class FirebaseService {
         fetchChatRoomsByUserID(userID: userID) { [weak self] roomsResult in
             let group = DispatchGroup()
             var chatRooms = roomsResult
+            print("fetchChatRoomDataWithMemberData ", userID)
+
             chatRooms.enumerated().forEach { index, roomResult in
                 var chatRoom = roomResult
                 let members = chatRoom.members.filter { member in
@@ -209,14 +211,17 @@ class FirebaseService {
 
     func fetchRoomDatabyQuery(query: Query, completion: @escaping (([Room]) -> Void)) {
         let group = DispatchGroup()
+
         getDocuments(query) { (rooms: [Room]) in
             var rooms = rooms
             rooms.enumerated().forEach { index, roomResult in
                 let ownerID = roomResult.userID
+                print("fetchRoomDatabyQuery ", ownerID)
+
                 group.enter()
                 self.fetchUserByID(userID: ownerID, index: index) { user, index in
                     if let user = user,
-                       let index = index {
+                        let index = index {
                         rooms[index].userData = user
                     }
                     group.leave()
@@ -246,7 +251,7 @@ class FirebaseService {
                         chatRooms[index].member = ChatMember(
                             id: memberID,
                             profilePhoto: user.profilePhoto,
-                            name: user.name!
+                            name: user.name ?? "User"
                         )
                     }
                     group.leave()
@@ -297,8 +302,9 @@ class FirebaseService {
                         let ownerID = roomResult.userID
                         group.enter()
                         self.fetchUserByID(userID: ownerID, index: index) { user, index in
-                            if let user = user {
-                                rooms[index!].userData = user
+                            if let user = user,
+                                let index = index {
+                                rooms[index].userData = user
                             }
                             group.leave()
                         }
@@ -333,12 +339,13 @@ class FirebaseService {
                 group.enter()
                 self.fetchUserByID(userID: ownerID, index: index) { user, index in
                     if let user = user,
-                       let index = index {
+                        let index = index {
                         rooms[index].userData = user
                     }
                     group.leave()
                 }
             }
+
             group.notify(queue: DispatchQueue.main) {
                 let sortedRooms  = rooms.sorted { roomA, roomB in
                     roomA.createdTime.seconds > roomB.createdTime.seconds
