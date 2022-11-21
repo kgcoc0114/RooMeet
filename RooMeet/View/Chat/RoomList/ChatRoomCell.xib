@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8EK-Qq-QxF">
-                        <rect key="frame" x="120" y="18" width="223.5" height="20.5"/>
+                        <rect key="frame" x="110" y="18" width="233.5" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -30,13 +30,13 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OQN-eL-zb4">
-                        <rect key="frame" x="120" y="48.5" width="233.5" height="20.5"/>
+                        <rect key="frame" x="110" y="48.5" width="243.5" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PYq-8L-wBs">
-                        <rect key="frame" x="30" y="15" width="70" height="70"/>
+                        <rect key="frame" x="20" y="15" width="70" height="70"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="70" id="8oQ-97-GQT"/>
                             <constraint firstAttribute="height" constant="70" id="rG7-KJ-Wh1"/>
@@ -53,7 +53,7 @@
                     <constraint firstItem="PYq-8L-wBs" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="WQF-8Z-7EH"/>
                     <constraint firstItem="OQN-eL-zb4" firstAttribute="trailing" secondItem="dZ7-PI-zGy" secondAttribute="leading" constant="5" id="eRm-vm-8G3"/>
                     <constraint firstAttribute="trailing" secondItem="dZ7-PI-zGy" secondAttribute="trailing" constant="15" id="gT3-wQ-HMx"/>
-                    <constraint firstItem="PYq-8L-wBs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="30" id="nfj-ND-Pxp"/>
+                    <constraint firstItem="PYq-8L-wBs" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="nfj-ND-Pxp"/>
                     <constraint firstItem="OQN-eL-zb4" firstAttribute="top" secondItem="8EK-Qq-QxF" secondAttribute="bottom" constant="10" id="teE-Ua-h3M"/>
                 </constraints>
             </tableViewCellContentView>

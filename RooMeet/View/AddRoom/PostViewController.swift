@@ -629,12 +629,15 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
 
 
     private func saveData() {
-        print(roomElevatorRules)
+        guard let postBasicData = postBasicData else {
+            return
+        }
+
         var inputRoom = Room(
             userID: UserDefaults.id,
             createdTime: createdTime,
             modifiedTime: Timestamp(),
-            title: (postBasicData?.title)!,
+            title: postBasicData.title ?? "房間出租",
             roomImages: roomImagesUrl,
             rooms: roomSpecList,
             roomFeatures: roomFeatures,
@@ -644,14 +647,16 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             roomCookingRules: roomCookingRules,
             roomElevatorRules: roomElevatorRules,
             roomBathroomRules: roomBathroomRules,
-            town: postBasicData!.town!,
-            county: postBasicData!.county!,
-            address: (postBasicData?.address!)!,
+            town: postBasicData.town ?? "中正區",
+            county: postBasicData.county ?? "臺北市",
+            address: postBasicData.address ?? "",
+            lat: latitude,
+            long: longitude,
             billInfo: billInfo,
-            leaseMonth: postBasicData?.leaseMonth ?? 0,
-            room: postBasicData?.room ?? 0,
-            parlor: postBasicData?.parlor ?? 0,
-            movinDate: postBasicData?.movinDate ?? Date(),
+            leaseMonth: postBasicData.leaseMonth ?? 0,
+            room: postBasicData.room ?? 0,
+            parlor: postBasicData.parlor ?? 0,
+            movinDate: postBasicData.movinDate ?? Date(),
             isDeleted: isDeleted
         )
 
@@ -670,7 +675,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             }
         } else {
             if let room = room,
-               let roomID = room.roomID {
+                let roomID = room.roomID {
                 FirebaseService.shared.updateRoomInfo(roomID: roomID, room: inputRoom) { error in
                     RMProgressHUD.dismiss()
 

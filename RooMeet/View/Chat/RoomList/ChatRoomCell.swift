@@ -31,6 +31,7 @@ class ChatRoomCell: UITableViewCell {
         timeLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         profileImageView.contentMode = .scaleAspectFill
     }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         profileImageView.layer.cornerRadius = profileImageView.bounds.height / 2
@@ -52,7 +53,6 @@ class ChatRoomCell: UITableViewCell {
             } else {
                 profileImageView.image = UIImage.asset(.profile_user)
             }
-
         } else {
             userNameLabel.text = ""
             profileImageView.setImage(urlString: "https://github.com/developerjet/JetChat/raw/master/ScreenShot/JetChatSmall.png")
