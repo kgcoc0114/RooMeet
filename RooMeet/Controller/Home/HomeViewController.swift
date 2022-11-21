@@ -91,6 +91,7 @@ class HomeViewController: ViewController {
 
         collectionView.addPullToRefresh {[weak self] in
             self?.fetchRooms()
+            print(UserDefaults.id)
             FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
                 if let user = user {
                     gCurrentUser = user

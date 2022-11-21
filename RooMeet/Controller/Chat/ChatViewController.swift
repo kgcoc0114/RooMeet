@@ -86,7 +86,6 @@ class ChatViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.tabBarController?.tabBar.isHidden = true
 
         // listen
         guard let chatRoom = chatRoom else {
@@ -99,11 +98,6 @@ class ChatViewController: UIViewController {
             }
             self.messages = messages ?? []
         }
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.tabBarController?.tabBar.isHidden = false
     }
 
     func setup(chatRoom: ChatRoom) {
