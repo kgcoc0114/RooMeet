@@ -69,11 +69,6 @@ class ChatRoomListViewController: UIViewController {
             }
         }
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.tabBarController?.tabBar.isHidden = false
-    }
 }
 
 extension ChatRoomListViewController {
@@ -106,6 +101,10 @@ extension ChatRoomListViewController: UITableViewDelegate {
         let chatRoom = chatRooms[indexPath.item]
         let detailVC = ChatViewController()
         detailVC.setup(chatRoom: chatRoom)
+        self.hidesBottomBarWhenPushed = true
+        DispatchQueue.main.async {
+            self.hidesBottomBarWhenPushed = false
+        }
         navigationController?.pushViewController(detailVC, animated: false)
     }
 }

@@ -261,7 +261,10 @@ extension PostViewController: UICollectionViewDataSource {
         PostSection.allCases.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         switch PostSection.allCases[indexPath.section] {
         case .basic:
             guard let cell = collectionView.dequeueReusableCell(
@@ -493,6 +496,7 @@ extension PostViewController: PostBasicCellDelegate {
             cell.county = county
             cell.town = town
         }
+        regionPickerVC.modalPresentationStyle = .overCurrentContext
         present(regionPickerVC, animated: false)
     }
 }
@@ -601,13 +605,14 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             let storageRef = Storage.storage().reference(withPath: "RoomImages").child("\(uniqueString).png")
 
             if let uploadData = uploadData {
-                storageRef.putData(uploadData, completion: { [weak self] data, error in
+                storageRef.putData(uploadData, completion: { [weak self] _, error in
                     if let error = error {
                         // TODO: Error Handle
                         print("Error: \(error.localizedDescription)")
                         return
                     }
-                    storageRef.downloadURL { [weak self] (url, error) in
+
+                    storageRef.downloadURL { [weak self] url, _ in
                         guard let self = self else { return }
                         guard let downloadURL = url else {
                             return
