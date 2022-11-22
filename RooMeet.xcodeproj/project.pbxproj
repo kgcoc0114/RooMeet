@@ -122,8 +122,6 @@
 		E5D76CFC291D0BA90074DFD7 /* FavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D76CFA291D0BA90074DFD7 /* FavoritesViewController.xib */; };
 		E5D76D03291D21900074DFD7 /* ProfileRSVNViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D76D01291D21900074DFD7 /* ProfileRSVNViewController.swift */; };
 		E5D76D04291D21900074DFD7 /* ProfileRSVNViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D76D02291D21900074DFD7 /* ProfileRSVNViewController.xib */; };
-		E5D76D0D291D24B20074DFD7 /* ProfileRSVNDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D76D0B291D24B20074DFD7 /* ProfileRSVNDetailViewController.swift */; };
-		E5D76D0E291D24B20074DFD7 /* ProfileRSVNDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D76D0C291D24B20074DFD7 /* ProfileRSVNDetailViewController.xib */; };
 		E5D9BF75291DFBE700F416E6 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BF73291DFBE700F416E6 /* TagCell.swift */; };
 		E5D9BF76291DFBE700F416E6 /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D9BF74291DFBE700F416E6 /* TagCell.xib */; };
 		E5D9BF78291E26AA00F416E6 /* RMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BF77291E26AA00F416E6 /* RMConstants.swift */; };
@@ -300,8 +298,6 @@
 		E5D76CFA291D0BA90074DFD7 /* FavoritesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoritesViewController.xib; sourceTree = "<group>"; };
 		E5D76D01291D21900074DFD7 /* ProfileRSVNViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRSVNViewController.swift; sourceTree = "<group>"; };
 		E5D76D02291D21900074DFD7 /* ProfileRSVNViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileRSVNViewController.xib; sourceTree = "<group>"; };
-		E5D76D0B291D24B20074DFD7 /* ProfileRSVNDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRSVNDetailViewController.swift; sourceTree = "<group>"; };
-		E5D76D0C291D24B20074DFD7 /* ProfileRSVNDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileRSVNDetailViewController.xib; sourceTree = "<group>"; };
 		E5D9BF73291DFBE700F416E6 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
 		E5D9BF74291DFBE700F416E6 /* TagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
 		E5D9BF77291E26AA00F416E6 /* RMConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMConstants.swift; sourceTree = "<group>"; };
@@ -677,8 +673,6 @@
 			children = (
 				E5D76D01291D21900074DFD7 /* ProfileRSVNViewController.swift */,
 				E5D76D02291D21900074DFD7 /* ProfileRSVNViewController.xib */,
-				E5D76D0B291D24B20074DFD7 /* ProfileRSVNDetailViewController.swift */,
-				E5D76D0C291D24B20074DFD7 /* ProfileRSVNDetailViewController.xib */,
 			);
 			path = Reservation;
 			sourceTree = "<group>";
@@ -1010,7 +1004,6 @@
 				E5A12A672910C7BF006907D9 /* EditFeeController.xib in Resources */,
 				E5DEFD96291F55210064E2C8 /* BookingDateCell.xib in Resources */,
 				E5872945291D022000C12E9E /* IntroCell.xib in Resources */,
-				E5D76D0E291D24B20074DFD7 /* ProfileRSVNDetailViewController.xib in Resources */,
 				E5DEFD8E291F3AF60064E2C8 /* CUCallCell.xib in Resources */,
 				E5EEE20329129C6000CAAE84 /* PostalCode.json in Resources */,
 				E5B984BE291B6EF1006DD8D7 /* BookingView.xib in Resources */,
@@ -1141,7 +1134,6 @@
 				E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */,
 				E55C0960290D53F900DBF21B /* Gender.swift in Sources */,
 				E5B984BB291B547E006DD8D7 /* HintTextView.swift in Sources */,
-				E5D76D0D291D24B20074DFD7 /* ProfileRSVNDetailViewController.swift in Sources */,
 				E560135D29277A7100EE0083 /* RMButtomSheetViewController.swift in Sources */,
 				E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */,
 				E5FF403F291B45FA00DCA2D4 /* TmpViewController.swift in Sources */,
