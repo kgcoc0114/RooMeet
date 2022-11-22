@@ -143,8 +143,8 @@ class IntroViewController: UIViewController {
     }
 
     private func fetchUser() {
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
-            self.user = user
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            self?.user = user
         }
     }
 

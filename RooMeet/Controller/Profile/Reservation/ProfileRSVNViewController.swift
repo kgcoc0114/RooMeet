@@ -9,6 +9,11 @@
 import UIKit
 
 class ProfileRSVNViewController: UIViewController {
+
+    deinit {
+        print("=== ProfileRSVNViewController deinit")
+    }
+
     enum Section {
         case main
     }
@@ -25,7 +30,7 @@ class ProfileRSVNViewController: UIViewController {
             }
         }
     }
-    lazy var reservationAnimationView =  RMLottie.shared.reservationAnimationView
+    lazy var reservationAnimationView = RMLottie.shared.reservationAnimationView
     @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
@@ -42,16 +47,17 @@ class ProfileRSVNViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         // fetch room to display
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [self] user, _ in
-            guard let user = user else {
-                return
-            }
-            gCurrentUser = user
-            fetchReservations()
-        }
-
-        RMLottie.shared.startAnimate(animationView: reservationAnimationView)
+//        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+//            guard let user = user else {
+//                return
+//            }
+//            gCurrentUser = user
+//            self?.fetchReservations()
+//        }
+//
+//        RMLottie.shared.startAnimate(animationView: reservationAnimationView)
     }
 
     private func configureAnimationView() {
@@ -77,7 +83,6 @@ class ProfileRSVNViewController: UIViewController {
                 return UICollectionViewCell()
             }
 
-//            cell.checkImageView.isHidden = true
             cell.configureCell(data: reservation)
             return cell
         }
@@ -90,6 +95,7 @@ class ProfileRSVNViewController: UIViewController {
     }
 
     private func fetchReservations() {
+        print(UserDefaults.id)
         FirebaseService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations in
             self?.reservations = reservations
         }

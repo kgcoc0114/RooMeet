@@ -16,6 +16,7 @@
                 <outlet property="callerImageView" destination="BTl-GF-aDz" id="ruB-e8-tEN"/>
                 <outlet property="callerNameLabel" destination="JhK-Ww-SXD" id="qFH-zN-dwp"/>
                 <outlet property="hangUpButtonView" destination="6Hs-J4-Kjq" id="7Vv-u2-JNi"/>
+                <outlet property="hintLabel" destination="b93-b6-cUf" id="LT7-Pc-oCv"/>
                 <outlet property="localVideoView" destination="yKD-dU-es9" id="h1g-YX-jam"/>
                 <outlet property="remoteVideoView" destination="0Jq-kU-3ro" id="Mt4-VF-WN0"/>
                 <outlet property="statusLabel" destination="0GQ-Q7-BPe" id="tw6-5R-BdH"/>
@@ -68,8 +69,15 @@
                                 <constraint firstAttribute="width" secondItem="yKD-dU-es9" secondAttribute="height" multiplier="9:16" id="GOn-wK-mQu"/>
                             </constraints>
                         </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b93-b6-cUf">
+                            <rect key="frame" x="186" y="235" width="42" height="21"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="yKD-dU-es9" secondAttribute="bottom" id="1a7-LA-qZ9"/>
                         <constraint firstAttribute="trailing" secondItem="yKD-dU-es9" secondAttribute="trailing" id="BOU-Kd-ws7"/>

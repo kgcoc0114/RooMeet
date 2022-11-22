@@ -77,12 +77,23 @@ class FirebaseService {
     }
 
     func fetchUserByID(userID: String, index: Int? = nil, completion: @escaping ((User?, Int?) -> Void)) {
-        let docRef = FirestoreEndpoint.user.colRef.document(userID)
+        let test = Firestore.firestore().collection("User").document(userID)
+//        let docRef = FirestoreEndpoint.user.colRef.whereField("id", isEqualTo: userID)
+//            .document(userID)
 
-        docRef.getDocument { document, error in
+//        getDocuments(docRef) { (users: [User]) in
+//            completion(users[0], index)
+//        }
+//
+        test.getDocument { document, error in
             if let document = document, document.exists {
                 do {
                     let item = try document.data(as: User.self)
+
+//                    let data = document.data()
+//
+//                    let item = User(id: data!["id"] as! String)
+
                     completion(item, index)
                 } catch let error {
                     print("ERROR: fetchUserByID - \(error.localizedDescription)")
@@ -332,12 +343,12 @@ class FirebaseService {
         query = query.order(by: "userID", descending: true)
 
         let group = DispatchGroup()
-        getDocuments(query) { (rooms: [Room]) in
+        getDocuments(query) { [weak self] (rooms: [Room]) in
             var rooms = rooms
             rooms.enumerated().forEach { index, roomResult in
                 let ownerID = roomResult.userID
                 group.enter()
-                self.fetchUserByID(userID: ownerID, index: index) { user, index in
+                self?.fetchUserByID(userID: ownerID, index: index) { user, index in
                     if let user = user,
                         let index = index {
                         rooms[index].userData = user
@@ -477,6 +488,7 @@ class FirebaseService {
                   let self = self else {
                 return
             }
+            print(user.reservations)
 
             self.fetchRoomsByReservationID(reservationList: user.reservations) { reservations in
                 completion(reservations)
