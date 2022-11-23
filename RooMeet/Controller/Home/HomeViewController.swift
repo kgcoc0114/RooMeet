@@ -20,6 +20,7 @@ class HomeViewController: ViewController {
     private var dataSource: HomeDataSource!
 
     let locationManger = LocationService.shared.locationManger
+
     var rooms: [Room] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
@@ -28,6 +29,8 @@ class HomeViewController: ViewController {
             }
         }
     }
+
+    var user: User?
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -69,6 +72,11 @@ class HomeViewController: ViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchRooms()
+
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self else { return }
+            self.user = user
+        }
     }
 
     private func configureCollectionView() {
@@ -89,20 +97,15 @@ class HomeViewController: ViewController {
 
         collectionView.collectionViewLayout = createLayout()
 
-        collectionView.addPullToRefresh {[weak self] in
-            self?.fetchRooms()
-            print(UserDefaults.id)
-            FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
-                if let user = user {
-                    gCurrentUser = user
-                }
-            }
+        collectionView.addPullToRefresh { [weak self] in
+            guard let self = self else { return }
+            self.fetchRooms()
         }
     }
 
     private func fetchRooms() {
         FirebaseService.shared.fetchRooms { [weak self] rooms in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             self.rooms = rooms
         }
     }
@@ -165,7 +168,7 @@ extension HomeViewController: UICollectionViewDelegate {
         guard
             let room = dataSource.itemIdentifier(for: indexPath)
         else { return }
-        let detailViewController = RoomDetailViewController(room: room)
+        let detailViewController = RoomDetailViewController(room: room, user: user)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
@@ -174,7 +177,7 @@ extension HomeViewController: UICollectionViewDelegate {
 extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            gCurrentPosition = location.coordinate
+            RMConstants.shared.currentPosition = location.coordinate
         }
     }
 

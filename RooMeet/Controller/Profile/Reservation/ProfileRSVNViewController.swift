@@ -25,9 +25,14 @@ class ProfileRSVNViewController: UIViewController {
             }
         }
     }
-    lazy var reservationAnimationView =  RMLottie.shared.reservationAnimationView
+
+    var user: User?
+
+    lazy var reservationAnimationView = RMLottie.shared.reservationAnimationView
+
     @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,16 +47,14 @@ class ProfileRSVNViewController: UIViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        // fetch room to display
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [self] user, _ in
-            guard let user = user else {
-                return
-            }
-            gCurrentUser = user
-            fetchReservations()
-        }
+        super.viewWillAppear(animated)
 
+        fetchReservations()
         RMLottie.shared.startAnimate(animationView: reservationAnimationView)
+    }
+
+    deinit {
+        print("=== ProfileRSVNViewController deinit")
     }
 
     private func configureAnimationView() {
@@ -77,7 +80,6 @@ class ProfileRSVNViewController: UIViewController {
                 return UICollectionViewCell()
             }
 
-//            cell.checkImageView.isHidden = true
             cell.configureCell(data: reservation)
             return cell
         }
@@ -85,13 +87,18 @@ class ProfileRSVNViewController: UIViewController {
         collectionView.collectionViewLayout = createLayout()
 
         collectionView.addPullToRefresh {[weak self] in
-            self?.fetchReservations()
+            guard let self = self else { return }
+            self.fetchReservations()
         }
     }
 
     private func fetchReservations() {
-        FirebaseService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations in
-            self?.reservations = reservations
+        print(UserDefaults.id)
+        FirebaseService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations, user in
+            guard let self = self else { return }
+            self.user = user
+            self.reservations = reservations
+            print(user.reservations)
         }
     }
 }
@@ -121,7 +128,7 @@ extension ProfileRSVNViewController {
     private func updateDataSource() {
         var newSnapshot = ProfileRSVNSnapshot()
         newSnapshot.appendSections([Section.main])
-        newSnapshot.appendItems(reservations.map { $0 }, toSection: .main)
+        newSnapshot.appendItems(reservations, toSection: .main)
         dataSource.apply(newSnapshot)
     }
 }
@@ -132,7 +139,7 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
         guard
             let reservation = dataSource.itemIdentifier(for: indexPath)
         else { return }
-        let detailViewController = RoomDetailViewController(room: reservation.roomDetail!)
+        let detailViewController = RoomDetailViewController(room: reservation.roomDetail!, user: user)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

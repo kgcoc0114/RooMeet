@@ -100,8 +100,7 @@ enum Profile: CaseIterable {
 
 class ProfileViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var profileImageView: UIImageView!  {
+    @IBOutlet weak var profileImageView: UIImageView! {
         didSet {
             let tapGestureRecognizer = UITapGestureRecognizer(
                 target: self,
@@ -117,12 +116,10 @@ class ProfileViewController: UIViewController {
     }
 
     @IBOutlet weak var userNameLabel: UILabel!
-//    @IBOutlet weak var editButton: UIButton!
+
     @IBOutlet weak var editIntroButton: UIButton!
 
-    override func viewDidLayoutSubviews() {
-        editIntroButton.layer.cornerRadius = (editIntroButton.bounds.height * 0.25)
-    }
+    private var user: User?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -139,14 +136,13 @@ class ProfileViewController: UIViewController {
 
         collectionView.isScrollEnabled = false
 
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
-            guard let user = user else {
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self,
+                let user = user else {
                 return
             }
-            gCurrentUser = user
-            FirebaseService.shared.fetchRoomCountsOwnByUserID(userID: UserDefaults.id) { count in
-                gCurrentUser.postCount = count
-            }
+
+            self.user = user
         }
 
         if UserDefaults.profilePhoto != "empty" {
@@ -162,26 +158,19 @@ class ProfileViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
-            guard let user = user else {
-                return
-            }
-            gCurrentUser = user
-            FirebaseService.shared.fetchRoomCountsOwnByUserID(userID: UserDefaults.id) { count in
-                gCurrentUser.postCount = count
-            }
-        }
         collectionView.reloadData()
     }
 
+    override func viewDidLayoutSubviews() {
+        editIntroButton.layer.cornerRadius = (editIntroButton.bounds.height * 0.25)
+    }
+
     @objc private func editIntro() {
-        let introductionVC = IntroViewController(entryType: EntryType.edit, user: gCurrentUser)
-        introductionVC.completion = { [weak self] user in
+        let introductionVC = IntroViewController(entryType: EntryType.edit, user: user)
+        introductionVC.completion = { [weak self] _ in
             guard let self = self else { return }
 
-            gCurrentUser = user
-
-            if gCurrentUser.profilePhoto != "empty" {
+            if UserDefaults.profilePhoto != "empty" {
                 self.profileImageView.setImage(urlString: UserDefaults.profilePhoto)
             } else {
                 self.profileImageView.image = UIImage.asset(.profile_user)
@@ -211,13 +200,13 @@ extension ProfileViewController: UICollectionViewDataSource {
 
         switch profileType {
         case .favorite:
-            cell.configureCell(count: gCurrentUser.favoriteRooms.count)
+            cell.configureCell()
         case .reservations:
-            cell.configureCell(count: gCurrentUser.reservations.count)
+            cell.configureCell()
         case .post:
-            cell.configureCell(count: gCurrentUser.postCount ?? 0)
+            cell.configureCell()
         case .blockade, .delete, .logout:
-            cell.configureCell(count: nil)
+            cell.configureCell()
         }
         return cell
     }

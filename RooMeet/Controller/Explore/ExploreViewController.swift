@@ -55,6 +55,7 @@ class ExploreViewController: UIViewController {
     var postalCode: String?
     var currentPostalCode: Int?
 
+    var user: User?
     var county: String?
     var town: String?
 
@@ -83,7 +84,11 @@ class ExploreViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        LocationService.shared.setCenterRegion(position: gCurrentPosition, mapView: roomExploreMap)
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
+            self.user = user
+        }
+
+        LocationService.shared.setCenterRegion(position: RMConstants.shared.currentPosition, mapView: roomExploreMap)
         getRoomForCurrentPosition(mapView: roomExploreMap)
     }
 
@@ -128,7 +133,7 @@ class ExploreViewController: UIViewController {
     }
 
     @objc private func setMapCenter(_ sender: Any) {
-        LocationService.shared.setCenterRegion(position: gCurrentPosition, mapView: roomExploreMap)
+        LocationService.shared.setCenterRegion(position: RMConstants.shared.currentPosition, mapView: roomExploreMap)
     }
 }
 
@@ -174,7 +179,7 @@ extension ExploreViewController: MKMapViewDelegate {
         let room = roomMarker.room else {
             return
         }
-        let detailViewController = RoomDetailViewController(room: room)
+        let detailViewController = RoomDetailViewController(room: room, user: user)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 
