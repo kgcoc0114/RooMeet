@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import MapKit
+
 class RMConstants {
     static let shared = RMConstants()
+
+    var currentPosition: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 25.03320617048529, longitude: 121.56449873729362)
+
     let screenVerticalPadding: CGFloat = 30
 
     let buttonCornerRadius: CGFloat = 28
@@ -62,4 +67,3 @@ enum EntryType {
     case new
 }
 
-var gCurrentUser = User(id: "")

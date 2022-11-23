@@ -77,8 +77,7 @@ class FirebaseService {
     }
 
     func fetchUserByID(userID: String, index: Int? = nil, completion: @escaping ((User?, Int?) -> Void)) {
-        let docRef = FirestoreEndpoint.user.colRef.document(userID)
-
+        let docRef = Firestore.firestore().collection("User").document(userID)
         docRef.getDocument { document, error in
             if let document = document, document.exists {
                 do {
@@ -101,7 +100,7 @@ class FirebaseService {
         }
     }
 
-    func upsertUser(uid: String, email: String?, user: User? = nil, completion: @escaping ((Bool) -> Void)) {
+    func upsertUser(uid: String, email: String?, user: User? = nil, completion: @escaping ((Bool, User?) -> Void)) {
         let docRef = FirestoreEndpoint.user.colRef.document(uid)
         print("upserUser ", uid)
         docRef.getDocument { [weak self] document, _ in
@@ -112,9 +111,7 @@ class FirebaseService {
                     self.fetchUserByID(userID: uid) { user, _ in
                         if let user = user {
                             UserDefaults.id = user.id
-
-                            gCurrentUser = user
-                            completion(false)
+                            completion(false, user)
                         }
                     }
                     return
@@ -133,7 +130,7 @@ class FirebaseService {
                 docRef.setData(updateData)
 
                 // new user -> should present information page
-                completion(true)
+                completion(true, nil)
             }
         }
     }
@@ -332,12 +329,12 @@ class FirebaseService {
         query = query.order(by: "userID", descending: true)
 
         let group = DispatchGroup()
-        getDocuments(query) { (rooms: [Room]) in
+        getDocuments(query) { [weak self] (rooms: [Room]) in
             var rooms = rooms
             rooms.enumerated().forEach { index, roomResult in
                 let ownerID = roomResult.userID
                 group.enter()
-                self.fetchUserByID(userID: ownerID, index: index) { user, index in
+                self?.fetchUserByID(userID: ownerID, index: index) { user, index in
                     if let user = user,
                         let index = index {
                         rooms[index].userData = user
@@ -381,14 +378,14 @@ class FirebaseService {
         }
     }
 
-    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
+    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room], [FavoriteRoom]) -> Void)) {
         fetchUserByID(userID: userID) { [unowned self] user, _ in
             guard let user = user else {
-                completion([])
+                completion([], [])
                 return
             }
             self.fetchFavoriteRoomsByRoomID(roomIDList: user.favoriteRoomIDs) { rooms in
-                completion(rooms)
+                completion(rooms, user.favoriteRooms)
             }
         }
     }
@@ -397,21 +394,18 @@ class FirebaseService {
         guard let roomIDList = roomIDList else {
             return
         }
+        var rooms: [Room] = []
+
         let group = DispatchGroup()
         roomIDList.forEach { roomID in
             group.enter()
             fetchRoomByRoomID(roomID: roomID) { room in
-                guard let roomID = room.roomID else { return }
-                let index = roomIDList.firstIndex(of: roomID)
-                gCurrentUser.favoriteRooms[index!].room = room
+                rooms.append(room)
                 group.leave()
             }
         }
 
         group.notify(queue: DispatchQueue.main) {
-            let rooms = gCurrentUser.favoriteRooms.map { favRoom in
-                return favRoom.room!
-            }
             completion(rooms)
         }
     }
@@ -437,10 +431,11 @@ class FirebaseService {
         guard let reservationList = reservationList else {
             return
         }
+
         var reservations: [Reservation] = []
         var rooms: [Room] = []
         let group = DispatchGroup()
-        reservationList.enumerated().forEach { index, reservationID in
+        reservationList.forEach { reservationID in
             group.enter()
             fetchReservationByID(reservationID: reservationID) { [weak self] reservation in
                 reservations.append(reservation)
@@ -455,31 +450,36 @@ class FirebaseService {
         }
 
         group.notify(queue: DispatchQueue.main) {
-            let roomIDList = rooms.map({ room in
-                room.roomID
-            })
+            let roomIDList = rooms.map { $0.roomID }
 
-            let rsvns = reservations.map { reservation -> Reservation in
+            var rsvns = reservations.map { reservation -> Reservation in
                 var rsvn = reservation
-                if let roomID = rsvn.roomID,
-                   let roomIndex = roomIDList.firstIndex(of: roomID) {
+                if
+                    let roomID = rsvn.roomID,
+                    let roomIndex = roomIDList.firstIndex(of: roomID) {
                     rsvn.roomDetail = rooms[roomIndex]
                 }
                 return rsvn
             }
+
+            rsvns = rsvns.sorted(by: { rsvnA, rsvnB in
+                return rsvnA.requestTime!.dateValue() > rsvnB.requestTime!.dateValue()
+            })
+
             completion(rsvns)
         }
     }
 
-    func fetchReservationRoomsByUserID(userID: String, completion: @escaping (([Reservation]) -> Void)) {
-        fetchUserByID(userID: userID) {[weak self] user, _ in
-            guard let user = user,
-                  let self = self else {
+    func fetchReservationRoomsByUserID(userID: String, completion: @escaping (([Reservation], User) -> Void)) {
+        fetchUserByID(userID: userID) { [weak self] user, _ in
+            guard
+                let user = user,
+                let self = self else {
                 return
             }
 
             self.fetchRoomsByReservationID(reservationList: user.reservations) { reservations in
-                completion(reservations)
+                completion(reservations, user)
             }
         }
     }
@@ -686,11 +686,10 @@ extension FirebaseService {
     }
 
 
-    func updateUserFavRsvnData(reservations: [String], favoriteRooms: [FavoriteRoom]) {
+    func updateUserFavData(favoriteRooms: [FavoriteRoom]) {
         let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
 
         query.updateData([
-            "reservations": reservations,
             "favoriteRooms": []
         ])
 

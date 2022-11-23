@@ -77,13 +77,6 @@ class RMTabBarController: UITabBarController {
     func listenPhoneCallEvent() {
         let uid = UserDefaults.id
 
-        FirebaseService.shared.fetchUserByID(userID: uid) { user, index in
-            if let user = user {
-                gCurrentUser = user
-                print("gCurrentUser = ", gCurrentUser)
-            }
-        }
-
         FirestoreEndpoint.call.colRef
             .whereField("callee", isEqualTo: uid)
             .addSnapshotListener({ [weak self] querySnapshot, error in
@@ -92,7 +85,7 @@ class RMTabBarController: UITabBarController {
                 }
 
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshots: \(error)")
+                    print("Error fetching snapshots: \(String(describing: error))")
                     return
                 }
 
@@ -110,7 +103,12 @@ class RMTabBarController: UITabBarController {
             let call = try document.data(as: Call.self)
 
             if call.caller != UserDefaults.id && call.status == "offer" {
-                let callViewController = CallViewController(callRoomId: call.id, callType: .answer, callerData: call.callerData, calleeData: call.calleeData)
+                let callViewController = CallViewController(
+                    callRoomId: call.id,
+                    callType: .answer,
+                    callerData: call.callerData,
+                    calleeData: call.calleeData
+                )
                 callViewController.modalPresentationStyle = .fullScreen
                 self.present(callViewController, animated: true)
             }

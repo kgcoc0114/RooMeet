@@ -23,12 +23,13 @@ class ReservationService {
     ) {
         switch status {
         case .waiting:
-            guard let senderID = senderID,
-                  let receiverID = receiverID,
-                  let room = room,
-                  let requestTime = requestTime,
-                  let period = period,
-                  let roomID = room.roomID else {
+            guard
+                let senderID = senderID,
+                let receiverID = receiverID,
+                let room = room,
+                let requestTime = requestTime,
+                let period = period,
+                let roomID = room.roomID else {
                 return
             }
 
@@ -40,6 +41,7 @@ class ReservationService {
                 requestTime: requestTime,
                 period: period
             ) { [weak self] reservation, error in
+                guard let self = self else { return }
                 if error != nil {
                     print("ERROR: insertReservation")
                     return
@@ -47,12 +49,12 @@ class ReservationService {
 
                 if let reservation = reservation {
                     // sender user reservation array
-                    self?.addUserReservation(userID: senderID, reservationID: reservation.id)
+                    self.addUserReservation(userID: senderID, reservationID: reservation.id)
 
                     // receiver user reservation array
-                    self?.addUserReservation(userID: receiverID, reservationID: reservation.id)
+                    self.addUserReservation(userID: receiverID, reservationID: reservation.id)
 
-                    self?.insertMessage(
+                    self.insertMessage(
                         senderID: senderID,
                         receiverID: receiverID,
                         status: .waiting,
@@ -62,9 +64,10 @@ class ReservationService {
             }
         case .cancel, .accept:
             // 你發起 我取消
-            guard var reservation = reservation,
-                  let receiver = reservation.receiver,
-                  let sender = reservation.sender else {
+            guard
+                var reservation = reservation,
+                let receiver = reservation.receiver,
+                let sender = reservation.sender else {
                 return
             }
 
@@ -90,10 +93,6 @@ class ReservationService {
     func addUserReservation(userID: String, reservationID: String) {
         let userQuery = FirestoreEndpoint.user.colRef.document(userID)
 
-//        if userID == UserDefaults.id {
-//            gCurrentUser.reservations?.append(reservationID)
-//        }
-
         userQuery.updateData([
             "reservations": FieldValue.arrayUnion([reservationID])
         ])
@@ -102,24 +101,17 @@ class ReservationService {
     func deleteUserReservation(userID: String, reservationID: String) {
         let userQuery = FirestoreEndpoint.user.colRef.document(userID)
 
-        userQuery.getDocument { (document, error) in
+        userQuery.getDocument { document, _ in
             if let document = document, document.exists {
                 do {
                     let user = try document.data(as: User.self)
                     var reservations = user.reservations
                     if let index = reservations.firstIndex(of: reservationID) {
-                        print("index", index)
-                        print("reservations", reservations)
                         reservations.remove(at: index)
                         userQuery.updateData([
                             "reservations": reservations
                         ])
-                        // 更新 user 狀態
-//                        if userID == UserDefaults.id {
-//                            gCurrentUser.reservations = reservations
-//                        }
                     }
-
                 } catch {
                     print("Error")
                 }
@@ -128,7 +120,6 @@ class ReservationService {
             }
         }
     }
-
 
     func insertMessage(
         senderID: String,
@@ -139,8 +130,7 @@ class ReservationService {
         print("senderID", senderID)
         print("receiverID", receiverID)
         FirebaseService.shared.getChatRoomByUserID(userA: senderID, userB: receiverID) { chatRoom in
-            let messageRef = Firestore.firestore()
-                .collection("ChatRoom")
+            let messageRef = FirestoreEndpoint.chatRoom.colRef
                 .document(chatRoom.id)
                 .collection("Message")
                 .document()
@@ -160,7 +150,7 @@ class ReservationService {
                 print("Error writing Message to Firestore: \(error)")
             }
 
-            let chatRoomRef = Firestore.firestore().collection("ChatRoom").document(chatRoom.id)
+            let chatRoomRef = FirestoreEndpoint.chatRoom.colRef.document(chatRoom.id)
 
             let lastMessage = LastMessage(
                 id: messageRef.documentID,
@@ -185,8 +175,6 @@ class ReservationService {
         period: String,
         completion: @escaping ((Reservation?, Error?) -> Void)
     ) {
-        let reservationRef = FirestoreEndpoint.reservation.colRef.document()
-
         let reservation = Reservation(
             id: roomID,
             roomID: roomID,
@@ -198,12 +186,8 @@ class ReservationService {
             createdTime: Timestamp()
         )
 
-        do {
-            try? FirestoreEndpoint.reservation.colRef.document(roomID).setData(from: reservation)
-            completion(reservation, nil)
-        } catch {
-            completion(nil, error)
-        }
+        try? FirestoreEndpoint.reservation.colRef.document(roomID).setData(from: reservation)
+        completion(reservation, nil)
     }
 
     func updateReservationStatus(
