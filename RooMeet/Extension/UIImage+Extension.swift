@@ -37,6 +37,7 @@ enum ImageAsset: String {
     case dollar
     case profile_user
     case add_image
+                
 }
 
 extension UIImage {

@@ -73,8 +73,7 @@ class ChatRoomListViewController: UIViewController {
 
 extension ChatRoomListViewController {
     private func configureDataSource() {
-        dataSource = DataSource(tableView: tableView,
-                                cellProvider: { [unowned self] tableView, indexPath, chatRoom in
+        dataSource = DataSource(tableView: tableView) { tableView, indexPath, chatRoom in
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: ChatRoomCell.reuseIdentifier,
                 for: indexPath
@@ -83,7 +82,7 @@ extension ChatRoomListViewController {
             }
             cell.layoutCell(UserDefaults.id, chatRoom: chatRoom)
             return cell
-        })
+        }
     }
 }
 
