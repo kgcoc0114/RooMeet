@@ -23,6 +23,11 @@
 		E51419C92920D52100813D25 /* CallWaitingView.json in Resources */ = {isa = PBXBuildFile; fileRef = E51419C82920D52100813D25 /* CallWaitingView.json */; };
 		E51419CB2920D7CC00813D25 /* LottieWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51419CA2920D7CC00813D25 /* LottieWrapper.swift */; };
 		E539D22F2929F189007D50FD /* LoginPageAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = E539D22E2929F189007D50FD /* LoginPageAnimation.json */; };
+		E539D236292DF189007D50FD /* BlockViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D234292DF188007D50FD /* BlockViewController.swift */; };
+		E539D237292DF189007D50FD /* BlockViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E539D235292DF189007D50FD /* BlockViewController.xib */; };
+		E539D23A292DF1CD007D50FD /* BlockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D238292DF1CC007D50FD /* BlockCell.swift */; };
+		E539D23B292DF1CD007D50FD /* BlockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E539D239292DF1CC007D50FD /* BlockCell.xib */; };
+		E539D23D292DFD84007D50FD /* ReportEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D23C292DFD84007D50FD /* ReportEvent.swift */; };
 		E55C095E290D51B800DBF21B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095D290D51B800DBF21B /* Room.swift */; };
 		E55C0960290D53F900DBF21B /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095F290D53F900DBF21B /* Gender.swift */; };
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
@@ -197,6 +202,11 @@
 		E51419C82920D52100813D25 /* CallWaitingView.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = CallWaitingView.json; sourceTree = "<group>"; };
 		E51419CA2920D7CC00813D25 /* LottieWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieWrapper.swift; sourceTree = "<group>"; };
 		E539D22E2929F189007D50FD /* LoginPageAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LoginPageAnimation.json; sourceTree = "<group>"; };
+		E539D234292DF188007D50FD /* BlockViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockViewController.swift; sourceTree = "<group>"; };
+		E539D235292DF189007D50FD /* BlockViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlockViewController.xib; sourceTree = "<group>"; };
+		E539D238292DF1CC007D50FD /* BlockCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCell.swift; sourceTree = "<group>"; };
+		E539D239292DF1CC007D50FD /* BlockCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlockCell.xib; sourceTree = "<group>"; };
+		E539D23C292DFD84007D50FD /* ReportEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEvent.swift; sourceTree = "<group>"; };
 		E55C095D290D51B800DBF21B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E55C095F290D53F900DBF21B /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -409,6 +419,15 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
+		E539D240292DFFC7007D50FD /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				E5B984C9291BD3E4006DD8D7 /* Reservation.swift */,
+				E539D23C292DFD84007D50FD /* ReportEvent.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		E55C095B290D4F5800DBF21B /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,7 +439,7 @@
 				E5E64C83290E183F00F07286 /* RegionService.swift */,
 				E5E64C85290E185600F07286 /* Region.swift */,
 				E5EEE20429129F6700CAAE84 /* PostalCode.swift */,
-				E5B984C9291BD3E4006DD8D7 /* Reservation.swift */,
+				E539D240292DFFC7007D50FD /* Profile */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -510,6 +529,8 @@
 				E5D9BF74291DFBE700F416E6 /* TagCell.xib */,
 				E560134E29271DC500EE0083 /* ProfileItemCell.swift */,
 				E560134F29271DC500EE0083 /* ProfileItemCell.xib */,
+				E539D238292DF1CC007D50FD /* BlockCell.swift */,
+				E539D239292DF1CC007D50FD /* BlockCell.xib */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -521,6 +542,8 @@
 				E5D76D0F291D2F6A0074DFD7 /* Introduction */,
 				E5D76D0A291D23D10074DFD7 /* Favorite */,
 				E5D76D09291D23B90074DFD7 /* Reservation */,
+				E539D234292DF188007D50FD /* BlockViewController.swift */,
+				E539D235292DF189007D50FD /* BlockViewController.xib */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1032,6 +1055,7 @@
 				E574A6932920EC1800EB8E5E /* ReservationDisplayCell.xib in Resources */,
 				E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */,
 				E560135129271DC500EE0083 /* ProfileItemCell.xib in Resources */,
+				E539D23B292DF1CD007D50FD /* BlockCell.xib in Resources */,
 				E587293C291CFFA100C12E9E /* IntroViewController.xib in Resources */,
 				E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */,
 				E5DEFD9F291F81DE0064E2C8 /* BookingPeriodCell.xib in Resources */,
@@ -1047,6 +1071,7 @@
 				E593F00A2910065C00B35550 /* RulesCell.xib in Resources */,
 				E5D9C042291E4E3100F416E6 /* CUImageCell.xib in Resources */,
 				E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */,
+				E539D237292DF189007D50FD /* BlockViewController.xib in Resources */,
 				E593F0062910016D00B35550 /* OptionCell.xib in Resources */,
 				E5872933291CAA7300C12E9E /* OUReservationCell.xib in Resources */,
 				E507B0C52923B08F002E501E /* ItemsCell.xib in Resources */,
@@ -1160,6 +1185,7 @@
 				E507B0C92923DE51002E501E /* RMSegmentedControl.swift in Sources */,
 				E5DEFD91291F3B0A0064E2C8 /* OUCallCell.swift in Sources */,
 				E5B018DD29175B7100A09788 /* FilterViewController.swift in Sources */,
+				E539D236292DF189007D50FD /* BlockViewController.swift in Sources */,
 				E5B018B82915F21E00A09788 /* CardView.swift in Sources */,
 				E507B0C72923BA03002E501E /* TagView.swift in Sources */,
 				E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */,
@@ -1181,6 +1207,7 @@
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
 				E5B984CA291BD3E4006DD8D7 /* Reservation.swift in Sources */,
 				E5DEFD8D291F3AF60064E2C8 /* CUCallCell.swift in Sources */,
+				E539D23A292DF1CD007D50FD /* BlockCell.swift in Sources */,
 				E560135029271DC500EE0083 /* ProfileItemCell.swift in Sources */,
 				E5872938291CF49800C12E9E /* ProfileViewController.swift in Sources */,
 				E59B8318291A259500F02CEC /* CallCell.swift in Sources */,
@@ -1193,6 +1220,7 @@
 				E507B0D829260FAC002E501E /* UserDefaults+Extension.swift in Sources */,
 				E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */,
 				E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */,
+				E539D23D292DFD84007D50FD /* ReportEvent.swift in Sources */,
 				E5EEE2072912AE3B00CAAE84 /* FirebaseService.swift in Sources */,
 				E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */,
 				E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */,

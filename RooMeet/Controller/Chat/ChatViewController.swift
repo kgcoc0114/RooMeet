@@ -70,9 +70,15 @@ class ChatViewController: UIViewController {
             image: UIImage(systemName: "phone"),
             style: .plain,
             target: self,
-            action: #selector(audioCall))
+            action: #selector(call))
 
-        navigationItem.rightBarButtonItems = [phoneBarButton]
+        let infoBarButton = UIBarButtonItem(
+            image: UIImage(systemName: "info.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(userAction))
+
+        navigationItem.rightBarButtonItems = [infoBarButton, phoneBarButton]
 
         tableView.delegate = self
         configureDataSource()
@@ -162,7 +168,7 @@ class ChatViewController: UIViewController {
     @IBAction func showRuler(_ sender: Any) {
     }
 
-    @objc private func audioCall(_ sender: Any) {
+    @objc private func call(_ sender: Any) {
         guard
             let chatRoom = chatRoom,
             let otherData = otherData else {
@@ -189,6 +195,38 @@ class ChatViewController: UIViewController {
         callViewController.currentUserData = currentUserData
         callViewController.modalPresentationStyle = .fullScreen
         present(callViewController, animated: true)
+    }
+
+    @objc private func userAction(_ sender: Any) {
+        let userActionAlertController = UIAlertController(title: "封鎖\(otherData?.name ?? "")?", message: "他們將無法在 RooMeet 發訊息給你或找到你的貼文。你封鎖用戶時，對方不會收到通知。", preferredStyle: .actionSheet)
+
+        let blockUserAction = UIAlertAction(title: "封鎖用戶", style: .default) { [weak self] _ in
+            guard
+                let self = self,
+                let blockUser = self.otherData
+            else { return }
+
+            let blockUserID = blockUser.id
+
+            FirebaseService.shared.insertBlock(blockedUser: blockUserID) { error in
+                if error != nil {
+                    RMProgressHUD.showFailure(text: "請稍後再試！", view: self.view)
+                } else {
+                    RMProgressHUD.showSuccess(view: self.view)
+                    self.navigationController?.popViewController(animated: true)
+                }
+
+            }
+        }
+
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+            userActionAlertController.dismiss(animated: true)
+        }
+
+        userActionAlertController.addAction(blockUserAction)
+        userActionAlertController.addAction(cancelAction)
+
+        present(userActionAlertController, animated: true, completion: nil)
     }
 }
 

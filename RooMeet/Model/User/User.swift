@@ -24,6 +24,7 @@ struct User: Codable, Hashable {
     var favoriteRooms: [FavoriteRoom] = []
     var reservations: [String] = []
     var chatRooms: [String]? = []
+    var blocks: [String]? = []
 
     var postCount: Int?
 
