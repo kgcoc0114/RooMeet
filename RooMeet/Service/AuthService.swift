@@ -51,19 +51,17 @@ class AuthService {
         let uid = currentUser.uid
         let email = currentUser.email
 
-        print("使用者資料 uid:\(uid) email:\(email)")
+        print("使用者資料 uid:\(uid) email:\(String(describing: email))")
         UserDefaults.id = uid
-        if let email = email {
 
-        }
-
-        FirebaseService.shared.upsertUser(uid: uid, email: email) { [weak self] isNewUser in
+        FirebaseService.shared.upsertUser(uid: uid, email: email) { [weak self] isNewUser, user in
             guard let `self` = self else { return }
             if isNewUser {
                 let user = User(id: uid, email: email, favoriteRooms: [], reservations: [], chatRooms: [])
                 self.delegate?.userService(isNewUser: isNewUser, user: user)
             } else {
-                self.delegate?.userService(isNewUser: isNewUser, user: gCurrentUser)
+                guard let user = user else { return }
+                self.delegate?.userService(isNewUser: isNewUser, user: user)
             }
         }
     }
@@ -72,7 +70,7 @@ class AuthService {
         do {
             try auth.signOut()
             print("登出中...")
-            print(auth.currentUser)
+            print(auth.currentUser as Any)
         } catch let signOutError as NSError {
             print("Error signing out \(signOutError.localizedDescription)")
         }

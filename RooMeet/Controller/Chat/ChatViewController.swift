@@ -72,12 +72,6 @@ class ChatViewController: UIViewController {
             target: self,
             action: #selector(audioCall))
 
-        let videoCallBarButton = UIBarButtonItem(
-            image: UIImage(systemName: "video"),
-            style: .plain,
-            target: self,
-            action: #selector(videoCall))
-
         navigationItem.rightBarButtonItems = [phoneBarButton]
 
         tableView.delegate = self
@@ -92,12 +86,21 @@ class ChatViewController: UIViewController {
             print("ERROR: chatRoom is not exist.")
             return
         }
-        FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { messages, error in
+
+        FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { [weak self] messages, error in
+            guard let self = self else { return }
             if let error = error {
                 print("Error getting documents: \(error)")
             }
             self.messages = messages ?? []
         }
+
+        self.tabBarController?.tabBar.isHidden = true
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
     }
 
     func setup(chatRoom: ChatRoom) {
@@ -140,7 +143,7 @@ class ChatViewController: UIViewController {
                 return
             }
 
-            let chatRoomRef = Firestore.firestore().collection("ChatRoom").document(chatRoom.id)
+            let chatRoomRef = FirestoreEndpoint.chatRoom.colRef.document(chatRoom.id)
             let lastMessage = LastMessage(id: messageRef.documentID, content: content, createdTime: message.createdTime)
 
             chatRoomRef.updateData([
@@ -160,40 +163,14 @@ class ChatViewController: UIViewController {
     }
 
     @objc private func audioCall(_ sender: Any) {
-        guard let chatRoom = chatRoom else {
-            return
-        }
-
-        // 清空通話資料
-        Firestore.firestore().collection("Call").document(chatRoom.id).delete() { err in
-            if let err = err {
-                print("Error removing document: \(err)")
-            } else {
-                print("Document successfully removed!")
-            }
-        }
-
-        let callViewController = CallViewController(
-            callRoomId: chatRoom.id,
-            callType: .offer,
-            callerData: currentUserData,
-            calleeData: otherData!
-        )
-
-        callViewController.otherUserData = otherData
-        callViewController.currentUserData = currentUserData
-        callViewController.modalPresentationStyle = .fullScreen
-        present(callViewController, animated: true)
-    }
-
-    @objc private func videoCall(_ sender: Any) {
-        guard let chatRoom = chatRoom,
+        guard
+            let chatRoom = chatRoom,
             let otherData = otherData else {
             return
         }
 
         // 清空通話資料
-        Firestore.firestore().collection("Call").document(chatRoom.id).delete() { err in
+        FirestoreEndpoint.call.colRef.document(chatRoom.id).delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
             } else {

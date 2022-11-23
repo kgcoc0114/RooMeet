@@ -9,11 +9,6 @@
 import UIKit
 
 class ProfileRSVNViewController: UIViewController {
-
-    deinit {
-        print("=== ProfileRSVNViewController deinit")
-    }
-
     enum Section {
         case main
     }
@@ -30,9 +25,14 @@ class ProfileRSVNViewController: UIViewController {
             }
         }
     }
+
+    var user: User?
+
     lazy var reservationAnimationView = RMLottie.shared.reservationAnimationView
+
     @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,16 +48,18 @@ class ProfileRSVNViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // fetch room to display
-//        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
-//            guard let user = user else {
-//                return
-//            }
-//            gCurrentUser = user
-//            self?.fetchReservations()
-//        }
-//
-//        RMLottie.shared.startAnimate(animationView: reservationAnimationView)
+
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self else { return }
+            self.user = user
+        }
+
+        fetchReservations()
+        RMLottie.shared.startAnimate(animationView: reservationAnimationView)
+    }
+
+    deinit {
+        print("=== ProfileRSVNViewController deinit")
     }
 
     private func configureAnimationView() {
@@ -138,7 +140,7 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
         guard
             let reservation = dataSource.itemIdentifier(for: indexPath)
         else { return }
-        let detailViewController = RoomDetailViewController(room: reservation.roomDetail!)
+        let detailViewController = RoomDetailViewController(room: reservation.roomDetail!, user: user)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

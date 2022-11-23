@@ -21,7 +21,7 @@ class ProfileItemCell: UICollectionViewCell {
         // Initialization code
     }
 
-    func configureCell(count: Int?) {
+    func configureCell() {
         guard let profileType = profileType else {
             return
         }
