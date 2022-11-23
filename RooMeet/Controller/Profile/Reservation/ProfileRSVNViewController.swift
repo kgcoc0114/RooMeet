@@ -49,11 +49,6 @@ class ProfileRSVNViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
-            guard let self = self else { return }
-            self.user = user
-        }
-
         fetchReservations()
         RMLottie.shared.startAnimate(animationView: reservationAnimationView)
     }
@@ -92,14 +87,18 @@ class ProfileRSVNViewController: UIViewController {
         collectionView.collectionViewLayout = createLayout()
 
         collectionView.addPullToRefresh {[weak self] in
-            self?.fetchReservations()
+            guard let self = self else { return }
+            self.fetchReservations()
         }
     }
 
     private func fetchReservations() {
         print(UserDefaults.id)
-        FirebaseService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations in
-            self?.reservations = reservations
+        FirebaseService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations, user in
+            guard let self = self else { return }
+            self.user = user
+            self.reservations = reservations
+            print(user.reservations)
         }
     }
 }
@@ -129,7 +128,7 @@ extension ProfileRSVNViewController {
     private func updateDataSource() {
         var newSnapshot = ProfileRSVNSnapshot()
         newSnapshot.appendSections([Section.main])
-        newSnapshot.appendItems(reservations.map { $0 }, toSection: .main)
+        newSnapshot.appendItems(reservations, toSection: .main)
         dataSource.apply(newSnapshot)
     }
 }
