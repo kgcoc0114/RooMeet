@@ -89,6 +89,8 @@ class RoomDetailViewController: UIViewController {
     var selectedDate: DateComponents?
     var selectedDateCell: BookingDateCell?
 
+    var shouldUpdate = false
+
     var chatMembers: [ChatMember]?
     private var feeDetails: [RoomDetailFee] = []
 
@@ -160,6 +162,12 @@ class RoomDetailViewController: UIViewController {
             target: self,
             action: #selector(backAction))
 
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "icon_back"),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
+
         navigationItem.title = "RooMeet"
 
         configureCollectionView()
@@ -225,9 +233,14 @@ class RoomDetailViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        guard let user = user else { return }
 
-        FirebaseService.shared.updateUserFavRsvnData(reservations: user.reservations, favoriteRooms: user.favoriteRooms)
+        if shouldUpdate {
+            guard let user = user else { return }
+
+            FirebaseService.shared.updateUserFavData(
+                favoriteRooms: user.favoriteRooms
+            )
+        }
 
         self.tabBarController?.tabBar.isHidden = false
     }
@@ -237,11 +250,13 @@ class RoomDetailViewController: UIViewController {
         guard let room = room else { return }
 
         guard let selectedPeriod = selectedPeriod,
-            let selectedDate = selectedDate else {
+            var selectedDate = selectedDate else {
             print("請選擇預約時間")
             RMProgressHUD.showFailure(text: "請選擇預約時間", view: self.view)
             return
         }
+
+        selectedDate.hour = selectedPeriod.hour
 
         guard let sDate = selectedDate.date else {
             print("ERROR: - Reservations Date got error.")
@@ -264,13 +279,14 @@ class RoomDetailViewController: UIViewController {
                 receiverID: room.userID,
                 reservation: nil
             )
-
-            user.reservations.append(roomID)
+//            shouldUpdate = true
+//            user.reservations.append(roomID)
             RMProgressHUD.showSuccess(view: self.view)
         } else {
             RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
         }
         reservationButton.isEnabled = true
+//        self.user?.reservations = user.reservations
     }
 
     @IBAction func chatWithOwner(_ sender: Any) {
@@ -646,6 +662,7 @@ extension RoomDetailViewController: RoomImagesCellDelegate {
                     user?.favoriteRooms.remove(at: index)
                 }
             }
+            shouldUpdate = true
         }
     }
 }

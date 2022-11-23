@@ -77,23 +77,11 @@ class FirebaseService {
     }
 
     func fetchUserByID(userID: String, index: Int? = nil, completion: @escaping ((User?, Int?) -> Void)) {
-        let test = Firestore.firestore().collection("User").document(userID)
-//        let docRef = FirestoreEndpoint.user.colRef.whereField("id", isEqualTo: userID)
-//            .document(userID)
-
-//        getDocuments(docRef) { (users: [User]) in
-//            completion(users[0], index)
-//        }
-//
-        test.getDocument { document, error in
+        let docRef = Firestore.firestore().collection("User").document(userID)
+        docRef.getDocument { document, error in
             if let document = document, document.exists {
                 do {
                     let item = try document.data(as: User.self)
-
-//                    let data = document.data()
-//
-//                    let item = User(id: data!["id"] as! String)
-
                     completion(item, index)
                 } catch let error {
                     print("ERROR: fetchUserByID - \(error.localizedDescription)")
@@ -443,6 +431,7 @@ class FirebaseService {
         guard let reservationList = reservationList else {
             return
         }
+
         var reservations: [Reservation] = []
         var rooms: [Room] = []
         let group = DispatchGroup()
@@ -461,32 +450,36 @@ class FirebaseService {
         }
 
         group.notify(queue: DispatchQueue.main) {
-            let roomIDList = rooms.map({ room in
-                room.roomID
-            })
+            let roomIDList = rooms.map { $0.roomID }
 
-            let rsvns = reservations.map { reservation -> Reservation in
+            var rsvns = reservations.map { reservation -> Reservation in
                 var rsvn = reservation
-                if let roomID = rsvn.roomID,
-                   let roomIndex = roomIDList.firstIndex(of: roomID) {
+                if
+                    let roomID = rsvn.roomID,
+                    let roomIndex = roomIDList.firstIndex(of: roomID) {
                     rsvn.roomDetail = rooms[roomIndex]
                 }
                 return rsvn
             }
+
+            rsvns = rsvns.sorted(by: { rsvnA, rsvnB in
+                return rsvnA.requestTime!.dateValue() > rsvnB.requestTime!.dateValue()
+            })
+
             completion(rsvns)
         }
     }
 
-    func fetchReservationRoomsByUserID(userID: String, completion: @escaping (([Reservation]) -> Void)) {
-        fetchUserByID(userID: userID) {[weak self] user, _ in
-            guard let user = user,
-                  let self = self else {
+    func fetchReservationRoomsByUserID(userID: String, completion: @escaping (([Reservation], User) -> Void)) {
+        fetchUserByID(userID: userID) { [weak self] user, _ in
+            guard
+                let user = user,
+                let self = self else {
                 return
             }
-            print(user.reservations)
 
             self.fetchRoomsByReservationID(reservationList: user.reservations) { reservations in
-                completion(reservations)
+                completion(reservations, user)
             }
         }
     }
@@ -693,11 +686,10 @@ extension FirebaseService {
     }
 
 
-    func updateUserFavRsvnData(reservations: [String], favoriteRooms: [FavoriteRoom]) {
+    func updateUserFavData(favoriteRooms: [FavoriteRoom]) {
         let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
 
         query.updateData([
-            "reservations": reservations,
             "favoriteRooms": []
         ])
 
