@@ -138,7 +138,7 @@ class ProfileViewController: UIViewController {
 
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
             guard let self = self,
-                  let user = user else {
+                let user = user else {
                 return
             }
 
@@ -166,8 +166,8 @@ class ProfileViewController: UIViewController {
     }
 
     @objc private func editIntro() {
-        let introductionVC = IntroViewController(entryType: EntryType.edit, user: gCurrentUser)
-        introductionVC.completion = { [weak self] user in
+        let introductionVC = IntroViewController(entryType: EntryType.edit, user: user)
+        introductionVC.completion = { [weak self] _ in
             guard let self = self else { return }
 
             if UserDefaults.profilePhoto != "empty" {
@@ -200,13 +200,13 @@ extension ProfileViewController: UICollectionViewDataSource {
 
         switch profileType {
         case .favorite:
-            cell.configureCell(count: gCurrentUser.favoriteRooms.count)
+            cell.configureCell()
         case .reservations:
-            cell.configureCell(count: gCurrentUser.reservations.count)
+            cell.configureCell()
         case .post:
-            cell.configureCell(count: gCurrentUser.postCount ?? 0)
+            cell.configureCell()
         case .blockade, .delete, .logout:
-            cell.configureCell(count: nil)
+            cell.configureCell()
         }
         return cell
     }

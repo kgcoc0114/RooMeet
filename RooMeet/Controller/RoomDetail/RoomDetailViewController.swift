@@ -84,6 +84,7 @@ class RoomDetailViewController: UIViewController {
 
     var room: Room?
     var user: User?
+
     var selectedPeriod: BookingPeriod?
     var selectedDate: DateComponents?
     var selectedDateCell: BookingDateCell?
@@ -97,7 +98,7 @@ class RoomDetailViewController: UIViewController {
         didSet {
             chatButton.setTitle(" 聊聊", for: .normal)
             chatButton.setImage(UIImage(systemName: "message"), for: .normal)
-            chatButton.titleLabel?.font = UIFont.regular(size: 18)
+            chatButton.titleLabel?.font = .regularSubTitle()
             chatButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
             chatButton.backgroundColor = .mainColor
             chatButton.tintColor = .mainBackgroundColor
@@ -109,7 +110,7 @@ class RoomDetailViewController: UIViewController {
         didSet {
             reservationButton.setTitle(" 預約", for: .normal)
             reservationButton.setImage(UIImage(systemName: "calendar"), for: .normal)
-            reservationButton.titleLabel?.font = UIFont.regular(size: 18)
+            reservationButton.titleLabel?.font = .regularSubTitle()
             reservationButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
             reservationButton.backgroundColor = .mainColor
             reservationButton.tintColor = .mainBackgroundColor
@@ -125,13 +126,13 @@ class RoomDetailViewController: UIViewController {
 
     @IBOutlet weak var nameLabel: UILabel! {
         didSet {
-            nameLabel.font = UIFont.regular(size: 18)
+            nameLabel.font = UIFont.regularSubTitle()
         }
     }
 
     @IBOutlet weak var ageLabel: UILabel! {
         didSet {
-            ageLabel.font = UIFont.regular(size: 14)
+            ageLabel.font = UIFont.regularText()
         }
     }
 
@@ -139,15 +140,11 @@ class RoomDetailViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
 
-    init(room: Room) {
+    init(room: Room, user: User?) {
         super.init(nibName: "RoomDetailViewController", bundle: nil)
 
+        self.user = user
         self.room = room
-
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
-            guard let self = self else { return }
-            self.user = user
-        }
     }
 
     required init?(coder: NSCoder) {
@@ -179,6 +176,7 @@ class RoomDetailViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         if let room = room,
             let userData = room.userData {
             nameLabel.text = userData.name
@@ -190,7 +188,13 @@ class RoomDetailViewController: UIViewController {
                 ownerAvatarView.image = UIImage.asset(.profile_user)
             }
         }
-        user = gCurrentUser
+
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self,
+                let user = user else { return }
+            self.user = user
+        }
+
         dealWithBillInfo()
         updateDataSource()
         self.tabBarController?.tabBar.isHidden = true
@@ -221,18 +225,16 @@ class RoomDetailViewController: UIViewController {
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        guard let user = user else {
-            return
-        }
+        guard let user = user else { return }
 
-        gCurrentUser = user
         FirebaseService.shared.updateUserFavRsvnData(reservations: user.reservations, favoriteRooms: user.favoriteRooms)
 
         self.tabBarController?.tabBar.isHidden = false
     }
 
     @IBAction func requestReservation(_ sender: Any) {
-        guard let room = room  else { return }
+        reservationButton.isEnabled = false
+        guard let room = room else { return }
 
         guard let selectedPeriod = selectedPeriod,
             let selectedDate = selectedDate else {
@@ -262,24 +264,33 @@ class RoomDetailViewController: UIViewController {
                 receiverID: room.userID,
                 reservation: nil
             )
-            self.user?.reservations.append(roomID)
+
+            user.reservations.append(roomID)
             RMProgressHUD.showSuccess(view: self.view)
         } else {
             RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
         }
+        reservationButton.isEnabled = true
     }
 
     @IBAction func chatWithOwner(_ sender: Any) {
+        chatButton.isEnabled = false
         guard let room = room else {
             print("ERROR: - Room Detail got empty room.")
             return
         }
 
         FirebaseService.shared.getChatRoomByUserID(userA: UserDefaults.id, userB: room.userID) { [weak self] chatRoom in
-            let detailVC = ChatViewController()
-            detailVC.setup(chatRoom: chatRoom)
-            self?.navigationController?.pushViewController(detailVC, animated: false)
+            guard let self = self else { return }
+            let chatVC = ChatViewController()
+            chatVC.setup(chatRoom: chatRoom)
+            self.hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async {
+                self.hidesBottomBarWhenPushed = false
+            }
+            self.navigationController?.pushViewController(chatVC, animated: false)
         }
+        chatButton.isEnabled = true
     }
 }
 
@@ -329,7 +340,8 @@ extension RoomDetailViewController {
                 cell.configureCell(images: data.roomImages)
                 cell.delegate = self
 
-                if let user = self.user,
+                if
+                    let user = self.user,
                     let roomID = data.roomID {
                     if user.favoriteRoomIDs.contains(roomID) {
                         cell.isLike = true
@@ -385,17 +397,17 @@ extension RoomDetailViewController {
                 }
                 print(data)
                 cell.configureCell(
-                    latitude: data.lat ?? gCurrentPosition.latitude,
-                    longitude: data.long ?? gCurrentPosition.longitude
+                    latitude: data.lat ?? RMConstants.shared.currentPosition.latitude,
+                    longitude: data.long ?? RMConstants.shared.currentPosition.longitude
                 )
                 return cell
             case .highLight(let data),
-                    .gender(let data),
-                    .pet(let data),
-                    .elevator(let data),
-                    .cooking(let data),
-                    .bathroom(let data),
-                    .features(let data):
+                .gender(let data),
+                .pet(let data),
+                .elevator(let data),
+                .cooking(let data),
+                .bathroom(let data),
+                .features(let data):
                 return genTagCell(item: data, indexPath: indexPath)
             }
         }
@@ -624,8 +636,9 @@ extension RoomDetailViewController {
 
 extension RoomDetailViewController: RoomImagesCellDelegate {
     func didClickedLike(like: Bool) {
-        if let roomID = room?.roomID {
-            if like == true {
+        if let room = room,
+            let roomID = room.roomID {
+            if like {
                 let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
                 user?.favoriteRooms.append(favoriteRoom)
             } else {

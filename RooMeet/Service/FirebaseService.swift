@@ -112,7 +112,7 @@ class FirebaseService {
         }
     }
 
-    func upsertUser(uid: String, email: String?, user: User? = nil, completion: @escaping ((Bool) -> Void)) {
+    func upsertUser(uid: String, email: String?, user: User? = nil, completion: @escaping ((Bool, User?) -> Void)) {
         let docRef = FirestoreEndpoint.user.colRef.document(uid)
         print("upserUser ", uid)
         docRef.getDocument { [weak self] document, _ in
@@ -123,9 +123,7 @@ class FirebaseService {
                     self.fetchUserByID(userID: uid) { user, _ in
                         if let user = user {
                             UserDefaults.id = user.id
-
-                            gCurrentUser = user
-                            completion(false)
+                            completion(false, user)
                         }
                     }
                     return
@@ -144,7 +142,7 @@ class FirebaseService {
                 docRef.setData(updateData)
 
                 // new user -> should present information page
-                completion(true)
+                completion(true, nil)
             }
         }
     }
@@ -392,14 +390,14 @@ class FirebaseService {
         }
     }
 
-    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
+    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room], [FavoriteRoom]) -> Void)) {
         fetchUserByID(userID: userID) { [unowned self] user, _ in
             guard let user = user else {
-                completion([])
+                completion([], [])
                 return
             }
             self.fetchFavoriteRoomsByRoomID(roomIDList: user.favoriteRoomIDs) { rooms in
-                completion(rooms)
+                completion(rooms, user.favoriteRooms)
             }
         }
     }
@@ -408,21 +406,18 @@ class FirebaseService {
         guard let roomIDList = roomIDList else {
             return
         }
+        var rooms: [Room] = []
+
         let group = DispatchGroup()
         roomIDList.forEach { roomID in
             group.enter()
             fetchRoomByRoomID(roomID: roomID) { room in
-                guard let roomID = room.roomID else { return }
-                let index = roomIDList.firstIndex(of: roomID)
-                gCurrentUser.favoriteRooms[index!].room = room
+                rooms.append(room)
                 group.leave()
             }
         }
 
         group.notify(queue: DispatchQueue.main) {
-            let rooms = gCurrentUser.favoriteRooms.map { favRoom in
-                return favRoom.room!
-            }
             completion(rooms)
         }
     }
@@ -451,7 +446,7 @@ class FirebaseService {
         var reservations: [Reservation] = []
         var rooms: [Room] = []
         let group = DispatchGroup()
-        reservationList.enumerated().forEach { index, reservationID in
+        reservationList.forEach { reservationID in
             group.enter()
             fetchReservationByID(reservationID: reservationID) { [weak self] reservation in
                 reservations.append(reservation)
