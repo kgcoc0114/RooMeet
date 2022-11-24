@@ -68,7 +68,7 @@ class BlockViewController: UIViewController {
         FirebaseService.shared.fatchBlockUsers { [weak self] users, error in
             guard let self = self else { return }
             if error != nil {
-                RMProgressHUD.showFailure(text: "有地方出現問題！請洽客服人員！", view: self.view)
+                RMProgressHUD.showFailure(text: "有地方出現問題！請洽客服人員！")
                 return
             } else {
                 self.users = users
@@ -79,8 +79,10 @@ class BlockViewController: UIViewController {
     @IBAction func unlockAction(_ sender: Any) {
         if !toBeUnlock.isEmpty {
             FirebaseService.shared.deleteBlock(blockedUsers: toBeUnlock)
-            RMProgressHUD.showSuccess(view: self.view)
+            RMProgressHUD.showSuccess()
             self.navigationController?.popViewController(animated: true)
+        } else {
+
         }
     }
 }

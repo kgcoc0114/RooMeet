@@ -210,9 +210,9 @@ class ChatViewController: UIViewController {
 
             FirebaseService.shared.insertBlock(blockedUser: blockUserID) { error in
                 if error != nil {
-                    RMProgressHUD.showFailure(text: "請稍後再試！", view: self.view)
+                    RMProgressHUD.showFailure(text: "請稍後再試！")
                 } else {
-                    RMProgressHUD.showSuccess(view: self.view)
+                    RMProgressHUD.showSuccess()
                     self.navigationController?.popViewController(animated: true)
                 }
 
