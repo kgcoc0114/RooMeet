@@ -12,6 +12,7 @@ import FirebaseFirestoreSwift
 class FilterViewController: RMButtomSheetViewController {
     var minBudget: Int = 0
     var maxBudget: Int = 10000000
+    var blockUserIDs: [String] = []
 
     lazy var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -120,9 +121,13 @@ class FilterViewController: RMButtomSheetViewController {
             let maxBudgetText = maxBudgetTextField.text {
             maxBudget = Int(maxBudgetText) ?? 0
         }
+
+        blockUserIDs.append(UserDefaults.id)
+
         let query = FirestoreEndpoint.room.colRef
             .whereField("roomMinPrice", isGreaterThan: minBudget)
             .whereField("roomMinPrice", isLessThan: maxBudget)
+            .whereField("userID", notIn: blockUserIDs)
             .order(by: "roomMinPrice")
             .order(by: "createdTime")
 

@@ -87,7 +87,7 @@ enum Profile: CaseIterable {
         case .reservations:
             return ProfileRSVNViewController()
         case .blockade:
-            return UIViewController()
+            return BlockViewController()
         case .logout:
             return UIViewController()
         case .post:
@@ -247,6 +247,12 @@ extension ProfileViewController: UICollectionViewDelegate {
         }
 
         let pushVC = profileType.viewConroller
+        if profileType == .blockade {
+            self.hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async {
+                self.hidesBottomBarWhenPushed = false
+            }
+        }
         navigationController?.pushViewController(pushVC, animated: true)
     }
 }

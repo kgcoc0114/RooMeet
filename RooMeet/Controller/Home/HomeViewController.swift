@@ -57,7 +57,7 @@ class HomeViewController: ViewController {
         // get User Location
         locationManger.delegate = self
         DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             self.locationManger.requestLocation()
         }
 
@@ -71,11 +71,12 @@ class HomeViewController: ViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchRooms()
+
 
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
             guard let self = self else { return }
             self.user = user
+            self.fetchRooms()
         }
     }
 
@@ -104,7 +105,7 @@ class HomeViewController: ViewController {
     }
 
     private func fetchRooms() {
-        FirebaseService.shared.fetchRooms { [weak self] rooms in
+        FirebaseService.shared.fetchRooms(user: self.user) { [weak self] rooms in
             guard let self = self else { return }
             self.rooms = rooms
         }
@@ -121,6 +122,8 @@ class HomeViewController: ViewController {
             print("ERROR: FilterViewController Error")
             return
         }
+
+        filterVC.blockUserIDs = user?.blocks ?? []
 
         filterVC.completion = { query in
             FirebaseService.shared.fetchRoomDatabyQuery(query: query) { rooms in
