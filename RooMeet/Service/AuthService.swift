@@ -17,7 +17,7 @@ class AuthService {
     private var auth = Auth.auth()
 
     let user = UserDefaults()
-    
+
     weak var delegate: UserServiceDelegate?
 
     func isLogin() -> Bool {
@@ -81,4 +81,3 @@ class AuthService {
         UserDefaults.standard.set(auth.currentUser?.email, forKey: "email")
     }
 }
-

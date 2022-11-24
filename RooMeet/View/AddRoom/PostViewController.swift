@@ -583,7 +583,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
 
     private func uploadImages(images: [UIImage]) {
-        RMProgressHUD.show(view: self.view)
+        RMProgressHUD.show()
         let group = DispatchGroup()
 
         roomImagesUrl = []
@@ -672,9 +672,9 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                 RMProgressHUD.dismiss()
 
                 if error != nil {
-                    RMProgressHUD.showFailure(view: self.view)
+                    RMProgressHUD.showFailure()
                 } else {
-                    RMProgressHUD.showSuccess(view: self.view)
+                    RMProgressHUD.showSuccess()
                 }
                 self.navigationController?.popViewController(animated: true)
             }
@@ -685,9 +685,9 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                     RMProgressHUD.dismiss()
 
                     if error != nil {
-                        RMProgressHUD.showFailure(view: self.view)
+                        RMProgressHUD.showFailure()
                     } else {
-                        RMProgressHUD.showSuccess(view: self.view)
+                        RMProgressHUD.showSuccess()
                     }
                     self.navigationController?.popViewController(animated: true)
                 }

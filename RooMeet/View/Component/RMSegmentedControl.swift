@@ -103,7 +103,7 @@ import UIKit
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         let location = touch.location(in: self)
-        var calculatedIndex : Int?
+        var calculatedIndex: Int?
         for (index, item) in labels.enumerated() {
             if item.frame.contains(location) {
                 calculatedIndex = index

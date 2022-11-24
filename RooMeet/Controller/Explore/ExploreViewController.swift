@@ -123,6 +123,9 @@ class ExploreViewController: UIViewController {
             print("ERROR: FilterViewController Error")
             return
         }
+
+        filterVC.blockUserIDs = user?.blocks ?? []
+
         filterVC.completion = { query in
             FirebaseService.shared.fetchRoomDatabyQuery(query: query) { rooms in
                 self.rooms = rooms
@@ -154,7 +157,8 @@ extension ExploreViewController: CLLocationManagerDelegate {
 
         FirebaseService.shared.fetchRoomByCoordinate(
             northWest: northWestCoordinate,
-            southEast: southEastCoordinate
+            southEast: southEastCoordinate,
+            userBlocks: user?.blocks ?? []
         ) { [weak self] rooms in
             guard let rooms = rooms else {
                 print("ERROR: fetch rooms error.")
