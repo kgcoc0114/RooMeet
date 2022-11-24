@@ -252,7 +252,7 @@ class RoomDetailViewController: UIViewController {
         guard let selectedPeriod = selectedPeriod,
             var selectedDate = selectedDate else {
             print("請選擇預約時間")
-            RMProgressHUD.showFailure(text: "請選擇預約時間", view: self.view)
+            RMProgressHUD.showFailure(text: "請選擇預約時間")
             return
         }
 
@@ -279,9 +279,9 @@ class RoomDetailViewController: UIViewController {
                 receiverID: room.userID,
                 reservation: nil
             )
-            RMProgressHUD.showSuccess(view: self.view)
+            RMProgressHUD.showSuccess()
         } else {
-            RMProgressHUD.showFailure(text: "已預約過此房源", view: self.view)
+            RMProgressHUD.showFailure(text: "已預約過此房源")
         }
         reservationButton.isEnabled = true
     }
@@ -307,7 +307,11 @@ class RoomDetailViewController: UIViewController {
     }
 
     @objc private func userAction(_ sender: Any) {
-        let userActionAlertController = UIAlertController(title: "檢舉", message: "你的檢舉將被匿名，如果有人有立即的人身安全疑慮，請立即與當地緊急救護服務聯繫，把握救援時間。", preferredStyle: .actionSheet)
+        let userActionAlertController = UIAlertController(
+            title: "檢舉",
+            message: "你的檢舉將被匿名，如果有人有立即的人身安全疑慮，請立即與當地緊急救護服務聯繫，把握救援時間。",
+            preferredStyle: .actionSheet
+        )
 
         let reportPostAction = UIAlertAction(title: "檢舉貼文", style: .default) { [weak self] _ in
             guard
@@ -319,9 +323,9 @@ class RoomDetailViewController: UIViewController {
 
             FirebaseService.shared.insertReportEvent(event: reportEvent) { error in
                 if error != nil {
-                    RMProgressHUD.showFailure(text: "出點問題了，請稍後再試！", view: self.view)
+                    RMProgressHUD.showFailure(text: "出點問題了，請稍後再試！")
                 } else {
-                    RMProgressHUD.showSuccess(text: "成功送出檢舉！", view: self.view)
+                    RMProgressHUD.showSuccess(text: "成功送出檢舉！")
                 }
             }
         }
@@ -338,7 +342,7 @@ class RoomDetailViewController: UIViewController {
 }
 
 extension RoomDetailViewController {
-    private func configureCollectionView() {
+    private func registerCell() {
         collectionView.register(
             UINib(nibName: "RoomImagesCell", bundle: nil),
             forCellWithReuseIdentifier: RoomImagesCell.identifier)
@@ -367,6 +371,10 @@ extension RoomDetailViewController {
             UINib(nibName: "RoomDetailHeaderView", bundle: nil),
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: RoomDetailHeaderView.identifier)
+    }
+
+    private func configureCollectionView() {
+        registerCell()
 
         dataSource = DetailDataSource(collectionView: collectionView) { [self] collectionView, indexPath, item in
             switch item {
