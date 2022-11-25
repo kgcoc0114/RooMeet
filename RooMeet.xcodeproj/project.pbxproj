@@ -28,6 +28,11 @@
 		E539D23A292DF1CD007D50FD /* BlockCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D238292DF1CC007D50FD /* BlockCell.swift */; };
 		E539D23B292DF1CD007D50FD /* BlockCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E539D239292DF1CC007D50FD /* BlockCell.xib */; };
 		E539D23D292DFD84007D50FD /* ReportEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D23C292DFD84007D50FD /* ReportEvent.swift */; };
+		E539D242292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 in Resources */ = {isa = PBXBuildFile; fileRef = E539D241292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 */; };
+		E539D244292F503E007D50FD /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D243292F503E007D50FD /* AppConfig.swift */; };
+		E539D249292F5869007D50FD /* SwiftJWTWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D248292F5869007D50FD /* SwiftJWTWrapper.swift */; };
+		E539D24B292F962A007D50FD /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D24A292F9629007D50FD /* KeyChainService.swift */; };
+		E539D251292FAA9E007D50FD /* RefreshToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D250292FAA9E007D50FD /* RefreshToken.swift */; };
 		E55C095E290D51B800DBF21B /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095D290D51B800DBF21B /* Room.swift */; };
 		E55C0960290D53F900DBF21B /* Gender.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C095F290D53F900DBF21B /* Gender.swift */; };
 		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
@@ -156,7 +161,6 @@
 		E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */; };
 		E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */; };
 		E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C75290D6E3100F07286 /* RMTabBarController.swift */; };
-		E5E64C84290E183F00F07286 /* RegionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C83290E183F00F07286 /* RegionService.swift */; };
 		E5E64C86290E185600F07286 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C85290E185600F07286 /* Region.swift */; };
 		E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C8B290E1AA700F07286 /* RegionPickerCell.swift */; };
 		E5E64C8E290E1AA700F07286 /* RegionPickerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E64C8C290E1AA700F07286 /* RegionPickerCell.xib */; };
@@ -207,6 +211,11 @@
 		E539D238292DF1CC007D50FD /* BlockCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockCell.swift; sourceTree = "<group>"; };
 		E539D239292DF1CC007D50FD /* BlockCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BlockCell.xib; sourceTree = "<group>"; };
 		E539D23C292DFD84007D50FD /* ReportEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportEvent.swift; sourceTree = "<group>"; };
+		E539D241292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AuthKey_7HW8LJJ2ZQ.p8; sourceTree = "<group>"; };
+		E539D243292F503E007D50FD /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		E539D248292F5869007D50FD /* SwiftJWTWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftJWTWrapper.swift; sourceTree = "<group>"; };
+		E539D24A292F9629007D50FD /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
+		E539D250292FAA9E007D50FD /* RefreshToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshToken.swift; sourceTree = "<group>"; };
 		E55C095D290D51B800DBF21B /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E55C095F290D53F900DBF21B /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -337,7 +346,6 @@
 		E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBaseCell.swift; sourceTree = "<group>"; };
 		E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		E5E64C75290D6E3100F07286 /* RMTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMTabBarController.swift; sourceTree = "<group>"; };
-		E5E64C83290E183F00F07286 /* RegionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionService.swift; sourceTree = "<group>"; };
 		E5E64C85290E185600F07286 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
 		E5E64C8B290E1AA700F07286 /* RegionPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionPickerCell.swift; sourceTree = "<group>"; };
 		E5E64C8C290E1AA700F07286 /* RegionPickerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RegionPickerCell.xib; sourceTree = "<group>"; };
@@ -428,17 +436,24 @@
 			path = Profile;
 			sourceTree = "<group>";
 		};
+		E539D245292F57FB007D50FD /* RoomInfo */ = {
+			isa = PBXGroup;
+			children = (
+				E55C095D290D51B800DBF21B /* Room.swift */,
+				E55C095F290D53F900DBF21B /* Gender.swift */,
+				E5E64C85290E185600F07286 /* Region.swift */,
+				E5EEE20429129F6700CAAE84 /* PostalCode.swift */,
+			);
+			path = RoomInfo;
+			sourceTree = "<group>";
+		};
 		E55C095B290D4F5800DBF21B /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				E5604FE62918F028007AE655 /* WebRTC */,
 				E5EEE2112913B00400CAAE84 /* User */,
 				E5EEE20E2913AFA300CAAE84 /* Chat */,
-				E55C095D290D51B800DBF21B /* Room.swift */,
-				E55C095F290D53F900DBF21B /* Gender.swift */,
-				E5E64C83290E183F00F07286 /* RegionService.swift */,
-				E5E64C85290E185600F07286 /* Region.swift */,
-				E5EEE20429129F6700CAAE84 /* PostalCode.swift */,
+				E539D245292F57FB007D50FD /* RoomInfo */,
 				E539D240292DFFC7007D50FD /* Profile */,
 			);
 			path = Model;
@@ -681,6 +696,8 @@
 				E5BDDB4C290D0E2D00F4A767 /* Info.plist */,
 				E5DEEEC72922814900A649C1 /* Regions.plist */,
 				E5ACE16A291BFA79006CCF1A /* GoogleService-Info.plist */,
+				E539D241292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 */,
+				E539D243292F503E007D50FD /* AppConfig.swift */,
 				E5A12A622910B8C4006907D9 /* NibLoadble.swift */,
 				E5BDDB44290D0E2900F4A767 /* Main.storyboard */,
 				E5E64C92290E3D3E00F07286 /* Home.storyboard */,
@@ -751,6 +768,7 @@
 				E59B83142919FEE800F02CEC /* DateFormatter.swift */,
 				E5ACE16C291BFC1C006CCF1A /* ReservationService.swift */,
 				E507B0CB292484FF002E501E /* AuthService.swift */,
+				E539D24A292F9629007D50FD /* KeyChainService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -936,6 +954,7 @@
 			children = (
 				E5EEE2122913B02600CAAE84 /* User.swift */,
 				E507B0D929263075002E501E /* UserDefaultValue.swift */,
+				E539D250292FAA9E007D50FD /* RefreshToken.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -955,6 +974,7 @@
 				E5EEE2822913F97800CAAE84 /* KingfisherWrapper.swift */,
 				E5DEFDA1291F92870064E2C8 /* JGProgressHUDWrapper.swift */,
 				E51419CA2920D7CC00813D25 /* LottieWrapper.swift */,
+				E539D248292F5869007D50FD /* SwiftJWTWrapper.swift */,
 			);
 			path = ThirdPartyWrapper;
 			sourceTree = "<group>";
@@ -1034,6 +1054,7 @@
 				E5D9C046291E4FF900F416E6 /* OUImageCell.xib in Resources */,
 				E5ACE16B291BFA79006CCF1A /* GoogleService-Info.plist in Resources */,
 				E5DEEEC82922814900A649C1 /* Regions.plist in Resources */,
+				E539D242292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 in Resources */,
 				E5EEE20B2912BCC700CAAE84 /* RoomDetailViewController.xib in Resources */,
 				E593F002290FF03900B35550 /* MultipleChooseCell.xib in Resources */,
 				E5B018AB2915690C00A09788 /* CUTextCell.xib in Resources */,
@@ -1186,6 +1207,8 @@
 				E5DEFD91291F3B0A0064E2C8 /* OUCallCell.swift in Sources */,
 				E5B018DD29175B7100A09788 /* FilterViewController.swift in Sources */,
 				E539D236292DF189007D50FD /* BlockViewController.swift in Sources */,
+				E539D244292F503E007D50FD /* AppConfig.swift in Sources */,
+				E539D24B292F962A007D50FD /* KeyChainService.swift in Sources */,
 				E5B018B82915F21E00A09788 /* CardView.swift in Sources */,
 				E507B0C72923BA03002E501E /* TagView.swift in Sources */,
 				E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */,
@@ -1203,6 +1226,7 @@
 				E5D9C041291E4E3100F416E6 /* CUImageCell.swift in Sources */,
 				E5EEE2852913FA3E00CAAE84 /* UIImageView+Extension.swift in Sources */,
 				E5C5FE8A2910EF9E00DA91DF /* FeeDetailCell.swift in Sources */,
+				E539D251292FAA9E007D50FD /* RefreshToken.swift in Sources */,
 				E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */,
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
 				E5B984CA291BD3E4006DD8D7 /* Reservation.swift in Sources */,
@@ -1226,7 +1250,6 @@
 				E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */,
 				E507B0C42923B08F002E501E /* ItemsCell.swift in Sources */,
 				E5EEE2132913B02600CAAE84 /* User.swift in Sources */,
-				E5E64C84290E183F00F07286 /* RegionService.swift in Sources */,
 				E5B984D9291BD78A006DD8D7 /* BookingCell.swift in Sources */,
 				E5EEE2832913F97800CAAE84 /* KingfisherWrapper.swift in Sources */,
 				E5B33780290FB61900467404 /* OtherFeeCell.swift in Sources */,
@@ -1237,6 +1260,7 @@
 				E507B0CC292484FF002E501E /* AuthService.swift in Sources */,
 				E5DEFDA5291FC9550064E2C8 /* RoomDetailHeaderView.swift in Sources */,
 				E5B984C5291B905F006DD8D7 /* DateCell.swift in Sources */,
+				E539D249292F5869007D50FD /* SwiftJWTWrapper.swift in Sources */,
 				E593F0052910016D00B35550 /* OptionCell.swift in Sources */,
 				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,
 				E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */,

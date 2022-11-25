@@ -38,7 +38,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3nP-f7-9cR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2564" y="238"/>
+            <point key="canvasLocation" x="3474" y="505"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="9s0-Om-hwp">
@@ -105,12 +105,12 @@
             <objects>
                 <tabBarController storyboardIdentifier="RMTabBarController" automaticallyAdjustsScrollViewInsets="NO" id="1aS-Mo-4r6" customClass="RMTabBarController" customModule="RooMeet" customModuleProvider="target" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="9W4-Vw-cAP">
                         <rect key="frame" x="0.0" y="0.0" width="0.0" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="mainLightColor"/>
                         <color key="tintColor" red="0.29411764709999999" green="0.50196078430000002" blue="0.4941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="barTintColor" name="mainLightColor"/>
                         <color key="selectedImageTintColor" name="mainColor"/>
                     </tabBar>
                     <connections>
@@ -240,10 +240,13 @@
         <image name="person" catalog="system" width="128" height="117"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <namedColor name="mainBackgroundColor">
-            <color red="1" green="0.97647058823529409" blue="0.92941176470588238" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="1" green="0.97600001096725464" blue="0.92900002002716064" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="mainColor">
             <color red="0.3919999897480011" green="0.53299999237060547" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="mainLightColor">
+            <color red="0.93300002813339233" green="0.94900000095367432" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

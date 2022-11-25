@@ -11,6 +11,7 @@ class RMButtomSheetViewController: UIViewController {
     lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
+        view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         view.layer.cornerRadius = 16
         view.clipsToBounds = true
         return view
@@ -84,7 +85,7 @@ class RMButtomSheetViewController: UIViewController {
         // Later, will bring it up by set it to 0
         // set the constant to default height to bring it down again
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(
-            equalTo: view.bottomAnchor,
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
             constant: defaultHeight)
         // Activate constraints
         containerViewHeightConstraint?.isActive = true
@@ -105,9 +106,9 @@ class RMButtomSheetViewController: UIViewController {
     func animatePresentContainer() {
         // Update bottom constraint in animation block
         UIView.animate(withDuration: 0.3) {
-            self.containerViewBottomConstraint?.constant = 0
+            self.containerView.transform = CGAffineTransform(translationX: 0, y: -self.currentContainerHeight)
             // Call this to trigger refresh constraint
-            self.view.layoutIfNeeded()
+//            self.view.layoutIfNeeded()
         }
     }
 

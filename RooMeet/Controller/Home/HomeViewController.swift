@@ -19,7 +19,7 @@ class HomeViewController: ViewController {
     typealias HomeSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
     private var dataSource: HomeDataSource!
 
-    let locationManger = LocationService.shared.locationManger
+//    let locationManger = LocationService.shared.locationManger
 
     var rooms: [Room] = [] {
         didSet {
@@ -55,11 +55,11 @@ class HomeViewController: ViewController {
             action: #selector(showFilterPage))
 
         // get User Location
-        locationManger.delegate = self
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let self = self else { return }
-            self.locationManger.requestLocation()
-        }
+//        locationManger.delegate = self
+//        DispatchQueue.global(qos: .background).async { [weak self] in
+//            guard let self = self else { return }
+//            self.locationManger.requestLocation()
+//        }
 
         // set title
         navigationItem.title = "RooMeet"

@@ -39,7 +39,6 @@ class RMProgressHUD {
     }
 
     static func showSuccess(text: String = "success") {
-
         if !Thread.isMainThread {
             DispatchQueue.main.async {
                 showSuccess(text: text)
@@ -54,9 +53,7 @@ class RMProgressHUD {
     }
 
     static func showFailure(text: String = "Failure") {
-
         if !Thread.isMainThread {
-
             DispatchQueue.main.async {
                 showFailure(text: text)
             }
@@ -71,9 +68,7 @@ class RMProgressHUD {
     }
 
     static func show() {
-
         if !Thread.isMainThread {
-
             DispatchQueue.main.async {
                 show()
             }
