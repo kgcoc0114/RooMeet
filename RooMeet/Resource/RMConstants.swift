@@ -66,4 +66,3 @@ enum EntryType {
     case edit
     case new
 }
-

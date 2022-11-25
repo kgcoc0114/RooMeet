@@ -154,6 +154,10 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                 return
             }
 
+            if let authorizationCode = appleIDCredential.authorizationCode, let codeString = String(data: authorizationCode, encoding: .utf8) {
+                AuthService.shared.getRefreshToken(codeString: codeString)
+            }
+
             AuthService.shared.firebaseSignInWithApple(
                 idToken: idTokenString,
                 nonce: nonce

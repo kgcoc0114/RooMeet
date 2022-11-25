@@ -65,7 +65,7 @@ private enum Tab: String, CaseIterable {
 }
 
 class RMTabBarController: UITabBarController {
-    private let tabs: [Tab] = Tab.allCases
+//    private let tabs: [Tab] = Tab.allCases
 
     override func viewDidLoad() {
         super.viewDidLoad()

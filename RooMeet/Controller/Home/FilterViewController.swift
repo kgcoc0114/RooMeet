@@ -89,7 +89,7 @@ class FilterViewController: RMButtomSheetViewController {
             applyButton.heightAnchor.constraint(equalToConstant: 55),
             applyButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             applyButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            applyButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            applyButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 20)
         ])
     }
 

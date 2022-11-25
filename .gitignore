@@ -171,3 +171,5 @@ Dependencies/
 
 ### plist ###
 RooMeet/GoogleService-Info.plist
+RooMeet/*.p8
+RooMeet/AppConfig.swift

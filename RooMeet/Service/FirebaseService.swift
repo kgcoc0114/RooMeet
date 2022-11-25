@@ -40,10 +40,22 @@ enum FirestoreEndpoint {
     }
 }
 
+enum Result<T> {
+    case success(T)
+    case failure(Error)
+}
+
+enum RMError: String, Error {
+    case noData = "沒有資料"
+    case responseError = ""
+}
+
 class FirebaseService {
     static let shared = FirebaseService()
 
     var currentTimestamp = Timestamp()
+
+    var database = Firestore.firestore()
 
     func getDocuments<T: Codable>(_ query: Query, complection: @escaping ([T]) -> Void) {
         query.getDocuments { [weak self] querySnapshot, error in
@@ -90,7 +102,7 @@ class FirebaseService {
                     print("ERROR: fetchUserByID - \(error.localizedDescription)")
                 }
             } else {
-                completion(nil, index)
+                completion(User(id: "notExist", name: "不明用戶"), index)
             }
         }
     }
@@ -142,26 +154,26 @@ class FirebaseService {
         let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", arrayContains: userA)
 
         getDocuments(query) { [weak self] (chatRooms: [ChatRoom]) in
+            guard let self = self else { return }
             var chatRooms = chatRooms
-            chatRooms = chatRooms.filter({ $0.members.contains(userB)
-            })
-            print(chatRooms)
+            chatRooms = chatRooms.filter { $0.members.contains(userB) }
+
             if chatRooms.isEmpty {
-                self?.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
+                self.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
                     if let chatRoom = chatRoom {
-                        self?.fetchRoomMemberData(chatRooms: [chatRoom], completion: { chatRooms in
+                        self.fetchRoomMemberData(chatRooms: [chatRoom]) { chatRooms in
                             if let returnChatRoom = chatRooms.first {
                                 completion(returnChatRoom)
                             }
-                        })
+                        }
                     }
                 }
             } else {
-                self?.fetchRoomMemberData(chatRooms: chatRooms, completion: { chatRooms in
+                self.fetchRoomMemberData(chatRooms: chatRooms) { chatRooms in
                     if let returnChatRoom = chatRooms.first {
                         completion(returnChatRoom)
                     }
-                })
+                }
             }
         }
     }
@@ -187,7 +199,7 @@ class FirebaseService {
             print("fetchChatRoomDataWithMemberData ", userID)
 
             chatRooms.enumerated().forEach { index, roomResult in
-                var chatRoom = roomResult
+                let chatRoom = roomResult
                 let members = chatRoom.members.filter { member in
                     member != UserDefaults.id
                 }
@@ -237,7 +249,7 @@ class FirebaseService {
         let group = DispatchGroup()
         var chatRooms = rooms
         chatRooms.enumerated().forEach { index, roomResult in
-            var chatRoom = roomResult
+            let chatRoom = roomResult
             let members = chatRoom.members.filter { member in
                 member != UserDefaults.id
             }
@@ -277,7 +289,8 @@ class FirebaseService {
         FirestoreEndpoint.room.colRef
             .whereField("lat", isLessThanOrEqualTo: northWest.latitude)
             .whereField("lat", isGreaterThanOrEqualTo: southEast.latitude)
-            .getDocuments() { [weak self] querySnapshot, error in
+            .whereField("isDeleted", isEqualTo: false)
+            .getDocuments { [weak self] querySnapshot, error in
                 guard let self = self else { return }
 
                 if let error = error {
@@ -324,27 +337,25 @@ class FirebaseService {
     }
 
     // FIXME: add offset for paginate
-    func fetchRooms(user: User? = nil, county: String? = nil,  completion: @escaping (([Room]) -> Void)) {
+    func fetchRooms(user: User? = nil, county: String? = nil, completion: @escaping (([Room]) -> Void)) {
         var query: Query
-        var blocks: [String] = [UserDefaults.id]
 
         guard let user = user else {
             completion([])
             return
         }
 
-        if var tmpBlock = user.blocks {
-            tmpBlock.append(UserDefaults.id)
-            blocks = tmpBlock
-        }
+        var blocks = user.blocks ?? []
+        blocks.append(UserDefaults.id)
+        print("blocks = ", blocks)
 
         if let county = county {
             query = FirestoreEndpoint.room.colRef
                 .whereField("county", isEqualTo: county)
-                .whereField("userID", notIn: blocks)
+                .whereField("isDeleted", isEqualTo: false)
         } else {
             query = FirestoreEndpoint.room.colRef
-                .whereField("userID", notIn: blocks)
+                .whereField("isDeleted", isEqualTo: false)
         }
 
         query = query.order(by: "userID", descending: true)
@@ -355,17 +366,27 @@ class FirebaseService {
             rooms.enumerated().forEach { index, roomResult in
                 let ownerID = roomResult.userID
                 group.enter()
-                self?.fetchUserByID(userID: ownerID, index: index) { user, index in
-                    if let user = user,
-                        let index = index {
-                        rooms[index].userData = user
+                print("!blocks.contains(roomResult.userID) = ", !blocks.contains(roomResult.userID), roomResult.userID, UserDefaults.id)
+
+                if !blocks.contains(roomResult.userID) {
+                    print("in")
+
+                    self?.fetchUserByID(userID: ownerID, index: index) { user, index in
+                        if let user = user,
+                            let index = index {
+                            rooms[index].userData = user
+                        }
+                        group.leave()
                     }
+                } else {
                     group.leave()
                 }
             }
 
             group.notify(queue: DispatchQueue.main) {
-                let sortedRooms = rooms.sorted { roomA, roomB in
+                let filterRooms = rooms.filter { $0.userData != nil }
+
+                let sortedRooms = filterRooms.sorted { roomA, roomB in
                     roomA.createdTime.seconds > roomB.createdTime.seconds
                 }
                 completion(sortedRooms)
@@ -428,19 +449,25 @@ class FirebaseService {
         }
     }
 
-    func fetchReservationByID(reservationID: String, completion: @escaping ((Reservation) -> Void)) {
-        let query = FirestoreEndpoint.reservation.colRef.document(reservationID)
+    func fetchReservationByID(reservationID: String, completion: @escaping ((Result<Reservation>) -> Void)) {
+        let query = FirestoreEndpoint.reservation.colRef
+            .whereField("id", isEqualTo: reservationID)
+            .whereField("isDeleted", isEqualTo: false)
 
-        query.getDocument { document, error in
-            if let document = document, document.exists {
-                do {
-                    let reservation = try document.data(as: Reservation.self)
-                    completion(reservation)
-                } catch {
-                    print("ERROR: \(error.localizedDescription)")
+        query.getDocuments { querySnapshot, error in
+            if
+                let querySnapshot = querySnapshot,
+                !querySnapshot.isEmpty {
+                querySnapshot.documents.forEach { document in
+                    do {
+                        let reservation = try document.data(as: Reservation.self)
+                        completion(Result.success(reservation))
+                    } catch {
+                        completion(Result.failure(error))
+                    }
                 }
             } else {
-                print("Document does not exist")
+                completion(Result.failure(RMError.noData))
             }
         }
     }
@@ -451,17 +478,20 @@ class FirebaseService {
         let group = DispatchGroup()
         user.reservations.forEach { reservationID in
             group.enter()
-            fetchReservationByID(reservationID: reservationID) { [weak self] reservation in
+            fetchReservationByID(reservationID: reservationID) { [weak self] result in
                 guard let self = self else { return }
 
-                reservations.append(reservation)
-
-                guard let roomID = reservation.roomID else {
-                    return
-                }
-
-                self.fetchRoomByRoomID(roomID: roomID, user: user) { room in
-                    rooms.append(room)
+                switch result {
+                case .success(let reservation):
+                    reservations.append(reservation)
+                    guard let roomID = reservation.roomID else {
+                        return
+                    }
+                    self.fetchRoomByRoomID(roomID: roomID, user: user) { room in
+                        rooms.append(room)
+                        group.leave()
+                    }
+                case .failure(_):
                     group.leave()
                 }
             }
@@ -508,14 +538,16 @@ class FirebaseService {
 
         let query = FirestoreEndpoint.room.colRef
             .whereField("roomID", isEqualTo: roomID)
-            .whereField("userID", notIn: blocks)
+            .whereField("isDeleted", isEqualTo: false)
 
         getDocuments(query) { (rooms: [Room]) in
             rooms.forEach { room in
                 var room = room
-                self.fetchUserByID(userID: room.userID) { user, _ in
-                    room.userData = user
-                    completion(room)
+                if !blocks.contains(room.userID) {
+                    self.fetchUserByID(userID: room.userID) { user, _ in
+                        room.userData = user
+                        completion(room)
+                    }
                 }
             }
         }
@@ -564,17 +596,6 @@ extension FirebaseService {
                     do {
                         let item = try document.data(as: Message.self)
                         messages.append(item)
-                    } catch let DecodingError.dataCorrupted(context) {
-                        print(context)
-                    } catch let DecodingError.keyNotFound(key, context) {
-                        print("Key '\(key)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.valueNotFound(value, context) {
-                        print("Value '\(value)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.typeMismatch(type, context) {
-                        print("Type '\(type)' mismatch:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
                     } catch {
                         print("ERROR: ", error.localizedDescription)
                     }
@@ -602,17 +623,6 @@ extension FirebaseService {
                     do {
                         let item = try document.data(as: Message.self)
                         messages.append(item)
-                    } catch let DecodingError.dataCorrupted(context) {
-                        print(context)
-                    } catch let DecodingError.keyNotFound(key, context) {
-                        print("Key '\(key)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.valueNotFound(value, context) {
-                        print("Value '\(value)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.typeMismatch(type, context) {
-                        print("Type '\(type)' mismatch:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
                     } catch {
                         print("error: ", error)
                         completion(nil, error)
@@ -765,23 +775,17 @@ extension FirebaseService {
                         }
                     }
                 } catch {
-                    completion([],error)
+                    completion([], error)
                 }
             }
         }
     }
 
-    func insertBlock(blockedUser: String, completion: @escaping ((Error?) -> Void)) {
+    func insertBlock(blockedUser: String) {
         let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
-        do {
-            try query.updateData([
-                "blocks": FieldValue.arrayUnion([blockedUser])
-            ])
-            completion(nil)
-        } catch {
-            completion(error)
-        }
-
+        query.updateData([
+            "blocks": FieldValue.arrayUnion([blockedUser])
+        ])
     }
 
     func deleteBlock(blockedUsers: [String]) {
@@ -798,6 +802,106 @@ extension FirebaseService {
             completion(nil)
         } catch {
             completion(error)
+        }
+    }
+}
+
+extension FirebaseService {
+    func deleteAccount(userID: String, completion: @escaping ((Result<String>) -> Void)) {
+        let group = DispatchGroup()
+        group.enter()
+        deleteUser(userID: userID) { result in
+            group.leave()
+        }
+
+        group.enter()
+        deleteRoomPosts(userID: userID) { result in
+            switch result {
+            case .success(_):
+                print("SUCCESS: - Delete Room Posts")
+            case .failure(let error):
+                completion(Result.failure(error))
+            }
+            group.leave()
+        }
+
+        group.enter()
+        deleteReservations(userID: userID) { result in
+            switch result {
+            case .success(_):
+                print("SUCCESS: - Delete Reservations")
+            case .failure(let error):
+                completion(Result.failure(error))
+            }
+            group.leave()
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            completion(Result.success(""))
+        }
+    }
+
+    func deleteUser(userID: String, completion: @escaping ((Result<String>) -> Void)) {
+        // get sender user's reservations
+        let userRef = FirestoreEndpoint.user.colRef.document(userID)
+        userRef.delete()
+        completion(Result.success(""))
+    }
+
+    func deleteReservations(userID: String, completion: @escaping ((Result<String>) -> Void)) {
+        // get sender user's reservations
+        let senderRef = FirestoreEndpoint.reservation.colRef.whereField("sender", isEqualTo: userID)
+        senderRef.getDocuments { snapshot, _ in
+            guard let snapshot = snapshot else {
+                return
+            }
+
+            snapshot.documents.forEach { document in
+                document.reference.updateData(["isDeleted": true])
+            }
+        }
+
+        // get receiver user's reservations
+        let receiverRef = FirestoreEndpoint.reservation.colRef.whereField("receiver", isEqualTo: userID)
+
+        receiverRef.getDocuments { snapshot, _ in
+            guard let snapshot = snapshot else {
+                return
+            }
+
+            snapshot.documents.forEach { document in
+                document.reference.updateData(["isDeleted": true])
+            }
+        }
+        completion(Result.success(""))
+    }
+
+    func deleteRoomPosts(userID: String, completion: @escaping ((Result<String>) -> Void)) {
+        // Get new write batch
+        let batch = Firestore.firestore().batch()
+
+        // get user's room posts
+        let roomRef = FirestoreEndpoint.room.colRef.whereField("userID", isEqualTo: userID)
+
+        roomRef.getDocuments { snapshot, _ in
+            guard let snapshot = snapshot else {
+                return
+            }
+
+            snapshot.documents.forEach { document in
+                batch.updateData(["isDeleted": true], forDocument: document.reference)
+            }
+
+            // Commit the batch
+            batch.commit { error in
+                if let error = error {
+                    print("Error writing batch \(error)")
+                    completion(Result.failure(error))
+                } else {
+                    print("Batch write succeeded.")
+                    completion(Result.success(""))
+                }
+            }
         }
     }
 }
