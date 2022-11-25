@@ -20,6 +20,7 @@ struct Reservation: Codable, Hashable {
     var createdTime: Timestamp?
     var modifiedTime: Timestamp?
     var roomDetail: Room?
+    var isDeleted: Bool? = false
 }
 
 enum AcceptedStatus: String, CaseIterable {

@@ -208,15 +208,10 @@ class ChatViewController: UIViewController {
 
             let blockUserID = blockUser.id
 
-            FirebaseService.shared.insertBlock(blockedUser: blockUserID) { error in
-                if error != nil {
-                    RMProgressHUD.showFailure(text: "請稍後再試！")
-                } else {
-                    RMProgressHUD.showSuccess()
-                    self.navigationController?.popViewController(animated: true)
-                }
+            FirebaseService.shared.insertBlock(blockedUser: blockUserID)
 
-            }
+            RMProgressHUD.showSuccess()
+            self.navigationController?.popViewController(animated: true)
         }
 
         let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
