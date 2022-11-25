@@ -19,6 +19,7 @@ target 'RooMeet' do
   pod "TTGTagCollectionView"
   pod 'FirebaseUI/Auth'
   pod 'FirebaseUI/OAuth'
-  pod 'TTSegmentedControl', '~>0.4.9'
+  pod 'KeychainAccess'
+  pod 'SwiftJWT'
 
 end

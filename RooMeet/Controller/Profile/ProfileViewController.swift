@@ -236,23 +236,65 @@ extension ProfileViewController {
 extension ProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let profileType = Profile.allCases[indexPath.item]
-        if profileType == .logout {
+        switch profileType {
+        case .favorite, .reservations, .post:
+            let pushVC = profileType.viewConroller
+            navigationController?.pushViewController(pushVC, animated: true)
+        case .blockade:
+            let pushVC = profileType.viewConroller
+            self.hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async {
+                self.hidesBottomBarWhenPushed = false
+            }
+            navigationController?.pushViewController(pushVC, animated: true)
+        case .delete:
+            deleteAccountAction()
+        case .logout:
             AuthService.shared.logOut()
+            showLoginVC()
+        }
+    }
+
+    private func showLoginVC() {
+        DispatchQueue.main.async {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
             let loginVC = storyBoard.instantiateViewController(
                 withIdentifier: "LoginViewController"
             )
             loginVC.modalPresentationStyle = .fullScreen
-            present(loginVC, animated: false)
+            self.present(loginVC, animated: false)
         }
+    }
 
-        let pushVC = profileType.viewConroller
-        if profileType == .blockade {
-            self.hidesBottomBarWhenPushed = true
-            DispatchQueue.main.async {
-                self.hidesBottomBarWhenPushed = false
+    private func deleteAccountAction() {
+        let userActionAlertController = UIAlertController(
+            title: "刪除帳號",
+            message: "刪除帳號是永久設定，您的貼文資訊和相片都將永久刪除。",
+            preferredStyle: .actionSheet
+        )
+
+        let blockUserAction = UIAlertAction(title: "刪除帳號", style: .default) { _ in
+            RMProgressHUD.show()
+
+            AuthService.shared.deleteAccount {  [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(_):
+                    RMProgressHUD.dismiss()
+                    self.showLoginVC()
+                case .failure(_):
+                    RMProgressHUD.showFailure(text: "刪除帳號有誤 請聯絡相關人員")
+                }
             }
         }
-        navigationController?.pushViewController(pushVC, animated: true)
+
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+            userActionAlertController.dismiss(animated: true)
+        }
+
+        userActionAlertController.addAction(blockUserAction)
+        userActionAlertController.addAction(cancelAction)
+
+        present(userActionAlertController, animated: true, completion: nil)
     }
 }
