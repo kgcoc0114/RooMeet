@@ -95,7 +95,9 @@ class RoomCell: UICollectionViewCell {
         }
 
         if let price = data.roomMinPrice {
-            priceLabel.text = "\(price)"
+            priceLabel.text = "\(price) $ / mo"
+        } else {
+            priceLabel.text = "查看更多"
         }
 
         if !data.roomHighLights.isEmpty {
