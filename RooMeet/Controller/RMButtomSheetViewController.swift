@@ -85,7 +85,7 @@ class RMButtomSheetViewController: UIViewController {
         // Later, will bring it up by set it to 0
         // set the constant to default height to bring it down again
         containerViewBottomConstraint = containerView.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            equalTo: view.bottomAnchor,
             constant: defaultHeight)
         // Activate constraints
         containerViewHeightConstraint?.isActive = true

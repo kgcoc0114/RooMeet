@@ -253,6 +253,7 @@ class RoomDetailViewController: UIViewController {
             var selectedDate = selectedDate else {
             print("請選擇預約時間")
             RMProgressHUD.showFailure(text: "請選擇預約時間")
+            reservationButton.isEnabled.toggle()
             return
         }
 
@@ -260,12 +261,14 @@ class RoomDetailViewController: UIViewController {
 
         guard let sDate = selectedDate.date else {
             print("ERROR: - Reservations Date got error.")
+            reservationButton.isEnabled.toggle()
             return
         }
 
         guard
             let user = user,
             let roomID = room.roomID else {
+            reservationButton.isEnabled.toggle()
             return
         }
 

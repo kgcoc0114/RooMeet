@@ -12,6 +12,7 @@ private enum RMFontName: String {
 }
 
 private enum RMFontSize: CGFloat {
+    case title1 = 20
     case title = 18
     case subTitle = 16
     case text = 14
@@ -48,6 +49,10 @@ extension UIFont {
 
     static func regularTitle() -> UIFont {
         return RMFont(.regular, size: RMFontSize.title.rawValue)
+    }
+
+    static func regularTitle1() -> UIFont {
+        return RMFont(.regular, size: RMFontSize.title1.rawValue)
     }
 
     static func regularSubTitle() -> UIFont {

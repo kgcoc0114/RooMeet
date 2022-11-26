@@ -30,7 +30,8 @@ class ProfileItemCell: UICollectionViewCell {
 
         cellContentView.backgroundColor = profileType.color.background
 
-        iconImageView.image = profileType.iconImage.withTintColor(profileType.color.font)
+        iconImageView.tintColor = profileType.color.font
+        iconImageView.image = profileType.iconImage
         subTitleLabel.textColor = profileType.color.font
         subTitleLabel.font = UIFont.regular(size: 15)
         subTitleLabel.text = profileType.title

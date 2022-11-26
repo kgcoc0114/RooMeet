@@ -17,7 +17,7 @@ struct Reservation: Codable, Hashable {
     var sender: String?
     var receiver: String?
     var acceptedStatus: String?
-    var createdTime: Timestamp?
+    var createdTime: Timestamp
     var modifiedTime: Timestamp?
     var roomDetail: Room?
     var isDeleted: Bool? = false

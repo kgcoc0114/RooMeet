@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 struct ColorSet {
     let font: UIColor
@@ -17,7 +18,7 @@ enum Profile: CaseIterable {
     case reservations
     case post
     case blockade
-    case delete
+    case setting
     case logout
 
     var title: String {
@@ -30,8 +31,8 @@ enum Profile: CaseIterable {
             return "貼文"
         case .blockade:
             return "黑名單"
-        case .delete:
-            return "刪除帳號"
+        case .setting:
+            return "帳號設定"
         case .logout:
             return "登出"
         }
@@ -45,8 +46,8 @@ enum Profile: CaseIterable {
             return UIImage(systemName: "calendar")!
         case .post:
             return UIImage(systemName: "house.fill")!
-        case .delete:
-            return UIImage(systemName: "delete.left.fill")!
+        case .setting:
+            return UIImage(systemName: "gearshape.fill")!
         case .blockade:
             return UIImage(systemName: "nosign")!
         case .logout:
@@ -62,7 +63,6 @@ enum Profile: CaseIterable {
         return ColorSet(font: UIColor.mainDarkColor, background: UIColor.mainLightColor)
     }
 
-
     var color: ColorSet {
         switch self {
         case .favorite:
@@ -71,7 +71,7 @@ enum Profile: CaseIterable {
             return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleOrangeColor)
         case .post:
             return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleRedColor)
-        case .delete:
+        case .setting:
             return secondLineColorSet
         case .blockade:
             return secondLineColorSet
@@ -92,13 +92,13 @@ enum Profile: CaseIterable {
             return UIViewController()
         case .post:
             return FavoritesViewController(entryPage: .ownPost)
-        case .delete:
-            return UIViewController()
+        case .setting:
+            return SettingViewController()
         }
     }
 }
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var profileImageView: UIImageView! {
         didSet {
@@ -136,14 +136,7 @@ class ProfileViewController: UIViewController {
 
         collectionView.isScrollEnabled = false
 
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
-            guard let self = self,
-                let user = user else {
-                return
-            }
 
-            self.user = user
-        }
 
         if UserDefaults.profilePhoto != "empty" {
             profileImageView.setImage(urlString: UserDefaults.profilePhoto)
@@ -158,6 +151,14 @@ class ProfileViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self,
+                  let user = user else {
+                return
+            }
+
+            self.user = user
+        }
         collectionView.reloadData()
     }
 
@@ -180,6 +181,14 @@ class ProfileViewController: UIViewController {
         introductionVC.modalPresentationStyle = .fullScreen
         present(introductionVC, animated: true)
     }
+
+    @IBAction func showPrivacyPolicyPage(_ sender: Any) {
+        if let url = URL(string: RMConstants.shared.privacyPolicyURL) {
+            let safari = SFSafariViewController(url: url)
+            safari.delegate = self
+            present(safari, animated: true, completion: nil)
+        }
+    }
 }
 
 extension ProfileViewController: UICollectionViewDataSource {
@@ -197,17 +206,17 @@ extension ProfileViewController: UICollectionViewDataSource {
         let profileType = Profile.allCases[indexPath.item]
 
         cell.profileType = profileType
-
-        switch profileType {
-        case .favorite:
-            cell.configureCell()
-        case .reservations:
-            cell.configureCell()
-        case .post:
-            cell.configureCell()
-        case .blockade, .delete, .logout:
-            cell.configureCell()
-        }
+        cell.configureCell()
+//        switch profileType {
+//        case .favorite:
+//            cell.configureCell()
+//        case .reservations:
+//            cell.configureCell()
+//        case .post:
+//            cell.configureCell()
+//        case .blockade, .setting, .logout:
+//            cell.configureCell()
+//        }
         return cell
     }
 }
@@ -237,7 +246,7 @@ extension ProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let profileType = Profile.allCases[indexPath.item]
         switch profileType {
-        case .favorite, .reservations, .post:
+        case .favorite, .reservations, .post, .setting:
             let pushVC = profileType.viewConroller
             navigationController?.pushViewController(pushVC, animated: true)
         case .blockade:
@@ -247,11 +256,11 @@ extension ProfileViewController: UICollectionViewDelegate {
                 self.hidesBottomBarWhenPushed = false
             }
             navigationController?.pushViewController(pushVC, animated: true)
-        case .delete:
-            deleteAccountAction()
         case .logout:
-            AuthService.shared.logOut()
-            showLoginVC()
+            AuthService.shared.logOut { [weak self] _ in
+                guard let self = self else { return }
+                self.showLoginVC()
+            }
         }
     }
 
@@ -264,37 +273,5 @@ extension ProfileViewController: UICollectionViewDelegate {
             loginVC.modalPresentationStyle = .fullScreen
             self.present(loginVC, animated: false)
         }
-    }
-
-    private func deleteAccountAction() {
-        let userActionAlertController = UIAlertController(
-            title: "刪除帳號",
-            message: "刪除帳號是永久設定，您的貼文資訊和相片都將永久刪除。",
-            preferredStyle: .actionSheet
-        )
-
-        let blockUserAction = UIAlertAction(title: "刪除帳號", style: .default) { _ in
-            RMProgressHUD.show()
-
-            AuthService.shared.deleteAccount {  [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success(_):
-                    RMProgressHUD.dismiss()
-                    self.showLoginVC()
-                case .failure(_):
-                    RMProgressHUD.showFailure(text: "刪除帳號有誤 請聯絡相關人員")
-                }
-            }
-        }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            userActionAlertController.dismiss(animated: true)
-        }
-
-        userActionAlertController.addAction(blockUserAction)
-        userActionAlertController.addAction(cancelAction)
-
-        present(userActionAlertController, animated: true, completion: nil)
     }
 }
