@@ -81,9 +81,9 @@ class RoomCell: UICollectionViewCell {
         if !data.roomImages.isEmpty {
             imageView.kf.setImage(
                 with: data.roomImages[0],
-                placeholder: UIImage(systemName: "house")?.withTintColor(.systemGray6))
+                placeholder: UIImage.asset(.room_placeholder))
         } else {
-            imageView.image = UIImage(systemName: "house")?.withTintColor(.systemGray6)
+            imageView.image = UIImage.asset(.room_placeholder)
         }
 
         if !data.title.isEmpty {

@@ -442,7 +442,8 @@ class FirebaseService {
         }
 
         group.notify(queue: DispatchQueue.main) {
-            completion(rooms)
+            let sorted = rooms.sorted { $0.createdTime.seconds > $1.createdTime.seconds }
+            completion(sorted)
         }
     }
 
