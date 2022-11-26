@@ -14,7 +14,11 @@ class ProfileItemCell: UICollectionViewCell {
 
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var cellContentView: UIView!
-    @IBOutlet weak var subTitleLabel: UILabel!
+    @IBOutlet weak var subTitleLabel: UILabel! {
+        didSet {
+            subTitleLabel.font = .regularSubTitle()
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,7 +37,6 @@ class ProfileItemCell: UICollectionViewCell {
         iconImageView.tintColor = profileType.color.font
         iconImageView.image = profileType.iconImage
         subTitleLabel.textColor = profileType.color.font
-        subTitleLabel.font = UIFont.regular(size: 15)
         subTitleLabel.text = profileType.title
     }
 }

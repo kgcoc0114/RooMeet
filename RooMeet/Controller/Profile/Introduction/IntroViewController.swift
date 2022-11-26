@@ -61,7 +61,7 @@ class IntroViewController: UIViewController {
     init(entryType: EntryType, user: User? = nil) {
         super.init(nibName: "IntroViewController", bundle: nil)
         self.entryType = entryType
-        self.user = user
+        self.user = user ?? User(id: UserDefaults.id)
     }
 
     required init?(coder: NSCoder) {
@@ -108,12 +108,16 @@ class IntroViewController: UIViewController {
                     return UICollectionViewCell()
                 }
                 cell.delegate = self
-                if let profilePhoto = UserDefaults.standard.string(forKey: "profilePhoto") {
+
+                let profilePhoto = UserDefaults.profilePhoto
+                if profilePhoto != "empty" {
                     cell.imageView.setImage(urlString: profilePhoto)
                 } else {
-                    cell.imageView.image = UIImage.asset(.profile_user)
+                    cell.imageView.image = UIImage.asset(.person)
                 }
-                cell.configureCell(edit: self.entryType == .edit, data: data)
+
+                let edit = self.entryType == .edit && self.user != nil
+                cell.configureCell(edit: edit, data: data)
                 return cell
             case .rules:
                 guard let cell = collectionView.dequeueReusableCell(
@@ -205,7 +209,7 @@ extension IntroViewController {
                     heightDimension: .estimated(30))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 16, trailing: 20)
                 return section
             case .rules:
                 let itemSize = NSCollectionLayoutSize(
@@ -218,7 +222,7 @@ extension IntroViewController {
                     heightDimension: .estimated(30))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 16, trailing: 20)
                 return section
             }
         }
@@ -360,8 +364,11 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
             "favoriteTown": user.favoriteTown as Any
         ]
 
-        if entryType == .new {
+        if user.favoriteRooms.isEmpty {
             updateData["favoriteRooms"] = []
+        }
+
+        if user.reservations.isEmpty {
             updateData["reservations"] = []
         }
 

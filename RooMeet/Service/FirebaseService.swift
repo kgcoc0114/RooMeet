@@ -367,11 +367,7 @@ class FirebaseService {
             rooms.enumerated().forEach { index, roomResult in
                 let ownerID = roomResult.userID
                 group.enter()
-                print("!blocks.contains(roomResult.userID) = ", !blocks.contains(roomResult.userID), roomResult.userID, UserDefaults.id)
-
                 if !blocks.contains(roomResult.userID) {
-                    print("in")
-
                     self?.fetchUserByID(userID: ownerID, index: index) { user, index in
                         if let user = user,
                             let index = index {

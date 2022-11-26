@@ -28,11 +28,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="moon.zzz.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="zCL-5l-ISb">
-                                <rect key="frame" x="74" y="70.5" width="20" height="21"/>
+                                <rect key="frame" x="71.5" y="68" width="25" height="26"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" systemColor="systemGray6Color"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="zCL-5l-ISb" secondAttribute="height" multiplier="1:1" id="9lj-3h-Jdm"/>
+                                    <constraint firstAttribute="width" constant="25" id="I5P-Eh-pKN"/>
+                                    <constraint firstAttribute="height" constant="25" id="d5o-nz-E7b"/>
                                 </constraints>
                             </imageView>
                         </subviews>
