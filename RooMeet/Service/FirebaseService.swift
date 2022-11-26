@@ -48,6 +48,7 @@ enum Result<T> {
 enum RMError: String, Error {
     case noData = "沒有資料"
     case responseError = ""
+    case signOutError = "登出失敗"
 }
 
 class FirebaseService {
@@ -510,8 +511,12 @@ class FirebaseService {
                 return rsvn
             }
 
-            rsvns = rsvns.sorted() { rsvnA, rsvnB in
-                return rsvnA.requestTime!.dateValue() > rsvnB.requestTime!.dateValue()
+            rsvns = rsvns.sorted { rsvnA, rsvnB in
+                guard let requestTimeA = rsvnA.requestTime,
+                    let requestTimeB = rsvnB.requestTime else {
+                    return rsvnA.createdTime.dateValue() > rsvnB.createdTime.dateValue()
+                }
+                return requestTimeA.dateValue() > requestTimeB.dateValue()
             }
 
             completion(rsvns)
@@ -810,7 +815,7 @@ extension FirebaseService {
     func deleteAccount(userID: String, completion: @escaping ((Result<String>) -> Void)) {
         let group = DispatchGroup()
         group.enter()
-        deleteUser(userID: userID) { result in
+        deleteUser(userID: userID) { _ in
             group.leave()
         }
 
@@ -820,7 +825,7 @@ extension FirebaseService {
             case .success(_):
                 print("SUCCESS: - Delete Room Posts")
             case .failure(let error):
-                completion(Result.failure(error))
+                print("ERROR: - Delete Room Posts, \(error.localizedDescription)")
             }
             group.leave()
         }
@@ -831,7 +836,7 @@ extension FirebaseService {
             case .success(_):
                 print("SUCCESS: - Delete Reservations")
             case .failure(let error):
-                completion(Result.failure(error))
+                print("ERROR: - Delete Reservations, \(error.localizedDescription)")
             }
             group.leave()
         }
@@ -842,38 +847,61 @@ extension FirebaseService {
     }
 
     func deleteUser(userID: String, completion: @escaping ((Result<String>) -> Void)) {
-        // get sender user's reservations
-        let userRef = FirestoreEndpoint.user.colRef.document(userID)
-        userRef.delete()
-        completion(Result.success(""))
+        FirestoreEndpoint.user.colRef.document(userID).delete { error in
+            if let error = error {
+                completion(Result.failure(error))
+            } else {
+                completion(Result.success("SUCCESS: - User delete successfully."))
+            }
+        }
     }
 
     func deleteReservations(userID: String, completion: @escaping ((Result<String>) -> Void)) {
+        let group = DispatchGroup()
         // get sender user's reservations
+        group.enter()
         let senderRef = FirestoreEndpoint.reservation.colRef.whereField("sender", isEqualTo: userID)
-        senderRef.getDocuments { snapshot, _ in
-            guard let snapshot = snapshot else {
-                return
-            }
 
-            snapshot.documents.forEach { document in
-                document.reference.updateData(["isDeleted": true])
-            }
+        batchDeleteReservation(query: senderRef) { result in
+            group.leave()
         }
+
 
         // get receiver user's reservations
+        group.enter()
         let receiverRef = FirestoreEndpoint.reservation.colRef.whereField("receiver", isEqualTo: userID)
+        batchDeleteReservation(query: receiverRef) { result in
+            group.leave()
+        }
 
-        receiverRef.getDocuments { snapshot, _ in
+        group.notify(queue: DispatchQueue.main) {
+            completion(Result.success(""))
+        }
+    }
+
+    func batchDeleteReservation(query: Query, completion: @escaping ((Result<String>) -> Void)) {
+        let batch = Firestore.firestore().batch()
+
+        query.getDocuments { snapshot, _ in
             guard let snapshot = snapshot else {
                 return
             }
 
             snapshot.documents.forEach { document in
-                document.reference.updateData(["isDeleted": true])
+                batch.updateData(["isDeleted": true], forDocument: document.reference)
+            }
+
+            // Commit the batch
+            batch.commit { error in
+                if let error = error {
+                    print("Error writing batch \(error)")
+                    completion(Result.failure(error))
+                } else {
+                    print("Batch write succeeded.")
+                    completion(Result.success(""))
+                }
             }
         }
-        completion(Result.success(""))
     }
 
     func deleteRoomPosts(userID: String, completion: @escaping ((Result<String>) -> Void)) {

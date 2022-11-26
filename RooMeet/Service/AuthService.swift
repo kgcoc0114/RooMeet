@@ -25,24 +25,39 @@ class AuthService {
         return auth.currentUser != nil
     }
 
-    func firebaseSignInWithApple(idToken: String, nonce: String) {
+    func firebaseSignInWithApple(
+        idToken: String,
+        nonce: String,
+        actionType: String = "signIn",
+        completion: @escaping ((Result<String>) -> Void)
+    ) {
         let credential = OAuthProvider.credential(
             withProviderID: "apple.com",
             idToken: idToken,
             rawNonce: nonce
         )
 
-        auth.signIn(with: credential) { _, error in
+        auth.signIn(with: credential) { [weak self] _, error in
+            guard let self = self else { return }
+
             if let error = error {
                 print(error.localizedDescription)
-                return
+                completion(Result.failure(error))
             } else {
-                self.getFirebaseUserInfo()
+                if actionType == "delete" {
+                    self.deleteAccount(credential: credential) { result in
+                        completion(result)
+                    }
+                } else {
+                    self.getFirebaseUserInfo(actionType: actionType) { result in
+                        completion(result)
+                    }
+                }
             }
         }
     }
 
-    func getFirebaseUserInfo() {
+    func getFirebaseUserInfo(actionType: String = "signIn", completion: @escaping ((Result<String>) -> Void)) {
         let currentUser = auth.currentUser
         guard let currentUser = currentUser else {
             print("無法取得使用者資料")
@@ -56,7 +71,7 @@ class AuthService {
         UserDefaults.id = uid
 
         FirebaseService.shared.upsertUser(uid: uid, email: email) { [weak self] isNewUser, user in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             if isNewUser {
                 let user = User(id: uid, email: email, favoriteRooms: [], reservations: [], chatRooms: [])
                 self.delegate?.userService(isNewUser: isNewUser, user: user)
@@ -64,16 +79,18 @@ class AuthService {
                 guard let user = user else { return }
                 self.delegate?.userService(isNewUser: isNewUser, user: user)
             }
+            completion(Result.success(""))
         }
     }
 
-    func logOut() {
+    func logOut(completion: @escaping ((Result<Bool>) -> Void)) {
         do {
             try auth.signOut()
             print("登出中...")
             print(auth.currentUser as Any)
+            completion(Result.success(true))
         } catch let signOutError as NSError {
-            print("Error signing out \(signOutError.localizedDescription)")
+            completion(Result.failure(signOutError))
         }
     }
 
@@ -82,11 +99,11 @@ class AuthService {
         UserDefaults.standard.set(auth.currentUser?.email, forKey: "email")
     }
 
-    func deleteAccount(completion: @escaping ((Result<String>) -> Void)) {
+    func deleteAccount(credential: OAuthCredential, completion: @escaping ((Result<String>) -> Void)) {
         let group = DispatchGroup()
-        group.enter()
 
         // delete data in firebase
+        group.enter()
         FirebaseService.shared.deleteAccount(userID: UserDefaults.id) { _ in
             print("deleteAccount")
             group.leave()
@@ -94,12 +111,19 @@ class AuthService {
 
         //  delete user in firebase
         let user = auth.currentUser
+
         group.enter()
-        user?.delete { error in
+        user?.delete { [weak self] error in
+            guard let self = self else { return }
             if error != nil {
-                print(error)
+                print("reauthenticateFIR")
+                self.reauthenticateFIR(credential: credential) {
+                    group.leave()
+                }
+            } else {
+                print("// Account deleted.")
+                group.leave()
             }
-            group.leave()
         }
 
         group.enter()
@@ -111,6 +135,26 @@ class AuthService {
 
         group.notify(queue: DispatchQueue.main) {
             completion(Result.success(""))
+        }
+    }
+
+    private func reauthenticateFIR(credential: OAuthCredential, completion: @escaping (() -> Void)) {
+        let user = auth.currentUser
+        user?.reauthenticate(with: credential) { result, error in
+            print("user?.reauthenticate")
+            if let error = error {
+                completion()
+                print("reauthenticate error", error)
+            } else {
+                print("reauthenticate success")
+                user?.delete { error in
+                    if let error = error {
+                        print("user?.delete { error")
+                        print(error)
+                    }
+                    completion()
+                }
+            }
         }
     }
 
@@ -141,25 +185,24 @@ class AuthService {
                 print("ERROR: - Read Auth Key P8 file Error")
             }
         }
-
         return signedJWT
     }
 
-    func getRefreshToken(codeString: String) {
+    func getRefreshToken(codeString: String, completion: @escaping ((Result<String>) -> Void)) {
         let clientSecret = makeJWT()
-
         guard let url = URL(string: "https://appleid.apple.com/auth/token?client_id=\(AppConfig.sub.value)&client_secret=\(clientSecret)&grant_type=authorization_code&code=\(codeString)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "https://apple.com") else { return }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if error != nil {
-                print("ERROR: - Can't get refresh token.")
+                completion(Result.failure(error!))
             }
 
             guard
                 let response = response as? HTTPURLResponse,
                 response.statusCode == 200 else {
+                completion(Result.failure(RMError.responseError))
                 print("ERROR: - Get Refresh Token Error")
                 return
             }
@@ -167,6 +210,7 @@ class AuthService {
             if let data = data {
                 let response = try? JSONDecoder().decode(RefreshTokenResponse.self, from: data)
                 KeyChainService.shared.refreshToken = response?.refreshToken ?? ""
+                completion(Result.success(""))
             }
         }
         task.resume()
@@ -202,3 +246,4 @@ class AuthService {
         task.resume()
     }
 }
+

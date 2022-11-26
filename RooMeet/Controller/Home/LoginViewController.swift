@@ -8,33 +8,43 @@
 import UIKit
 import AuthenticationServices
 import CryptoKit
+import SafariServices
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, SFSafariViewControllerDelegate {
     var currentNonce: String?
     lazy var loginAnimationView = RMLottie.shared.loginAnimationView
 
     @IBOutlet weak var animationView: UIView!
 
-    @IBOutlet weak var signInWithAppleButtonView: UIView! {
+    @IBOutlet weak var privacyPolicyLabel: UILabel! {
         didSet {
-            signInWithAppleButtonView.translatesAutoresizingMaskIntoConstraints = false
+            privacyPolicyLabel.textColor = .mainColor
+            let tapGestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(privacyTapped(tapGestureRecognizer:)))
+            privacyPolicyLabel.isUserInteractionEnabled = true
+            privacyPolicyLabel.addGestureRecognizer(tapGestureRecognizer)
         }
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureAnimationView()
-        let authAppleIDButton = ASAuthorizationAppleIDButton()
+        let authAppleIDButton = ASAuthorizationAppleIDButton(
+            authorizationButtonType: .signIn,
+            authorizationButtonStyle: .black
+        )
+        view.addSubview(authAppleIDButton)
+
+        authAppleIDButton.translatesAutoresizingMaskIntoConstraints = false
+        authAppleIDButton.cornerRadius = RMConstants.shared.buttonCornerRadius
         authAppleIDButton.addTarget(self, action: #selector(pressSignInWithApple), for: .touchUpInside)
 
-        signInWithAppleButtonView.addSubview(authAppleIDButton)
-
         NSLayoutConstraint.activate([
-            signInWithAppleButtonView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            authAppleIDButton.centerXAnchor.constraint(equalTo: signInWithAppleButtonView.centerXAnchor),
-            authAppleIDButton.centerYAnchor.constraint(equalTo: signInWithAppleButtonView.centerYAnchor),
-            authAppleIDButton.widthAnchor.constraint(equalTo: signInWithAppleButtonView.widthAnchor),
-            authAppleIDButton.heightAnchor.constraint(equalTo: signInWithAppleButtonView.heightAnchor)
+            authAppleIDButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+            authAppleIDButton.widthAnchor.constraint(equalToConstant: 280),
+            authAppleIDButton.heightAnchor.constraint(equalToConstant: 50),
+            authAppleIDButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
         AuthService.shared.delegate = self
@@ -65,6 +75,14 @@ class LoginViewController: UIViewController {
 
     @objc func pressSignInWithApple() {
         signInWithApple()
+    }
+
+    @objc func privacyTapped(tapGestureRecognizer: UITapGestureRecognizer) {
+        if let url = URL(string: RMConstants.shared.privacyPolicyURL) {
+            let safari = SFSafariViewController(url: url)
+            safari.delegate = self
+            present(safari, animated: true, completion: nil)
+        }
     }
 }
 
@@ -154,14 +172,14 @@ extension LoginViewController: ASAuthorizationControllerDelegate {
                 return
             }
 
-            if let authorizationCode = appleIDCredential.authorizationCode, let codeString = String(data: authorizationCode, encoding: .utf8) {
-                AuthService.shared.getRefreshToken(codeString: codeString)
+            AuthService.shared.firebaseSignInWithApple(idToken: idTokenString, nonce: nonce) { result in
+                switch result {
+                case .success(_):
+                    print("SUCCESS: - Firebase Sign In With Apple")
+                case .failure(let error):
+                    print("ERROR: - \(error.localizedDescription)")
+                }
             }
-
-            AuthService.shared.firebaseSignInWithApple(
-                idToken: idTokenString,
-                nonce: nonce
-            )
         }
     }
 
@@ -175,7 +193,6 @@ extension LoginViewController: ASAuthorizationControllerPresentationContextProvi
         return view.window!
     }
 }
-
 
 extension LoginViewController: UserServiceDelegate {
     func userService(isNewUser: Bool, user: User) {

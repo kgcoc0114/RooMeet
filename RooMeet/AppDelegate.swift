@@ -14,7 +14,8 @@ import WebRTC
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         IQKeyboardManager.shared.enable = true
-
+        IQKeyboardManager.shared.shouldResignOnTouchOutside = true
+        
         let barAppearance = UINavigationBarAppearance()
         barAppearance.backgroundColor = UIColor.mainColor
         barAppearance.titleTextAttributes = [.foregroundColor: UIColor.mainBackgroundColor]

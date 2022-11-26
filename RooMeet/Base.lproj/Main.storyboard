@@ -6,7 +6,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,7 +17,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dSs-KU-wYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3779.7101449275365" y="-464.0625"/>
+            <point key="canvasLocation" x="4100" y="-604"/>
         </scene>
         <!--Chat-->
         <scene sceneID="4dH-J4-OjO">
@@ -28,7 +27,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zlr-0k-PIu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2320" y="1369"/>
+            <point key="canvasLocation" x="4080" y="779"/>
         </scene>
         <!--Explore-->
         <scene sceneID="UTE-Xq-o5s">
@@ -38,23 +37,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3nP-f7-9cR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3474" y="505"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="9s0-Om-hwp">
-            <objects>
-                <viewController id="mTF-Wp-rb3" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="RMl-2r-eHa">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="1hg-5q-CQk"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="DdV-rm-VPB"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="UoG-y9-A7s" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="621" y="-341"/>
+            <point key="canvasLocation" x="4093" y="69"/>
         </scene>
         <!--Login View Controller-->
         <scene sceneID="CFg-G2-I8p">
@@ -72,28 +55,41 @@
                                     <constraint firstAttribute="height" constant="199" id="lF8-2I-VWM"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WmN-ob-img">
-                                <rect key="frame" x="137" y="732" width="140" height="30"/>
-                                <color key="backgroundColor" name="mainBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Bia-6T-KRw"/>
-                                    <constraint firstAttribute="width" constant="140" id="vjA-OU-fkQ"/>
-                                </constraints>
-                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bpk-S2-iX4">
+                                <rect key="frame" x="73" y="817" width="0.0" height="0.0"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="隱私權政策" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6e-df-jP1">
+                                <rect key="frame" x="181" y="830" width="52" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="點擊登入鍵，即代表您同意下列" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Sn-oE-aIi">
+                                <rect key="frame" x="135" y="813" width="144" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="DG8-mR-lRB"/>
                         <color key="backgroundColor" name="mainBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="DG8-mR-lRB" firstAttribute="bottom" secondItem="WmN-ob-img" secondAttribute="bottom" constant="100" id="4kY-Cq-0Ee"/>
+                            <constraint firstItem="C6e-df-jP1" firstAttribute="top" secondItem="0Sn-oE-aIi" secondAttribute="bottom" constant="5" id="1hg-ze-LbN"/>
+                            <constraint firstItem="DG8-mR-lRB" firstAttribute="bottom" secondItem="C6e-df-jP1" secondAttribute="bottom" constant="20" id="3re-ML-KeU"/>
+                            <constraint firstItem="0Sn-oE-aIi" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="HAt-9G-CeQ"/>
+                            <constraint firstItem="C6e-df-jP1" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="S6m-Iw-fKV"/>
                             <constraint firstItem="Vni-p0-mwb" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="SNt-ea-EDC"/>
                             <constraint firstItem="Vni-p0-mwb" firstAttribute="top" secondItem="DG8-mR-lRB" secondAttribute="top" constant="130" id="rmE-Na-D1s"/>
-                            <constraint firstItem="WmN-ob-img" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="yTd-wo-Vog"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Soo-yR-9jV"/>
                     <connections>
                         <outlet property="animationView" destination="Vni-p0-mwb" id="EVr-MT-Jgy"/>
-                        <outlet property="signInWithAppleButtonView" destination="WmN-ob-img" id="8Qd-bQ-NRs"/>
+                        <outlet property="privacyPolicyLabel" destination="C6e-df-jP1" id="ZN8-RQ-g0x"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ccL-h3-gn8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -141,7 +137,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gyG-qb-nxe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3042.0289855072465" y="-571.20535714285711"/>
+            <point key="canvasLocation" x="3474" y="-604"/>
         </scene>
         <!--Explore-->
         <scene sceneID="rXg-Ph-Llb">
@@ -179,7 +175,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="279-dL-cdr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2319" y="966"/>
+            <point key="canvasLocation" x="3474" y="779"/>
         </scene>
         <!--Profile-->
         <scene sceneID="EMs-mG-Kv4">
@@ -189,7 +185,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="W5U-uh-Naj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1458" y="1370"/>
+            <point key="canvasLocation" x="2652" y="1183"/>
         </scene>
         <!--Profile-->
         <scene sceneID="d7W-TU-ZzA">
@@ -208,25 +204,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="B8n-d5-Uzr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1459" y="966"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="XOV-qE-Da4">
-            <objects>
-                <navigationController storyboardIdentifier="RMLoginNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="Gym-DH-hKV" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dBE-9z-WBM">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="mTF-Wp-rb3" kind="relationship" relationship="rootViewController" id="J3f-qD-h7N"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="t0u-of-UNF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-97.101449275362327" y="-349.55357142857139"/>
+            <point key="canvasLocation" x="2652" y="779"/>
         </scene>
     </scenes>
     <color key="tintColor" name="mainBackgroundColor"/>
@@ -248,8 +226,5 @@
         <namedColor name="mainLightColor">
             <color red="0.93300002813339233" green="0.94900000095367432" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

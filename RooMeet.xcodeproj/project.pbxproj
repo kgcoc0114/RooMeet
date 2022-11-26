@@ -158,6 +158,10 @@
 		E5DEFDA2291F92870064E2C8 /* JGProgressHUDWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEFDA1291F92870064E2C8 /* JGProgressHUDWrapper.swift */; };
 		E5DEFDA5291FC9550064E2C8 /* RoomDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEFDA3291FC9550064E2C8 /* RoomDetailHeaderView.swift */; };
 		E5DEFDA6291FC9550064E2C8 /* RoomDetailHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DEFDA4291FC9550064E2C8 /* RoomDetailHeaderView.xib */; };
+		E5E143492930B85700465B65 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E143472930B85700465B65 /* SettingViewController.swift */; };
+		E5E1434A2930B85700465B65 /* SettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E143482930B85700465B65 /* SettingViewController.xib */; };
+		E5E143512930B8E400465B65 /* SettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1434F2930B8E400465B65 /* SettingCell.swift */; };
+		E5E143522930B8E400465B65 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E143502930B8E400465B65 /* SettingCell.xib */; };
 		E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */; };
 		E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */; };
 		E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C75290D6E3100F07286 /* RMTabBarController.swift */; };
@@ -343,6 +347,10 @@
 		E5DEFDA1291F92870064E2C8 /* JGProgressHUDWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JGProgressHUDWrapper.swift; sourceTree = "<group>"; };
 		E5DEFDA3291FC9550064E2C8 /* RoomDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailHeaderView.swift; sourceTree = "<group>"; };
 		E5DEFDA4291FC9550064E2C8 /* RoomDetailHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDetailHeaderView.xib; sourceTree = "<group>"; };
+		E5E143472930B85700465B65 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
+		E5E143482930B85700465B65 /* SettingViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingViewController.xib; sourceTree = "<group>"; };
+		E5E1434F2930B8E400465B65 /* SettingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCell.swift; sourceTree = "<group>"; };
+		E5E143502930B8E400465B65 /* SettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
 		E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBaseCell.swift; sourceTree = "<group>"; };
 		E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		E5E64C75290D6E3100F07286 /* RMTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMTabBarController.swift; sourceTree = "<group>"; };
@@ -471,6 +479,7 @@
 			children = (
 				E5FF403E291B45FA00DCA2D4 /* TmpViewController.swift */,
 				E5E64C75290D6E3100F07286 /* RMTabBarController.swift */,
+				E560135C29277A7100EE0083 /* RMButtomSheetViewController.swift */,
 				E5119BAA292081F100A632C9 /* RMNavigationController.swift */,
 				E5872941291D000B00C12E9E /* Explore */,
 				E587293F291CFFE900C12E9E /* RoomDetail */,
@@ -478,7 +487,6 @@
 				E587293E291CFFB600C12E9E /* Chat */,
 				E587293D291CFFA800C12E9E /* Profile */,
 				E507B0CD292487A4002E501E /* LoginViewController.swift */,
-				E560135C29277A7100EE0083 /* RMButtomSheetViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -546,6 +554,8 @@
 				E560134F29271DC500EE0083 /* ProfileItemCell.xib */,
 				E539D238292DF1CC007D50FD /* BlockCell.swift */,
 				E539D239292DF1CC007D50FD /* BlockCell.xib */,
+				E5E1434F2930B8E400465B65 /* SettingCell.swift */,
+				E5E143502930B8E400465B65 /* SettingCell.xib */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -557,8 +567,8 @@
 				E5D76D0F291D2F6A0074DFD7 /* Introduction */,
 				E5D76D0A291D23D10074DFD7 /* Favorite */,
 				E5D76D09291D23B90074DFD7 /* Reservation */,
-				E539D234292DF188007D50FD /* BlockViewController.swift */,
-				E539D235292DF189007D50FD /* BlockViewController.xib */,
+				E5E1434B2930B86400465B65 /* Blockade */,
+				E5E1434C2930B87500465B65 /* Setting */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -891,6 +901,24 @@
 			path = Booking;
 			sourceTree = "<group>";
 		};
+		E5E1434B2930B86400465B65 /* Blockade */ = {
+			isa = PBXGroup;
+			children = (
+				E539D234292DF188007D50FD /* BlockViewController.swift */,
+				E539D235292DF189007D50FD /* BlockViewController.xib */,
+			);
+			path = Blockade;
+			sourceTree = "<group>";
+		};
+		E5E1434C2930B87500465B65 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				E5E143472930B85700465B65 /* SettingViewController.swift */,
+				E5E143482930B85700465B65 /* SettingViewController.xib */,
+			);
+			path = Setting;
+			sourceTree = "<group>";
+		};
 		E5E2771D291E883A00E68D90 /* Text */ = {
 			isa = PBXGroup;
 			children = (
@@ -1066,6 +1094,7 @@
 				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
 				E539D22F2929F189007D50FD /* LoginPageAnimation.json in Resources */,
 				E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */,
+				E5E143522930B8E400465B65 /* SettingCell.xib in Resources */,
 				E51419C92920D52100813D25 /* CallWaitingView.json in Resources */,
 				E59B82F32919117300F02CEC /* CallViewController.xib in Resources */,
 				E5EEE20D2913A8C900CAAE84 /* Chat.storyboard in Resources */,
@@ -1095,6 +1124,7 @@
 				E539D237292DF189007D50FD /* BlockViewController.xib in Resources */,
 				E593F0062910016D00B35550 /* OptionCell.xib in Resources */,
 				E5872933291CAA7300C12E9E /* OUReservationCell.xib in Resources */,
+				E5E1434A2930B85700465B65 /* SettingViewController.xib in Resources */,
 				E507B0C52923B08F002E501E /* ItemsCell.xib in Resources */,
 				E5C5FE872910CB8000DA91DF /* FeeInfoCell.xib in Resources */,
 				E5DEFD92291F3B0A0064E2C8 /* OUCallCell.xib in Resources */,
@@ -1192,6 +1222,7 @@
 				E593F013291012DF00B35550 /* OtherFeeHeaderCell.swift in Sources */,
 				E593F0092910065C00B35550 /* RulesCell.swift in Sources */,
 				E5872944291D022000C12E9E /* IntroCell.swift in Sources */,
+				E5E143492930B85700465B65 /* SettingViewController.swift in Sources */,
 				E5C5FE862910CB8000DA91DF /* FeeInfoCell.swift in Sources */,
 				E5B018AE2915692600A09788 /* OUTextCell.swift in Sources */,
 				E5B018CE2916475000A09788 /* RoomItemsCell.swift in Sources */,
@@ -1248,6 +1279,7 @@
 				E5EEE2072912AE3B00CAAE84 /* FirebaseService.swift in Sources */,
 				E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */,
 				E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */,
+				E5E143512930B8E400465B65 /* SettingCell.swift in Sources */,
 				E507B0C42923B08F002E501E /* ItemsCell.swift in Sources */,
 				E5EEE2132913B02600CAAE84 /* User.swift in Sources */,
 				E5B984D9291BD78A006DD8D7 /* BookingCell.swift in Sources */,
