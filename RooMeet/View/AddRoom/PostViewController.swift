@@ -164,7 +164,14 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.keyboardDismissMode = .interactive
-        navigationItem.title = "Add Room Post"
+        navigationItem.title = "新增物件貼文"
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
+
         if let room = room {
             configureData(data: room)
         }
@@ -408,6 +415,10 @@ extension PostViewController: UICollectionViewDataSource {
         }
         cell.delegate = self
         return cell
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 }
 

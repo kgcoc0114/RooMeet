@@ -42,15 +42,26 @@ enum ImageAsset: String {
     case add
     case room_image_placeholder
     case room_placeholder
+    case back
+    case comment_info
+    case circle_phone
+    case heart
+    case heart_fill
+    case heart_white
+    case calendar
+    case home_white
+    case setting
+    case sign_out
+    case blockade
+    case settings_sliders
+    case plus
 }
 
 extension UIImage {
     public enum DataUnits: String {
         case byte, kilobyte, megabyte, gigabyte
     }
-
     func getSizeIn(_ type: DataUnits)-> Double {
-
         guard let data = self.pngData() else {
             return 0
         }
