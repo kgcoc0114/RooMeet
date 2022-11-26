@@ -60,6 +60,8 @@ class RMConstants {
     let roomBathroomRules = ["獨立衛浴", "公用衛浴"]
 
     let compressSizeGap: Double = 50
+
+    let privacyPolicyURL = "https://www.privacypolicies.com/live/e6fe7bef-b07a-4aaa-b5b7-493e4b3deb27"
 }
 
 enum EntryType {

@@ -81,6 +81,7 @@ class IntroViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+        fetchUser()
         updateDataSource()
     }
 
@@ -144,7 +145,8 @@ class IntroViewController: UIViewController {
 
     private func fetchUser() {
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
-            self?.user = user
+            guard let self = self else { return }
+            self.user = user
         }
     }
 
