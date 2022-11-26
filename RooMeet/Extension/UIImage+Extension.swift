@@ -39,11 +39,12 @@ enum ImageAsset: String {
     case add_image
     case refresh
     case person
-
+    case add
+    case room_image_placeholder
+    case room_placeholder
 }
 
 extension UIImage {
-
     public enum DataUnits: String {
         case byte, kilobyte, megabyte, gigabyte
     }

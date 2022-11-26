@@ -325,7 +325,7 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
             let uniqueString = NSUUID().uuidString
             let storageRef = Storage.storage().reference(withPath: "Profile").child("\(uniqueString).png")
             if let uploadData = image.scale(scaleFactor: 0.1).jpegData(compressionQuality: 0.1) {
-                storageRef.putData(uploadData, completion: { [weak self] data, error in
+                storageRef.putData(uploadData) { [weak self] _, error in
                     if let error = error {
                         // TODO: Error Handle
                         print("Error: \(error.localizedDescription)")
@@ -340,7 +340,7 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
                         print(Thread.current)
                         self?.saveData(url: downloadURL)
                     }
-                })
+                }
             }
         }
     }

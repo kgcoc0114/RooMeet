@@ -20,7 +20,6 @@ class BookingCell: UICollectionViewCell {
         super.awakeFromNib()
         bookingView.delegate = self
     }
-
 }
 
 extension BookingCell: BookingViewDelegate {
@@ -29,4 +28,3 @@ extension BookingCell: BookingViewDelegate {
         delegate?.didSendRequest(date: date, selectPeriod: selectPeriod)
     }
 }
-
