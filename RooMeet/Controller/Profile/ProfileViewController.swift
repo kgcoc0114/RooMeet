@@ -168,7 +168,6 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
 
         userNameLabel.text = UserDefaults.name
 
-
         collectionView.reloadData()
     }
 
