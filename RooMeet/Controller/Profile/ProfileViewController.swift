@@ -66,11 +66,11 @@ enum Profile: CaseIterable {
     var color: ColorSet {
         switch self {
         case .favorite:
-            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.mainColor)
+            return ColorSet(font: .white, background: UIColor.mainColor)
         case .reservations:
-            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleOrangeColor)
+            return ColorSet(font: .white, background: UIColor.subTitleOrangeColor)
         case .post:
-            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleRedColor)
+            return ColorSet(font: .white, background: UIColor.subTitleRedColor)
         case .setting:
             return secondLineColorSet
         case .blockade:
@@ -115,9 +115,18 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
         }
     }
 
-    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var userNameLabel: UILabel! {
+        didSet {
+            userNameLabel.font = UIFont.regularSubTitle()
+            userNameLabel.textColor = UIColor.mainDarkColor
+        }
+    }
 
-    @IBOutlet weak var editIntroButton: UIButton!
+    @IBOutlet weak var editIntroButton: UIButton! {
+        didSet {
+            editIntroButton.setImage(UIImage.asset(.refresh), for: .normal)
+        }
+    }
 
     private var user: User?
 
@@ -133,24 +142,15 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = configureLayout()
-
         collectionView.isScrollEnabled = false
 
-
-
-        if UserDefaults.profilePhoto != "empty" {
-            profileImageView.setImage(urlString: UserDefaults.profilePhoto)
-        } else {
-            profileImageView.image = UIImage.asset(.profile_user)
-        }
-
-        userNameLabel.text = UserDefaults.name
         editIntroButton.setTitle("", for: .normal)
         editIntroButton.addTarget(self, action: #selector(editIntro), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("UserDefaults.id = ", UserDefaults.id)
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
             guard let self = self,
                   let user = user else {
@@ -159,6 +159,16 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
 
             self.user = user
         }
+
+        if UserDefaults.profilePhoto != "empty" {
+            profileImageView.setImage(urlString: UserDefaults.profilePhoto)
+        } else {
+            profileImageView.image = UIImage.asset(.profile_user)
+        }
+
+        userNameLabel.text = UserDefaults.name
+
+
         collectionView.reloadData()
     }
 
@@ -207,16 +217,6 @@ extension ProfileViewController: UICollectionViewDataSource {
 
         cell.profileType = profileType
         cell.configureCell()
-//        switch profileType {
-//        case .favorite:
-//            cell.configureCell()
-//        case .reservations:
-//            cell.configureCell()
-//        case .post:
-//            cell.configureCell()
-//        case .blockade, .setting, .logout:
-//            cell.configureCell()
-//        }
         return cell
     }
 }
