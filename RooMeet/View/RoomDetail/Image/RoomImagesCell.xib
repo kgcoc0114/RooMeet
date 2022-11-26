@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -39,27 +40,20 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="gXT-00-MdA"/>
                             </scrollView>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="1l5-eg-yk9">
-                                <rect key="frame" x="179" y="8" width="116" height="26"/>
+                                <rect key="frame" x="179" y="171" width="116" height="26"/>
+                                <color key="backgroundColor" red="0.93333333333333335" green="0.94901960784313721" blue="0.9882352941176471" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="pageIndicatorTintColor" name="mainLightColor"/>
+                                <color key="currentPageIndicatorTintColor" name="mainColor"/>
                             </pageControl>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l8R-OG-W17">
-                                <rect key="frame" x="397" y="166" width="67" height="31"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                <connections>
-                                    <action selector="likeAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="MDA-63-bbs"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="HiY-jZ-Cl9" secondAttribute="bottom" id="0Eb-N5-tIW"/>
+                            <constraint firstAttribute="bottom" secondItem="1l5-eg-yk9" secondAttribute="bottom" constant="10" id="23S-Pb-t14"/>
                             <constraint firstItem="HiY-jZ-Cl9" firstAttribute="leading" secondItem="LgU-fD-1Yu" secondAttribute="leading" id="I1P-Fu-RhL"/>
-                            <constraint firstAttribute="top" secondItem="1l5-eg-yk9" secondAttribute="top" constant="-8" id="Ryp-0F-4eJ"/>
-                            <constraint firstAttribute="bottom" secondItem="l8R-OG-W17" secondAttribute="bottom" constant="10" id="b3c-sW-y6Y"/>
                             <constraint firstItem="1l5-eg-yk9" firstAttribute="centerX" secondItem="LgU-fD-1Yu" secondAttribute="centerX" id="fZi-T2-hkb"/>
                             <constraint firstAttribute="trailing" secondItem="HiY-jZ-Cl9" secondAttribute="trailing" id="ffg-8C-ni5"/>
                             <constraint firstItem="HiY-jZ-Cl9" firstAttribute="top" secondItem="LgU-fD-1Yu" secondAttribute="top" id="pUX-rb-2Oo"/>
-                            <constraint firstAttribute="trailing" secondItem="l8R-OG-W17" secondAttribute="trailing" constant="10" id="suc-bF-Pop"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -73,7 +67,6 @@
             </constraints>
             <size key="customSize" width="474" height="207"/>
             <connections>
-                <outlet property="likeButton" destination="l8R-OG-W17" id="uBp-TT-YCK"/>
                 <outlet property="pageControl" destination="1l5-eg-yk9" id="0KV-Ns-7ML"/>
                 <outlet property="scrollView" destination="HiY-jZ-Cl9" id="30M-ZY-9iN"/>
                 <outlet property="stackView" destination="69J-IB-F9V" id="RLJ-81-BCu"/>
@@ -82,6 +75,12 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <namedColor name="mainColor">
+            <color red="0.39215686274509803" green="0.53333333333333333" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="mainLightColor">
+            <color red="0.93333333333333335" green="0.94901960784313721" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

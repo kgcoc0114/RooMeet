@@ -40,6 +40,12 @@ class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
+
         navigationItem.title = entryPage == .fav ? "Favorites" : "My Post"
 
         collectionView.delegate = self
@@ -109,6 +115,10 @@ class FavoritesViewController: UIViewController {
                 self.rooms = rooms
             }
         }
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 }
 

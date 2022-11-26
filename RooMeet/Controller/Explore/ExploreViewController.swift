@@ -64,7 +64,7 @@ class ExploreViewController: UIViewController {
         // set title
         navigationItem.title = "Explore"
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "slider.horizontal.3"),
+            image: UIImage.asset(.settings_sliders),
             style: .plain,
             target: self,
             action: #selector(showFilterPage))

@@ -18,6 +18,8 @@ class RoomDetailViewController: UIViewController {
     enum Section: String, CaseIterable {
         case images
         case basicInfo
+        case reservationDays
+        case reservationPeriod
         case map
         case highLight
         case gender
@@ -27,8 +29,7 @@ class RoomDetailViewController: UIViewController {
         case bathroom
         case features
         case feeDetail
-        case reservationDays
-        case reservationPeriod
+
 
         var title: String {
             switch self {
@@ -96,6 +97,12 @@ class RoomDetailViewController: UIViewController {
 
     lazy private var dates = Date().getDaysInWeek(days: RMConstants.shared.reservationDays)
 
+    @IBOutlet weak var backButton: UIButton! {
+        didSet {
+            backButton.setImage(UIImage.asset(.back), for: .normal)
+        }
+    }
+
     @IBOutlet weak var chatButton: UIButton! {
         didSet {
             chatButton.setTitle(" 聊聊", for: .normal)
@@ -157,13 +164,13 @@ class RoomDetailViewController: UIViewController {
         super.viewDidLoad()
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(named: "icon_back"),
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
             style: .plain,
             target: self,
             action: #selector(backAction))
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "info.circle"),
+            image: UIImage.asset(.comment_info).withRenderingMode(.alwaysOriginal),
             style: .plain,
             target: self,
             action: #selector(userAction))
@@ -212,6 +219,20 @@ class RoomDetailViewController: UIViewController {
         ownerAvatarView.layer.cornerRadius = ownerAvatarView.bounds.width / 2
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.tabBarController?.tabBar.isHidden = false
+        navigationController?.navigationBar.isHidden = false
+
+        if shouldUpdate {
+            guard let user = user else { return }
+
+            FirebaseService.shared.updateUserFavData(
+                favoriteRooms: user.favoriteRooms
+            )
+        }
+    }
+
     @objc private func backAction() {
         navigationController?.popViewController(animated: false)
     }
@@ -229,20 +250,6 @@ class RoomDetailViewController: UIViewController {
                 }
             }
         }
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        if shouldUpdate {
-            guard let user = user else { return }
-
-            FirebaseService.shared.updateUserFavData(
-                favoriteRooms: user.favoriteRooms
-            )
-        }
-
-        self.tabBarController?.tabBar.isHidden = false
     }
 
     @IBAction func requestReservation(_ sender: Any) {
@@ -312,7 +319,7 @@ class RoomDetailViewController: UIViewController {
     @objc private func userAction(_ sender: Any) {
         let userActionAlertController = UIAlertController(
             title: "檢舉",
-            message: "你的檢舉將被匿名，如果有人有立即的人身安全疑慮，請立即與當地緊急救護服務聯繫，把握救援時間。",
+            message: "確定檢舉此則貼文，你的檢舉將被匿名。",
             preferredStyle: .actionSheet
         )
 
@@ -392,6 +399,16 @@ extension RoomDetailViewController {
                 }
 
                 cell.configureCell(images: data.roomImages)
+                return cell
+
+            case .basicInfo(let data):
+                guard let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: RoomBasicCell.identifier,
+                    for: indexPath
+                ) as? RoomBasicCell else {
+                    return UICollectionViewCell()
+                }
+                cell.configureCell(data: data)
                 cell.delegate = self
 
                 if
@@ -403,16 +420,6 @@ extension RoomDetailViewController {
                 } else {
                     cell.isLike = false
                 }
-                return cell
-
-            case .basicInfo(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RoomBasicCell.identifier,
-                    for: indexPath
-                ) as? RoomBasicCell else {
-                    return UICollectionViewCell()
-                }
-                cell.configureCell(data: data)
                 return cell
             case .feeDetail(let data):
                 guard let cell = collectionView.dequeueReusableCell(
@@ -688,7 +695,7 @@ extension RoomDetailViewController {
     }
 }
 
-extension RoomDetailViewController: RoomImagesCellDelegate {
+extension RoomDetailViewController: RoomBasicCellDelegate {
     func didClickedLike(like: Bool) {
         if let room = room,
             let roomID = room.roomID {

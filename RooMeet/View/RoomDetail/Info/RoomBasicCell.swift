@@ -7,14 +7,38 @@
 
 import UIKit
 
+protocol RoomBasicCellDelegate: AnyObject {
+    func didClickedLike(like: Bool)
+}
+
 class RoomBasicCell: UICollectionViewCell {
     static let identifier = "RoomBasicCell"
+    weak var delegate: RoomBasicCellDelegate?
+
+    var isLike = false {
+        didSet {
+            if isLike == true {
+                likeButton.setImage(UIImage.asset(.heart_fill), for: .normal)
+            } else {
+                likeButton.setImage(UIImage.asset(.heart), for: .normal)
+            }
+        }
+    }
 
     @IBOutlet weak var otherDescTextView: UITextView! {
         didSet {
             otherDescTextView.isEditable = false
             otherDescTextView.isScrollEnabled = false
             otherDescTextView.backgroundColor = .systemGray6
+        }
+    }
+
+    @IBOutlet weak var likeButton: UIButton! {
+        didSet {
+            likeButton.backgroundColor = .clear
+            likeButton.setTitle("", for: .normal)
+            likeButton.setImage(UIImage.asset(.heart), for: .normal)
+            likeButton.tintColor = .subTitleRedColor
         }
     }
 
@@ -70,5 +94,10 @@ class RoomBasicCell: UICollectionViewCell {
             }
         }
         return "請私訊聊聊"
+    }
+
+    @IBAction func likeAction(_ sender: Any) {
+        isLike.toggle()
+        delegate?.didClickedLike(like: isLike)
     }
 }

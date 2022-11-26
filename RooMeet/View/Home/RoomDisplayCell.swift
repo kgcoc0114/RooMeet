@@ -21,7 +21,7 @@ class RoomDisplayCell: UICollectionViewCell {
             likeButton.translatesAutoresizingMaskIntoConstraints = false
             likeButton.backgroundColor = .clear
             likeButton.setTitle("", for: .normal)
-            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            likeButton.setImage(UIImage.asset(.heart), for: .normal)
             likeButton.tintColor = UIColor.subTitleRedColor
         }
     }
@@ -39,9 +39,9 @@ class RoomDisplayCell: UICollectionViewCell {
     var isLike = false {
         didSet {
             if isLike == true {
-                likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                likeButton.setImage(UIImage.asset(.heart_fill), for: .normal)
             } else {
-                likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                likeButton.setImage(UIImage.asset(.heart), for: .normal)
             }
         }
     }

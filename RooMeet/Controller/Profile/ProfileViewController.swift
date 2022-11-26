@@ -19,7 +19,7 @@ enum Profile: CaseIterable {
     case post
     case blockade
     case setting
-    case logout
+    case signOut
 
     var title: String {
         switch self {
@@ -33,7 +33,7 @@ enum Profile: CaseIterable {
             return "黑名單"
         case .setting:
             return "帳號設定"
-        case .logout:
+        case .signOut:
             return "登出"
         }
     }
@@ -41,17 +41,17 @@ enum Profile: CaseIterable {
     var iconImage: UIImage {
         switch self {
         case .favorite:
-            return UIImage(systemName: "heart.fill")!
+            return UIImage.asset(.heart_white)
         case .reservations:
-            return UIImage(systemName: "calendar")!
+            return UIImage.asset(.calendar)
         case .post:
-            return UIImage(systemName: "house.fill")!
+            return UIImage.asset(.home_white)
         case .setting:
-            return UIImage(systemName: "gearshape.fill")!
+            return UIImage.asset(.setting)
         case .blockade:
-            return UIImage(systemName: "nosign")!
-        case .logout:
-            return UIImage(systemName: "moon.zzz.fill")!
+            return UIImage.asset(.blockade)
+        case .signOut:
+            return UIImage.asset(.sign_out)
         }
     }
 
@@ -75,7 +75,7 @@ enum Profile: CaseIterable {
             return secondLineColorSet
         case .blockade:
             return secondLineColorSet
-        case .logout:
+        case .signOut:
             return secondLineColorSet
         }
     }
@@ -88,7 +88,7 @@ enum Profile: CaseIterable {
             return ProfileRSVNViewController()
         case .blockade:
             return BlockViewController()
-        case .logout:
+        case .signOut:
             return UIViewController()
         case .post:
             return FavoritesViewController(entryPage: .ownPost)
@@ -152,8 +152,9 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
         super.viewWillAppear(animated)
         print("UserDefaults.id = ", UserDefaults.id)
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
-            guard let self = self,
-                  let user = user else {
+            guard
+                let self = self,
+                let user = user else {
                 return
             }
 
@@ -255,7 +256,7 @@ extension ProfileViewController: UICollectionViewDelegate {
                 self.hidesBottomBarWhenPushed = false
             }
             navigationController?.pushViewController(pushVC, animated: true)
-        case .logout:
+        case .signOut:
             AuthService.shared.logOut { [weak self] _ in
                 guard let self = self else { return }
                 self.showLoginVC()
