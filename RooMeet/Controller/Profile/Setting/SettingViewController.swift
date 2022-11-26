@@ -31,6 +31,15 @@ enum SettingItem: CaseIterable {
             return UIImage(systemName: "trash.circle")!
         }
     }
+
+    var backgroundColor: UIColor {
+        switch self {
+        case .privacy:
+            return .subTitleOrangeColor
+        case .delete:
+            return .subTitleRedColor
+        }
+    }
 }
 
 class SettingViewController: UIViewController {
@@ -42,6 +51,8 @@ class SettingViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Setting"
+
         configureTableView()
     }
 
