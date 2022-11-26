@@ -299,12 +299,16 @@ extension PostViewController: UICollectionViewDataSource {
         case .images:
             return makePostImageCell(collectionView: collectionView, indexPath: indexPath)
         case .feeHeader:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier,
-                for: indexPath) as? OtherFeeHeaderCell else {
+            guard
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier,
+                    for: indexPath) as? OtherFeeHeaderCell,
+                let tag = PostSection.allCases.firstIndex(of: .feeHeader)
+                else {
                 fatalError("OtherFeeHeaderCell Error")
             }
-            cell.editAction.tag = PostSection.allCases.firstIndex(of: .feeHeader)!
+
+            cell.editAction.tag = tag
             cell.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
             cell.titleLabel.text = "其他費用"
             return cell
@@ -402,16 +406,26 @@ extension PostViewController: UICollectionViewDataSource {
             fatalError("PostImageCell Error")
         }
         print(indexPath.item, roomImages.count)
-
-        if let room = room,
-            room.roomImages.count - 1 >= indexPath.item {
+        if entryType == .new {
             if roomImages.count - 1 >= indexPath.item {
                 cell.imageView.image = roomImages[indexPath.item]
             } else {
-                cell.imageView.loadImage(room.roomImages[indexPath.item].absoluteString, placeHolder: UIImage.asset(.add))
+                cell.imageView.image = UIImage.asset(.add)
             }
         } else {
-            cell.imageView.image = UIImage.asset(.add)
+            if let room = room,
+                room.roomImages.count - 1 >= indexPath.item {
+                if roomImages.count - 1 >= indexPath.item {
+                    cell.imageView.image = roomImages[indexPath.item]
+                } else {
+                    cell.imageView.loadImage(
+                        room.roomImages[indexPath.item].absoluteString,
+                        placeHolder: UIImage.asset(.add)
+                    )
+                }
+            } else {
+                cell.imageView.image = UIImage.asset(.add)
+            }
         }
         cell.delegate = self
         return cell
@@ -506,7 +520,7 @@ extension PostViewController: PostBasicCellDelegate {
                     guard let self = self else { return }
                     self.latitude = location.latitude
                     self.longitude = location.longitude
-                }
+            }
         }
     }
 
@@ -629,7 +643,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             let storageRef = Storage.storage().reference(withPath: "RoomImages").child("\(uniqueString).png")
 
             if let uploadData = uploadData {
-                storageRef.putData(uploadData, completion: { [weak self] _, error in
+                storageRef.putData(uploadData) { [weak self] _, error in
                     if let error = error {
                         // TODO: Error Handle
                         print("Error: \(error.localizedDescription)")
@@ -645,7 +659,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                         self.roomImagesUrl.append(downloadURL)
                         group.leave()
                     }
-                })
+                }
             }
         }
 
