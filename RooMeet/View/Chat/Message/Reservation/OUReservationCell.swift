@@ -96,7 +96,7 @@ class OUReservationCell: MessageBaseCell {
         if let profilePhoto = otherUser.profilePhoto {
             avatarView.setImage(urlString: profilePhoto)
         } else {
-            avatarView.image = UIImage.asset(.profile_user)
+            avatarView.image = UIImage.asset(.roomeet)
         }
 
         statusLabel.text = reservation.acceptedStatus

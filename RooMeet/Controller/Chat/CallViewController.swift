@@ -151,7 +151,7 @@ class CallViewController: UIViewController {
         if let profilePhoto = otherUserData.profilePhoto {
             callerImageView.setImage(urlString: profilePhoto)
         } else {
-            callerImageView.image = UIImage.asset(.profile_user)
+            callerImageView.image = UIImage.asset(.roomeet)
         }
     }
 
