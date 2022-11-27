@@ -7,33 +7,8 @@
 
 import UIKit
 
-protocol RoomImagesCellDelegate: AnyObject {
-    func didClickedLike(like: Bool)
-}
-
 class RoomImagesCell: UICollectionViewCell {
     static let identifier = "RoomImagesCell"
-
-    weak var delegate: RoomImagesCellDelegate?
-
-    @IBOutlet weak var likeButton: UIButton! {
-        didSet {
-            likeButton.backgroundColor = .clear
-            likeButton.setTitle("", for: .normal)
-            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            likeButton.tintColor = .white
-        }
-    }
-
-    var isLike: Bool = false {
-        didSet {
-            if isLike == true {
-                likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-            } else {
-                likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
-            }
-        }
-    }
 
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var scrollView: UIScrollView! {
@@ -41,16 +16,16 @@ class RoomImagesCell: UICollectionViewCell {
             scrollView.isPagingEnabled = true
         }
     }
-    @IBOutlet weak var pageControl: UIPageControl!
+
+    @IBOutlet weak var pageControl: UIPageControl! {
+        didSet {
+            pageControl.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+        }
+    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         scrollView.delegate = self
-    }
-
-    @IBAction func likeAction(_ sender: Any) {
-        isLike.toggle()
-        delegate?.didClickedLike(like: isLike)
     }
 }
 
@@ -69,7 +44,7 @@ extension RoomImagesCell {
     func configureCell(images: [URL]) {
         images.forEach { imageURL in
             let imageView = UIImageView()
-            imageView.setImage(urlString: imageURL.absoluteString)
+            imageView.loadImage(imageURL.absoluteString, placeHolder: UIImage.asset(.room_placeholder))
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
 
@@ -77,9 +52,22 @@ extension RoomImagesCell {
             imageView.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 imageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
-                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 4/3 )
+                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 4 / 3 )
             ])
         }
-        pageControl.numberOfPages = images.count
+        if stackView.arrangedSubviews.isEmpty {
+            let imageView = UIImageView()
+            imageView.image = UIImage.asset(.room_placeholder)
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
+
+            stackView.addArrangedSubview(imageView)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                imageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 4 / 3 )
+            ])
+        }
+        pageControl.numberOfPages = images.isEmpty ? 1 : images.count
     }
 }

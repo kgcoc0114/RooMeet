@@ -20,6 +20,7 @@ class HomeViewController: ViewController {
     private var dataSource: HomeDataSource!
 
     let locationManger = LocationService.shared.locationManger
+
     var rooms: [Room] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
@@ -28,6 +29,8 @@ class HomeViewController: ViewController {
             }
         }
     }
+
+    var user: User?
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -40,13 +43,13 @@ class HomeViewController: ViewController {
         super.viewDidLoad()
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "plus"),
+            image: UIImage.asset(.plus),
             style: .plain,
             target: self,
             action: #selector(addRoomPost))
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "slider.horizontal.3"),
+            image: UIImage.asset(.settings_sliders),
             style: .plain,
             target: self,
             action: #selector(showFilterPage))
@@ -54,7 +57,7 @@ class HomeViewController: ViewController {
         // get User Location
         locationManger.delegate = self
         DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             self.locationManger.requestLocation()
         }
 
@@ -68,7 +71,13 @@ class HomeViewController: ViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchRooms()
+
+
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self else { return }
+            self.user = user
+            self.fetchRooms()
+        }
     }
 
     private func configureCollectionView() {
@@ -89,19 +98,15 @@ class HomeViewController: ViewController {
 
         collectionView.collectionViewLayout = createLayout()
 
-        collectionView.addPullToRefresh {[weak self] in
-            self?.fetchRooms()
-            FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
-                if let user = user {
-                    gCurrentUser = user
-                }
-            }
+        collectionView.addPullToRefresh { [weak self] in
+            guard let self = self else { return }
+            self.fetchRooms()
         }
     }
 
     private func fetchRooms() {
-        FirebaseService.shared.fetchRooms { [weak self] rooms in
-            guard let `self` = self else { return }
+        FirebaseService.shared.fetchRooms(user: self.user) { [weak self] rooms in
+            guard let self = self else { return }
             self.rooms = rooms
         }
     }
@@ -112,14 +117,20 @@ class HomeViewController: ViewController {
     }
 
     @objc private func showFilterPage() {
+        guard let user = user else {
+            return
+        }
+
         guard let filterVC = storyboard?.instantiateViewController(
             withIdentifier: "FilterViewController") as? FilterViewController else {
             print("ERROR: FilterViewController Error")
             return
         }
 
+        filterVC.blockUserIDs = user.blocks ?? []
+
         filterVC.completion = { query in
-            FirebaseService.shared.fetchRoomDatabyQuery(query: query) { rooms in
+            FirebaseService.shared.fetchRoomDatabyQuery(user: user, query: query) { rooms in
                 self.rooms = rooms
             }
         }
@@ -164,7 +175,7 @@ extension HomeViewController: UICollectionViewDelegate {
         guard
             let room = dataSource.itemIdentifier(for: indexPath)
         else { return }
-        let detailViewController = RoomDetailViewController(room: room)
+        let detailViewController = RoomDetailViewController(room: room, user: user)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
@@ -173,7 +184,7 @@ extension HomeViewController: UICollectionViewDelegate {
 extension HomeViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            gCurrentPosition = location.coordinate
+            RMConstants.shared.currentPosition = location.coordinate
         }
     }
 

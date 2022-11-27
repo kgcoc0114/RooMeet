@@ -8,7 +8,6 @@
 import UIKit
 
 class RMNavigationController: UINavigationController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
     }

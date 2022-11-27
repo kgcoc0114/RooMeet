@@ -41,7 +41,8 @@ class RoomFeeCell: UICollectionViewCell {
         iconImageView.image = billType.image
         titleLabel.text = "\(billType.title)"
 
-        if let _ = data.isGov {
+        if let isGov = data.isGov,
+            isGov == true {
             feeLabel.text = "台\(billType.title)"
         } else {
             guard let fee = data.fee else {

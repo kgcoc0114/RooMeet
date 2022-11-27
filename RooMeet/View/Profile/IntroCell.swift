@@ -16,6 +16,12 @@ protocol IntroCellDelegate: AnyObject {
 class IntroCell: UICollectionViewCell {
     static let identifier = "IntroCell"
 
+    @IBOutlet weak var imageButton: UIButton! {
+        didSet {
+            imageButton.setImage(UIImage.asset(.refresh), for: .normal)
+        }
+    }
+
     @IBOutlet weak var imageView: UIImageView! {
         didSet {
             let tapGestureRecognizer = UITapGestureRecognizer(
@@ -40,6 +46,42 @@ class IntroCell: UICollectionViewCell {
             genderSegmentedControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
         }
     }
+
+    @IBOutlet weak var nameLabel: UILabel! {
+        didSet {
+            nameLabel.textColor = .mainDarkColor
+            nameLabel.font = .regularSubTitle()
+        }
+    }
+
+    @IBOutlet weak var genderLabel: UILabel! {
+        didSet {
+            genderLabel.textColor = .mainDarkColor
+            genderLabel.font = .regularSubTitle()
+        }
+    }
+
+    @IBOutlet weak var birthLabel: UILabel! {
+        didSet {
+            birthLabel.textColor = .mainDarkColor
+            birthLabel.font = .regularSubTitle()
+        }
+    }
+
+    @IBOutlet weak var areaLabel: UILabel! {
+        didSet {
+            areaLabel.textColor = .mainDarkColor
+            areaLabel.font = .regularSubTitle()
+        }
+    }
+
+    @IBOutlet weak var introLabel: UILabel! {
+        didSet {
+            introLabel.textColor = .mainDarkColor
+            introLabel.font = .regularSubTitle()
+        }
+    }
+
     @IBOutlet weak var regionTextField: RMBaseTextField!
     @IBOutlet weak var birthdayTextField: RMBaseTextField! {
         didSet {
@@ -63,20 +105,18 @@ class IntroCell: UICollectionViewCell {
         }
     }
 
-    @IBOutlet weak var nameTextField: RMBaseTextField!
-
-    @IBOutlet weak var imageButton: UIButton! {
+    @IBOutlet weak var nameTextField: RMBaseTextField! {
         didSet {
-            imageButton.setTitle("", for: .normal)
-            imageButton.backgroundColor = .white
-            imageButton.tintColor = .mainColor
+            nameTextField.addTarget(self, action: #selector(onTextFieldValueChange), for: .valueChanged)
         }
     }
 
     @IBOutlet weak var introTextView: UITextView! {
         didSet {
+            introTextView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             introTextView.backgroundColor = .mainLightColor
             introTextView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            introTextView.text = ""
         }
     }
 
@@ -121,7 +161,7 @@ class IntroCell: UICollectionViewCell {
     }
 
     override func layoutSubviews() {
-        imageButton.layer.cornerRadius = imageView.bounds.width / 2
+        imageButton.layer.cornerRadius = imageButton.bounds.width / 2
     }
 
     func configureCell(edit: Bool = true, data: User) {
@@ -144,9 +184,9 @@ class IntroCell: UICollectionViewCell {
             }
 
             if let profilePhoto = user.profilePhoto {
-                imageView.setImage(urlString: profilePhoto)
+                imageView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
             } else {
-                imageView.image = UIImage.asset(.profile_user)
+                imageView.image = UIImage.asset(.roomeet)
             }
 
             if let favoriteCounty = user.favoriteCounty,
@@ -163,6 +203,8 @@ class IntroCell: UICollectionViewCell {
             }
 
             self.rules = rules
+        } else {
+            introTextView.text = ""
         }
     }
 
@@ -177,6 +219,11 @@ class IntroCell: UICollectionViewCell {
         self.endEditing(true)
     }
 
+    @objc func onTextFieldValueChange(_ sender: UITextField) {
+        guard var user = user else { return }
+        user.name = nameTextField.text
+        delegate?.passData(cell: self, data: user)
+    }
 
     @objc func onDateValueChange(_ datePicker: UIDatePicker) {
         birthday = datePicker.date

@@ -31,4 +31,14 @@ extension UserDefaults {
 
     @UserDefaultValue(key: "rules", defaultValue: [])
     static var rules: [String]
+
+    static func reset() {
+        id = "testUser"
+        birthday = Date()
+        gender = 2
+        profilePhoto = "empty"
+        favoriteCounty = "臺北市"
+        favoriteTown = "中正區"
+        rules = []
+    }
 }

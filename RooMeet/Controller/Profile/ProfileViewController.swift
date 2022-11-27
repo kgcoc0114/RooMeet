@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SafariServices
 
 struct ColorSet {
     let font: UIColor
@@ -17,8 +18,8 @@ enum Profile: CaseIterable {
     case reservations
     case post
     case blockade
-    case delete
-    case logout
+    case setting
+    case signOut
 
     var title: String {
         switch self {
@@ -30,9 +31,9 @@ enum Profile: CaseIterable {
             return "貼文"
         case .blockade:
             return "黑名單"
-        case .delete:
-            return "刪除帳號"
-        case .logout:
+        case .setting:
+            return "帳號設定"
+        case .signOut:
             return "登出"
         }
     }
@@ -40,17 +41,17 @@ enum Profile: CaseIterable {
     var iconImage: UIImage {
         switch self {
         case .favorite:
-            return UIImage(systemName: "heart.fill")!
+            return UIImage.asset(.heart_white)
         case .reservations:
-            return UIImage(systemName: "calendar")!
+            return UIImage.asset(.calendar)
         case .post:
-            return UIImage(systemName: "house.fill")!
-        case .delete:
-            return UIImage(systemName: "delete.left.fill")!
+            return UIImage.asset(.home_white)
+        case .setting:
+            return UIImage.asset(.setting)
         case .blockade:
-            return UIImage(systemName: "nosign")!
-        case .logout:
-            return UIImage(systemName: "moon.zzz.fill")!
+            return UIImage.asset(.blockade)
+        case .signOut:
+            return UIImage.asset(.sign_out)
         }
     }
 
@@ -62,20 +63,19 @@ enum Profile: CaseIterable {
         return ColorSet(font: UIColor.mainDarkColor, background: UIColor.mainLightColor)
     }
 
-
     var color: ColorSet {
         switch self {
         case .favorite:
-            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.mainColor)
+            return ColorSet(font: .white, background: UIColor.mainColor)
         case .reservations:
-            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleOrangeColor)
+            return ColorSet(font: .white, background: UIColor.subTitleOrangeColor)
         case .post:
-            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleRedColor)
-        case .delete:
+            return ColorSet(font: .white, background: UIColor.subTitleRedColor)
+        case .setting:
             return secondLineColorSet
         case .blockade:
             return secondLineColorSet
-        case .logout:
+        case .signOut:
             return secondLineColorSet
         }
     }
@@ -87,21 +87,20 @@ enum Profile: CaseIterable {
         case .reservations:
             return ProfileRSVNViewController()
         case .blockade:
-            return UIViewController()
-        case .logout:
+            return BlockViewController()
+        case .signOut:
             return UIViewController()
         case .post:
             return FavoritesViewController(entryPage: .ownPost)
-        case .delete:
-            return UIViewController()
+        case .setting:
+            return SettingViewController()
         }
     }
 }
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var profileImageView: UIImageView!  {
+    @IBOutlet weak var profileImageView: UIImageView! {
         didSet {
             let tapGestureRecognizer = UITapGestureRecognizer(
                 target: self,
@@ -116,13 +115,20 @@ class ProfileViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var userNameLabel: UILabel!
-//    @IBOutlet weak var editButton: UIButton!
-    @IBOutlet weak var editIntroButton: UIButton!
-
-    override func viewDidLayoutSubviews() {
-        editIntroButton.layer.cornerRadius = (editIntroButton.bounds.height * 0.25)
+    @IBOutlet weak var userNameLabel: UILabel! {
+        didSet {
+            userNameLabel.font = UIFont.regularSubTitle()
+            userNameLabel.textColor = UIColor.mainDarkColor
+        }
     }
+
+    @IBOutlet weak var editIntroButton: UIButton! {
+        didSet {
+            editIntroButton.setImage(UIImage.asset(.refresh), for: .normal)
+        }
+    }
+
+    private var user: User?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,60 +142,62 @@ class ProfileViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = configureLayout()
-
         collectionView.isScrollEnabled = false
 
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
-            guard let user = user else {
-                return
-            }
-            gCurrentUser = user
-            FirebaseService.shared.fetchRoomCountsOwnByUserID(userID: UserDefaults.id) { count in
-                gCurrentUser.postCount = count
-            }
-        }
-
-        if UserDefaults.profilePhoto != "empty" {
-            profileImageView.setImage(urlString: UserDefaults.profilePhoto)
-        } else {
-            profileImageView.image = UIImage.asset(.profile_user)
-        }
-
-        userNameLabel.text = UserDefaults.name
         editIntroButton.setTitle("", for: .normal)
         editIntroButton.addTarget(self, action: #selector(editIntro), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
-            guard let user = user else {
+        print("UserDefaults.id = ", UserDefaults.id)
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard
+                let self = self,
+                let user = user else {
                 return
             }
-            gCurrentUser = user
-            FirebaseService.shared.fetchRoomCountsOwnByUserID(userID: UserDefaults.id) { count in
-                gCurrentUser.postCount = count
-            }
+
+            self.user = user
         }
+
+        if UserDefaults.profilePhoto != "empty" {
+            profileImageView.loadImage(UserDefaults.profilePhoto, placeHolder: UIImage.asset(.roomeet))
+        } else {
+            profileImageView.image = UIImage.asset(.roomeet)
+        }
+
+        userNameLabel.text = UserDefaults.name
+
         collectionView.reloadData()
     }
 
+    override func viewDidLayoutSubviews() {
+        editIntroButton.layer.cornerRadius = (editIntroButton.bounds.height * 0.25)
+    }
+
     @objc private func editIntro() {
-        let introductionVC = IntroViewController(entryType: EntryType.edit, user: gCurrentUser)
-        introductionVC.completion = { [weak self] user in
+        let introductionVC = IntroViewController(entryType: EntryType.edit, user: user)
+        introductionVC.completion = { [weak self] _ in
             guard let self = self else { return }
 
-            gCurrentUser = user
-
-            if gCurrentUser.profilePhoto != "empty" {
-                self.profileImageView.setImage(urlString: UserDefaults.profilePhoto)
+            if UserDefaults.profilePhoto != "empty" {
+                self.profileImageView.loadImage(UserDefaults.profilePhoto, placeHolder: UIImage.asset(.roomeet))
             } else {
-                self.profileImageView.image = UIImage.asset(.profile_user)
+                self.profileImageView.image = UIImage.asset(.roomeet)
             }
         }
 
         introductionVC.modalPresentationStyle = .fullScreen
         present(introductionVC, animated: true)
+    }
+
+    @IBAction func showPrivacyPolicyPage(_ sender: Any) {
+        if let url = URL(string: RMConstants.shared.privacyPolicyURL) {
+            let safari = SFSafariViewController(url: url)
+            safari.delegate = self
+            present(safari, animated: true, completion: nil)
+        }
     }
 }
 
@@ -208,17 +216,7 @@ extension ProfileViewController: UICollectionViewDataSource {
         let profileType = Profile.allCases[indexPath.item]
 
         cell.profileType = profileType
-
-        switch profileType {
-        case .favorite:
-            cell.configureCell(count: gCurrentUser.favoriteRooms.count)
-        case .reservations:
-            cell.configureCell(count: gCurrentUser.reservations.count)
-        case .post:
-            cell.configureCell(count: gCurrentUser.postCount ?? 0)
-        case .blockade, .delete, .logout:
-            cell.configureCell(count: nil)
-        }
+        cell.configureCell()
         return cell
     }
 }
@@ -247,17 +245,33 @@ extension ProfileViewController {
 extension ProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let profileType = Profile.allCases[indexPath.item]
-        if profileType == .logout {
-            AuthService.shared.logOut()
+        switch profileType {
+        case .favorite, .reservations, .post, .setting:
+            let pushVC = profileType.viewConroller
+            navigationController?.pushViewController(pushVC, animated: true)
+        case .blockade:
+            let pushVC = profileType.viewConroller
+            self.hidesBottomBarWhenPushed = true
+            DispatchQueue.main.async {
+                self.hidesBottomBarWhenPushed = false
+            }
+            navigationController?.pushViewController(pushVC, animated: true)
+        case .signOut:
+            AuthService.shared.logOut { [weak self] _ in
+                guard let self = self else { return }
+                self.showLoginVC()
+            }
+        }
+    }
+
+    private func showLoginVC() {
+        DispatchQueue.main.async {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
             let loginVC = storyBoard.instantiateViewController(
                 withIdentifier: "LoginViewController"
             )
             loginVC.modalPresentationStyle = .fullScreen
-            present(loginVC, animated: false)
+            self.present(loginVC, animated: false)
         }
-
-        let pushVC = profileType.viewConroller
-        navigationController?.pushViewController(pushVC, animated: true)
     }
 }

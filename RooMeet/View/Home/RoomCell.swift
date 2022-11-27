@@ -81,9 +81,9 @@ class RoomCell: UICollectionViewCell {
         if !data.roomImages.isEmpty {
             imageView.kf.setImage(
                 with: data.roomImages[0],
-                placeholder: UIImage(systemName: "house")?.withTintColor(.systemGray6))
+                placeholder: UIImage.asset(.room_placeholder))
         } else {
-            imageView.image = UIImage(systemName: "house")?.withTintColor(.systemGray6)
+            imageView.image = UIImage.asset(.room_placeholder)
         }
 
         if !data.title.isEmpty {
@@ -94,8 +94,11 @@ class RoomCell: UICollectionViewCell {
             regionLabel.text = "\(data.county)\(data.town)"
         }
 
-        if let price = data.roomMinPrice {
-            priceLabel.text = "\(price)"
+        if let price = data.roomMinPrice,
+            price != -1 {
+            priceLabel.text = "\(price) 元/月"
+        } else {
+            priceLabel.text = "查看更多"
         }
 
         if !data.roomHighLights.isEmpty {

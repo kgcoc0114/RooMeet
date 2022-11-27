@@ -8,7 +8,6 @@
 import UIKit
 
 @IBDesignable public class RMSegmentedControl: UIControl {
-
     fileprivate var labels = [UILabel]()
     private var thumbView = UIView()
 
@@ -39,7 +38,9 @@ import UIKit
     }
 
     @IBInspectable public var font: UIFont? = UIFont.systemFont(ofSize: 15) {
-        didSet { setFont() }
+        didSet {
+            setFont()
+        }
     }
 
     public var padding: CGFloat = 0 {
@@ -103,7 +104,7 @@ import UIKit
 
     public override func beginTracking(_ touch: UITouch, with event: UIEvent?) -> Bool {
         let location = touch.location(in: self)
-        var calculatedIndex : Int?
+        var calculatedIndex: Int?
         for (index, item) in labels.enumerated() {
             if item.frame.contains(location) {
                 calculatedIndex = index
@@ -125,9 +126,15 @@ import UIKit
 
         let label = labels[selectedIndex]
         label.textColor = selectedLabelColor
-        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.8, animations: {
-            self.thumbView.frame = label.frame
-        }, completion: nil)
+        UIView.animate(
+            withDuration: 0.5,
+            delay: 0.0,
+            usingSpringWithDamping: 0.5,
+            initialSpringVelocity: 0.8,
+            animations: {
+                self.thumbView.frame = label.frame
+            }, completion: nil
+        )
     }
 
     private func addIndividualItemConstraints(_ items: [UIView], mainView: UIView) {
@@ -135,25 +142,25 @@ import UIKit
             button.topAnchor.constraint(equalTo: mainView.topAnchor, constant: padding).isActive = true
             button.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -padding).isActive = true
 
-            ///set leading constraint
+            // set leading constraint
             if index == 0 {
-                /// set first item leading anchor to mainView
+                // set first item leading anchor to mainView
                 button.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: padding).isActive = true
             } else {
                 let prevButton: UIView = items[index - 1]
                 let firstItem: UIView = items[0]
 
-                /// set remaining items to previous view and set width the same as first view
+                // set remaining items to previous view and set width the same as first view
                 button.leadingAnchor.constraint(equalTo: prevButton.trailingAnchor, constant: padding).isActive = true
                 button.widthAnchor.constraint(equalTo: firstItem.widthAnchor).isActive = true
             }
 
-            ///set trailing constraint
+            // set trailing constraint
             if index == items.count - 1 {
-                /// set last item trailing anchor to mainView
+                // set last item trailing anchor to mainView
                 button.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -padding).isActive = true
             } else {
-                /// set remaining item trailing anchor to next view
+                // set remaining item trailing anchor to next view
                 let nextButton: UIView = items[index + 1]
                 button.trailingAnchor.constraint(equalTo: nextButton.leadingAnchor, constant: -padding).isActive = true
             }
