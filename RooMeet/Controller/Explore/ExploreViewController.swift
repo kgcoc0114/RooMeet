@@ -93,16 +93,16 @@ class ExploreViewController: UIViewController {
         // get user current location
         locationManger.requestLocation()
         roomExploreMap.showsUserLocation = true
+
+        fetchRooms()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
-            self.user = user
-        }
+
+        fetchRooms()
 
         LocationService.shared.setCenterRegion(position: RMConstants.shared.currentPosition, mapView: roomExploreMap)
-        getRoomForCurrentPosition(mapView: roomExploreMap)
     }
 
     override func viewDidLayoutSubviews() {
@@ -121,10 +121,21 @@ class ExploreViewController: UIViewController {
         roomExploreMap.removeAnnotations(all)
     }
 
-    func show() {
+    private func show() {
         DispatchQueue.main.async { [self] in
             roomExploreMap.removeAnnotations(roomExploreMap.annotations)
             roomExploreMap.addAnnotations(geoCodes)
+        }
+    }
+
+    private func fetchRooms() {
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self else {
+                return
+            }
+
+            self.user = user
+            self.getRoomForCurrentPosition(mapView: self.roomExploreMap)
         }
     }
 
@@ -155,6 +166,7 @@ class ExploreViewController: UIViewController {
     @objc private func setMapCenter(_ sender: Any) {
         LocationService.shared.setCenterRegion(position: RMConstants.shared.currentPosition, mapView: roomExploreMap)
     }
+
     @IBAction func resetFilterAction(_ sender: Any) {
         isFilter = false
         getRoomForCurrentPosition(mapView: roomExploreMap)
@@ -164,7 +176,9 @@ class ExploreViewController: UIViewController {
 extension ExploreViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            getRoomForCurrentPosition(mapView: roomExploreMap)
+            if user != nil {
+                getRoomForCurrentPosition(mapView: roomExploreMap)
+            }
             LocationService.shared.setCenterRegion(position: location.coordinate, mapView: roomExploreMap)
         }
     }
@@ -182,11 +196,13 @@ extension ExploreViewController: CLLocationManagerDelegate {
                 southEast: southEastCoordinate,
                 userBlocks: user?.blocks ?? []
             ) { [weak self] rooms in
-                guard let rooms = rooms else {
+                guard
+                    let self = self,
+                    let rooms = rooms else {
                     print("ERROR: fetch rooms error.")
                     return
                 }
-                self?.rooms = rooms
+                self.rooms = rooms
             }
         }
     }
@@ -198,7 +214,9 @@ extension ExploreViewController: CLLocationManagerDelegate {
 
 extension ExploreViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        getRoomForCurrentPosition(mapView: mapView)
+        if user != nil {
+            getRoomForCurrentPosition(mapView: roomExploreMap)
+        }
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {

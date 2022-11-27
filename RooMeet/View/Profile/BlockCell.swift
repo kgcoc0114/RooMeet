@@ -32,7 +32,11 @@ class BlockCell: UICollectionViewCell {
         }
     }
 
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView! {
+        didSet {
+            imageView.contentMode = .scaleAspectFill
+        }
+    }
 
     weak var delegate: BlockCellDelegate?
 
