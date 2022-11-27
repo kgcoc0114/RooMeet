@@ -127,7 +127,7 @@ class FilterViewController: RMButtomSheetViewController {
         let query = FirestoreEndpoint.room.colRef
             .whereField("roomMinPrice", isGreaterThan: minBudget)
             .whereField("roomMinPrice", isLessThan: maxBudget)
-            .whereField("userID", notIn: blockUserIDs)
+            .whereField("isDeleted", isEqualTo: false)
             .order(by: "roomMinPrice")
             .order(by: "createdTime")
 

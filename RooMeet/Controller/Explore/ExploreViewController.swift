@@ -118,16 +118,20 @@ class ExploreViewController: UIViewController {
 
     // FIXME: 條件與滑動經緯度同時成立
     @objc private func showFilterPage() {
+        guard let user = user else {
+            return
+        }
+
         guard let filterVC = UIStoryboard.home.instantiateViewController(
             withIdentifier: "FilterViewController") as? FilterViewController else {
             print("ERROR: FilterViewController Error")
             return
         }
 
-        filterVC.blockUserIDs = user?.blocks ?? []
+        filterVC.blockUserIDs = user.blocks ?? []
 
         filterVC.completion = { query in
-            FirebaseService.shared.fetchRoomDatabyQuery(query: query) { rooms in
+            FirebaseService.shared.fetchRoomDatabyQuery(user: user, query: query) { rooms in
                 self.rooms = rooms
             }
         }

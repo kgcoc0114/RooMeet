@@ -126,10 +126,10 @@
             <color red="0.39215686274509803" green="0.53333333333333333" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="mainDarkColor">
-            <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.13725490196078433" green="0.14901960784313725" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="subTitleRedColor">
-            <color red="0.83899998664855957" green="0.41999998688697815" blue="0.45100000500679016" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.83921568627450982" green="0.41960784313725491" blue="0.45098039215686275" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

@@ -94,8 +94,9 @@ class RoomCell: UICollectionViewCell {
             regionLabel.text = "\(data.county)\(data.town)"
         }
 
-        if let price = data.roomMinPrice {
-            priceLabel.text = "\(price) $ / mo"
+        if let price = data.roomMinPrice,
+            price != -1 {
+            priceLabel.text = "\(price) 元/月"
         } else {
             priceLabel.text = "查看更多"
         }
