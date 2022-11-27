@@ -94,7 +94,7 @@ class PostBasicCell: UICollectionViewCell {
             datePicker.preferredDatePickerStyle = .inline
             datePicker.tintColor = .mainColor
 
-            datePickerTextField.placeholder = "YYYY/MM/DD"
+            datePickerTextField.placeholder = "YYYY/MM/DD (必填)"
             datePickerTextField.inputView = datePicker
 
             datePicker.addTarget(self, action: #selector(movinDateChanged(_:)), for: .valueChanged)
