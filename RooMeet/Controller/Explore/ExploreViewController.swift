@@ -110,7 +110,7 @@ class ExploreViewController: UIViewController {
     func show() {
         if geoCodes.count == rooms.count {
             DispatchQueue.main.async { [self] in
-                roomExploreMap.removeAnnotations(prevGeoCodes)
+                roomExploreMap.removeAnnotations(roomExploreMap.annotations)
                 roomExploreMap.addAnnotations(geoCodes)
             }
         }
