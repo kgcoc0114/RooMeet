@@ -75,7 +75,7 @@ class RoomSpecCell: UICollectionViewCell {
         didSet {
             priceTextField.keyboardType = .numberPad
             priceTextField.delegate = self
-            priceTextField.placeholder = "月租金"
+            priceTextField.placeholder = "月租金(必填)"
         }
     }
 
@@ -96,7 +96,7 @@ class RoomSpecCell: UICollectionViewCell {
         didSet {
             spaceTextField.keyboardType = .decimalPad
             spaceTextField.delegate = self
-            spaceTextField.placeholder = "坪數"
+            spaceTextField.placeholder = "坪數(必填)"
         }
     }
 
