@@ -47,14 +47,3 @@ extension Date {
         return dates
     }
 }
-
-class RMDater: DateFormatter {
-
-//    static let shared = RMDater()
-
-    var dateFormatter = DateFormatter()
-
-    func genDateString() {
-
-    }
-}

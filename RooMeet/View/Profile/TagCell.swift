@@ -20,35 +20,35 @@ class TagCell: UICollectionViewCell {
     var selectedTags: [String] = []
     weak var delegate: TagCellDelegate?
 
-    @IBOutlet weak var tagButton: UIButton! {
-        didSet {
-            tagButton.isEnabled = false
-            tagButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
-            tagButton.titleLabel!.font = UIFont.regular(size: 12)
-            tagButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        }
-    }
+//    @IBOutlet weak var tagButton: UIButton! {
+//        didSet {
+//            tagButton.isEnabled = false
+//            tagButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
+//            tagButton.titleLabel!.font = UIFont.regular(size: 12)
+//            tagButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+//        }
+//    }
 
     override func awakeFromNib() {
         super.awakeFromNib()
         tagView.delegate = self
     }
 
-    func configureCell(data: String) {
-        tagButton.setTitle(data, for: .normal)
-    }
+//    func configureCell(data: String) {
+//        tagButton.setTitle(data, for: .normal)
+//    }
 
     func configureTagView(
         tags: [String],
         selectedTags: [String],
         mainColor: UIColor,
-        lightColor: UIColor, mainLightBackgroundColor: UIColor
+        lightColor: UIColor,
+        mainLightBackgroundColor: UIColor
     ) {
-//        titleLabel.text = "找房要求"
         for text in tags {
             let content = TTGTextTagStringContent.init(text: text)
             content.textColor = .darkGray
-            content.textFont = UIFont.regular(size: 14)!
+            content.textFont = UIFont.regularText()
 
             let normalStyle = TTGTextTagStyle.init()
             normalStyle.backgroundColor = .white
@@ -59,7 +59,7 @@ class TagCell: UICollectionViewCell {
 
             let selectedContent = TTGTextTagStringContent.init(text: text)
             selectedContent.textColor = lightColor
-            selectedContent.textFont = UIFont.regular(size: 14)!
+            selectedContent.textFont = UIFont.regularText()
             let selectedStyle = TTGTextTagStyle.init()
             selectedStyle.backgroundColor = mainColor
             selectedStyle.shadowColor = .clear

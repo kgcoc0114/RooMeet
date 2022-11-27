@@ -21,5 +21,7 @@ target 'RooMeet' do
   pod 'FirebaseUI/OAuth'
   pod 'KeychainAccess'
   pod 'SwiftJWT'
+  pod 'Firebase/Crashlytics'
+  pod 'Firebase/Analytics'
 
 end

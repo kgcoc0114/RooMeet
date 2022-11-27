@@ -31,11 +31,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.rootViewController = RMTabBarVC
             window?.makeKeyAndVisible()
         } else {
-            guard let loginVC = storyBoard.instantiateViewController(
+            let loginVC = storyBoard.instantiateViewController(
                 withIdentifier: "LoginViewController"
-            ) as? UIViewController else {
-                return
-            }
+            )
             window?.rootViewController = loginVC
             window?.makeKeyAndVisible()
         }

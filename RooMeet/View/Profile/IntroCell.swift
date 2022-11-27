@@ -184,7 +184,7 @@ class IntroCell: UICollectionViewCell {
             }
 
             if let profilePhoto = user.profilePhoto {
-                imageView.setImage(urlString: profilePhoto)
+                imageView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
             } else {
                 imageView.image = UIImage.asset(.roomeet)
             }

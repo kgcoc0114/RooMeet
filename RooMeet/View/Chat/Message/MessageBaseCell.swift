@@ -13,7 +13,7 @@ class MessageBaseCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.regular(size: RMConstants.shared.dateTimeFontSize)
-        label.tintColor = UIColor.B1
+        label.tintColor = UIColor.mainDarkColor
         return label
     }()
 
@@ -21,7 +21,7 @@ class MessageBaseCell: UITableViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.regular(size: RMConstants.shared.dateTimeFontSize)
-        label.tintColor = UIColor.B1
+        label.tintColor = UIColor.mainDarkColor
         return label
     }()
 
@@ -37,7 +37,7 @@ class MessageBaseCell: UITableViewCell {
     }
 
     func isSameDate(date: Date) -> Bool {
-        return RMDateFormatter.shared.datetimeWithLocaleString(date: date, dateFormat: "YY/MM/dd") == RMDateFormatter.shared.datetimeWithLocaleString(date: Date(), dateFormat: "YY/MM/dd")
+        return RMDateFormatter.shared.datetimeWithLocaleString(date: date, dateFormat: "YY/MM/dd") == RMDateFormatter.shared.datetimeWithLocaleString(date: Date(),dateFormat: "YY/MM/dd")
     }
 
     func assignDatetime(messageDate: Date) {

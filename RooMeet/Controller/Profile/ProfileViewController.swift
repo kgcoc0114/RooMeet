@@ -162,7 +162,7 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
         }
 
         if UserDefaults.profilePhoto != "empty" {
-            profileImageView.setImage(urlString: UserDefaults.profilePhoto)
+            profileImageView.loadImage(UserDefaults.profilePhoto, placeHolder: UIImage.asset(.roomeet))
         } else {
             profileImageView.image = UIImage.asset(.roomeet)
         }
@@ -182,7 +182,7 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
             guard let self = self else { return }
 
             if UserDefaults.profilePhoto != "empty" {
-                self.profileImageView.setImage(urlString: UserDefaults.profilePhoto)
+                self.profileImageView.loadImage(UserDefaults.profilePhoto, placeHolder: UIImage.asset(.roomeet))
             } else {
                 self.profileImageView.image = UIImage.asset(.roomeet)
             }

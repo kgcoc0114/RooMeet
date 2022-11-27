@@ -198,7 +198,7 @@ class RoomDetailViewController: UIViewController {
             ageLabel.text = "\(userData.age)"
             genderImageView.image = Gender.allCases[userData.gender ?? 0].image
             if let profilePhoto = userData.profilePhoto {
-                ownerAvatarView.setImage(urlString: profilePhoto)
+                ownerAvatarView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
             } else {
                 ownerAvatarView.image = UIImage.asset(.roomeet)
             }

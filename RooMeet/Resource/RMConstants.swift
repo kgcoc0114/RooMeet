@@ -59,7 +59,7 @@ class RMConstants {
     let roomGenderRules = ["男女不限", "限男", "限女"]
     let roomBathroomRules = ["獨立衛浴", "公用衛浴"]
 
-    let compressSizeGap: Double = 50
+    let compressSizeGap: Double = 80
 
     let privacyPolicyURL = "https://www.privacypolicies.com/live/e6fe7bef-b07a-4aaa-b5b7-493e4b3deb27"
 }

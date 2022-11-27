@@ -15,16 +15,17 @@ class OtherFeeCell: UICollectionViewCell {
         let button = UIButton()
         button.setTitle("編輯", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addAction(UIAction(handler: { action in
-            self.completion?()
-        }), for: .touchUpInside)
+        button.addAction(
+            UIAction { _ in self.completion?() },
+            for: .touchUpInside
+        )
         return button
     }()
 
     override func awakeFromNib() {
         super.awakeFromNib()
         self.addSubview(editButton)
-        
+
         NSLayoutConstraint.activate([
             editButton.topAnchor.constraint(equalTo: self.topAnchor),
             editButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),

@@ -11,7 +11,6 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 import MapKit
-
 enum FirestoreEndpoint {
     case room
     case chatRoom
@@ -38,17 +37,6 @@ enum FirestoreEndpoint {
             return database.collection("ReportEvent")
         }
     }
-}
-
-enum Result<T> {
-    case success(T)
-    case failure(Error)
-}
-
-enum RMError: String, Error {
-    case noData = "沒有資料"
-    case responseError = ""
-    case signOutError = "登出失敗"
 }
 
 class FirebaseService {
@@ -498,7 +486,9 @@ extension FirebaseService {
         }
 
         group.notify(queue: DispatchQueue.main) {
-            let sorted = rooms.sorted { $0.createdTime.seconds > $1.createdTime.seconds }
+            let sorted = rooms
+                .filter { $0.isDeleted == false }
+                .sorted { $0.createdTime.seconds > $1.createdTime.seconds }
             completion(sorted)
         }
     }
@@ -567,7 +557,7 @@ extension FirebaseService {
                     }
                     return rsvn
                 }
-                .filter { $0.roomDetail != nil }
+                .filter { $0.roomDetail != nil && $0.roomDetail?.isDeleted == false }
 
             rsvns = rsvns.sorted { rsvnA, rsvnB in
                 guard
@@ -602,18 +592,30 @@ extension FirebaseService {
 
         let query = FirestoreEndpoint.room.colRef
             .whereField("roomID", isEqualTo: roomID)
-            .whereField("isDeleted", isEqualTo: false)
 
-        getDocuments(query) { (rooms: [Room]) in
-            rooms.forEach { room in
-                var room = room
-                if !blocks.contains(room.userID) {
-                    self.fetchUserByID(userID: room.userID) { user, _ in
-                        room.userData = user
-                        completion(room)
-                    }
-                } else {
+        query.getDocuments { [weak self] querySnapshot, error in
+            guard let self = self else { return }
+            if error != nil {
+                completion(nil)
+            } else {
+                guard let querySnapshot = querySnapshot else {
                     completion(nil)
+                    return
+                }
+                querySnapshot.documents.forEach { document in
+                    do {
+                        var item = try document.data(as: Room.self)
+
+                        self.fetchUserByID(userID: item.userID) { user, index in
+                            if let user = user {
+                                item.userData = user
+                            }
+                            completion(item)
+                        }
+                    } catch {
+                        print("error: ", error)
+                        completion(nil)
+                    }
                 }
             }
         }
@@ -644,6 +646,7 @@ extension FirebaseService {
         }
     }
 }
+
 extension FirebaseService {
     // MARK: - Chat Room
     func fetchMessagesbyChatRoomID(chatRoomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
@@ -677,7 +680,6 @@ extension FirebaseService {
             .order(by: "createdTime", descending: false)
             .addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshot results: \(error!)")
                     completion(nil, error)
                     return
                 }
@@ -698,32 +700,36 @@ extension FirebaseService {
     }
 
     func listenToChatRoomUpdate(completion: @escaping (([ChatRoom]?, Error?) -> Void)) {
-//        var currentUser: User
-        fetchUserByID(userID: UserDefaults.id) { user, _ in
-            FirestoreEndpoint.chatRoom.colRef
-                .whereField("members", arrayContains: UserDefaults.id)
-                .order(by: "lastUpdated", descending: true)
-                .addSnapshotListener { querySnapshot, error in
-                    if let error = error {
-                        print("Error getting documents: \(error)")
-                        completion(nil, error)
-                    }
+        FirestoreEndpoint.chatRoom.colRef
+            .whereField("members", arrayContains: UserDefaults.id)
+            .order(by: "lastUpdated", descending: true)
+            .addSnapshotListener { [weak self] querySnapshot, error in
+                guard let self = self else { return }
 
-                    var chatRooms: [ChatRoom] = []
-                    if let querySnapshot = querySnapshot {
+                if let error = error {
+                    print("Error getting documents: \(error)")
+                    completion(nil, error)
+                }
+
+                var chatRooms: [ChatRoom] = []
+                if let querySnapshot = querySnapshot {
+                    self.fetchUserByID(userID: UserDefaults.id) { user, _ in
+                        var blocks = user?.blocks ?? []
+                        blocks.append(UserDefaults.id)
                         querySnapshot.documents.forEach { document in
                             do {
                                 let item = try document.data(as: ChatRoom.self)
                                 let otherUser = item.members.first { $0 != UserDefaults.id }
-                                guard let otherUser = otherUser else {
+                                print("otherUser = ", otherUser)
+                                print("blocks ", blocks)
+                                guard
+                                    let otherUser = otherUser,
+                                    !blocks.contains(otherUser)
+                                else {
                                     return
                                 }
 
-                                let blocks = user?.blocks ?? []
-
-                                if item.members[0] != item.members[1] && !blocks.contains(otherUser) {
-                                    chatRooms.append(item)
-                                }
+                                chatRooms.append(item)
                             } catch {
                                 print("ERROR: ", error.localizedDescription)
                             }
@@ -733,8 +739,10 @@ extension FirebaseService {
                             completion(chatRooms, nil)
                         }
                     }
+                } else {
+                    completion(nil, RMError.noData)
                 }
-        }
+            }
     }
 
     // MARK: - Room Detail Page - Like
@@ -869,129 +877,6 @@ extension FirebaseService {
             completion(nil)
         } catch {
             completion(error)
-        }
-    }
-}
-
-extension FirebaseService {
-    func deleteAccount(userID: String, completion: @escaping ((Result<String>) -> Void)) {
-        let group = DispatchGroup()
-        group.enter()
-        deleteUser(userID: userID) { _ in
-            group.leave()
-        }
-
-        group.enter()
-        deleteRoomPosts(userID: userID) { result in
-            switch result {
-            case .success(_):
-                print("SUCCESS: - Delete Room Posts")
-            case .failure(let error):
-                print("ERROR: - Delete Room Posts, \(error.localizedDescription)")
-            }
-            group.leave()
-        }
-
-        group.enter()
-        deleteReservations(userID: userID) { result in
-            switch result {
-            case .success(_):
-                print("SUCCESS: - Delete Reservations")
-            case .failure(let error):
-                print("ERROR: - Delete Reservations, \(error.localizedDescription)")
-            }
-            group.leave()
-        }
-
-        group.notify(queue: DispatchQueue.main) {
-            completion(Result.success(""))
-        }
-    }
-
-    func deleteUser(userID: String, completion: @escaping ((Result<String>) -> Void)) {
-        FirestoreEndpoint.user.colRef.document(userID).delete { error in
-            if let error = error {
-                completion(Result.failure(error))
-            } else {
-                completion(Result.success("SUCCESS: - User delete successfully."))
-            }
-        }
-    }
-
-    func deleteReservations(userID: String, completion: @escaping ((Result<String>) -> Void)) {
-        let group = DispatchGroup()
-        // get sender user's reservations
-        group.enter()
-        let senderRef = FirestoreEndpoint.reservation.colRef.whereField("sender", isEqualTo: userID)
-
-        batchDeleteReservation(query: senderRef) { _ in
-            group.leave()
-        }
-
-
-        // get receiver user's reservations
-        group.enter()
-        let receiverRef = FirestoreEndpoint.reservation.colRef.whereField("receiver", isEqualTo: userID)
-        batchDeleteReservation(query: receiverRef) { _ in
-            group.leave()
-        }
-
-        group.notify(queue: DispatchQueue.main) {
-            completion(Result.success(""))
-        }
-    }
-
-    func batchDeleteReservation(query: Query, completion: @escaping ((Result<String>) -> Void)) {
-        let batch = Firestore.firestore().batch()
-
-        query.getDocuments { snapshot, _ in
-            guard let snapshot = snapshot else {
-                return
-            }
-
-            snapshot.documents.forEach { document in
-                batch.updateData(["isDeleted": true], forDocument: document.reference)
-            }
-
-            // Commit the batch
-            batch.commit { error in
-                if let error = error {
-                    print("Error writing batch \(error)")
-                    completion(Result.failure(error))
-                } else {
-                    print("Batch write succeeded.")
-                    completion(Result.success(""))
-                }
-            }
-        }
-    }
-
-    func deleteRoomPosts(userID: String, completion: @escaping ((Result<String>) -> Void)) {
-        // Get new write batch
-        let batch = Firestore.firestore().batch()
-
-        // get user's room posts
-        let roomRef = FirestoreEndpoint.room.colRef.whereField("userID", isEqualTo: userID)
-
-        roomRef.getDocuments { snapshot, _ in
-            guard let snapshot = snapshot else {
-                return
-            }
-
-            snapshot.documents.forEach { document in
-                batch.updateData(["isDeleted": true], forDocument: document.reference)
-            }
-
-            // Commit the batch
-            batch.commit { error in
-                if let error = error {
-                    print("Error writing batch \(error)")
-                    completion(Result.failure(error))
-                } else {
-                    print("Batch write succeeded.")
-                    completion(Result.success(""))
-                }
-            }
         }
     }
 }

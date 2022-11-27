@@ -44,7 +44,7 @@ extension RoomImagesCell {
     func configureCell(images: [URL]) {
         images.forEach { imageURL in
             let imageView = UIImageView()
-            imageView.setImage(urlString: imageURL.absoluteString)
+            imageView.loadImage(imageURL.absoluteString, placeHolder: UIImage.asset(.room_placeholder))
             imageView.contentMode = .scaleAspectFill
             imageView.clipsToBounds = true
 
