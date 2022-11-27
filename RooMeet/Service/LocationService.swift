@@ -104,8 +104,8 @@ class LocationService {
         // set current location in map
         let region = MKCoordinateRegion(
             center: position,
-            latitudinalMeters: 1000,
-            longitudinalMeters: 1000
+            latitudinalMeters: 3000,
+            longitudinalMeters: 3000
         )
         mapView.setRegion(region, animated: true)
     }
