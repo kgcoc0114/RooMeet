@@ -120,8 +120,7 @@ class FeeInfoCell: UITableViewCell {
             govTypeButton.isHidden = true
         }
 
-        if entryType == .edit,
-            let data = data {
+        if let data = data {
             feeDetail = data
             if feeDetail.paid == true {
                 segmentControl.selectedIndex

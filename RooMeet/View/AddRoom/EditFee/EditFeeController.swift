@@ -37,8 +37,7 @@ class EditFeeController: UIViewController {
     init(entryType: EntryType, data: BillInfo?) {
         super.init(nibName: "EditFeeController", bundle: nil)
 
-        if entryType == .edit,
-            let data = data {
+        if let data = data {
             self.billInfo = data
         }
         self.entryType = entryType
