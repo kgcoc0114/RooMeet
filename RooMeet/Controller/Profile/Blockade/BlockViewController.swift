@@ -48,7 +48,9 @@ class BlockViewController: UIViewController {
             unlockButton.isEnabled = !toBeUnlock.isEmpty
             unlockButton.backgroundColor = unlockButton.isEnabled == true ? .mainColor : .mainLightColor
 
-            unlockButton.layer.borderColor = unlockButton.isEnabled == true ? UIColor.mainColor.cgColor : UIColor.mainLightColor.cgColor
+            unlockButton.layer.borderColor = unlockButton.isEnabled == true
+            ? UIColor.mainColor.cgColor
+            : UIColor.mainLightColor.cgColor
 
             DispatchQueue.main.async { [weak self] in
                 self?.updateDataSource()
@@ -86,8 +88,6 @@ class BlockViewController: UIViewController {
             FirebaseService.shared.deleteBlock(blockedUsers: toBeUnlock)
             RMProgressHUD.showSuccess()
             self.navigationController?.popViewController(animated: true)
-        } else {
-
         }
     }
 

@@ -111,9 +111,9 @@ class IntroViewController: UIViewController {
 
                 let profilePhoto = UserDefaults.profilePhoto
                 if profilePhoto != "empty" {
-                    cell.imageView.setImage(urlString: profilePhoto)
+                    cell.imageView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
                 } else {
-                    cell.imageView.image = UIImage.asset(.person)
+                    cell.imageView.image = UIImage.asset(.roomeet)
                 }
 
                 let edit = self.entryType == .edit && self.user != nil

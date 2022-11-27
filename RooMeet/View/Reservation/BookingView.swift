@@ -8,7 +8,6 @@
 import UIKit
 
 
-
 protocol BookingViewDelegate: AnyObject {
     func didSendRequest(date: DateComponents, selectPeriod: BookingPeriod)
 }
@@ -32,7 +31,6 @@ class BookingView: UIView, NibOwnerLoadable {
         didSet {
             stackView.translatesAutoresizingMaskIntoConstraints = false
             stackView.axis = .horizontal
-//            stackView.spacing = 10
             stackView.alignment = .fill
             stackView.distribution = .fillEqually
         }
@@ -89,7 +87,7 @@ class BookingView: UIView, NibOwnerLoadable {
             scrollView.contentLayoutGuide.heightAnchor.constraint(equalTo: stackView.heightAnchor)
         ])
 
-        dataLabel.text = "\(dates[0].date)"
+        dataLabel.text = "\(String(describing: dates[0].date))"
         requestButton.backgroundColor = .yellow
         requestButton.setTitle("發起預約", for: .normal)
 

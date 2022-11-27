@@ -88,13 +88,12 @@ class OUReservationCell: MessageBaseCell {
         guard
             let message = message,
             let otherUser = otherUser,
-            let currentUser = currentUser,
             let reservation = message.reservation else {
             return
         }
 
         if let profilePhoto = otherUser.profilePhoto {
-            avatarView.setImage(urlString: profilePhoto)
+            avatarView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
         } else {
             avatarView.image = UIImage.asset(.roomeet)
         }
@@ -107,31 +106,36 @@ class OUReservationCell: MessageBaseCell {
             denyButton.isHidden = true
             agreeButton.isHidden = true
         } else {
+            guard
+                let reservationPeriod = reservation.period,
+                let requestTime = reservation.requestTime else {
+                return
+            }
+
             if reservation.acceptedStatus == "waiting" {
                 if reservation.sender == UserDefaults.standard.string(forKey: UserDefaults.id) {
                     titleLabel.text = "已發起預約，等候回覆"
                     statusLabel.isHidden = true
                     denyButton.isHidden = true
                     agreeButton.isHidden = true
-
                 } else {
                     titleLabel.text = "\(otherUser.name) 已發來預約"
-                    let dateString = RMDateFormatter.shared.dateString(date: reservation.requestTime!.dateValue())
-                    statusLabel.text = "\(dateString)\n\(reservation.period!)"
+                    let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
+                    statusLabel.text = "\(dateString)\n\(reservationPeriod)"
                     denyButton.isHidden = false
                     agreeButton.isHidden = false
                 }
             } else if reservation.acceptedStatus == "accept" {
                 titleLabel.text = "預約已完成"
-                let dateString = RMDateFormatter.shared.dateString(date: reservation.requestTime!.dateValue())
-                statusLabel.text = "\(dateString)\n\(reservation.period!)"
+                let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
+                statusLabel.text = "\(dateString)\n\(reservationPeriod)"
                 statusLabel.isHidden = false
                 denyButton.isHidden = true
                 agreeButton.isHidden = true
             } else if reservation.acceptedStatus == "cancel" {
                 titleLabel.text = "預約已取消"
-                let dateString = RMDateFormatter.shared.dateString(date: reservation.requestTime!.dateValue())
-                statusLabel.text = "\(dateString)\n\(reservation.period!)"
+                let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
+                statusLabel.text = "\(dateString)\n\(reservationPeriod)"
                 statusLabel.isHidden = false
                 denyButton.isHidden = true
                 agreeButton.isHidden = true

@@ -208,7 +208,11 @@ class ChatViewController: UIViewController {
     }
 
     @objc private func userAction(_ sender: Any) {
-        let userActionAlertController = UIAlertController(title: "封鎖 \(otherData?.name ?? "") ?", message: "他們將無法在 RooMeet 發訊息給你或找到你的貼文。你封鎖用戶時，對方不會收到通知。", preferredStyle: .actionSheet)
+        let userActionAlertController = UIAlertController(
+            title: "封鎖 \(otherData?.name ?? "") ?",
+            message: "他們將無法在 RooMeet 發訊息給你或找到你的貼文。你封鎖用戶時，對方不會收到通知。",
+            preferredStyle: .actionSheet
+        )
 
         let blockUserAction = UIAlertAction(title: "封鎖用戶", style: .destructive) { [weak self] _ in
             guard
@@ -272,39 +276,37 @@ extension ChatViewController {
             forCellReuseIdentifier: CUCallCell.reuseIdentifier
         )
 
-        dataSource = DataSource(
-            tableView: tableView,
-            cellProvider: {[unowned self] tableView, indexPath, item in
-                switch item {
-                case .message(let data):
-                    let message = data
-                    let messageType = MessageType.allCases[message.messageType]
-                    let sendByMe = message.sendBy == currentUserData.id
+        dataSource = DataSource(tableView: tableView) { [unowned self] tableView, indexPath, item in
+            switch item {
+            case .message(let data):
+                let message = data
+                let messageType = MessageType.allCases[message.messageType]
+                let sendByMe = message.sendBy == currentUserData.id
 
-                    switch messageType {
-                    case .text:
-                        if sendByMe {
-                            return configureCurrentUserCell(tableView: tableView, indexPath: indexPath, message: data)
-                        } else {
-                            return configureOtherUserCell(tableView: tableView, indexPath: indexPath, message: data)
-                        }
-                    case .image:
-                        return UITableViewCell()
-                    case .call:
-                        if sendByMe {
-                            return configureCUCallCell(tableView: tableView, indexPath: indexPath, message: data)
-                        } else {
-                            return configureOUCallCell(tableView: tableView, indexPath: indexPath, message: data)
-                        }
-                    case .reservation:
-                        if sendByMe {
-                            return configureCUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
-                        } else {
-                            return configureOUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
-                        }
+                switch messageType {
+                case .text:
+                    if sendByMe {
+                        return configureCurrentUserCell(tableView: tableView, indexPath: indexPath, message: data)
+                    } else {
+                        return configureOtherUserCell(tableView: tableView, indexPath: indexPath, message: data)
+                    }
+                case .image:
+                    return UITableViewCell()
+                case .call:
+                    if sendByMe {
+                        return configureCUCallCell(tableView: tableView, indexPath: indexPath, message: data)
+                    } else {
+                        return configureOUCallCell(tableView: tableView, indexPath: indexPath, message: data)
+                    }
+                case .reservation:
+                    if sendByMe {
+                        return configureCUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
+                    } else {
+                        return configureOUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
                     }
                 }
-            })
+            }
+        }
     }
 
     private func configureCUCallCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {

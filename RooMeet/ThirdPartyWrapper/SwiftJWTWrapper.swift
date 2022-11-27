@@ -13,8 +13,3 @@ struct RMClaims: Claims {
     let exp: Date
     let aud: String
 }
-
-
-class SwiftJWTWrapper {
-    static let shared = SwiftJWTWrapper()
-}

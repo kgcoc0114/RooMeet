@@ -69,7 +69,7 @@ class OUTextCell: MessageBaseCell {
         if let message = message,
             let sendBy = sendBy {
             if let profilePhoto = sendBy.profilePhoto {
-                avatarView.setImage(urlString: profilePhoto)
+                avatarView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
             } else {
                 avatarView.image = UIImage.asset(.roomeet)
             }

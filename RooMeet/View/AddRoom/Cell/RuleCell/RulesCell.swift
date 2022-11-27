@@ -15,7 +15,7 @@ class RulesCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
     }
-    
+
     func layoutCell(title: String) {
         ruleButton.setTitle(title, for: .normal)
     }
