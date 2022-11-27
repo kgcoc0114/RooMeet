@@ -188,7 +188,6 @@
 		E5EEE21E2913B4F900CAAE84 /* ChatRoomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE21C2913B4F900CAAE84 /* ChatRoomCell.xib */; };
 		E5EEE2832913F97800CAAE84 /* KingfisherWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2822913F97800CAAE84 /* KingfisherWrapper.swift */; };
 		E5EEE2852913FA3E00CAAE84 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2842913FA3E00CAAE84 /* UIImageView+Extension.swift */; };
-		E5FF403F291B45FA00DCA2D4 /* TmpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FF403E291B45FA00DCA2D4 /* TmpViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -378,7 +377,6 @@
 		E5EEE21C2913B4F900CAAE84 /* ChatRoomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatRoomCell.xib; sourceTree = "<group>"; };
 		E5EEE2822913F97800CAAE84 /* KingfisherWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KingfisherWrapper.swift; sourceTree = "<group>"; };
 		E5EEE2842913FA3E00CAAE84 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
-		E5FF403E291B45FA00DCA2D4 /* TmpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TmpViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -479,7 +477,6 @@
 		E55C0962290D5BF600DBF21B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E5FF403E291B45FA00DCA2D4 /* TmpViewController.swift */,
 				E5E64C75290D6E3100F07286 /* RMTabBarController.swift */,
 				E560135C29277A7100EE0083 /* RMButtomSheetViewController.swift */,
 				E5119BAA292081F100A632C9 /* RMNavigationController.swift */,
@@ -1023,6 +1020,7 @@
 				E5BDDB39290D0E2900F4A767 /* Resources */,
 				E55C095A290D30F000DBF21B /* ShellScript */,
 				658D009A01F7D51CFF41C896 /* [CP] Embed Pods Frameworks */,
+				E5E14355293346D700465B65 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1202,6 +1200,25 @@
 			shellPath = /bin/sh;
 			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
 		};
+		E5E14355293346D700465B65 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${TARGET_NAME}",
+				"$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1216,7 +1233,6 @@
 				E5B984BB291B547E006DD8D7 /* HintTextView.swift in Sources */,
 				E560135D29277A7100EE0083 /* RMButtomSheetViewController.swift in Sources */,
 				E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */,
-				E5FF403F291B45FA00DCA2D4 /* TmpViewController.swift in Sources */,
 				E59B83152919FEE800F02CEC /* DateFormatter.swift in Sources */,
 				E5EEE21D2913B4F900CAAE84 /* ChatRoomCell.swift in Sources */,
 				E5604FE32918EC22007AE655 /* WebRTCClient.swift in Sources */,
@@ -1473,7 +1489,8 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RooMeet/RooMeet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
@@ -1483,6 +1500,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
@@ -1508,7 +1526,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RooMeet/RooMeet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
@@ -1518,6 +1536,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
