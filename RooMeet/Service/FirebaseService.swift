@@ -182,7 +182,14 @@ class FirebaseService {
     func insertNewChatRoom(userA: String, userB: String, completion: @escaping ((ChatRoom?, Error?) -> Void)) {
         let colRef = FirestoreEndpoint.chatRoom.colRef
         let docRef = colRef.document()
-        let chatroom = ChatRoom(id: docRef.documentID, members: [userA, userB], messages: nil, messagesContent: nil, lastMessage: nil, lastUpdated: nil)
+        let chatroom = ChatRoom(
+            id: docRef.documentID,
+            members: [userA, userB],
+            messages: nil,
+            messagesContent: nil,
+            lastMessage: nil,
+            lastUpdated: nil
+        )
 
         do {
             try docRef.setData(from: chatroom)
@@ -209,8 +216,12 @@ class FirebaseService {
                     let memberID = members[0]
                     group.enter()
                     self?.fetchUserByID(userID: memberID, index: index) { user, index in
-                        if let user = user {
-                            chatRooms[index!].member = ChatMember(id: memberID, profilePhoto: user.profilePhoto!, name: user.name!)
+                        if let user = user,
+                            let index = index {
+                            chatRooms[index].member = ChatMember(
+                                id: memberID,
+                                profilePhoto: user.profilePhoto,
+                                name: user.name ?? "不明用戶")
                         }
                         group.leave()
                     }
@@ -222,27 +233,67 @@ class FirebaseService {
         }
     }
 
-    func fetchRoomDatabyQuery(query: Query, completion: @escaping (([Room]) -> Void)) {
+    func fetchRoomDatabyQuery(user: User, query: Query, completion: @escaping (([Room]) -> Void)) {
+        var blocks = user.blocks ?? []
+        blocks.append(UserDefaults.id)
+        print(blocks)
+
         let group = DispatchGroup()
+        var rooms: [Room] = []
+        var users: [User] = []
 
-        getDocuments(query) { (rooms: [Room]) in
-            var rooms = rooms
-            rooms.enumerated().forEach { index, roomResult in
+        group.enter()
+        getDocuments(query) { (tmpRooms: [Room]) in
+            rooms += tmpRooms
+            print("rooms.count = ", rooms.count)
+            tmpRooms.enumerated().forEach { index, roomResult in
                 let ownerID = roomResult.userID
-                print("fetchRoomDatabyQuery ", ownerID)
-
-                group.enter()
-                self.fetchUserByID(userID: ownerID, index: index) { user, index in
-                    if let user = user,
-                        let index = index {
-                        rooms[index].userData = user
+                if !blocks.contains(ownerID) {
+                    group.enter()
+                    self.fetchUserByID(userID: ownerID, index: index) { user, _ in
+                        if let user = user {
+                            users.append(user)
+                        }
+                        group.leave()
                     }
-                    group.leave()
                 }
             }
-            group.notify(queue: DispatchQueue.main) {
-                completion(rooms)
+            group.leave()
+        }
+
+        let queryNil = FirestoreEndpoint.room.colRef.whereField("roomMinPrice", isEqualTo: -1)
+        group.enter()
+        getDocuments(queryNil) { (tmpRooms: [Room]) in
+            rooms += tmpRooms
+            print("rooms.count = ", rooms.count)
+            tmpRooms.enumerated().forEach { index, roomResult in
+                let ownerID = roomResult.userID
+                if !blocks.contains(ownerID) {
+                    group.enter()
+                    self.fetchUserByID(userID: ownerID, index: index) { user, _ in
+                        if let user = user {
+                            users.append(user)
+                        }
+                        group.leave()
+                    }
+                }
             }
+            group.leave()
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            let userIDs = users.map { $0.id }
+            let filterRooms = rooms
+                .map { room -> Room in
+                    var room = room
+                    if let uIndex = userIDs.firstIndex(of: room.userID) {
+                        room.userData = users[uIndex]
+                    }
+                    return room
+                }
+                .filter { $0.userData != nil }
+                .sorted { $0.createdTime.seconds > $1.createdTime.seconds }
+            completion(filterRooms)
         }
     }
 
@@ -367,11 +418,7 @@ class FirebaseService {
             rooms.enumerated().forEach { index, roomResult in
                 let ownerID = roomResult.userID
                 group.enter()
-                print("!blocks.contains(roomResult.userID) = ", !blocks.contains(roomResult.userID), roomResult.userID, UserDefaults.id)
-
                 if !blocks.contains(roomResult.userID) {
-                    print("in")
-
                     self?.fetchUserByID(userID: ownerID, index: index) { user, index in
                         if let user = user,
                             let index = index {
@@ -416,11 +463,14 @@ class FirebaseService {
                 }
             }
             group.notify(queue: DispatchQueue.main) {
-                completion(rooms)
+                let filterRoom = rooms.filter { $0.userData != nil }
+                completion(filterRoom)
             }
         }
     }
+}
 
+extension FirebaseService {
     func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room], [FavoriteRoom]) -> Void)) {
         fetchUserByID(userID: userID) { [unowned self] user, _ in
             guard let user = user else {
@@ -440,13 +490,16 @@ class FirebaseService {
         user.favoriteRoomIDs.forEach { roomID in
             group.enter()
             fetchRoomByRoomID(roomID: roomID, user: user) { room in
-                rooms.append(room)
+                if let room = room {
+                    rooms.append(room)
+                }
                 group.leave()
             }
         }
 
         group.notify(queue: DispatchQueue.main) {
-            completion(rooms)
+            let sorted = rooms.sorted { $0.createdTime.seconds > $1.createdTime.seconds }
+            completion(sorted)
         }
     }
 
@@ -489,7 +542,10 @@ class FirebaseService {
                         return
                     }
                     self.fetchRoomByRoomID(roomID: roomID, user: user) { room in
-                        rooms.append(room)
+                        if let room = room {
+                            rooms.append(room)
+                        }
+
                         group.leave()
                     }
                 case .failure(_):
@@ -501,18 +557,21 @@ class FirebaseService {
         group.notify(queue: DispatchQueue.main) {
             let roomIDList = rooms.map { $0.roomID }
 
-            var rsvns = reservations.map { reservation -> Reservation in
-                var rsvn = reservation
-                if
-                    let roomID = rsvn.roomID,
-                    let roomIndex = roomIDList.firstIndex(of: roomID) {
-                    rsvn.roomDetail = rooms[roomIndex]
+            var rsvns = reservations
+                .map { reservation -> Reservation in
+                    var rsvn = reservation
+                    if
+                        let roomID = rsvn.roomID,
+                        let roomIndex = roomIDList.firstIndex(of: roomID) {
+                        rsvn.roomDetail = rooms[roomIndex]
+                    }
+                    return rsvn
                 }
-                return rsvn
-            }
+                .filter { $0.roomDetail != nil }
 
             rsvns = rsvns.sorted { rsvnA, rsvnB in
-                guard let requestTimeA = rsvnA.requestTime,
+                guard
+                    let requestTimeA = rsvnA.requestTime,
                     let requestTimeB = rsvnB.requestTime else {
                     return rsvnA.createdTime.dateValue() > rsvnB.createdTime.dateValue()
                 }
@@ -537,7 +596,7 @@ class FirebaseService {
         }
     }
 
-    func fetchRoomByRoomID(roomID: String, user: User, completion: @escaping ((Room) -> Void)) {
+    func fetchRoomByRoomID(roomID: String, user: User, completion: @escaping ((Room?) -> Void)) {
         var blocks = user.blocks ?? []
         blocks.append(UserDefaults.id)
 
@@ -553,6 +612,8 @@ class FirebaseService {
                         room.userData = user
                         completion(room)
                     }
+                } else {
+                    completion(nil)
                 }
             }
         }
@@ -583,13 +644,12 @@ class FirebaseService {
         }
     }
 }
-
 extension FirebaseService {
     // MARK: - Chat Room
     func fetchMessagesbyChatRoomID(chatRoomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
         let query = FirestoreEndpoint.chatRoom.colRef.document(chatRoomID).collection("Message")
 
-        query.getDocuments(completion: { querySnapshot, error in
+        query.getDocuments { querySnapshot, error in
             if let error = error {
                 completion(nil, error)
                 print("ERROR: getting documents: \(error.localizedDescription)")
@@ -607,7 +667,7 @@ extension FirebaseService {
                 }
                 completion(messages, nil)
             }
-        })
+        }
     }
 
     func listenToMessageUpdate(roomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
@@ -615,7 +675,7 @@ extension FirebaseService {
             .document(roomID)
             .collection("Message")
             .order(by: "createdTime", descending: false)
-            .addSnapshotListener({ querySnapshot, error in
+            .addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot else {
                     print("Error fetching snapshot results: \(error!)")
                     completion(nil, error)
@@ -634,16 +694,16 @@ extension FirebaseService {
                     }
                 }
                 completion(messages, nil)
-            })
+            }
     }
 
     func listenToChatRoomUpdate(completion: @escaping (([ChatRoom]?, Error?) -> Void)) {
-        var currentUser: User
+//        var currentUser: User
         fetchUserByID(userID: UserDefaults.id) { user, _ in
             FirestoreEndpoint.chatRoom.colRef
                 .whereField("members", arrayContains: UserDefaults.id)
                 .order(by: "lastUpdated", descending: true)
-                .addSnapshotListener({ querySnapshot, error in
+                .addSnapshotListener { querySnapshot, error in
                     if let error = error {
                         print("Error getting documents: \(error)")
                         completion(nil, error)
@@ -654,12 +714,14 @@ extension FirebaseService {
                         querySnapshot.documents.forEach { document in
                             do {
                                 let item = try document.data(as: ChatRoom.self)
-
-                                let otherUser = item.members.filter { $0 != UserDefaults.id }.first
+                                let otherUser = item.members.first { $0 != UserDefaults.id }
+                                guard let otherUser = otherUser else {
+                                    return
+                                }
 
                                 let blocks = user?.blocks ?? []
 
-                                if item.members[0] != item.members[1] && !blocks.contains(otherUser!) {
+                                if item.members[0] != item.members[1] && !blocks.contains(otherUser) {
                                     chatRooms.append(item)
                                 }
                             } catch {
@@ -671,7 +733,7 @@ extension FirebaseService {
                             completion(chatRooms, nil)
                         }
                     }
-                })
+                }
         }
     }
 
@@ -713,7 +775,7 @@ extension FirebaseService {
 // MARK: - room
 extension FirebaseService {
     func updateRoomInfo(roomID: String, room: Room, completion: @escaping ((Error?) -> Void)) {
-        FirestoreEndpoint.room.colRef.document(roomID).delete() { [weak self] error in
+        FirestoreEndpoint.room.colRef.document(roomID).delete { [weak self] error in
             guard let self = self else { return }
 
             if let error = error {
@@ -738,9 +800,9 @@ extension FirebaseService {
         room.roomID = roomID ?? docRef.documentID
 
         do {
-            try docRef.setData(from: room, completion: { error in
+            try docRef.setData(from: room) { error in
                 completion(error)
-            })
+            }
         } catch {
             completion(error)
         }
@@ -862,7 +924,7 @@ extension FirebaseService {
         group.enter()
         let senderRef = FirestoreEndpoint.reservation.colRef.whereField("sender", isEqualTo: userID)
 
-        batchDeleteReservation(query: senderRef) { result in
+        batchDeleteReservation(query: senderRef) { _ in
             group.leave()
         }
 
@@ -870,7 +932,7 @@ extension FirebaseService {
         // get receiver user's reservations
         group.enter()
         let receiverRef = FirestoreEndpoint.reservation.colRef.whereField("receiver", isEqualTo: userID)
-        batchDeleteReservation(query: receiverRef) { result in
+        batchDeleteReservation(query: receiverRef) { _ in
             group.leave()
         }
 

@@ -34,6 +34,14 @@ class CallViewController: UIViewController {
     var callStatus: String?
     var completion: ((Message) -> Void)?
 
+    @IBOutlet weak var startVideoButton: UIButton! {
+        didSet {
+            startVideoButton.setTitle("", for: .normal)
+            startVideoButton.tintColor = .mainLightColor
+            startVideoButton.isHidden = true
+        }
+    }
+
     @IBOutlet weak var hangUpButtonView: UIImageView! {
         didSet {
             let hangUpTapGR = UITapGestureRecognizer(target: self, action: #selector(hangUpTapped))
@@ -71,6 +79,8 @@ class CallViewController: UIViewController {
         didSet {
             localVideoView.isHidden = true
             localVideoView.backgroundColor = .darkGray.withAlphaComponent(0.4)
+            localVideoView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
+            localVideoView.clipsToBounds = true
         }
     }
 
@@ -89,7 +99,7 @@ class CallViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var videoButton: UIButton!
+//    @IBOutlet weak var videoButton: UIButton!
     @IBOutlet weak var callTimeLabel: UILabel! {
         didSet {
             callTimeLabel.text = ""
@@ -151,7 +161,7 @@ class CallViewController: UIViewController {
         if let profilePhoto = otherUserData.profilePhoto {
             callerImageView.setImage(urlString: profilePhoto)
         } else {
-            callerImageView.image = UIImage.asset(.profile_user)
+            callerImageView.image = UIImage.asset(.roomeet)
         }
     }
 
@@ -164,6 +174,8 @@ class CallViewController: UIViewController {
 
     override func viewDidLayoutSubviews() {
         callerImageView.layer.cornerRadius = callerImageView.bounds.width / 2
+        hangUpButtonView.layer.cornerRadius = hangUpButtonView.bounds.width / 2
+        answerButtonView.layer.cornerRadius = answerButtonView.bounds.width / 2
     }
 
     deinit {
@@ -197,12 +209,11 @@ class CallViewController: UIViewController {
                     switch call.status {
                     case "startVideo":
                         self.startVideo()
-
+                        self.updateComponentStatus(answer: true, status: true, startVideo: true)
                     case "close":
                         status = "結束通話"
                         self.updateComponentStatus(answer: true)
-                        DispatchQueue.global(qos: .background).async { [weak self] in
-                            guard let self = self else { return }
+                        DispatchQueue.global(qos: .background).async {
                             self.webRTCClient.closeConnection()
                         }
                         self.dismiss(animated: true)
@@ -215,9 +226,9 @@ class CallViewController: UIViewController {
                     case "offer":
                         self.startTime = call.startTime
                         if call.caller == UserDefaults.id {
-                            self.updateComponentStatus(answer: true, status: true)
+                            self.updateComponentStatus(answer: true, status: true, startVideo: true)
                         } else {
-                            self.updateComponentStatus(status: true)
+                            self.updateComponentStatus(status: true, startVideo: true)
                         }
                         RMLottie.shared.startCallAnimate(animationView: self.animationView)
                     case "cancel":
@@ -252,8 +263,10 @@ class CallViewController: UIViewController {
         hangUp: Bool = false,
         answer: Bool = false,
         status: Bool = false,
-        callTime: Bool = false
+        callTime: Bool = false,
+        startVideo: Bool = false
     ) {
+        startVideoButton.isHidden = startVideo
         hangUpButtonView.isHidden = hangUp
         answerButtonView.isHidden = answer
         statusLabel.isHidden = status
@@ -451,7 +464,7 @@ extension CallViewController {
                 let roomRef = FirestoreEndpoint.call.colRef.document(callRoomId)
                 roomRef.setData(roomWithOffer)
                 self.roomId = roomRef.documentID
-                print("Current room is \(self.roomId!) - You are the caller!")
+
                 self.listenRoom()
                 self.listenAnswerCandidates()
             }

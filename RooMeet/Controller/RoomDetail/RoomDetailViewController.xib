@@ -29,7 +29,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="PBa-7D-EYM">
-                    <rect key="frame" x="0.0" y="44" width="414" height="762"/>
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="806"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ruK-c6-DLM">
                         <size key="itemSize" width="128" height="128"/>
@@ -119,7 +119,7 @@
                 <constraint firstItem="PBa-7D-EYM" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="jFQ-nJ-NfA"/>
                 <constraint firstItem="iCj-6q-Kkl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ock-4n-Jjz"/>
                 <constraint firstItem="iCj-6q-Kkl" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="saY-GW-cko"/>
-                <constraint firstItem="PBa-7D-EYM" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="usU-dg-2fc"/>
+                <constraint firstItem="PBa-7D-EYM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="usU-dg-2fc"/>
                 <constraint firstItem="iCj-6q-Kkl" firstAttribute="top" secondItem="PBa-7D-EYM" secondAttribute="bottom" id="yEe-KD-g4Z"/>
             </constraints>
             <point key="canvasLocation" x="373.91304347826087" y="-98.4375"/>
@@ -127,7 +127,7 @@
     </objects>
     <resources>
         <namedColor name="mainLightColor">
-            <color red="0.93300002813339233" green="0.94900000095367432" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.93333333333333335" green="0.94901960784313721" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

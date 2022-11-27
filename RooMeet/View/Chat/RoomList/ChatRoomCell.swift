@@ -66,7 +66,7 @@ class ChatRoomCell: UITableViewCell {
             if let profilePhoto = member.profilePhoto {
                 profileImageView.setImage(urlString: profilePhoto)
             } else {
-                profileImageView.image = UIImage.asset(.profile_user)
+                profileImageView.image = UIImage.asset(.roomeet)
             }
         } else {
             userNameLabel.text = "User Name"

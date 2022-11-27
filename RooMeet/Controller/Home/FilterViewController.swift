@@ -25,23 +25,23 @@ class FilterViewController: RMButtomSheetViewController {
 
     var completion: ((Query) -> Void)?
 
-    lazy var minBudgetTextField: UITextField = {
-        let textField = UITextField()
+    lazy var minBudgetTextField: RMBaseTextField = {
+        let textField = RMBaseTextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.addTarget(self, action: #selector(budgetTextFieldValueChange), for: .valueChanged)
-        textField.layer.borderColor = UIColor.mainLightColor.cgColor
-        textField.layer.borderWidth = 0.8
+//        textField.layer.borderColor = UIColor.mainLightColor.cgColor
+//        textField.layer.borderWidth = 0.8
         textField.placeholder = "最少月租"
         textField.keyboardType = .numberPad
         return textField
     }()
 
-    lazy var maxBudgetTextField: UITextField = {
-        let textField = UITextField()
+    lazy var maxBudgetTextField: RMBaseTextField = {
+        let textField = RMBaseTextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.addTarget(self, action: #selector(budgetTextFieldValueChange), for: .valueChanged)
-        textField.layer.borderColor = UIColor.mainLightColor.cgColor
-        textField.layer.borderWidth = 0.8
+//        textField.layer.borderColor = UIColor.mainLightColor.cgColor
+//        textField.layer.borderWidth = 0.8
         textField.placeholder = "最多月租"
         textField.keyboardType = .numberPad
         return textField
@@ -89,7 +89,7 @@ class FilterViewController: RMButtomSheetViewController {
             applyButton.heightAnchor.constraint(equalToConstant: 55),
             applyButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             applyButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
-            applyButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: 20)
+            applyButton.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -100)
         ])
     }
 
@@ -127,7 +127,7 @@ class FilterViewController: RMButtomSheetViewController {
         let query = FirestoreEndpoint.room.colRef
             .whereField("roomMinPrice", isGreaterThan: minBudget)
             .whereField("roomMinPrice", isLessThan: maxBudget)
-            .whereField("userID", notIn: blockUserIDs)
+            .whereField("isDeleted", isEqualTo: false)
             .order(by: "roomMinPrice")
             .order(by: "createdTime")
 

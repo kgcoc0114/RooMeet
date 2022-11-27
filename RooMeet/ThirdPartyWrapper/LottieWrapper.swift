@@ -20,7 +20,7 @@ class RMLottie {
     }()
 
     lazy var loginAnimationView: LottieAnimationView = {
-        let animationView = LottieAnimationView(name: "LoginPageAnimation")
+        let animationView = LottieAnimationView(name: "Roommates")
 
         animationView.contentMode = .scaleAspectFit
         animationView.translatesAutoresizingMaskIntoConstraints = false

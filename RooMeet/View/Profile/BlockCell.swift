@@ -52,9 +52,9 @@ class BlockCell: UICollectionViewCell {
     func configureCell(data: User) {
         nameLabel.text = data.name
         if data.profilePhoto == nil {
-            imageView.image = UIImage.asset(.profile_user)
+            imageView.image = UIImage.asset(.roomeet)
         } else {
-            imageView.loadImage(data.profilePhoto, placeHolder: UIImage.asset(.profile_user))
+            imageView.loadImage(data.profilePhoto, placeHolder: UIImage.asset(.roomeet))
         }
     }
 

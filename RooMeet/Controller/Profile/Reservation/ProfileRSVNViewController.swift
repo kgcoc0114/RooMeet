@@ -108,16 +108,17 @@ extension ProfileRSVNViewController {
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(180))
+            heightDimension: .estimated(170))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(180))
+            heightDimension: .estimated(170))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
 
         return UICollectionViewCompositionalLayout(section: section)
     }
@@ -137,9 +138,10 @@ extension ProfileRSVNViewController {
 extension ProfileRSVNViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
-            let reservation = dataSource.itemIdentifier(for: indexPath)
+            let reservation = dataSource.itemIdentifier(for: indexPath),
+            let roomDetail = reservation.roomDetail
         else { return }
-        let detailViewController = RoomDetailViewController(room: reservation.roomDetail!, user: user)
+        let detailViewController = RoomDetailViewController(room: roomDetail, user: user)
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

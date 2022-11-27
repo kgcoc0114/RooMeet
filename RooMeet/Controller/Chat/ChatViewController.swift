@@ -67,16 +67,22 @@ class ChatViewController: UIViewController {
         super.viewDidLoad()
 
         let phoneBarButton = UIBarButtonItem(
-            image: UIImage(systemName: "phone"),
+            image: UIImage.asset(.circle_phone).withRenderingMode(.alwaysOriginal),
             style: .plain,
             target: self,
             action: #selector(call))
 
         let infoBarButton = UIBarButtonItem(
-            image: UIImage(systemName: "info.circle"),
+            image: UIImage.asset(.comment_info).withRenderingMode(.alwaysOriginal),
             style: .plain,
             target: self,
             action: #selector(userAction))
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
 
         navigationItem.rightBarButtonItems = [infoBarButton, phoneBarButton]
 
@@ -168,6 +174,10 @@ class ChatViewController: UIViewController {
     @IBAction func showRuler(_ sender: Any) {
     }
 
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
+    }
+
     @objc private func call(_ sender: Any) {
         guard
             let chatRoom = chatRoom,
@@ -198,9 +208,9 @@ class ChatViewController: UIViewController {
     }
 
     @objc private func userAction(_ sender: Any) {
-        let userActionAlertController = UIAlertController(title: "封鎖\(otherData?.name ?? "")?", message: "他們將無法在 RooMeet 發訊息給你或找到你的貼文。你封鎖用戶時，對方不會收到通知。", preferredStyle: .actionSheet)
+        let userActionAlertController = UIAlertController(title: "封鎖 \(otherData?.name ?? "") ?", message: "他們將無法在 RooMeet 發訊息給你或找到你的貼文。你封鎖用戶時，對方不會收到通知。", preferredStyle: .actionSheet)
 
-        let blockUserAction = UIAlertAction(title: "封鎖用戶", style: .default) { [weak self] _ in
+        let blockUserAction = UIAlertAction(title: "封鎖用戶", style: .destructive) { [weak self] _ in
             guard
                 let self = self,
                 let blockUser = self.otherData

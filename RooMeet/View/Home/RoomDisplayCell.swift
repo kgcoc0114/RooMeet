@@ -21,27 +21,32 @@ class RoomDisplayCell: UICollectionViewCell {
             likeButton.translatesAutoresizingMaskIntoConstraints = false
             likeButton.backgroundColor = .clear
             likeButton.setTitle("", for: .normal)
-            likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+            likeButton.setImage(UIImage.asset(.heart), for: .normal)
             likeButton.tintColor = UIColor.subTitleRedColor
         }
     }
 
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var displayBackgroundView: UIView!
-    @IBOutlet weak var priceLabel: UILabel!
+    @IBOutlet weak var priceLabel: UILabel! {
+        didSet {
+            priceLabel.textColor = .subTitleRedColor
+        }
+    }
+
     @IBOutlet weak var regionLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var roomSpecLabel: UILabel!
-    @IBOutlet weak var rsvnDateLabel: UILabel!
-    @IBOutlet weak var rsvnTimeLabel: UILabel!
-    @IBOutlet weak var rsvnStatusTagButton: UIButton!
+//    @IBOutlet weak var rsvnDateLabel: UILabel!
+//    @IBOutlet weak var rsvnTimeLabel: UILabel!
+//    @IBOutlet weak var rsvnStatusTagButton: UIButton!
 
     var isLike = false {
         didSet {
             if isLike == true {
-                likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+                likeButton.setImage(UIImage.asset(.heart_fill), for: .normal)
             } else {
-                likeButton.setImage(UIImage(systemName: "heart"), for: .normal)
+                likeButton.setImage(UIImage.asset(.heart), for: .normal)
             }
         }
     }
@@ -50,25 +55,26 @@ class RoomDisplayCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        titleLabel.font = UIFont.regular(size: 16)
+        titleLabel.font = UIFont.regularSubTitle()
         titleLabel.textColor = UIColor.mainColor
         displayBackgroundView.layer.cornerRadius = 10
         imageView.layer.cornerRadius = 10
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
 
-        regionLabel.font = UIFont.regular(size: 14)
-        priceLabel.font = UIFont.regular(size: 14)
-        roomSpecLabel.font = UIFont.regular(size: 14)
+        regionLabel.font = UIFont.regularText()
+        priceLabel.font = UIFont.regularText()
+        roomSpecLabel.font = UIFont.regularText()
     }
 
     func configureCell(data: Room) {
         if !data.roomImages.isEmpty {
             imageView.kf.setImage(
-                with: data.roomImages[0],
-                placeholder: UIImage(systemName: "house")?.withTintColor(.systemGray6))
+                with: data.roomImages.first,
+                placeholder: UIImage.asset(.room_placeholder)
+            )
         } else {
-            imageView.image = UIImage(systemName: "house")?.withTintColor(.systemGray6)
+            imageView.image = UIImage.asset(.room_placeholder)
         }
 
         titleLabel.text = data.title
@@ -79,9 +85,12 @@ class RoomDisplayCell: UICollectionViewCell {
 
         regionLabel.text = "\(data.county)\(data.town)"
 
-
-        if let price = data.roomMinPrice {
+        if
+            let price = data.roomMinPrice,
+            price != -1 {
             priceLabel.text = "\(price) 元/月"
+        } else {
+            priceLabel.text = "查看更多"
         }
 
         if !data.rooms.isEmpty {

@@ -19,7 +19,7 @@ class HomeViewController: ViewController {
     typealias HomeSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
     private var dataSource: HomeDataSource!
 
-//    let locationManger = LocationService.shared.locationManger
+    let locationManger = LocationService.shared.locationManger
 
     var rooms: [Room] = [] {
         didSet {
@@ -43,23 +43,23 @@ class HomeViewController: ViewController {
         super.viewDidLoad()
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "plus"),
+            image: UIImage.asset(.plus),
             style: .plain,
             target: self,
             action: #selector(addRoomPost))
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "slider.horizontal.3"),
+            image: UIImage.asset(.settings_sliders),
             style: .plain,
             target: self,
             action: #selector(showFilterPage))
 
         // get User Location
-//        locationManger.delegate = self
-//        DispatchQueue.global(qos: .background).async { [weak self] in
-//            guard let self = self else { return }
-//            self.locationManger.requestLocation()
-//        }
+        locationManger.delegate = self
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self = self else { return }
+            self.locationManger.requestLocation()
+        }
 
         // set title
         navigationItem.title = "RooMeet"
@@ -117,16 +117,20 @@ class HomeViewController: ViewController {
     }
 
     @objc private func showFilterPage() {
+        guard let user = user else {
+            return
+        }
+
         guard let filterVC = storyboard?.instantiateViewController(
             withIdentifier: "FilterViewController") as? FilterViewController else {
             print("ERROR: FilterViewController Error")
             return
         }
 
-        filterVC.blockUserIDs = user?.blocks ?? []
+        filterVC.blockUserIDs = user.blocks ?? []
 
         filterVC.completion = { query in
-            FirebaseService.shared.fetchRoomDatabyQuery(query: query) { rooms in
+            FirebaseService.shared.fetchRoomDatabyQuery(user: user, query: query) { rooms in
                 self.rooms = rooms
             }
         }
