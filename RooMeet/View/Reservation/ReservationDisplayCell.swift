@@ -91,8 +91,10 @@ class ReservationDisplayCell: UICollectionViewCell {
 
         regionLabel.text = "\(roomDetail.county)\(roomDetail.town)"
 
-        if let roomMinPrice = roomDetail.roomMinPrice {
-            priceLabel.text = "$\(String(describing: Int(roomMinPrice))) 月"
+        if
+            let price = roomDetail.roomMinPrice,
+            price != -1 {
+            priceLabel.text = "\(price) 元/月"
         } else {
             priceLabel.text = "請私訊聊聊"
         }

@@ -117,16 +117,20 @@ class HomeViewController: ViewController {
     }
 
     @objc private func showFilterPage() {
+        guard let user = user else {
+            return
+        }
+
         guard let filterVC = storyboard?.instantiateViewController(
             withIdentifier: "FilterViewController") as? FilterViewController else {
             print("ERROR: FilterViewController Error")
             return
         }
 
-        filterVC.blockUserIDs = user?.blocks ?? []
+        filterVC.blockUserIDs = user.blocks ?? []
 
         filterVC.completion = { query in
-            FirebaseService.shared.fetchRoomDatabyQuery(query: query) { rooms in
+            FirebaseService.shared.fetchRoomDatabyQuery(user: user, query: query) { rooms in
                 self.rooms = rooms
             }
         }

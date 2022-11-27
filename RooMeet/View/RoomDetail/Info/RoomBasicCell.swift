@@ -66,7 +66,7 @@ class RoomBasicCell: UICollectionViewCell {
     }
 
     func configureCell(data: Room) {
-        priceLabel.text = genPriceString(roomSpecs: data.rooms)
+        priceLabel.text = genPriceString(data: data)
         regionLabel.text = "\(data.county)\(data.town)"
         titleLabel.text = data.title
         if let otherDesc = data.otherDescriction {
@@ -76,13 +76,17 @@ class RoomBasicCell: UICollectionViewCell {
         }
     }
 
-    func genPriceString(roomSpecs: [RoomSpec]) -> String {
-        if !roomSpecs.isEmpty {
+    func genPriceString(data: Room) -> String {
+        if
+            let price = data.roomMinPrice,
+            price != -1 {
+            let roomSpecs = data.rooms
             let minPriceItem = roomSpecs.min { $0.price! < $1.price! }
 
             let maxPriceItem = roomSpecs.max { $0.price! > $1.price! }
 
-            if let minPrice = minPriceItem,
+            if
+                let minPrice = minPriceItem,
                 let maxPrice = maxPriceItem,
                 let min = minPrice.price,
                 let max = maxPrice.price {
