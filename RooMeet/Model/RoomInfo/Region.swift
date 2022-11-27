@@ -19,4 +19,3 @@ extension Region {
 struct RegionData: Codable {
     let data: [Region]
 }
-

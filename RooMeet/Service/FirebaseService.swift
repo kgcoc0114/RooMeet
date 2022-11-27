@@ -677,7 +677,6 @@ extension FirebaseService {
             .order(by: "createdTime", descending: false)
             .addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshot results: \(error!)")
                     completion(nil, error)
                     return
                 }
@@ -698,7 +697,6 @@ extension FirebaseService {
     }
 
     func listenToChatRoomUpdate(completion: @escaping (([ChatRoom]?, Error?) -> Void)) {
-//        var currentUser: User
         fetchUserByID(userID: UserDefaults.id) { user, _ in
             FirestoreEndpoint.chatRoom.colRef
                 .whereField("members", arrayContains: UserDefaults.id)

@@ -35,7 +35,7 @@ class KeyChainService {
             guard let serverKey = UserDefaults.standard.string(forKey: serverTokenKey) else { return nil }
             for item in service.allItems() {
                 if let key = item["key"] as? String,
-                   key == serverKey {
+                    key == serverKey {
                     return item["value"] as? String
                 }
             }

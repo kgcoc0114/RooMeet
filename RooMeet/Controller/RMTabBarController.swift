@@ -79,7 +79,7 @@ class RMTabBarController: UITabBarController {
 
         FirestoreEndpoint.call.colRef
             .whereField("callee", isEqualTo: uid)
-            .addSnapshotListener({ [weak self] querySnapshot, error in
+            .addSnapshotListener { [weak self] querySnapshot, error in
                 if let error = error {
                     print("Error getting documents: \(error)")
                 }
@@ -95,7 +95,7 @@ class RMTabBarController: UITabBarController {
                         self?.showCallVC(document: diff.document)
                     }
                 }
-            })
+            }
     }
 
     func showCallVC(document: QueryDocumentSnapshot) {
