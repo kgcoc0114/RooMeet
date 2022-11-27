@@ -10,9 +10,10 @@ import UIKit
 class RMButtomSheetViewController: UIViewController {
     lazy var containerView: UIView = {
         let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .white
-        view.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
-        view.layer.cornerRadius = 16
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
         view.clipsToBounds = true
         return view
     }()
@@ -20,6 +21,7 @@ class RMButtomSheetViewController: UIViewController {
     let maxDimmedAlpha: CGFloat = 0.6
     lazy var dimmedView: UIView = {
         let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .black
         view.alpha = maxDimmedAlpha
         return view
@@ -61,8 +63,6 @@ class RMButtomSheetViewController: UIViewController {
         // Add subviews
         view.addSubview(dimmedView)
         view.addSubview(containerView)
-        dimmedView.translatesAutoresizingMaskIntoConstraints = false
-        containerView.translatesAutoresizingMaskIntoConstraints = false
 
         // Set static constraints
         NSLayoutConstraint.activate([
@@ -104,11 +104,8 @@ class RMButtomSheetViewController: UIViewController {
     }
 
     func animatePresentContainer() {
-        // Update bottom constraint in animation block
         UIView.animate(withDuration: 0.3) {
             self.containerView.transform = CGAffineTransform(translationX: 0, y: -self.currentContainerHeight)
-            // Call this to trigger refresh constraint
-//            self.view.layoutIfNeeded()
         }
     }
 
@@ -130,9 +127,7 @@ class RMButtomSheetViewController: UIViewController {
         }
         // hide main view by updating bottom constraint in animation block
         UIView.animate(withDuration: 0.3) {
-            self.containerViewBottomConstraint?.constant = self.defaultHeight
-            // call this to trigger refresh constraint
-            self.view.layoutIfNeeded()
+            self.containerView.transform = CGAffineTransform(translationX: 0, y: self.currentContainerHeight)
         }
     }
 }

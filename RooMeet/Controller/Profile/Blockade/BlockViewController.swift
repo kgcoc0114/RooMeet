@@ -61,6 +61,11 @@ class BlockViewController: UIViewController {
         configureCollectionView()
         collectionView.collectionViewLayout = createLayout()
         navigationItem.title = "解除封鎖"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -84,6 +89,10 @@ class BlockViewController: UIViewController {
         } else {
 
         }
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 }
 

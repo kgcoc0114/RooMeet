@@ -31,6 +31,15 @@ enum SettingItem: CaseIterable {
             return UIImage(systemName: "trash.circle")!
         }
     }
+
+    var backgroundColor: UIColor {
+        switch self {
+        case .privacy:
+            return .subTitleOrangeColor
+        case .delete:
+            return .subTitleRedColor
+        }
+    }
 }
 
 class SettingViewController: UIViewController {
@@ -42,6 +51,12 @@ class SettingViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.title = "Setting"
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
         configureTableView()
     }
 
@@ -53,6 +68,10 @@ class SettingViewController: UIViewController {
             UINib(nibName: SettingCell.identifier, bundle: nil),
             forCellReuseIdentifier: SettingCell.identifier
         )
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 }
 

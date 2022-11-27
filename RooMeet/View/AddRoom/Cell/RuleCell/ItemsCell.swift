@@ -45,7 +45,6 @@ class ItemsCell: UICollectionViewCell {
     }
 
     func configureTagView(ruleType: String, tags: [String], selectedTags: [String], mainColor: UIColor, lightColor: UIColor, mainLightBackgroundColor: UIColor, enableTagSelection: Bool) {
-
         if tags.isEmpty {
             self.isHidden = true
             self.translatesAutoresizingMaskIntoConstraints = false
@@ -66,7 +65,8 @@ class ItemsCell: UICollectionViewCell {
             normalStyle.shadowColor = .clear
             normalStyle.borderWidth = 1
             normalStyle.borderColor = .lightGray
-            normalStyle.extraSpace = CGSize.init(width: 8, height: 8)
+            normalStyle.cornerRadius = RMConstants.shared.messageCornerRadius
+            normalStyle.extraSpace = CGSize.init(width: 10, height: 8)
 
             let selectedContent = TTGTextTagStringContent.init(text: text)
             selectedContent.textColor = lightColor
@@ -76,7 +76,8 @@ class ItemsCell: UICollectionViewCell {
             selectedStyle.backgroundColor = mainColor
             selectedStyle.shadowColor = .clear
             selectedStyle.borderWidth = 0
-            selectedStyle.extraSpace = CGSize.init(width: 8, height: 8)
+            selectedStyle.extraSpace = CGSize.init(width: 10, height: 8)
+            selectedStyle.cornerRadius = RMConstants.shared.messageCornerRadius
 
             let tag = RMTag.init()
             tag.title = text

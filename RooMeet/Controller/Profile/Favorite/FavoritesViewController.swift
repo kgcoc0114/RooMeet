@@ -40,6 +40,12 @@ class FavoritesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
+
         navigationItem.title = entryPage == .fav ? "Favorites" : "My Post"
 
         collectionView.delegate = self
@@ -104,12 +110,15 @@ class FavoritesViewController: UIViewController {
                 self.favoriteRooms = favoriteRooms
             }
         } else {
-            FirebaseService.shared.fetchRoomsByUserID(userID: UserDefaults.id) {
-                [weak self] rooms in
+            FirebaseService.shared.fetchRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
                 guard let self = self else { return }
                 self.rooms = rooms
             }
         }
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 }
 
@@ -165,7 +174,8 @@ extension FavoritesViewController: RoomDisplayCellDelegate {
             return
         }
         let updateFavRooms = favoriteRooms.filter { $0.roomID != rooms[indexPath.item].roomID }
-
+        let updateRooms = rooms.filter { $0.roomID != rooms[indexPath.item].roomID }
+        rooms = updateRooms
         FirebaseService.shared.updateUserFavoriteRoomsData(favoriteRooms: updateFavRooms)
     }
 }

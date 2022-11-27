@@ -44,20 +44,31 @@
                                             </textField>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="OjF-G9-KhJ">
+                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="OjF-G9-KhJ">
                                         <rect key="frame" x="0.0" y="86.5" width="436" height="67"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="地區" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KlS-xA-l2t">
-                                                <rect key="frame" x="0.0" y="0.0" width="33" height="67"/>
+                                                <rect key="frame" x="0.0" y="24" width="33" height="19.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="textColor" name="mainDarkColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder=" 請選擇地區" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xwr-Nt-xsR" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
-                                                <rect key="frame" x="48" y="0.0" width="388" height="67"/>
+                                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="地區" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Xwr-Nt-xsR" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                                <rect key="frame" x="48" y="24.5" width="296" height="18.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DMJ-ME-vaa">
+                                                <rect key="frame" x="359" y="16" width="77" height="35"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="35" id="PPK-Io-aEb"/>
+                                                </constraints>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="請選擇地區"/>
+                                                <connections>
+                                                    <action selector="regionSelectionAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="j68-nv-yea"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="n9v-Bj-6L5">
@@ -162,6 +173,7 @@
                 <outlet property="leasePickerView" destination="xqu-Ym-o3S" id="vX6-bR-Iv8"/>
                 <outlet property="parlorCountView" destination="VOg-de-FNd" id="sXW-LH-86j"/>
                 <outlet property="regionSelectView" destination="Xwr-Nt-xsR" id="FMj-FW-dXv"/>
+                <outlet property="regionSelectionButton" destination="DMJ-ME-vaa" id="Hi1-lo-bUF"/>
                 <outlet property="roomCountView" destination="K5z-8T-FQ3" id="aJK-R8-xd8"/>
                 <outlet property="titleTextField" destination="368-14-KjK" id="vrQ-H7-h0x"/>
             </connections>
@@ -170,7 +182,7 @@
     </objects>
     <resources>
         <namedColor name="mainDarkColor">
-            <color red="0.14901960784313725" green="0.25098039215686274" blue="0.24313725490196078" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

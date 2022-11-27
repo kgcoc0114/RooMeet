@@ -71,7 +71,7 @@ class OUTextCell: MessageBaseCell {
             if let profilePhoto = sendBy.profilePhoto {
                 avatarView.setImage(urlString: profilePhoto)
             } else {
-                avatarView.image = UIImage.asset(.profile_user)
+                avatarView.image = UIImage.asset(.roomeet)
             }
 
             contentTextView.text = message.content

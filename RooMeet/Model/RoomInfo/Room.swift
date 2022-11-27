@@ -59,11 +59,17 @@ struct Room: Codable, Hashable {
     }
 
     func getRoomMinPrice() -> Int? {
+        guard
+            let firstRoom = rooms.first,
+            firstRoom.price != nil else {
+            return -1
+        }
+
         let minRoom = rooms.min { $0.price! < $1.price! }
         if let minRoom = minRoom {
             return minRoom.price
         }
-        return nil
+        return -1
     }
 }
 

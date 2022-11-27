@@ -19,7 +19,7 @@ enum Profile: CaseIterable {
     case post
     case blockade
     case setting
-    case logout
+    case signOut
 
     var title: String {
         switch self {
@@ -33,7 +33,7 @@ enum Profile: CaseIterable {
             return "黑名單"
         case .setting:
             return "帳號設定"
-        case .logout:
+        case .signOut:
             return "登出"
         }
     }
@@ -41,17 +41,17 @@ enum Profile: CaseIterable {
     var iconImage: UIImage {
         switch self {
         case .favorite:
-            return UIImage(systemName: "heart.fill")!
+            return UIImage.asset(.heart_white)
         case .reservations:
-            return UIImage(systemName: "calendar")!
+            return UIImage.asset(.calendar)
         case .post:
-            return UIImage(systemName: "house.fill")!
+            return UIImage.asset(.home_white)
         case .setting:
-            return UIImage(systemName: "gearshape.fill")!
+            return UIImage.asset(.setting)
         case .blockade:
-            return UIImage(systemName: "nosign")!
-        case .logout:
-            return UIImage(systemName: "moon.zzz.fill")!
+            return UIImage.asset(.blockade)
+        case .signOut:
+            return UIImage.asset(.sign_out)
         }
     }
 
@@ -66,16 +66,16 @@ enum Profile: CaseIterable {
     var color: ColorSet {
         switch self {
         case .favorite:
-            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.mainColor)
+            return ColorSet(font: .white, background: UIColor.mainColor)
         case .reservations:
-            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleOrangeColor)
+            return ColorSet(font: .white, background: UIColor.subTitleOrangeColor)
         case .post:
-            return ColorSet(font: UIColor.mainBackgroundColor, background: UIColor.subTitleRedColor)
+            return ColorSet(font: .white, background: UIColor.subTitleRedColor)
         case .setting:
             return secondLineColorSet
         case .blockade:
             return secondLineColorSet
-        case .logout:
+        case .signOut:
             return secondLineColorSet
         }
     }
@@ -88,7 +88,7 @@ enum Profile: CaseIterable {
             return ProfileRSVNViewController()
         case .blockade:
             return BlockViewController()
-        case .logout:
+        case .signOut:
             return UIViewController()
         case .post:
             return FavoritesViewController(entryPage: .ownPost)
@@ -115,9 +115,18 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
         }
     }
 
-    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var userNameLabel: UILabel! {
+        didSet {
+            userNameLabel.font = UIFont.regularSubTitle()
+            userNameLabel.textColor = UIColor.mainDarkColor
+        }
+    }
 
-    @IBOutlet weak var editIntroButton: UIButton!
+    @IBOutlet weak var editIntroButton: UIButton! {
+        didSet {
+            editIntroButton.setImage(UIImage.asset(.refresh), for: .normal)
+        }
+    }
 
     private var user: User?
 
@@ -133,32 +142,33 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = configureLayout()
-
         collectionView.isScrollEnabled = false
 
-
-
-        if UserDefaults.profilePhoto != "empty" {
-            profileImageView.setImage(urlString: UserDefaults.profilePhoto)
-        } else {
-            profileImageView.image = UIImage.asset(.profile_user)
-        }
-
-        userNameLabel.text = UserDefaults.name
         editIntroButton.setTitle("", for: .normal)
         editIntroButton.addTarget(self, action: #selector(editIntro), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("UserDefaults.id = ", UserDefaults.id)
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
-            guard let self = self,
-                  let user = user else {
+            guard
+                let self = self,
+                let user = user else {
                 return
             }
 
             self.user = user
         }
+
+        if UserDefaults.profilePhoto != "empty" {
+            profileImageView.setImage(urlString: UserDefaults.profilePhoto)
+        } else {
+            profileImageView.image = UIImage.asset(.roomeet)
+        }
+
+        userNameLabel.text = UserDefaults.name
+
         collectionView.reloadData()
     }
 
@@ -174,7 +184,7 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
             if UserDefaults.profilePhoto != "empty" {
                 self.profileImageView.setImage(urlString: UserDefaults.profilePhoto)
             } else {
-                self.profileImageView.image = UIImage.asset(.profile_user)
+                self.profileImageView.image = UIImage.asset(.roomeet)
             }
         }
 
@@ -207,16 +217,6 @@ extension ProfileViewController: UICollectionViewDataSource {
 
         cell.profileType = profileType
         cell.configureCell()
-//        switch profileType {
-//        case .favorite:
-//            cell.configureCell()
-//        case .reservations:
-//            cell.configureCell()
-//        case .post:
-//            cell.configureCell()
-//        case .blockade, .setting, .logout:
-//            cell.configureCell()
-//        }
         return cell
     }
 }
@@ -256,7 +256,7 @@ extension ProfileViewController: UICollectionViewDelegate {
                 self.hidesBottomBarWhenPushed = false
             }
             navigationController?.pushViewController(pushVC, animated: true)
-        case .logout:
+        case .signOut:
             AuthService.shared.logOut { [weak self] _ in
                 guard let self = self else { return }
                 self.showLoginVC()

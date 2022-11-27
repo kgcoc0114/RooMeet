@@ -133,6 +133,8 @@ class AuthService {
             group.leave()
         }
 
+        UserDefaults.reset()
+
         group.notify(queue: DispatchQueue.main) {
             completion(Result.success(""))
         }

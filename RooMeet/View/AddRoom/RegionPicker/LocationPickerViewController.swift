@@ -32,7 +32,7 @@ class LocationPickerViewController: RMButtomSheetViewController {
         return tableView
     }()
 
-    var completion: ((String, String) -> Void)?
+    var completion: ((String, String?) -> Void)?
 
     lazy var townTableView: UITableView = {
         let tableView = UITableView()
@@ -50,6 +50,7 @@ class LocationPickerViewController: RMButtomSheetViewController {
     private let regionList: [Region] = LocationService.shared.regionList ?? []
     private var countySelectedIndex: Int = 0
     private var selectedCell: RegionPickerCell?
+    private var selectedTown: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,10 +135,12 @@ extension LocationPickerViewController: UITableViewDelegate {
             }
             cell.isPicked.toggle()
             selectedCell = cell
+            selectedTown = nil
             townTableView.reloadData()
         } else {
             let selectedRegion = regionList[countySelectedIndex]
-            completion?(selectedRegion.county, selectedRegion.town[indexPath.item])
+            selectedTown = selectedRegion.town[indexPath.item]
+            completion?(selectedRegion.county, selectedTown)
             animateDismissView()
         }
     }
