@@ -20,7 +20,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="7vJ-6p-kkF">
                                 <rect key="frame" x="109.5" y="336" width="195" height="224"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="RooMeet" translatesAutoresizingMaskIntoConstraints="NO" id="FEG-n9-NfQ">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="roomeet" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FEG-n9-NfQ">
                                         <rect key="frame" x="0.0" y="0.0" width="195" height="168"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="168" id="34b-Zh-abE"/>
@@ -50,7 +50,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="RooMeet" width="512" height="512"/>
+        <image name="roomeet" width="512" height="512"/>
         <namedColor name="mainDarkColor">
             <color red="0.13725490196078433" green="0.14901960784313725" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
