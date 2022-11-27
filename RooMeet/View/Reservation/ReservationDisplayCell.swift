@@ -35,13 +35,15 @@ class ReservationDisplayCell: UICollectionViewCell {
 
     @IBOutlet weak var periodLabel: UILabel! {
         didSet {
-            periodLabel.font = UIFont.regularSubTitle()
+            periodLabel.font = UIFont.regularText()
+            periodLabel.textColor = .mainColor
         }
     }
 
     @IBOutlet weak var dateLabel: UILabel! {
         didSet {
             dateLabel.font = UIFont.regularTitle()
+            dateLabel.textColor = .mainColor
         }
     }
 
@@ -51,10 +53,11 @@ class ReservationDisplayCell: UICollectionViewCell {
         }
     }
 
-    @IBOutlet weak var cardView: CardView! {
+    @IBOutlet weak var cardView: UIView! {
         didSet {
-            cardView.shadowColor = .hexColor(hex: "#363130")
-            cardView.cornerRadius = RMConstants.shared.messageCornerRadius
+            cardView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            cardView.layer.borderColor = UIColor.mainLightColor.cgColor
+            cardView.layer.borderWidth = 1
         }
     }
 
@@ -88,19 +91,27 @@ class ReservationDisplayCell: UICollectionViewCell {
 
         regionLabel.text = "\(roomDetail.county)\(roomDetail.town)"
 
-        if let roomMinPrice = roomDetail.roomMinPrice {
-            priceLabel.text = "$\(String(describing: Int(roomMinPrice))) 月"
+        if
+            let price = roomDetail.roomMinPrice,
+            price != -1 {
+            priceLabel.text = "\(price) 元/月"
+        } else {
+            priceLabel.text = "請私訊聊聊"
         }
 
 
         if !roomDetail.roomImages.isEmpty {
-            roomImageView.setImage(urlString: roomDetail.roomImages[0].absoluteString)
+            roomImageView.loadImage(roomDetail.roomImages[0].absoluteString, placeHolder: UIImage.asset(.room_placeholder))
+        } else {
+            roomImageView.image = UIImage.asset(.room_placeholder)
         }
 
         if let rawAcceptStatus = data.acceptedStatus {
             let acceptStatus = AcceptedStatus(rawValue: rawAcceptStatus)
-            statusButton.setTitle(data.acceptedStatus, for: .normal)
+            statusButton.setTitle(acceptStatus?.content, for: .normal)
             statusButton.backgroundColor = acceptStatus?.tagColor
+        } else {
+            statusButton.isHidden = true
         }
     }
 }

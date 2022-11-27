@@ -169,13 +169,13 @@ class CUReservationCell: MessageBaseCell {
 
         FirebaseService.shared.getChatRoomByUserID(
             userA: currentUser.id, userB: otherUser.id) { [weak self] chatroom in
-                guard let `self` = self else { return }
+                guard let self = self else { return }
                 self.updateMessage(
                     chatRoomID: chatroom.id,
                     message: message,
                     status: status
                 )
-            }
+        }
     }
 
     func updateMessage(chatRoomID: String, message: Message, status: AcceptedStatus) {

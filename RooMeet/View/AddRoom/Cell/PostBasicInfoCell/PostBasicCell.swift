@@ -51,11 +51,22 @@ class PostBasicCell: UICollectionViewCell {
     private var postBasicData = PostBasicData()
 
     weak var delegate: PostBasicCellDelegate?
+    var lastTextField: UITextField?
 
-    @IBOutlet weak var titleTextField: RMBaseTextField!
-    @IBOutlet weak var addressTextField: RMBaseTextField!
+    @IBOutlet weak var titleTextField: RMBaseTextField! {
+        didSet {
+            titleTextField.addTarget(self, action: #selector(textFieldChanged(_:)), for: .editingChanged)
+        }
+    }
+
+    @IBOutlet weak var addressTextField: RMBaseTextField! {
+        didSet {
+            addressTextField.addTarget(self, action: #selector(textFieldChanged(_:)), for: .editingChanged)
+        }
+    }
 
     @IBOutlet weak var regionSelectView: RMBaseTextField!
+
     @IBOutlet weak var parlorCountView: NumberPickerView! {
         didSet {
             postBasicData.parlor = 0
@@ -83,7 +94,7 @@ class PostBasicCell: UICollectionViewCell {
             datePicker.preferredDatePickerStyle = .inline
             datePicker.tintColor = .mainColor
 
-            datePickerTextField.placeholder = "YYYY/MM/DD"
+            datePickerTextField.placeholder = "YYYY/MM/DD (必填)"
             datePickerTextField.inputView = datePicker
 
             datePicker.addTarget(self, action: #selector(movinDateChanged(_:)), for: .valueChanged)
@@ -91,11 +102,22 @@ class PostBasicCell: UICollectionViewCell {
     }
 
     @IBOutlet weak var leasePickerView: NumberPickerView!
+    @IBOutlet weak var regionSelectionButton: UIButton! {
+        didSet {
+            regionSelectionButton.titleLabel?.font = UIFont.regularText()
+            regionSelectionButton.backgroundColor = .mainLightColor
+            regionSelectionButton.tintColor = .mainDarkColor
+            regionSelectionButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            regionSelectionButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+        }
+    }
+
     @IBOutlet weak var genderSegmentControl: UISegmentedControl! {
         didSet {
             postBasicData.gender = genderSegmentControl.selectedSegmentIndex
         }
     }
+
     private var parlor: Int = 0
     private var room: Int = 0
 
@@ -112,6 +134,16 @@ class PostBasicCell: UICollectionViewCell {
         parlorCountView.delegate = self
         roomCountView.delegate = self
         leasePickerView.delegate = self
+    }
+
+    @objc func textFieldChanged(_ sender: UITextField) {
+        if sender == titleTextField {
+            postBasicData.title = titleTextField.text
+        } else if sender == addressTextField {
+            postBasicData.address = addressTextField.text
+        }
+
+        delegate?.passData(cell: self, data: postBasicData)
     }
 
     func configureCell(data: PostBasicData?) {
@@ -156,6 +188,13 @@ class PostBasicCell: UICollectionViewCell {
         delegate?.passData(cell: self, data: postBasicData)
     }
 
+    @IBAction func regionSelectionAction(_ sender: Any) {
+        if lastTextField != nil {
+            lastTextField?.resignFirstResponder()
+        }
+        delegate?.showRegionPickerView(cell: self)
+    }
+
     @objc private func datePickerDone() {
         self.endEditing(true)
     }
@@ -163,21 +202,13 @@ class PostBasicCell: UICollectionViewCell {
 
 extension PostBasicCell: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == regionSelectView {
-            delegate?.showRegionPickerView(cell: self)
-        }
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        postBasicData.title = titleTextField.text
-        postBasicData.address = addressTextField.text
-        delegate?.passData(cell: self, data: postBasicData)
+        lastTextField = textField
     }
 }
 
 extension PostBasicCell: NumberPickerViewDelegate {
     func didPickLease(picker: NumberPickerView, lease: Int, unit: String) {
-        var leaseMon = lease * 12
+        let leaseMon = lease * 12
         postBasicData.leaseMonth = unit == "年" ? leaseMon : lease
     }
 

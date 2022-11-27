@@ -24,11 +24,12 @@ struct User: Codable, Hashable {
     var favoriteRooms: [FavoriteRoom] = []
     var reservations: [String] = []
     var chatRooms: [String]? = []
+    var blocks: [String]? = []
 
     var postCount: Int?
 
     var age: Int {
-        return Calendar.current.dateComponents([.year], from: birthday!, to: Date()).year!
+        return Calendar.current.dateComponents([.year], from: birthday ?? Date(), to: Date()).year ?? 0
     }
 
     var favoriteRoomIDs: [String] {

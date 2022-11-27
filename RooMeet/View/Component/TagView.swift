@@ -30,15 +30,14 @@ class TagView: UIView {
         super.init(coder: coder)
         addSubview(tagView)
     }
-    
-    func configureTagView(tags: [String], mainColor: UIColor, lightColor: UIColor, mainLightBackgroundColor: UIColor) {
 
+    func configureTagView(tags: [String], mainColor: UIColor, lightColor: UIColor, mainLightBackgroundColor: UIColor) {
         tagView.delegate = self
 
         for text in tags {
             let content = TTGTextTagStringContent.init(text: text)
             content.textColor = mainColor
-            content.textFont = UIFont.regular(size: textFont)!
+            content.textFont = UIFont.regular(size: textFont) ?? UIFont.systemFont(ofSize: 12)
 
             let normalStyle = TTGTextTagStyle.init()
             normalStyle.backgroundColor = mainLightBackgroundColor

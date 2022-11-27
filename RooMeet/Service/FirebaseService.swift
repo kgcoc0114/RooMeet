@@ -11,13 +11,13 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 import MapKit
-
 enum FirestoreEndpoint {
     case room
     case chatRoom
     case user
     case call
     case reservation
+    case reportEvent
 
     var colRef: CollectionReference {
         let database = Firestore.firestore()
@@ -33,6 +33,8 @@ enum FirestoreEndpoint {
             return database.collection("User")
         case .reservation:
             return database.collection("Reservation")
+        case .reportEvent:
+            return database.collection("ReportEvent")
         }
     }
 }
@@ -41,6 +43,8 @@ class FirebaseService {
     static let shared = FirebaseService()
 
     var currentTimestamp = Timestamp()
+
+    var database = Firestore.firestore()
 
     func getDocuments<T: Codable>(_ query: Query, complection: @escaping ([T]) -> Void) {
         query.getDocuments { [weak self] querySnapshot, error in
@@ -77,8 +81,7 @@ class FirebaseService {
     }
 
     func fetchUserByID(userID: String, index: Int? = nil, completion: @escaping ((User?, Int?) -> Void)) {
-        let docRef = FirestoreEndpoint.user.colRef.document(userID)
-
+        let docRef = Firestore.firestore().collection("User").document(userID)
         docRef.getDocument { document, error in
             if let document = document, document.exists {
                 do {
@@ -88,7 +91,7 @@ class FirebaseService {
                     print("ERROR: fetchUserByID - \(error.localizedDescription)")
                 }
             } else {
-                completion(nil, index)
+                completion(User(id: "notExist", name: "不明用戶"), index)
             }
         }
     }
@@ -101,20 +104,18 @@ class FirebaseService {
         }
     }
 
-    func upsertUser(uid: String, email: String?, user: User? = nil, completion: @escaping ((Bool) -> Void)) {
+    func upsertUser(uid: String, email: String?, user: User? = nil, completion: @escaping ((Bool, User?) -> Void)) {
         let docRef = FirestoreEndpoint.user.colRef.document(uid)
-
+        print("upserUser ", uid)
         docRef.getDocument { [weak self] document, _ in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             if let document = document, document.exists {
                 guard let user = user else {
                     // get user info
                     self.fetchUserByID(userID: uid) { user, _ in
                         if let user = user {
                             UserDefaults.id = user.id
-
-                            gCurrentUser = user
-                            completion(false)
+                            completion(false, user)
                         }
                     }
                     return
@@ -133,7 +134,7 @@ class FirebaseService {
                 docRef.setData(updateData)
 
                 // new user -> should present information page
-                completion(true)
+                completion(true, nil)
             }
         }
     }
@@ -142,26 +143,26 @@ class FirebaseService {
         let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", arrayContains: userA)
 
         getDocuments(query) { [weak self] (chatRooms: [ChatRoom]) in
+            guard let self = self else { return }
             var chatRooms = chatRooms
-            chatRooms = chatRooms.filter({ $0.members.contains(userB)
-            })
-            print(chatRooms)
+            chatRooms = chatRooms.filter { $0.members.contains(userB) }
+
             if chatRooms.isEmpty {
-                self?.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
+                self.insertNewChatRoom(userA: userA, userB: userB) { chatRoom, _ in
                     if let chatRoom = chatRoom {
-                        self?.fetchRoomMemberData(chatRooms: [chatRoom], completion: { chatRooms in
+                        self.fetchRoomMemberData(chatRooms: [chatRoom]) { chatRooms in
                             if let returnChatRoom = chatRooms.first {
                                 completion(returnChatRoom)
                             }
-                        })
+                        }
                     }
                 }
             } else {
-                self?.fetchRoomMemberData(chatRooms: chatRooms, completion: { chatRooms in
+                self.fetchRoomMemberData(chatRooms: chatRooms) { chatRooms in
                     if let returnChatRoom = chatRooms.first {
                         completion(returnChatRoom)
                     }
-                })
+                }
             }
         }
     }
@@ -169,7 +170,14 @@ class FirebaseService {
     func insertNewChatRoom(userA: String, userB: String, completion: @escaping ((ChatRoom?, Error?) -> Void)) {
         let colRef = FirestoreEndpoint.chatRoom.colRef
         let docRef = colRef.document()
-        let chatroom = ChatRoom(id: docRef.documentID, members: [userA, userB], messages: nil, messagesContent: nil, lastMessage: nil, lastUpdated: nil)
+        let chatroom = ChatRoom(
+            id: docRef.documentID,
+            members: [userA, userB],
+            messages: nil,
+            messagesContent: nil,
+            lastMessage: nil,
+            lastUpdated: nil
+        )
 
         do {
             try docRef.setData(from: chatroom)
@@ -184,8 +192,10 @@ class FirebaseService {
         fetchChatRoomsByUserID(userID: userID) { [weak self] roomsResult in
             let group = DispatchGroup()
             var chatRooms = roomsResult
+            print("fetchChatRoomDataWithMemberData ", userID)
+
             chatRooms.enumerated().forEach { index, roomResult in
-                var chatRoom = roomResult
+                let chatRoom = roomResult
                 let members = chatRoom.members.filter { member in
                     member != UserDefaults.id
                 }
@@ -194,8 +204,12 @@ class FirebaseService {
                     let memberID = members[0]
                     group.enter()
                     self?.fetchUserByID(userID: memberID, index: index) { user, index in
-                        if let user = user {
-                            chatRooms[index!].member = ChatMember(id: memberID, profilePhoto: user.profilePhoto!, name: user.name!)
+                        if let user = user,
+                            let index = index {
+                            chatRooms[index].member = ChatMember(
+                                id: memberID,
+                                profilePhoto: user.profilePhoto,
+                                name: user.name ?? "不明用戶")
                         }
                         group.leave()
                     }
@@ -207,24 +221,67 @@ class FirebaseService {
         }
     }
 
-    func fetchRoomDatabyQuery(query: Query, completion: @escaping (([Room]) -> Void)) {
+    func fetchRoomDatabyQuery(user: User, query: Query, completion: @escaping (([Room]) -> Void)) {
+        var blocks = user.blocks ?? []
+        blocks.append(UserDefaults.id)
+        print(blocks)
+
         let group = DispatchGroup()
-        getDocuments(query) { (rooms: [Room]) in
-            var rooms = rooms
-            rooms.enumerated().forEach { index, roomResult in
+        var rooms: [Room] = []
+        var users: [User] = []
+
+        group.enter()
+        getDocuments(query) { (tmpRooms: [Room]) in
+            rooms += tmpRooms
+            print("rooms.count = ", rooms.count)
+            tmpRooms.enumerated().forEach { index, roomResult in
                 let ownerID = roomResult.userID
-                group.enter()
-                self.fetchUserByID(userID: ownerID, index: index) { user, index in
-                    if let user = user,
-                       let index = index {
-                        rooms[index].userData = user
+                if !blocks.contains(ownerID) {
+                    group.enter()
+                    self.fetchUserByID(userID: ownerID, index: index) { user, _ in
+                        if let user = user {
+                            users.append(user)
+                        }
+                        group.leave()
                     }
-                    group.leave()
                 }
             }
-            group.notify(queue: DispatchQueue.main) {
-                completion(rooms)
+            group.leave()
+        }
+
+        let queryNil = FirestoreEndpoint.room.colRef.whereField("roomMinPrice", isEqualTo: -1)
+        group.enter()
+        getDocuments(queryNil) { (tmpRooms: [Room]) in
+            rooms += tmpRooms
+            print("rooms.count = ", rooms.count)
+            tmpRooms.enumerated().forEach { index, roomResult in
+                let ownerID = roomResult.userID
+                if !blocks.contains(ownerID) {
+                    group.enter()
+                    self.fetchUserByID(userID: ownerID, index: index) { user, _ in
+                        if let user = user {
+                            users.append(user)
+                        }
+                        group.leave()
+                    }
+                }
             }
+            group.leave()
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            let userIDs = users.map { $0.id }
+            let filterRooms = rooms
+                .map { room -> Room in
+                    var room = room
+                    if let uIndex = userIDs.firstIndex(of: room.userID) {
+                        room.userData = users[uIndex]
+                    }
+                    return room
+                }
+                .filter { $0.userData != nil }
+                .sorted { $0.createdTime.seconds > $1.createdTime.seconds }
+            completion(filterRooms)
         }
     }
 
@@ -232,7 +289,7 @@ class FirebaseService {
         let group = DispatchGroup()
         var chatRooms = rooms
         chatRooms.enumerated().forEach { index, roomResult in
-            var chatRoom = roomResult
+            let chatRoom = roomResult
             let members = chatRoom.members.filter { member in
                 member != UserDefaults.id
             }
@@ -246,7 +303,7 @@ class FirebaseService {
                         chatRooms[index].member = ChatMember(
                             id: memberID,
                             profilePhoto: user.profilePhoto,
-                            name: user.name!
+                            name: user.name ?? "User"
                         )
                     }
                     group.leave()
@@ -263,17 +320,25 @@ class FirebaseService {
     func fetchRoomByCoordinate(
         northWest: CLLocationCoordinate2D,
         southEast: CLLocationCoordinate2D,
+        userBlocks: [String] = [],
         completion: @escaping (([Room]?) -> Void)
     ) {
+        var userBlocks = userBlocks
+        userBlocks.append(UserDefaults.id)
+
         FirestoreEndpoint.room.colRef
             .whereField("lat", isLessThanOrEqualTo: northWest.latitude)
             .whereField("lat", isGreaterThanOrEqualTo: southEast.latitude)
-            .getDocuments() { querySnapshot, error in
+            .whereField("isDeleted", isEqualTo: false)
+            .getDocuments { [weak self] querySnapshot, error in
+                guard let self = self else { return }
+
                 if let error = error {
                     print("Error getting documents: \(error.localizedDescription)")
                 }
 
                 var roomsWithoutOwnerData: [Room] = []
+
                 if let querySnapshot = querySnapshot {
                     querySnapshot.documents.forEach { document in
                         do {
@@ -281,7 +346,7 @@ class FirebaseService {
                             if let long = item.long {
                                 if long >= northWest.longitude
                                     && long <= southEast.longitude
-                                    && item.userID != UserDefaults.id {
+                                    && !userBlocks.contains(item.userID) {
                                     roomsWithoutOwnerData.append(item)
                                 }
                             }
@@ -297,8 +362,9 @@ class FirebaseService {
                         let ownerID = roomResult.userID
                         group.enter()
                         self.fetchUserByID(userID: ownerID, index: index) { user, index in
-                            if let user = user {
-                                rooms[index!].userData = user
+                            if let user = user,
+                                let index = index {
+                                rooms[index].userData = user
                             }
                             group.leave()
                         }
@@ -311,36 +377,52 @@ class FirebaseService {
     }
 
     // FIXME: add offset for paginate
-    func fetchRooms(county: String? = nil, completion: @escaping (([Room]) -> Void)) {
+    func fetchRooms(user: User? = nil, county: String? = nil, completion: @escaping (([Room]) -> Void)) {
         var query: Query
-        print("===", UserDefaults.id)
+
+        guard let user = user else {
+            completion([])
+            return
+        }
+
+        var blocks = user.blocks ?? []
+        blocks.append(UserDefaults.id)
+        print("blocks = ", blocks)
+
         if let county = county {
             query = FirestoreEndpoint.room.colRef
                 .whereField("county", isEqualTo: county)
-                .whereField("userID", isNotEqualTo: UserDefaults.id)
+                .whereField("isDeleted", isEqualTo: false)
         } else {
             query = FirestoreEndpoint.room.colRef
-                .whereField("userID", isNotEqualTo: UserDefaults.id)
+                .whereField("isDeleted", isEqualTo: false)
         }
 
         query = query.order(by: "userID", descending: true)
 
         let group = DispatchGroup()
-        getDocuments(query) { (rooms: [Room]) in
+        getDocuments(query) { [weak self] (rooms: [Room]) in
             var rooms = rooms
             rooms.enumerated().forEach { index, roomResult in
                 let ownerID = roomResult.userID
                 group.enter()
-                self.fetchUserByID(userID: ownerID, index: index) { user, index in
-                    if let user = user,
-                       let index = index {
-                        rooms[index].userData = user
+                if !blocks.contains(roomResult.userID) {
+                    self?.fetchUserByID(userID: ownerID, index: index) { user, index in
+                        if let user = user,
+                            let index = index {
+                            rooms[index].userData = user
+                        }
+                        group.leave()
                     }
+                } else {
                     group.leave()
                 }
             }
+
             group.notify(queue: DispatchQueue.main) {
-                let sortedRooms  = rooms.sorted { roomA, roomB in
+                let filterRooms = rooms.filter { $0.userData != nil }
+
+                let sortedRooms = filterRooms.sorted { roomA, roomB in
                     roomA.createdTime.seconds > roomB.createdTime.seconds
                 }
                 completion(sortedRooms)
@@ -369,133 +451,172 @@ class FirebaseService {
                 }
             }
             group.notify(queue: DispatchQueue.main) {
-                completion(rooms)
+                let filterRoom = rooms.filter { $0.userData != nil }
+                completion(filterRoom)
             }
         }
     }
+}
 
-    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
+extension FirebaseService {
+    func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room], [FavoriteRoom]) -> Void)) {
         fetchUserByID(userID: userID) { [unowned self] user, _ in
             guard let user = user else {
-                completion([])
+                completion([], [])
                 return
             }
-            self.fetchFavoriteRoomsByRoomID(roomIDList: user.favoriteRoomIDs) { rooms in
-                completion(rooms)
+            self.fetchFavoriteRoomsByRoomID(user: user) { rooms in
+                completion(rooms, user.favoriteRooms)
             }
         }
     }
 
-    func fetchFavoriteRoomsByRoomID(roomIDList: [String]?, completion: @escaping (([Room]) -> Void)) {
-        guard let roomIDList = roomIDList else {
-            return
-        }
+    func fetchFavoriteRoomsByRoomID(user: User, completion: @escaping (([Room]) -> Void)) {
+        var rooms: [Room] = []
+
         let group = DispatchGroup()
-        roomIDList.forEach { roomID in
+        user.favoriteRoomIDs.forEach { roomID in
             group.enter()
-            fetchRoomByRoomID(roomID: roomID) { room in
-                guard let roomID = room.roomID else { return }
-                let index = roomIDList.firstIndex(of: roomID)
-                gCurrentUser.favoriteRooms[index!].room = room
+            fetchRoomByRoomID(roomID: roomID, user: user) { room in
+                if let room = room {
+                    rooms.append(room)
+                }
                 group.leave()
             }
         }
 
         group.notify(queue: DispatchQueue.main) {
-            let rooms = gCurrentUser.favoriteRooms.map { favRoom in
-                return favRoom.room!
-            }
-            completion(rooms)
+            let sorted = rooms
+                .filter { $0.isDeleted == false }
+                .sorted { $0.createdTime.seconds > $1.createdTime.seconds }
+            completion(sorted)
         }
     }
 
-    func fetchReservationByID(reservationID: String, completion: @escaping ((Reservation) -> Void)) {
-        let query = FirestoreEndpoint.reservation.colRef.document(reservationID)
+    func fetchReservationByID(reservationID: String, completion: @escaping ((Result<Reservation>) -> Void)) {
+        let query = FirestoreEndpoint.reservation.colRef
+            .whereField("id", isEqualTo: reservationID)
+            .whereField("isDeleted", isEqualTo: false)
 
-        query.getDocument { document, error in
-            if let document = document, document.exists {
-                do {
-                    let reservation = try document.data(as: Reservation.self)
-                    completion(reservation)
-                } catch {
-                    print("ERROR: \(error.localizedDescription)")
+        query.getDocuments { querySnapshot, error in
+            if
+                let querySnapshot = querySnapshot,
+                !querySnapshot.isEmpty {
+                querySnapshot.documents.forEach { document in
+                    do {
+                        let reservation = try document.data(as: Reservation.self)
+                        completion(Result.success(reservation))
+                    } catch {
+                        completion(Result.failure(error))
+                    }
                 }
             } else {
-                print("Document does not exist")
+                completion(Result.failure(RMError.noData))
             }
         }
     }
 
-    func fetchRoomsByReservationID(reservationList: [String]?, completion: @escaping (([Reservation]) -> Void)) {
-        guard let reservationList = reservationList else {
-            return
-        }
+    func fetchRoomsByReservationID(user: User, completion: @escaping (([Reservation]) -> Void)) {
         var reservations: [Reservation] = []
         var rooms: [Room] = []
         let group = DispatchGroup()
-        reservationList.enumerated().forEach { index, reservationID in
+        user.reservations.forEach { reservationID in
             group.enter()
-            fetchReservationByID(reservationID: reservationID) { [weak self] reservation in
-                reservations.append(reservation)
-                guard let roomID = reservation.roomID else {
-                    return
-                }
-                self?.fetchRoomByRoomID(roomID: roomID) { room in
-                    rooms.append(room)
+            fetchReservationByID(reservationID: reservationID) { [weak self] result in
+                guard let self = self else { return }
+
+                switch result {
+                case .success(let reservation):
+                    reservations.append(reservation)
+                    guard let roomID = reservation.roomID else {
+                        return
+                    }
+                    self.fetchRoomByRoomID(roomID: roomID, user: user) { room in
+                        if let room = room {
+                            rooms.append(room)
+                        }
+
+                        group.leave()
+                    }
+                case .failure(_):
                     group.leave()
                 }
             }
         }
 
         group.notify(queue: DispatchQueue.main) {
-            let roomIDList = rooms.map({ room in
-                room.roomID
-            })
+            let roomIDList = rooms.map { $0.roomID }
 
-            let rsvns = reservations.map { reservation -> Reservation in
-                var rsvn = reservation
-                if let roomID = rsvn.roomID,
-                   let roomIndex = roomIDList.firstIndex(of: roomID) {
-                    rsvn.roomDetail = rooms[roomIndex]
+            var rsvns = reservations
+                .map { reservation -> Reservation in
+                    var rsvn = reservation
+                    if
+                        let roomID = rsvn.roomID,
+                        let roomIndex = roomIDList.firstIndex(of: roomID) {
+                        rsvn.roomDetail = rooms[roomIndex]
+                    }
+                    return rsvn
                 }
-                return rsvn
+                .filter { $0.roomDetail != nil && $0.roomDetail?.isDeleted == false }
+
+            rsvns = rsvns.sorted { rsvnA, rsvnB in
+                guard
+                    let requestTimeA = rsvnA.requestTime,
+                    let requestTimeB = rsvnB.requestTime else {
+                    return rsvnA.createdTime.dateValue() > rsvnB.createdTime.dateValue()
+                }
+                return requestTimeA.dateValue() > requestTimeB.dateValue()
             }
+
             completion(rsvns)
         }
     }
 
-    func fetchReservationRoomsByUserID(userID: String, completion: @escaping (([Reservation]) -> Void)) {
-        fetchUserByID(userID: userID) {[weak self] user, _ in
-            guard let user = user,
-                  let self = self else {
+    func fetchReservationRoomsByUserID(userID: String, completion: @escaping (([Reservation], User) -> Void)) {
+        fetchUserByID(userID: userID) { [weak self] user, _ in
+            guard
+                let user = user,
+                let self = self else {
                 return
             }
 
-            self.fetchRoomsByReservationID(reservationList: user.reservations) { reservations in
-                completion(reservations)
+            self.fetchRoomsByReservationID(user: user) { reservations in
+                completion(reservations, user)
             }
         }
     }
 
-    func fetchRoomByRoomID(roomID: String, completion: @escaping ((Room) -> Void)) {
-        let query = FirestoreEndpoint.room.colRef.document(roomID)
+    func fetchRoomByRoomID(roomID: String, user: User, completion: @escaping ((Room?) -> Void)) {
+        var blocks = user.blocks ?? []
+        blocks.append(UserDefaults.id)
 
-        query.getDocument { [weak self] document, error in
-            guard let `self` = self else { return }
-            if let document = document, document.exists {
-                do {
-                    var room = try document.data(as: Room.self)
+        let query = FirestoreEndpoint.room.colRef
+            .whereField("roomID", isEqualTo: roomID)
 
-                    self.fetchUserByID(userID: room.userID) { user, _ in
-                        room.userData = user
-
-                        completion(room)
-                    }
-                } catch {
-                    print("ERROR: \(error.localizedDescription)")
-                }
+        query.getDocuments { [weak self] querySnapshot, error in
+            guard let self = self else { return }
+            if error != nil {
+                completion(nil)
             } else {
-                print("Document does not exist")
+                guard let querySnapshot = querySnapshot else {
+                    completion(nil)
+                    return
+                }
+                querySnapshot.documents.forEach { document in
+                    do {
+                        var item = try document.data(as: Room.self)
+
+                        self.fetchUserByID(userID: item.userID) { user, index in
+                            if let user = user {
+                                item.userData = user
+                            }
+                            completion(item)
+                        }
+                    } catch {
+                        print("error: ", error)
+                        completion(nil)
+                    }
+                }
             }
         }
     }
@@ -524,25 +645,6 @@ class FirebaseService {
             completion(rooms.count)
         }
     }
-
-    func fetchRoomsOwnByUserID(roomIDList: [String]?, completion: @escaping (([Room]) -> Void)) {
-        guard let roomIDList = roomIDList else {
-            return
-        }
-        var rooms: [Room] = []
-        let group = DispatchGroup()
-        roomIDList.forEach { roomID in
-            group.enter()
-            fetchRoomByRoomID(roomID: roomID) { room in
-                rooms.append(room)
-                group.leave()
-            }
-        }
-
-        group.notify(queue: DispatchQueue.main) {
-            completion(rooms)
-        }
-    }
 }
 
 extension FirebaseService {
@@ -550,7 +652,7 @@ extension FirebaseService {
     func fetchMessagesbyChatRoomID(chatRoomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
         let query = FirestoreEndpoint.chatRoom.colRef.document(chatRoomID).collection("Message")
 
-        query.getDocuments(completion: { querySnapshot, error in
+        query.getDocuments { querySnapshot, error in
             if let error = error {
                 completion(nil, error)
                 print("ERROR: getting documents: \(error.localizedDescription)")
@@ -562,24 +664,13 @@ extension FirebaseService {
                     do {
                         let item = try document.data(as: Message.self)
                         messages.append(item)
-                    } catch let DecodingError.dataCorrupted(context) {
-                        print(context)
-                    } catch let DecodingError.keyNotFound(key, context) {
-                        print("Key '\(key)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.valueNotFound(value, context) {
-                        print("Value '\(value)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.typeMismatch(type, context) {
-                        print("Type '\(type)' mismatch:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
                     } catch {
                         print("ERROR: ", error.localizedDescription)
                     }
                 }
                 completion(messages, nil)
             }
-        })
+        }
     }
 
     func listenToMessageUpdate(roomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {
@@ -587,9 +678,8 @@ extension FirebaseService {
             .document(roomID)
             .collection("Message")
             .order(by: "createdTime", descending: false)
-            .addSnapshotListener({ querySnapshot, error in
+            .addSnapshotListener { querySnapshot, error in
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshot results: \(error!)")
                     completion(nil, error)
                     return
                 }
@@ -600,31 +690,22 @@ extension FirebaseService {
                     do {
                         let item = try document.data(as: Message.self)
                         messages.append(item)
-                    } catch let DecodingError.dataCorrupted(context) {
-                        print(context)
-                    } catch let DecodingError.keyNotFound(key, context) {
-                        print("Key '\(key)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.valueNotFound(value, context) {
-                        print("Value '\(value)' not found:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
-                    } catch let DecodingError.typeMismatch(type, context) {
-                        print("Type '\(type)' mismatch:", context.debugDescription)
-                        print("codingPath:", context.codingPath)
                     } catch {
                         print("error: ", error)
                         completion(nil, error)
                     }
                 }
                 completion(messages, nil)
-            })
+            }
     }
 
     func listenToChatRoomUpdate(completion: @escaping (([ChatRoom]?, Error?) -> Void)) {
         FirestoreEndpoint.chatRoom.colRef
             .whereField("members", arrayContains: UserDefaults.id)
             .order(by: "lastUpdated", descending: true)
-            .addSnapshotListener({ querySnapshot, error in
+            .addSnapshotListener { [weak self] querySnapshot, error in
+                guard let self = self else { return }
+
                 if let error = error {
                     print("Error getting documents: \(error)")
                     completion(nil, error)
@@ -632,33 +713,36 @@ extension FirebaseService {
 
                 var chatRooms: [ChatRoom] = []
                 if let querySnapshot = querySnapshot {
-                    querySnapshot.documents.forEach { document in
-                        do {
-                            let item = try document.data(as: ChatRoom.self)
-                            if item.members[0] != item.members[1] {
+                    self.fetchUserByID(userID: UserDefaults.id) { user, _ in
+                        var blocks = user?.blocks ?? []
+                        blocks.append(UserDefaults.id)
+                        querySnapshot.documents.forEach { document in
+                            do {
+                                let item = try document.data(as: ChatRoom.self)
+                                let otherUser = item.members.first { $0 != UserDefaults.id }
+                                print("otherUser = ", otherUser)
+                                print("blocks ", blocks)
+                                guard
+                                    let otherUser = otherUser,
+                                    !blocks.contains(otherUser)
+                                else {
+                                    return
+                                }
+
                                 chatRooms.append(item)
+                            } catch {
+                                print("ERROR: ", error.localizedDescription)
                             }
-                        } catch let DecodingError.dataCorrupted(context) {
-                            print(context)
-                        } catch let DecodingError.keyNotFound(key, context) {
-                            print("Key '\(key)' not found:", context.debugDescription)
-                            print("codingPath:", context.codingPath)
-                        } catch let DecodingError.valueNotFound(value, context) {
-                            print("Value '\(value)' not found:", context.debugDescription)
-                            print("codingPath:", context.codingPath)
-                        } catch let DecodingError.typeMismatch(type, context) {
-                            print("Type '\(type)' mismatch:", context.debugDescription)
-                            print("codingPath:", context.codingPath)
-                        } catch {
-                            print("ERROR: ", error.localizedDescription)
+                        }
+
+                        FirebaseService.shared.fetchRoomMemberData(chatRooms: chatRooms) { chatRooms in
+                            completion(chatRooms, nil)
                         }
                     }
-
-                    FirebaseService.shared.fetchRoomMemberData(chatRooms: chatRooms) { chatRooms in
-                        completion(chatRooms, nil)
-                    }
+                } else {
+                    completion(nil, RMError.noData)
                 }
-            })
+            }
     }
 
     // MARK: - Room Detail Page - Like
@@ -679,11 +763,10 @@ extension FirebaseService {
     }
 
 
-    func updateUserFavRsvnData(reservations: [String], favoriteRooms: [FavoriteRoom]) {
+    func updateUserFavData(favoriteRooms: [FavoriteRoom]) {
         let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
 
         query.updateData([
-            "reservations": reservations,
             "favoriteRooms": []
         ])
 
@@ -700,7 +783,7 @@ extension FirebaseService {
 // MARK: - room
 extension FirebaseService {
     func updateRoomInfo(roomID: String, room: Room, completion: @escaping ((Error?) -> Void)) {
-        FirestoreEndpoint.room.colRef.document(roomID).delete() { [weak self] error in
+        FirestoreEndpoint.room.colRef.document(roomID).delete { [weak self] error in
             guard let self = self else { return }
 
             if let error = error {
@@ -725,9 +808,73 @@ extension FirebaseService {
         room.roomID = roomID ?? docRef.documentID
 
         do {
-            try docRef.setData(from: room, completion: { error in
+            try docRef.setData(from: room) { error in
                 completion(error)
-            })
+            }
+        } catch {
+            completion(error)
+        }
+    }
+}
+
+// MARK: - User Action
+extension FirebaseService {
+    func fatchBlockUsers(completion: @escaping (([User], Error?) -> Void)) {
+        let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
+        query.getDocument { document, error in
+            if let error = error {
+                completion([], error)
+            }
+
+            if let document = document {
+                do {
+                    let user = try document.data(as: User.self)
+
+                    if let blocks = user.blocks {
+                        let group = DispatchGroup()
+                        var users: [User] = []
+
+                        blocks.forEach { blockID in
+                            group.enter()
+                            self.fetchUserByID(userID: blockID) { user, _ in
+                                guard let user = user else {
+                                    return
+                                }
+                                users.append(user)
+                                group.leave()
+                            }
+                        }
+
+                        group.notify(queue: DispatchQueue.main) {
+                            completion(users, nil)
+                        }
+                    }
+                } catch {
+                    completion([], error)
+                }
+            }
+        }
+    }
+
+    func insertBlock(blockedUser: String) {
+        let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
+        query.updateData([
+            "blocks": FieldValue.arrayUnion([blockedUser])
+        ])
+    }
+
+    func deleteBlock(blockedUsers: [String]) {
+        let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
+        query.updateData([
+            "blocks": FieldValue.arrayRemove(blockedUsers)
+        ])
+    }
+
+    func insertReportEvent(event: ReportEvent, completion: @escaping ((Error?) -> Void)) {
+        let query = FirestoreEndpoint.reportEvent.colRef.document()
+        do {
+            try query.setData(from: event)
+            completion(nil)
         } catch {
             completion(error)
         }

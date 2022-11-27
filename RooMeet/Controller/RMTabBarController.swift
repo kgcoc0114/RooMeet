@@ -65,7 +65,7 @@ private enum Tab: String, CaseIterable {
 }
 
 class RMTabBarController: UITabBarController {
-    private let tabs: [Tab] = Tab.allCases
+//    private let tabs: [Tab] = Tab.allCases
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -77,45 +77,53 @@ class RMTabBarController: UITabBarController {
     func listenPhoneCallEvent() {
         let uid = UserDefaults.id
 
-        FirebaseService.shared.fetchUserByID(userID: uid) { user, index in
-            if let user = user {
-                gCurrentUser = user
-                print("gCurrentUser = ", gCurrentUser)
-            }
-        }
-
         FirestoreEndpoint.call.colRef
             .whereField("callee", isEqualTo: uid)
-            .addSnapshotListener({ [weak self] querySnapshot, error in
+            .addSnapshotListener { [weak self] querySnapshot, error in
                 if let error = error {
                     print("Error getting documents: \(error)")
                 }
 
                 guard let snapshot = querySnapshot else {
-                    print("Error fetching snapshots: \(error)")
+                    print("Error fetching snapshots: \(String(describing: error))")
                     return
                 }
 
                 snapshot.documentChanges.forEach { diff in
-                    print(diff)
                     if diff.type == .added {
                         self?.showCallVC(document: diff.document)
                     }
                 }
-            })
+            }
     }
 
     func showCallVC(document: QueryDocumentSnapshot) {
-        do {
-            let call = try document.data(as: Call.self)
-
-            if call.caller != UserDefaults.id && call.status == "offer" {
-                let callViewController = CallViewController(callRoomId: call.id, callType: .answer, callerData: call.callerData, calleeData: call.calleeData)
-                callViewController.modalPresentationStyle = .fullScreen
-                self.present(callViewController, animated: true)
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
+            guard let user = user else {
+                return
             }
-        } catch {
-            print(error.localizedDescription)
+
+            var blocks = user.blocks ?? []
+            blocks.append(UserDefaults.id)
+
+            do {
+                let call = try document.data(as: Call.self)
+
+                if call.caller != UserDefaults.id && call.status == "offer" && !blocks.contains(call.caller) {
+                    let callViewController = CallViewController(
+                        callRoomId: call.id,
+                        callType: .answer,
+                        callerData: call.callerData,
+                        calleeData: call.calleeData
+                    )
+                    callViewController.modalPresentationStyle = .fullScreen
+                    self.present(callViewController, animated: true)
+                }
+
+
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }

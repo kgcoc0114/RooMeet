@@ -30,11 +30,21 @@ class FavoritesViewController: UIViewController {
         }
     }
 
+    var user: User?
+
+    var favoriteRooms: [FavoriteRoom] = []
+
     var entryPage: EntryPage = .fav
 
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
 
         navigationItem.title = entryPage == .fav ? "Favorites" : "My Post"
 
@@ -82,23 +92,33 @@ class FavoritesViewController: UIViewController {
         collectionView.collectionViewLayout = createLayout()
 
         collectionView.addPullToRefresh {[weak self] in
-            self?.fetchRooms()
+            guard let self = self else { return }
+            self.fetchRooms()
         }
     }
 
     private func fetchRooms() {
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self else { return }
+            self.user = user
+        }
+
         if entryPage == .fav {
-            FirebaseService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
+            FirebaseService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms, favoriteRooms in
                 guard let self = self else { return }
                 self.rooms = rooms
+                self.favoriteRooms = favoriteRooms
             }
         } else {
-            FirebaseService.shared.fetchRoomsByUserID(userID: UserDefaults.id) {
-                [weak self] rooms in
+            FirebaseService.shared.fetchRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
                 guard let self = self else { return }
                 self.rooms = rooms
             }
         }
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 }
 
@@ -139,7 +159,7 @@ extension FavoritesViewController: UICollectionViewDelegate {
             let room = dataSource.itemIdentifier(for: indexPath)
         else { return }
         if entryPage == .fav {
-            let detailViewController = RoomDetailViewController(room: room)
+            let detailViewController = RoomDetailViewController(room: room, user: user)
             navigationController?.pushViewController(detailViewController, animated: true)
         } else {
             let postViewController = PostViewController(entryType: .edit, data: room)
@@ -153,11 +173,9 @@ extension FavoritesViewController: RoomDisplayCellDelegate {
         guard let indexPath = collectionView.indexPath(for: cell) else {
             return
         }
-
-        rooms.remove(at: indexPath.item)
-
-        gCurrentUser.favoriteRooms.remove(at: indexPath.item)
-
-        FirebaseService.shared.updateUserFavoriteRoomsData(favoriteRooms: gCurrentUser.favoriteRooms)
+        let updateFavRooms = favoriteRooms.filter { $0.roomID != rooms[indexPath.item].roomID }
+        let updateRooms = rooms.filter { $0.roomID != rooms[indexPath.item].roomID }
+        rooms = updateRooms
+        FirebaseService.shared.updateUserFavoriteRoomsData(favoriteRooms: updateFavRooms)
     }
 }

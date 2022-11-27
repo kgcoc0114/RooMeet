@@ -67,18 +67,24 @@ class ChatViewController: UIViewController {
         super.viewDidLoad()
 
         let phoneBarButton = UIBarButtonItem(
-            image: UIImage(systemName: "phone"),
+            image: UIImage.asset(.circle_phone).withRenderingMode(.alwaysOriginal),
             style: .plain,
             target: self,
-            action: #selector(audioCall))
+            action: #selector(call))
 
-        let videoCallBarButton = UIBarButtonItem(
-            image: UIImage(systemName: "video"),
+        let infoBarButton = UIBarButtonItem(
+            image: UIImage.asset(.comment_info).withRenderingMode(.alwaysOriginal),
             style: .plain,
             target: self,
-            action: #selector(videoCall))
+            action: #selector(userAction))
 
-        navigationItem.rightBarButtonItems = [phoneBarButton]
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
+
+        navigationItem.rightBarButtonItems = [infoBarButton, phoneBarButton]
 
         tableView.delegate = self
         configureDataSource()
@@ -86,26 +92,26 @@ class ChatViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(#function)
-
-        self.tabBarController?.tabBar.isHidden = true
 
         // listen
         guard let chatRoom = chatRoom else {
             print("ERROR: chatRoom is not exist.")
             return
         }
-        FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { messages, error in
+
+        FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { [weak self] messages, error in
+            guard let self = self else { return }
             if let error = error {
                 print("Error getting documents: \(error)")
             }
             self.messages = messages ?? []
         }
+
+        self.tabBarController?.tabBar.isHidden = true
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print(#function)
         self.tabBarController?.tabBar.isHidden = false
     }
 
@@ -149,7 +155,7 @@ class ChatViewController: UIViewController {
                 return
             }
 
-            let chatRoomRef = Firestore.firestore().collection("ChatRoom").document(chatRoom.id)
+            let chatRoomRef = FirestoreEndpoint.chatRoom.colRef.document(chatRoom.id)
             let lastMessage = LastMessage(id: messageRef.documentID, content: content, createdTime: message.createdTime)
 
             chatRoomRef.updateData([
@@ -168,13 +174,19 @@ class ChatViewController: UIViewController {
     @IBAction func showRuler(_ sender: Any) {
     }
 
-    @objc private func audioCall(_ sender: Any) {
-        guard let chatRoom = chatRoom else {
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
+    }
+
+    @objc private func call(_ sender: Any) {
+        guard
+            let chatRoom = chatRoom,
+            let otherData = otherData else {
             return
         }
 
         // 清空通話資料
-        Firestore.firestore().collection("Call").document(chatRoom.id).delete() { err in
+        FirestoreEndpoint.call.colRef.document(chatRoom.id).delete() { err in
             if let err = err {
                 print("Error removing document: \(err)")
             } else {
@@ -186,7 +198,7 @@ class ChatViewController: UIViewController {
             callRoomId: chatRoom.id,
             callType: .offer,
             callerData: currentUserData,
-            calleeData: otherData!
+            calleeData: otherData
         )
 
         callViewController.otherUserData = otherData
@@ -195,31 +207,35 @@ class ChatViewController: UIViewController {
         present(callViewController, animated: true)
     }
 
-    @objc private func videoCall(_ sender: Any) {
-        guard let chatRoom = chatRoom else {
-            return
-        }
-
-        // 清空通話資料
-        Firestore.firestore().collection("Call").document(chatRoom.id).delete() { err in
-            if let err = err {
-                print("Error removing document: \(err)")
-            } else {
-                print("Document successfully removed!")
-            }
-        }
-
-        let callViewController = CallViewController(
-            callRoomId: chatRoom.id,
-            callType: .offer,
-            callerData: currentUserData,
-            calleeData: otherData!
+    @objc private func userAction(_ sender: Any) {
+        let userActionAlertController = UIAlertController(
+            title: "封鎖 \(otherData?.name ?? "") ?",
+            message: "他們將無法在 RooMeet 發訊息給你或找到你的貼文。你封鎖用戶時，對方不會收到通知。",
+            preferredStyle: .actionSheet
         )
 
-        callViewController.otherUserData = otherData
-        callViewController.currentUserData = currentUserData
-        callViewController.modalPresentationStyle = .fullScreen
-        present(callViewController, animated: true)
+        let blockUserAction = UIAlertAction(title: "封鎖用戶", style: .destructive) { [weak self] _ in
+            guard
+                let self = self,
+                let blockUser = self.otherData
+            else { return }
+
+            let blockUserID = blockUser.id
+
+            FirebaseService.shared.insertBlock(blockedUser: blockUserID)
+
+            RMProgressHUD.showSuccess()
+            self.navigationController?.popViewController(animated: true)
+        }
+
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+            userActionAlertController.dismiss(animated: true)
+        }
+
+        userActionAlertController.addAction(blockUserAction)
+        userActionAlertController.addAction(cancelAction)
+
+        present(userActionAlertController, animated: true, completion: nil)
     }
 }
 
@@ -260,39 +276,37 @@ extension ChatViewController {
             forCellReuseIdentifier: CUCallCell.reuseIdentifier
         )
 
-        dataSource = DataSource(
-            tableView: tableView,
-            cellProvider: {[unowned self] tableView, indexPath, item in
-                switch item {
-                case .message(let data):
-                    let message = data
-                    let messageType = MessageType.allCases[message.messageType]
-                    let sendByMe = message.sendBy == currentUserData.id
+        dataSource = DataSource(tableView: tableView) { [unowned self] tableView, indexPath, item in
+            switch item {
+            case .message(let data):
+                let message = data
+                let messageType = MessageType.allCases[message.messageType]
+                let sendByMe = message.sendBy == currentUserData.id
 
-                    switch messageType {
-                    case .text:
-                        if sendByMe {
-                            return configureCurrentUserCell(tableView: tableView, indexPath: indexPath, message: data)
-                        } else {
-                            return configureOtherUserCell(tableView: tableView, indexPath: indexPath, message: data)
-                        }
-                    case .image:
-                        return UITableViewCell()
-                    case .call:
-                        if sendByMe {
-                            return configureCUCallCell(tableView: tableView, indexPath: indexPath, message: data)
-                        } else {
-                            return configureOUCallCell(tableView: tableView, indexPath: indexPath, message: data)
-                        }
-                    case .reservation:
-                        if sendByMe {
-                            return configureCUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
-                        } else {
-                            return configureOUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
-                        }
+                switch messageType {
+                case .text:
+                    if sendByMe {
+                        return configureCurrentUserCell(tableView: tableView, indexPath: indexPath, message: data)
+                    } else {
+                        return configureOtherUserCell(tableView: tableView, indexPath: indexPath, message: data)
+                    }
+                case .image:
+                    return UITableViewCell()
+                case .call:
+                    if sendByMe {
+                        return configureCUCallCell(tableView: tableView, indexPath: indexPath, message: data)
+                    } else {
+                        return configureOUCallCell(tableView: tableView, indexPath: indexPath, message: data)
+                    }
+                case .reservation:
+                    if sendByMe {
+                        return configureCUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
+                    } else {
+                        return configureOUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
                     }
                 }
-            })
+            }
+        }
     }
 
     private func configureCUCallCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {

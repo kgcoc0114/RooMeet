@@ -33,6 +33,7 @@ class OUTextCell: MessageBaseCell {
             contentTextView.translatesAutoresizingMaskIntoConstraints = false
             contentTextView.backgroundColor = msgType.backgroundColor
             contentTextView.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            contentTextView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             contentTextView.isScrollEnabled = false
             contentTextView.isEditable = false
             contentTextView.font = UIFont.regularText()
@@ -68,9 +69,9 @@ class OUTextCell: MessageBaseCell {
         if let message = message,
             let sendBy = sendBy {
             if let profilePhoto = sendBy.profilePhoto {
-                avatarView.setImage(urlString: profilePhoto)
+                avatarView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
             } else {
-                avatarView.image = UIImage.asset(.profile_user)
+                avatarView.image = UIImage.asset(.roomeet)
             }
 
             contentTextView.text = message.content

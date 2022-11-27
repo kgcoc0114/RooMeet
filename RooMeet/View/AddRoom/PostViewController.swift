@@ -164,7 +164,14 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.keyboardDismissMode = .interactive
-        navigationItem.title = "Add Room Post"
+        navigationItem.title = "新增物件貼文"
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
+
         if let room = room {
             configureData(data: room)
         }
@@ -217,6 +224,8 @@ class PostViewController: UIViewController {
                     if let imageData = try? Data(contentsOf: url) {
                         if let loadedImage = UIImage(data: imageData) {
                             self.roomImages.append(loadedImage)
+                        } else {
+                            self.roomImages.append(UIImage.asset(.add))
                         }
                     }
                 }
@@ -225,13 +234,14 @@ class PostViewController: UIViewController {
     }
 
     @IBAction func submitAction(_ sender: Any) {
-        if let postBasicData = postBasicData,
-            postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
+        guard let postBasicData = postBasicData else {
+            showAlert()
+            return
+        }
+
+        if postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
             roomSpecList.isEmpty {
-            let alertController = UIAlertController(title: "有點問題唷！", message: "請填寫完整資訊", preferredStyle: .alert)
-            let alertAction = UIAlertAction(title: "好的", style: .default)
-            alertController.addAction(alertAction)
-            present(alertController, animated: false)
+            showAlert()
         } else {
             if roomImages.isEmpty {
                 room?.roomImages = []
@@ -240,6 +250,13 @@ class PostViewController: UIViewController {
                 uploadImages(images: roomImages)
             }
         }
+    }
+
+    private func showAlert() {
+        let alertController = UIAlertController(title: "新增貼文", message: "請填寫完整資訊！", preferredStyle: .alert)
+        let alertAction = UIAlertAction(title: "好的", style: .default)
+        alertController.addAction(alertAction)
+        present(alertController, animated: false)
     }
 }
 
@@ -261,7 +278,10 @@ extension PostViewController: UICollectionViewDataSource {
         PostSection.allCases.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
         switch PostSection.allCases[indexPath.section] {
         case .basic:
             guard let cell = collectionView.dequeueReusableCell(
@@ -279,12 +299,16 @@ extension PostViewController: UICollectionViewDataSource {
         case .images:
             return makePostImageCell(collectionView: collectionView, indexPath: indexPath)
         case .feeHeader:
-            guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier,
-                for: indexPath) as? OtherFeeHeaderCell else {
+            guard
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier,
+                    for: indexPath) as? OtherFeeHeaderCell,
+                let tag = PostSection.allCases.firstIndex(of: .feeHeader)
+                else {
                 fatalError("OtherFeeHeaderCell Error")
             }
-            cell.editAction.tag = PostSection.allCases.firstIndex(of: .feeHeader)!
+
+            cell.editAction.tag = tag
             cell.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
             cell.titleLabel.text = "其他費用"
             return cell
@@ -381,15 +405,34 @@ extension PostViewController: UICollectionViewDataSource {
         ) as? PostImageCell else {
             fatalError("PostImageCell Error")
         }
-
-        if let room = room,
-            room.roomImages.count - 1 >= indexPath.item {
-            cell.imageView.image = roomImages[indexPath.item]
+        print(indexPath.item, roomImages.count)
+        if entryType == .new {
+            if roomImages.count - 1 >= indexPath.item {
+                cell.imageView.image = roomImages[indexPath.item]
+            } else {
+                cell.imageView.image = UIImage.asset(.add)
+            }
         } else {
-            cell.imageView.image = UIImage.asset(.add_image)
+            if let room = room,
+                room.roomImages.count - 1 >= indexPath.item {
+                if roomImages.count - 1 >= indexPath.item {
+                    cell.imageView.image = roomImages[indexPath.item]
+                } else {
+                    cell.imageView.loadImage(
+                        room.roomImages[indexPath.item].absoluteString,
+                        placeHolder: UIImage.asset(.add)
+                    )
+                }
+            } else {
+                cell.imageView.image = UIImage.asset(.add)
+            }
         }
         cell.delegate = self
         return cell
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 }
 
@@ -400,12 +443,7 @@ extension PostViewController: UICollectionViewDelegate {
         case .feeHeader:
             var editFeeVC: EditFeeController
 
-            if entryType == .edit,
-                let billInfo = billInfo {
-                editFeeVC = EditFeeController(entryType: entryType, data: billInfo)
-            } else {
-                editFeeVC = EditFeeController(entryType: entryType, data: nil)
-            }
+            editFeeVC = EditFeeController(entryType: entryType, data: billInfo)
 
             editFeeVC.completion = { [weak self] billInfo in
                 self?.billInfo = billInfo
@@ -450,11 +488,11 @@ extension PostViewController {
             default:
                 let itemSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(100))
+                    heightDimension: .estimated(1))
                 let item = NSCollectionLayoutItem(layoutSize: itemSize)
                 let groupSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(100))
+                    heightDimension: .estimated(1))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 let section = NSCollectionLayoutSection(group: group)
                 section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
@@ -467,25 +505,23 @@ extension PostViewController {
 extension PostViewController: PostBasicCellDelegate {
     func passData(cell: PostBasicCell, data: PostBasicData) {
         postBasicData = data
-        if let county = postBasicData?.county,
-            let town = postBasicData?.town {
-            postalCode = LocationService.shared.postalCodeList?.filter({ postal in
-                postal.city == county && postal.area == town
-            })[0].zip
-            if let address = postBasicData?.address, !address.isEmpty {
-                LocationService.shared.getCoordinates(
-                    fullAddress: "\(county)\(town)\(address)") { [weak self] location in
-                        guard let `self` = self else { return }
-                        self.latitude = location.latitude
-                        self.longitude = location.longitude
-                        print("\(location.latitude),\(location.longitude)")
-                    }
+        if
+            let postBasicData = postBasicData,
+            let county = postBasicData.county,
+            let town = postBasicData.town,
+            let address = postBasicData.address {
+            LocationService.shared.getCoordinates(
+                fullAddress: "\(county)\(town)\(address)") { [weak self] location in
+                    guard let self = self else { return }
+                    self.latitude = location.latitude
+                    self.longitude = location.longitude
             }
         }
     }
 
     func showRegionPickerView(cell: PostBasicCell) {
         cell.regionSelectView.resignFirstResponder()
+        cell.endEditing(true)
         let regionPickerVC = LocationPickerViewController()
         regionPickerVC.modalPresentationStyle = .overCurrentContext
         // FIXME:
@@ -493,6 +529,7 @@ extension PostViewController: PostBasicCellDelegate {
             cell.county = county
             cell.town = town
         }
+        regionPickerVC.modalPresentationStyle = .overCurrentContext
         present(regionPickerVC, animated: false)
     }
 }
@@ -579,7 +616,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
     }
 
     private func uploadImages(images: [UIImage]) {
-        RMProgressHUD.show(view: self.view)
+        RMProgressHUD.show()
         let group = DispatchGroup()
 
         roomImagesUrl = []
@@ -601,13 +638,14 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             let storageRef = Storage.storage().reference(withPath: "RoomImages").child("\(uniqueString).png")
 
             if let uploadData = uploadData {
-                storageRef.putData(uploadData, completion: { [weak self] data, error in
+                storageRef.putData(uploadData) { [weak self] _, error in
                     if let error = error {
                         // TODO: Error Handle
                         print("Error: \(error.localizedDescription)")
                         return
                     }
-                    storageRef.downloadURL { [weak self] (url, error) in
+
+                    storageRef.downloadURL { [weak self] url, _ in
                         guard let self = self else { return }
                         guard let downloadURL = url else {
                             return
@@ -616,7 +654,7 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                         self.roomImagesUrl.append(downloadURL)
                         group.leave()
                     }
-                })
+                }
             }
         }
 
@@ -629,12 +667,15 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
 
 
     private func saveData() {
-        print(roomElevatorRules)
+        guard let postBasicData = postBasicData else {
+            return
+        }
+
         var inputRoom = Room(
             userID: UserDefaults.id,
             createdTime: createdTime,
             modifiedTime: Timestamp(),
-            title: (postBasicData?.title)!,
+            title: postBasicData.title ?? "房間出租",
             roomImages: roomImagesUrl,
             rooms: roomSpecList,
             roomFeatures: roomFeatures,
@@ -644,14 +685,16 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             roomCookingRules: roomCookingRules,
             roomElevatorRules: roomElevatorRules,
             roomBathroomRules: roomBathroomRules,
-            town: postBasicData!.town!,
-            county: postBasicData!.county!,
-            address: (postBasicData?.address!)!,
+            town: postBasicData.town ?? "中正區",
+            county: postBasicData.county ?? "臺北市",
+            address: postBasicData.address ?? "",
+            lat: latitude,
+            long: longitude,
             billInfo: billInfo,
-            leaseMonth: postBasicData?.leaseMonth ?? 0,
-            room: postBasicData?.room ?? 0,
-            parlor: postBasicData?.parlor ?? 0,
-            movinDate: postBasicData?.movinDate ?? Date(),
+            leaseMonth: postBasicData.leaseMonth ?? 0,
+            room: postBasicData.room ?? 0,
+            parlor: postBasicData.parlor ?? 0,
+            movinDate: postBasicData.movinDate ?? Date(),
             isDeleted: isDeleted
         )
 
@@ -662,22 +705,22 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                 RMProgressHUD.dismiss()
 
                 if error != nil {
-                    RMProgressHUD.showFailure(view: self.view)
+                    RMProgressHUD.showFailure()
                 } else {
-                    RMProgressHUD.showSuccess(view: self.view)
+                    RMProgressHUD.showSuccess()
                 }
                 self.navigationController?.popViewController(animated: true)
             }
         } else {
             if let room = room,
-               let roomID = room.roomID {
+                let roomID = room.roomID {
                 FirebaseService.shared.updateRoomInfo(roomID: roomID, room: inputRoom) { error in
                     RMProgressHUD.dismiss()
 
                     if error != nil {
-                        RMProgressHUD.showFailure(view: self.view)
+                        RMProgressHUD.showFailure()
                     } else {
-                        RMProgressHUD.showSuccess(view: self.view)
+                        RMProgressHUD.showSuccess()
                     }
                     self.navigationController?.popViewController(animated: true)
                 }

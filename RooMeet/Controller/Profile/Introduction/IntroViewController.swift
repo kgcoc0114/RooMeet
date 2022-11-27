@@ -39,6 +39,7 @@ class IntroViewController: UIViewController {
     let imagePickerController = UIImagePickerController()
 
     var user: User?
+
     var rules: [String] = RMConstants.shared.roomHighLights
         + RMConstants.shared.roomCookingRules
         + RMConstants.shared.roomElevatorRules
@@ -60,7 +61,7 @@ class IntroViewController: UIViewController {
     init(entryType: EntryType, user: User? = nil) {
         super.init(nibName: "IntroViewController", bundle: nil)
         self.entryType = entryType
-        self.user = user
+        self.user = user ?? User(id: UserDefaults.id)
     }
 
     required init?(coder: NSCoder) {
@@ -80,6 +81,7 @@ class IntroViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
+        fetchUser()
         updateDataSource()
     }
 
@@ -95,6 +97,7 @@ class IntroViewController: UIViewController {
         collectionView.register(
             UINib(nibName: "ItemsCell", bundle: nil),
             forCellWithReuseIdentifier: ItemsCell.reuseIdentifier)
+
         dataSource = IntroDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
             guard let self = self else { return UICollectionViewCell() }
             switch item {
@@ -105,18 +108,26 @@ class IntroViewController: UIViewController {
                     return UICollectionViewCell()
                 }
                 cell.delegate = self
-                if let profilePhoto = UserDefaults.standard.string(forKey: "profilePhoto") {
-                    cell.imageView.setImage(urlString: profilePhoto)
+
+                let profilePhoto = UserDefaults.profilePhoto
+                if profilePhoto != "empty" {
+                    cell.imageView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
                 } else {
-                    cell.imageView.image = UIImage.asset(.profile_user)
+                    cell.imageView.image = UIImage.asset(.roomeet)
                 }
-                cell.configureCell(data: data)
+
+                let edit = self.entryType == .edit && self.user != nil
+                cell.configureCell(edit: edit, data: data)
                 return cell
             case .rules:
                 guard let cell = collectionView.dequeueReusableCell(
                     withReuseIdentifier: ItemsCell.reuseIdentifier,
                     for: indexPath) as? ItemsCell else {
                     return UICollectionViewCell()
+                }
+
+                if let tmpRemoveIndex = self.rules.firstIndex(of: "可議") {
+                    self.rules.remove(at: tmpRemoveIndex)
                 }
 
                 cell.configureTagView(
@@ -137,7 +148,8 @@ class IntroViewController: UIViewController {
     }
 
     private func fetchUser() {
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self else { return }
             self.user = user
         }
     }
@@ -197,7 +209,7 @@ extension IntroViewController {
                     heightDimension: .estimated(30))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 16, trailing: 20)
                 return section
             case .rules:
                 let itemSize = NSCollectionLayoutSize(
@@ -210,7 +222,7 @@ extension IntroViewController {
                     heightDimension: .estimated(30))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
                 let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20)
+                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 16, trailing: 20)
                 return section
             }
         }
@@ -313,14 +325,14 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
             let uniqueString = NSUUID().uuidString
             let storageRef = Storage.storage().reference(withPath: "Profile").child("\(uniqueString).png")
             if let uploadData = image.scale(scaleFactor: 0.1).jpegData(compressionQuality: 0.1) {
-                storageRef.putData(uploadData, completion: { [weak self] data, error in
+                storageRef.putData(uploadData) { [weak self] _, error in
                     if let error = error {
                         // TODO: Error Handle
                         print("Error: \(error.localizedDescription)")
                         return
                     }
 
-                    storageRef.downloadURL { [weak self] url, error in
+                    storageRef.downloadURL { [weak self] url, _ in
                         guard let downloadURL = url else {
                             return
                         }
@@ -328,7 +340,7 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
                         print(Thread.current)
                         self?.saveData(url: downloadURL)
                     }
-                })
+                }
             }
         }
     }
@@ -351,6 +363,14 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
             "favoriteCounty": user.favoriteCounty as Any,
             "favoriteTown": user.favoriteTown as Any
         ]
+
+        if user.favoriteRooms.isEmpty {
+            updateData["favoriteRooms"] = []
+        }
+
+        if user.reservations.isEmpty {
+            updateData["reservations"] = []
+        }
 
         if let url = url {
             updateData["profilePhoto"] = url.absoluteString
