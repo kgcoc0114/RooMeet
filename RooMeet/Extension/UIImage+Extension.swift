@@ -56,6 +56,7 @@ enum ImageAsset: String {
     case settings_sliders
     case plus
     case roomeet
+    case broom
 }
 
 extension UIImage {

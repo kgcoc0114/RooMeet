@@ -110,4 +110,3 @@ class LocationService {
         mapView.setRegion(region, animated: true)
     }
 }
-
