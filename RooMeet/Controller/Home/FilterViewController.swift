@@ -29,8 +29,6 @@ class FilterViewController: RMButtomSheetViewController {
         let textField = RMBaseTextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.addTarget(self, action: #selector(budgetTextFieldValueChange), for: .valueChanged)
-//        textField.layer.borderColor = UIColor.mainLightColor.cgColor
-//        textField.layer.borderWidth = 0.8
         textField.placeholder = "最少月租"
         textField.keyboardType = .numberPad
         return textField
@@ -40,8 +38,6 @@ class FilterViewController: RMButtomSheetViewController {
         let textField = RMBaseTextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.addTarget(self, action: #selector(budgetTextFieldValueChange), for: .valueChanged)
-//        textField.layer.borderColor = UIColor.mainLightColor.cgColor
-//        textField.layer.borderWidth = 0.8
         textField.placeholder = "最多月租"
         textField.keyboardType = .numberPad
         return textField

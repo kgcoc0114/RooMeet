@@ -79,7 +79,7 @@ class RMTabBarController: UITabBarController {
 
         FirestoreEndpoint.call.colRef
             .whereField("callee", isEqualTo: uid)
-            .addSnapshotListener({ [weak self] querySnapshot, error in
+            .addSnapshotListener { [weak self] querySnapshot, error in
                 if let error = error {
                     print("Error getting documents: \(error)")
                 }
@@ -90,30 +90,40 @@ class RMTabBarController: UITabBarController {
                 }
 
                 snapshot.documentChanges.forEach { diff in
-                    print(diff)
                     if diff.type == .added {
                         self?.showCallVC(document: diff.document)
                     }
                 }
-            })
+            }
     }
 
     func showCallVC(document: QueryDocumentSnapshot) {
-        do {
-            let call = try document.data(as: Call.self)
-
-            if call.caller != UserDefaults.id && call.status == "offer" {
-                let callViewController = CallViewController(
-                    callRoomId: call.id,
-                    callType: .answer,
-                    callerData: call.callerData,
-                    calleeData: call.calleeData
-                )
-                callViewController.modalPresentationStyle = .fullScreen
-                self.present(callViewController, animated: true)
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
+            guard let user = user else {
+                return
             }
-        } catch {
-            print(error.localizedDescription)
+
+            var blocks = user.blocks ?? []
+            blocks.append(UserDefaults.id)
+
+            do {
+                let call = try document.data(as: Call.self)
+
+                if call.caller != UserDefaults.id && call.status == "offer" && !blocks.contains(call.caller) {
+                    let callViewController = CallViewController(
+                        callRoomId: call.id,
+                        callType: .answer,
+                        callerData: call.callerData,
+                        calleeData: call.calleeData
+                    )
+                    callViewController.modalPresentationStyle = .fullScreen
+                    self.present(callViewController, animated: true)
+                }
+
+
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }

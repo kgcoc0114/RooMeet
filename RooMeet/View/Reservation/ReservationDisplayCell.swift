@@ -101,7 +101,7 @@ class ReservationDisplayCell: UICollectionViewCell {
 
 
         if !roomDetail.roomImages.isEmpty {
-            roomImageView.setImage(urlString: roomDetail.roomImages[0].absoluteString)
+            roomImageView.loadImage(roomDetail.roomImages[0].absoluteString, placeHolder: UIImage.asset(.room_placeholder))
         } else {
             roomImageView.image = UIImage.asset(.room_placeholder)
         }

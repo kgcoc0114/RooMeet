@@ -248,4 +248,3 @@ class AuthService {
         task.resume()
     }
 }
-

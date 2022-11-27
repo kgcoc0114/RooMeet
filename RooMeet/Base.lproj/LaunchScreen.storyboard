@@ -52,10 +52,10 @@
     <resources>
         <image name="roomeet" width="512" height="512"/>
         <namedColor name="mainDarkColor">
-            <color red="0.13725490196078433" green="0.14901960784313725" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="mainLightColor">
-            <color red="0.93333333333333335" green="0.94901960784313721" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.93300002813339233" green="0.94900000095367432" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

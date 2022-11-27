@@ -39,11 +39,24 @@ class ExploreViewController: UIViewController {
                     annotation.coordinate = location
                     annotation.room = room
                     geoCodes.append(annotation)
-                    show()
                 }
             }
+            show()
         }
     }
+
+    @IBOutlet weak var resetFilterButton: UIButton! {
+        didSet {
+            resetFilterButton.setTitle("", for: .normal)
+            resetFilterButton.setImage(UIImage.asset(.broom), for: .normal)
+            resetFilterButton.backgroundColor = .white
+            resetFilterButton.tintColor = UIColor.darkGray
+            resetFilterButton.titleLabel?.font = UIFont.regularText()
+            resetFilterButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        }
+    }
+
+    var isFilter = false
 
     var geoCodes: [RMAnnotation] = []
     var geoCodesAddList: [RMAnnotation] = []
@@ -80,16 +93,16 @@ class ExploreViewController: UIViewController {
         // get user current location
         locationManger.requestLocation()
         roomExploreMap.showsUserLocation = true
+
+        fetchRooms()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { user, _ in
-            self.user = user
-        }
+
+        fetchRooms()
 
         LocationService.shared.setCenterRegion(position: RMConstants.shared.currentPosition, mapView: roomExploreMap)
-        getRoomForCurrentPosition(mapView: roomExploreMap)
     }
 
     override func viewDidLayoutSubviews() {
@@ -99,6 +112,7 @@ class ExploreViewController: UIViewController {
             centerButton.bottomAnchor.constraint(equalTo: roomExploreMap.bottomAnchor, constant: -10),
             centerButton.trailingAnchor.constraint(equalTo: roomExploreMap.trailingAnchor, constant: -10)
         ])
+        resetFilterButton.layer.cornerRadius = resetFilterButton.bounds.width / 2
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -107,12 +121,21 @@ class ExploreViewController: UIViewController {
         roomExploreMap.removeAnnotations(all)
     }
 
-    func show() {
-        if geoCodes.count == rooms.count {
-            DispatchQueue.main.async { [self] in
-                roomExploreMap.removeAnnotations(prevGeoCodes)
-                roomExploreMap.addAnnotations(geoCodes)
+    private func show() {
+        DispatchQueue.main.async { [self] in
+            roomExploreMap.removeAnnotations(roomExploreMap.annotations)
+            roomExploreMap.addAnnotations(geoCodes)
+        }
+    }
+
+    private func fetchRooms() {
+        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
+            guard let self = self else {
+                return
             }
+
+            self.user = user
+            self.getRoomForCurrentPosition(mapView: self.roomExploreMap)
         }
     }
 
@@ -134,6 +157,7 @@ class ExploreViewController: UIViewController {
             FirebaseService.shared.fetchRoomDatabyQuery(user: user, query: query) { rooms in
                 self.rooms = rooms
             }
+            self.isFilter = true
         }
         filterVC.modalPresentationStyle = .overCurrentContext
         present(filterVC, animated: false)
@@ -142,12 +166,19 @@ class ExploreViewController: UIViewController {
     @objc private func setMapCenter(_ sender: Any) {
         LocationService.shared.setCenterRegion(position: RMConstants.shared.currentPosition, mapView: roomExploreMap)
     }
+
+    @IBAction func resetFilterAction(_ sender: Any) {
+        isFilter = false
+        getRoomForCurrentPosition(mapView: roomExploreMap)
+    }
 }
 
 extension ExploreViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         if let location = locations.last {
-            getRoomForCurrentPosition(mapView: roomExploreMap)
+            if user != nil {
+                getRoomForCurrentPosition(mapView: roomExploreMap)
+            }
             LocationService.shared.setCenterRegion(position: location.coordinate, mapView: roomExploreMap)
         }
     }
@@ -159,16 +190,20 @@ extension ExploreViewController: CLLocationManagerDelegate {
             toCoordinateFrom: mapView
         )
 
-        FirebaseService.shared.fetchRoomByCoordinate(
-            northWest: northWestCoordinate,
-            southEast: southEastCoordinate,
-            userBlocks: user?.blocks ?? []
-        ) { [weak self] rooms in
-            guard let rooms = rooms else {
-                print("ERROR: fetch rooms error.")
-                return
+        if !isFilter {
+            FirebaseService.shared.fetchRoomByCoordinate(
+                northWest: northWestCoordinate,
+                southEast: southEastCoordinate,
+                userBlocks: user?.blocks ?? []
+            ) { [weak self] rooms in
+                guard
+                    let self = self,
+                    let rooms = rooms else {
+                    print("ERROR: fetch rooms error.")
+                    return
+                }
+                self.rooms = rooms
             }
-            self?.rooms = rooms
         }
     }
 
@@ -179,7 +214,9 @@ extension ExploreViewController: CLLocationManagerDelegate {
 
 extension ExploreViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        getRoomForCurrentPosition(mapView: mapView)
+        if user != nil {
+            getRoomForCurrentPosition(mapView: roomExploreMap)
+        }
     }
 
     func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {

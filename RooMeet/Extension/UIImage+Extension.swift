@@ -56,13 +56,15 @@ enum ImageAsset: String {
     case settings_sliders
     case plus
     case roomeet
+    case broom
 }
 
 extension UIImage {
     public enum DataUnits: String {
         case byte, kilobyte, megabyte, gigabyte
     }
-    func getSizeIn(_ type: DataUnits)-> Double {
+    
+    func getSizeIn(_ type: DataUnits) -> Double {
         guard let data = self.pngData() else {
             return 0
         }

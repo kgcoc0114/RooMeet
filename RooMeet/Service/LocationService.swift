@@ -8,16 +8,13 @@
 import Foundation
 import MapKit
 
-
-
-
 class LocationService {
     static let shared = LocationService()
 
     var locationManger: CLLocationManager = {
-        let lm = CLLocationManager()
-        lm.requestWhenInUseAuthorization()
-        return lm
+        let locationManger = CLLocationManager()
+        locationManger.requestWhenInUseAuthorization()
+        return locationManger
     }()
 
     private let scaleX: CLLocationDegrees = 0.01
@@ -51,11 +48,9 @@ class LocationService {
         return nil
     }()
 
-
-
     // getCoordinates
     func getCoordinates(fullAddress: String = "台北市中正區仁愛路二段99號", handler: @escaping ((CLLocationCoordinate2D) -> Void)) {
-        CLGeocoder().geocodeAddressString(fullAddress) { ( placemark, error ) in
+        CLGeocoder().geocodeAddressString(fullAddress) { placemark, error in
             if let error = error {
                 print(error)
             }
@@ -64,15 +59,16 @@ class LocationService {
             }
         }
     }
-    
+
     func getAddressFromGeoCode(location: CLLocationCoordinate2D, completion: @escaping (CLPlacemark?, Error?) -> Void) {
         let locale = Locale(identifier: "zh_tw")
         print(location.latitude, location.longitude)
 
-        let loc: CLLocation = CLLocation(latitude: location.latitude, longitude: location.longitude)
+        let loc = CLLocation(latitude: location.latitude, longitude: location.longitude)
         CLGeocoder().reverseGeocodeLocation(loc, preferredLocale: locale) { placesmarks, error in
-            guard let placemark = placesmarks?.first,
-                  error == nil else {
+            guard
+                let placemark = placesmarks?.first,
+                error == nil else {
                 completion(nil, error)
                 return
             }
@@ -104,10 +100,9 @@ class LocationService {
         // set current location in map
         let region = MKCoordinateRegion(
             center: position,
-            latitudinalMeters: 1000,
-            longitudinalMeters: 1000
+            latitudinalMeters: 3000,
+            longitudinalMeters: 3000
         )
         mapView.setRegion(region, animated: true)
     }
 }
-
