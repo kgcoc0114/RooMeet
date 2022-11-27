@@ -592,9 +592,9 @@ extension FirebaseService {
 
         let query = FirestoreEndpoint.room.colRef
             .whereField("roomID", isEqualTo: roomID)
-//            .whereField("isDeleted", isEqualTo: false)
 
-        query.getDocuments { querySnapshot, error in
+        query.getDocuments { [weak self] querySnapshot, error in
+            guard let self = self else { return }
             if error != nil {
                 completion(nil)
             } else {
@@ -604,8 +604,14 @@ extension FirebaseService {
                 }
                 querySnapshot.documents.forEach { document in
                     do {
-                        let item = try document.data(as: Room.self)
-                        completion(item)
+                        var item = try document.data(as: Room.self)
+
+                        self.fetchUserByID(userID: item.userID) { user, index in
+                            if let user = user {
+                                item.userData = user
+                            }
+                            completion(item)
+                        }
                     } catch {
                         print("error: ", error)
                         completion(nil)
@@ -613,20 +619,6 @@ extension FirebaseService {
                 }
             }
         }
-//
-//        getDocuments(query) { (rooms: [Room]) in
-//            rooms.forEach { room in
-//                var room = room
-//                if !blocks.contains(room.userID) {
-//                    self.fetchUserByID(userID: room.userID) { user, _ in
-//                        room.userData = user
-//                        completion(room)
-//                    }
-//                } else {
-//                    completion(nil)
-//                }
-//            }
-//        }
     }
 
     func fetchRoomWithOwnerData(roomID: String, completion: @escaping ((Room) -> Void)) {
@@ -654,6 +646,7 @@ extension FirebaseService {
         }
     }
 }
+
 extension FirebaseService {
     // MARK: - Chat Room
     func fetchMessagesbyChatRoomID(chatRoomID: String, completion: @escaping (([Message]?, Error?) -> Void)) {

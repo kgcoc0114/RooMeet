@@ -443,12 +443,7 @@ extension PostViewController: UICollectionViewDelegate {
         case .feeHeader:
             var editFeeVC: EditFeeController
 
-            if entryType == .edit,
-                let billInfo = billInfo {
-                editFeeVC = EditFeeController(entryType: entryType, data: billInfo)
-            } else {
-                editFeeVC = EditFeeController(entryType: entryType, data: nil)
-            }
+            editFeeVC = EditFeeController(entryType: entryType, data: billInfo)
 
             editFeeVC.completion = { [weak self] billInfo in
                 self?.billInfo = billInfo
