@@ -186,7 +186,7 @@ class IntroCell: UICollectionViewCell {
             if let profilePhoto = user.profilePhoto {
                 imageView.setImage(urlString: profilePhoto)
             } else {
-                imageView.image = UIImage.asset(.profile_user)
+                imageView.image = UIImage.asset(.roomeet)
             }
 
             if let favoriteCounty = user.favoriteCounty,

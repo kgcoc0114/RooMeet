@@ -164,7 +164,7 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
         if UserDefaults.profilePhoto != "empty" {
             profileImageView.setImage(urlString: UserDefaults.profilePhoto)
         } else {
-            profileImageView.image = UIImage.asset(.profile_user)
+            profileImageView.image = UIImage.asset(.roomeet)
         }
 
         userNameLabel.text = UserDefaults.name
@@ -184,7 +184,7 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
             if UserDefaults.profilePhoto != "empty" {
                 self.profileImageView.setImage(urlString: UserDefaults.profilePhoto)
             } else {
-                self.profileImageView.image = UIImage.asset(.profile_user)
+                self.profileImageView.image = UIImage.asset(.roomeet)
             }
         }
 

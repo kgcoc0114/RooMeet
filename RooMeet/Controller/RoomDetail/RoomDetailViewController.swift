@@ -200,7 +200,7 @@ class RoomDetailViewController: UIViewController {
             if let profilePhoto = userData.profilePhoto {
                 ownerAvatarView.setImage(urlString: profilePhoto)
             } else {
-                ownerAvatarView.image = UIImage.asset(.profile_user)
+                ownerAvatarView.image = UIImage.asset(.roomeet)
             }
         }
 
