@@ -433,6 +433,7 @@ class FirebaseService {
     func fetchRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
         let query = FirestoreEndpoint.room.colRef
             .whereField("userID", isEqualTo: userID)
+            .whereField("isDeleted", isEqualTo: false)
             .order(by: "createdTime", descending: true)
 
         let group = DispatchGroup()
@@ -720,8 +721,7 @@ extension FirebaseService {
                             do {
                                 let item = try document.data(as: ChatRoom.self)
                                 let otherUser = item.members.first { $0 != UserDefaults.id }
-                                print("otherUser = ", otherUser)
-                                print("blocks ", blocks)
+
                                 guard
                                     let otherUser = otherUser,
                                     !blocks.contains(otherUser)

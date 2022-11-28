@@ -23,7 +23,7 @@ class NumberPickerView: UIView {
     lazy var quantityField: RMBaseTextField = {
         let field = RMBaseTextField()
         field.returnKeyType = .default
-        field.font = UIFont.regular(size: 15)
+        field.font = UIFont.regularSubTitle()
 
         let numberPicker = UIPickerView()
         numberPicker.dataSource = self
@@ -51,7 +51,6 @@ class NumberPickerView: UIView {
         field.rightViewMode = .always
         field.inputAccessoryView = toolbar
         field.placeholder = "Number"
-        field.textColor = UIColor.darkGray
         return field
     }()
 
@@ -88,6 +87,9 @@ class NumberPickerView: UIView {
     }
 
     @objc private func textFieldDone() {
+        if pickerType != "number" {
+            quantityField.text = "\(leaseTimePicked) \(leaseUnitPicked)"
+        }
         quantityField.endEditing(true)
     }
 }
@@ -124,9 +126,12 @@ extension NumberPickerView: UIPickerViewDataSource, UIPickerViewDelegate {
             } else {
                 leaseUnitPicked = timeUnit[row]
             }
-            if !leaseTimePicked.isEmpty && !leaseUnitPicked.isEmpty {
+
+            if !leaseTimePicked.isEmpty,
+                !leaseUnitPicked.isEmpty,
+                let lease = Int(leaseTimePicked) {
                 quantityField.text = "\(leaseTimePicked) \(leaseUnitPicked)"
-                delegate?.didPickLease(picker: self, lease: Int(leaseTimePicked)!, unit: leaseUnitPicked)
+                delegate?.didPickLease(picker: self, lease: lease, unit: leaseUnitPicked)
             }
         }
     }
