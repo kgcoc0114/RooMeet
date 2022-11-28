@@ -122,6 +122,7 @@ class OUReservationCell: MessageBaseCell {
                     titleLabel.text = "\(otherUser.name) 已發來預約"
                     let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
                     statusLabel.text = "\(dateString)\n\(reservationPeriod)"
+                    statusLabel.isHidden = false
                     denyButton.isHidden = false
                     agreeButton.isHidden = false
                 }

@@ -29,6 +29,7 @@ class RoomImagesCell: UICollectionViewCell {
     }
 
     override func prepareForReuse() {
+        super.prepareForReuse()
         stackView.arrangedSubviews.forEach { view in
             stackView.removeArrangedSubview(view)
         }

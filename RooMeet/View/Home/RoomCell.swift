@@ -77,6 +77,11 @@ class RoomCell: UICollectionViewCell {
         super.awakeFromNib()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
+
     func configureCell(data: Room) {
         if !data.roomImages.isEmpty {
             imageView.kf.setImage(
