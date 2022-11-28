@@ -64,6 +64,11 @@ class RoomDisplayCell: UICollectionViewCell {
         roomSpecLabel.font = UIFont.regularText()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
+
     func configureCell(data: Room) {
         if !data.roomImages.isEmpty {
             imageView.kf.setImage(
@@ -92,6 +97,10 @@ class RoomDisplayCell: UICollectionViewCell {
 
         if !data.rooms.isEmpty {
             data.rooms.forEach { room in
+                if room.price == nil {
+                    roomSpecLabel.text = "規格：無"
+                }
+
                 if room.price == data.roomMinPrice {
                     guard
                         let roomType = room.roomType,

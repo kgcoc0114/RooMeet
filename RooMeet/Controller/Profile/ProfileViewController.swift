@@ -139,6 +139,10 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
             forCellWithReuseIdentifier: ProfileItemCell.identifier
         )
 
+        DispatchQueue.global(qos: .background).async {
+            ReservationService.shared.deleteExpiredReservations()
+        }
+
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.collectionViewLayout = configureLayout()
