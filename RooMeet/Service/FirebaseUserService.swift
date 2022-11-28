@@ -1,5 +1,5 @@
 //
-//  FirebaseService+Extension.swift
+//  FirebaseUserService.swift
 //  RooMeet
 //
 //  Created by kgcoc on 2022/11/27.

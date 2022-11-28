@@ -16,6 +16,14 @@ class LoginViewController: UIViewController, SFSafariViewControllerDelegate {
 
     @IBOutlet weak var animationView: UIView!
 
+    @IBOutlet weak var privacyLabels: UIStackView!
+
+    @IBOutlet weak var loginHintLabel: UILabel! {
+        didSet {
+            loginHintLabel.translatesAutoresizingMaskIntoConstraints = false
+        }
+    }
+
     @IBOutlet weak var privacyPolicyLabel: UILabel! {
         didSet {
             privacyPolicyLabel.textColor = .mainColor
@@ -41,10 +49,12 @@ class LoginViewController: UIViewController, SFSafariViewControllerDelegate {
         authAppleIDButton.addTarget(self, action: #selector(pressSignInWithApple), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            authAppleIDButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+            authAppleIDButton.bottomAnchor.constraint(equalTo: privacyLabels.topAnchor, constant: -10),
             authAppleIDButton.widthAnchor.constraint(equalToConstant: 280),
             authAppleIDButton.heightAnchor.constraint(equalToConstant: 50),
-            authAppleIDButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            authAppleIDButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginHintLabel.bottomAnchor.constraint(equalTo: authAppleIDButton.topAnchor, constant: -10),
+            loginHintLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
 
         AuthService.shared.delegate = self

@@ -81,6 +81,7 @@ class ProfileRSVNViewController: UIViewController {
             }
 
             cell.configureCell(data: reservation)
+            cell.delegate = self
             return cell
         }
 
@@ -143,5 +144,31 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
         else { return }
         let detailViewController = RoomDetailViewController(room: roomDetail, user: user)
         navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
+extension ProfileRSVNViewController: ReservationDisplayCellDelegate {
+    func didCancelReservation(_ cell: ReservationDisplayCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else {
+            return
+        }
+
+        let reservation = reservations[indexPath.item]
+
+        let alertController = UIAlertController(title: "取消預約", message: "確定要取消預約嗎？", preferredStyle: .actionSheet)
+
+        let deleteAction = UIAlertAction(title: "取消預約", style: .destructive) { [unowned self] _ in
+            ReservationService.shared.cancelReservation(reservation: reservation, status: .cancel, requestUserID: UserDefaults.id)
+            reservations.remove(at: indexPath.item)
+        }
+
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+            alertController.dismiss(animated: true)
+        }
+
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true)
     }
 }

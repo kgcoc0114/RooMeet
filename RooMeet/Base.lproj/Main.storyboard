@@ -61,34 +61,46 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="隱私權政策" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6e-df-jP1">
-                                <rect key="frame" x="181" y="830" width="52" height="12"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="點擊登入鍵，即代表您同意下列" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Sn-oE-aIi">
-                                <rect key="frame" x="135" y="813" width="144" height="12"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                <nil key="textColor"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="tA3-hv-CgD">
+                                <rect key="frame" x="98.5" y="827.5" width="217" height="14.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="點擊登入鍵，即代表您同意" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Sn-oE-aIi">
+                                        <rect key="frame" x="0.0" y="0.0" width="147.5" height="14.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" name="mainDarkColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="隱私權政策" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6e-df-jP1">
+                                        <rect key="frame" x="155.5" y="0.0" width="61.5" height="14.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                        <color key="textColor" name="mainColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="登入帳號以啟用同步資料與備份功能" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eu-0Z-AbV">
+                                <rect key="frame" x="125" y="627" width="197" height="15"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" name="mainDarkColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="DG8-mR-lRB"/>
                         <color key="backgroundColor" name="mainLightColor"/>
                         <constraints>
-                            <constraint firstItem="C6e-df-jP1" firstAttribute="top" secondItem="0Sn-oE-aIi" secondAttribute="bottom" constant="5" id="1hg-ze-LbN"/>
-                            <constraint firstItem="DG8-mR-lRB" firstAttribute="bottom" secondItem="C6e-df-jP1" secondAttribute="bottom" constant="20" id="3re-ML-KeU"/>
-                            <constraint firstItem="0Sn-oE-aIi" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="HAt-9G-CeQ"/>
+                            <constraint firstItem="tA3-hv-CgD" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="I2z-qr-B2t"/>
                             <constraint firstItem="Vni-p0-mwb" firstAttribute="width" secondItem="Gch-PD-6HC" secondAttribute="width" multiplier="0.8" id="JIL-dW-fJJ"/>
-                            <constraint firstItem="C6e-df-jP1" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="S6m-Iw-fKV"/>
                             <constraint firstItem="Vni-p0-mwb" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="SNt-ea-EDC"/>
+                            <constraint firstItem="DG8-mR-lRB" firstAttribute="bottom" secondItem="tA3-hv-CgD" secondAttribute="bottom" constant="20" id="fkp-ag-SXf"/>
                             <constraint firstItem="Vni-p0-mwb" firstAttribute="top" secondItem="DG8-mR-lRB" secondAttribute="top" constant="130" id="rmE-Na-D1s"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Soo-yR-9jV"/>
                     <connections>
                         <outlet property="animationView" destination="Vni-p0-mwb" id="EVr-MT-Jgy"/>
+                        <outlet property="loginHintLabel" destination="7eu-0Z-AbV" id="s1m-sM-ihA"/>
+                        <outlet property="privacyLabels" destination="tA3-hv-CgD" id="c3M-rO-i3z"/>
                         <outlet property="privacyPolicyLabel" destination="C6e-df-jP1" id="ZN8-RQ-g0x"/>
                     </connections>
                 </viewController>
@@ -223,8 +235,11 @@
         <namedColor name="mainColor">
             <color red="0.3919999897480011" green="0.53299999237060547" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
+        <namedColor name="mainDarkColor">
+            <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <namedColor name="mainLightColor">
-            <color red="0.93300002813339233" green="0.94900000095367432" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.93333333333333335" green="0.94901960784313721" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

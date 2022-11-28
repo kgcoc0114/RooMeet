@@ -7,8 +7,13 @@
 
 import UIKit
 
+protocol ReservationDisplayCellDelegate: AnyObject {
+    func didCancelReservation(_ cell: ReservationDisplayCell)
+}
+
 class ReservationDisplayCell: UICollectionViewCell {
     static let identifier = "ReservationDisplayCell"
+    weak var delegate: ReservationDisplayCellDelegate?
 
     @IBOutlet weak var statusButton: UIButton! {
         didSet {
@@ -17,6 +22,18 @@ class ReservationDisplayCell: UICollectionViewCell {
             statusButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
             statusButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             statusButton.setTitleColor(.white, for: .disabled)
+        }
+    }
+
+    @IBOutlet weak var cancelButton: UIButton! {
+        didSet {
+            cancelButton.setTitle("取消預約", for: .normal)
+            cancelButton.titleLabel!.font = UIFont.regularText()
+            cancelButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
+            cancelButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            cancelButton.setTitleColor(.mainDarkColor, for: .normal)
+            cancelButton.layer.borderColor = UIColor.mainLightColor.cgColor
+            cancelButton.layer.borderWidth = 0.8
         }
     }
 
@@ -72,6 +89,11 @@ class ReservationDisplayCell: UICollectionViewCell {
         super.awakeFromNib()
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        roomImageView.image = nil
+    }
+
     override func layoutSubviews() {
         roomImageView.layer.cornerRadius = roomImageView.bounds.width * 0.15
     }
@@ -113,5 +135,9 @@ class ReservationDisplayCell: UICollectionViewCell {
         } else {
             statusButton.isHidden = true
         }
+    }
+    @IBAction func cancelAction(_ sender: Any) {
+        delegate?.didCancelReservation(self)
+        
     }
 }
