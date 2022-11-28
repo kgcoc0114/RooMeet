@@ -77,7 +77,7 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uUc-8J-nrp">
-                                <rect key="frame" x="364" y="58.5" width="20" height="25"/>
+                                <rect key="frame" x="364" y="61.5" width="20" height="19"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="trash.circle" catalog="system"/>
@@ -93,7 +93,6 @@
                             <constraint firstItem="oB3-BF-iVN" firstAttribute="leading" secondItem="91T-qc-SsS" secondAttribute="trailing" constant="8" id="bfR-ix-0zZ"/>
                             <constraint firstItem="91T-qc-SsS" firstAttribute="centerY" secondItem="MgE-Gh-gFR" secondAttribute="centerY" id="fJ0-Dm-Ijk"/>
                             <constraint firstItem="oB3-BF-iVN" firstAttribute="centerY" secondItem="91T-qc-SsS" secondAttribute="centerY" id="geg-OT-4UZ"/>
-                            <constraint firstItem="uUc-8J-nrp" firstAttribute="height" secondItem="MgE-Gh-gFR" secondAttribute="height" multiplier="0.179191" id="jbo-sP-63G"/>
                             <constraint firstItem="uUc-8J-nrp" firstAttribute="centerY" secondItem="MgE-Gh-gFR" secondAttribute="centerY" id="tIU-6J-ZyU"/>
                             <constraint firstAttribute="trailing" secondItem="oB3-BF-iVN" secondAttribute="trailing" id="yhN-1G-BtU"/>
                         </constraints>
