@@ -37,9 +37,6 @@ class RoomDisplayCell: UICollectionViewCell {
     @IBOutlet weak var regionLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var roomSpecLabel: UILabel!
-//    @IBOutlet weak var rsvnDateLabel: UILabel!
-//    @IBOutlet weak var rsvnTimeLabel: UILabel!
-//    @IBOutlet weak var rsvnStatusTagButton: UIButton!
 
     var isLike = false {
         didSet {
