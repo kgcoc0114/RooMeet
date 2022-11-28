@@ -79,25 +79,19 @@ class PostBasicCell: UICollectionViewCell {
         }
     }
 
+    lazy var datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .inline
+        datePicker.tintColor = .mainColor
+        datePicker.addTarget(self, action: #selector(movinDateChanged(_:)), for: .valueChanged)
+        return datePicker
+    }()
+
     @IBOutlet weak var datePickerTextField: RMBaseTextField! {
         didSet {
-            let toolbar = UIToolbar()
-            toolbar.barStyle = .default
-            toolbar.items = [
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-                UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(datePickerDone))
-            ]
-            toolbar.sizeToFit()
-
-            let datePicker = UIDatePicker()
-            datePicker.datePickerMode = .date
-            datePicker.preferredDatePickerStyle = .inline
-            datePicker.tintColor = .mainColor
-
             datePickerTextField.placeholder = "YYYY/MM/DD (必填)"
             datePickerTextField.inputView = datePicker
-
-            datePicker.addTarget(self, action: #selector(movinDateChanged(_:)), for: .valueChanged)
         }
     }
 
@@ -130,6 +124,7 @@ class PostBasicCell: UICollectionViewCell {
         regionSelectView.delegate = self
         titleTextField.delegate = self
         addressTextField.delegate = self
+        datePickerTextField.delegate = self
 
         parlorCountView.delegate = self
         roomCountView.delegate = self
@@ -175,9 +170,9 @@ class PostBasicCell: UICollectionViewCell {
         if let leaseMonth = postBasicData.leaseMonth {
             if leaseMonth >= 12 {
                 let year = leaseMonth / 12
-                leasePickerView.quantityField.text = "\(year)年"
+                leasePickerView.quantityField.text = "\(year) 年"
             } else {
-                leasePickerView.quantityField.text = "\(leaseMonth)月"
+                leasePickerView.quantityField.text = "\(leaseMonth) 月"
             }
         }
     }
@@ -194,15 +189,16 @@ class PostBasicCell: UICollectionViewCell {
         }
         delegate?.showRegionPickerView(cell: self)
     }
-
-    @objc private func datePickerDone() {
-        self.endEditing(true)
-    }
 }
 
 extension PostBasicCell: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         lastTextField = textField
+        if textField == datePickerTextField && !datePickerTextField.hasText {
+            postBasicData.movinDate = datePicker.date
+            datePickerTextField.text = RMDateFormatter.shared.dateString(date: datePicker.date)
+            delegate?.passData(cell: self, data: postBasicData)
+        }
     }
 }
 
@@ -210,6 +206,7 @@ extension PostBasicCell: NumberPickerViewDelegate {
     func didPickLease(picker: NumberPickerView, lease: Int, unit: String) {
         let leaseMon = lease * 12
         postBasicData.leaseMonth = unit == "年" ? leaseMon : lease
+        delegate?.passData(cell: self, data: postBasicData)
     }
 
     func didPickNumber(picker: NumberPickerView, number: Int) {

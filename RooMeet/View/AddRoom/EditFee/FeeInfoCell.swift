@@ -69,27 +69,29 @@ class FeeInfoCell: UITableViewCell {
     }
     @IBOutlet weak var priceTextField: RMBaseTextField!
     @IBOutlet weak var priceUnitLabel: UILabel!
-//    @IBOutlet weak var shareButton: FeeButton! {
-//        didSet {
-//            shareButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-//            shareButton.isSelected = false
-//        }
-//    }
-//
-//    @IBOutlet weak var sperateButton: FeeButton! {
-//        didSet {
-//            sperateButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
-//            sperateButton.isSelected = false
-//        }
-//    }
 
     var feeType: FeeType?
     var affordType: AffordType?
     var feeDetail = FeeDetail() {
         didSet {
-            feeDetail.paid = true
+            guard let feeType = feeType else {
+                feeDetail.paid = true
+                return
+            }
+
+            if feeType == .water || feeType == .electricity {
+                feeDetail.paid = true
+            } else {
+                if priceTextField.text == "" {
+                    feeDetail.paid = false
+                    feeDetail.affordType = nil
+                } else {
+                    feeDetail.paid = true
+                }
+            }
         }
     }
+    
     weak var delegate: FeeInfoCellDelegate?
 
     override func awakeFromNib() {
@@ -133,34 +135,6 @@ class FeeInfoCell: UITableViewCell {
             }
         }
     }
-
-//    @IBAction func tapSperateButton(_ sender: Any) {
-//        if affordType == .sperate && sperateButton.isSelected == true {
-//            sperateButton.isSelected.toggle()
-//        } else {
-//            sperateButton.isSelected.toggle()
-//            shareButton.isSelected = !sperateButton.isSelected
-//        }
-//        affordType = .sperate
-//
-//        guard let affordType = affordType else { return }
-//        feeDetail.affordType = affordType.rawValue
-//        delegate?.passData(self)
-//    }
-//
-//    @IBAction func tapShareButton(_ sender: Any) {
-//        if affordType == .share && shareButton.isSelected == true {
-//            shareButton.isSelected.toggle()
-//        } else {
-//            shareButton.isSelected.toggle()
-//            sperateButton.isSelected = !shareButton.isSelected
-//        }
-//        affordType = .share
-//
-//        guard let affordType = affordType else { return }
-//        feeDetail.affordType = affordType.rawValue
-//        delegate?.passData(self)
-//    }
 
     @IBAction func tapGovTypeButton(_ sender: Any) {
         govTypeButton.isSelected.toggle()

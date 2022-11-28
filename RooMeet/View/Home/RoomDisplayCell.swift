@@ -37,9 +37,6 @@ class RoomDisplayCell: UICollectionViewCell {
     @IBOutlet weak var regionLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var roomSpecLabel: UILabel!
-//    @IBOutlet weak var rsvnDateLabel: UILabel!
-//    @IBOutlet weak var rsvnTimeLabel: UILabel!
-//    @IBOutlet weak var rsvnStatusTagButton: UIButton!
 
     var isLike = false {
         didSet {
@@ -65,6 +62,11 @@ class RoomDisplayCell: UICollectionViewCell {
         regionLabel.font = UIFont.regularText()
         priceLabel.font = UIFont.regularText()
         roomSpecLabel.font = UIFont.regularText()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
     }
 
     func configureCell(data: Room) {
@@ -95,6 +97,10 @@ class RoomDisplayCell: UICollectionViewCell {
 
         if !data.rooms.isEmpty {
             data.rooms.forEach { room in
+                if room.price == nil {
+                    roomSpecLabel.text = "規格：無"
+                }
+
                 if room.price == data.roomMinPrice {
                     guard
                         let roomType = room.roomType,

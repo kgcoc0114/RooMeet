@@ -172,6 +172,14 @@ class PostViewController: UIViewController {
             target: self,
             action: #selector(backAction))
 
+        if entryType == .edit {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                image: UIImage.asset(.trash).withRenderingMode(.alwaysOriginal),
+                style: .plain,
+                target: self,
+                action: #selector(deletePostAction))
+        }
+
         if let room = room {
             configureData(data: room)
         }
@@ -250,6 +258,32 @@ class PostViewController: UIViewController {
                 uploadImages(images: roomImages)
             }
         }
+    }
+
+    @objc private func deletePostAction() {
+        let alertController = UIAlertController(title: "刪除貼文", message: "確定要刪除貼文嗎？", preferredStyle: .alert)
+
+        let deleteAction = UIAlertAction(title: "確定刪除", style: .destructive) { [unowned self] _ in
+            RMProgressHUD.show()
+            guard
+                let room = room,
+                let roomID = room.roomID else {
+                return
+            }
+
+            FirebaseService.shared.deletePost(roomID: roomID)
+            RMProgressHUD.dismiss()
+            self.navigationController?.popViewController(animated: true)
+        }
+
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+            alertController.dismiss(animated: true)
+        }
+
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true)
     }
 
     private func showAlert() {
@@ -539,7 +573,6 @@ extension PostViewController: RoomSpecCellDelegate {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
 
         roomSpecList[indexPath.item] = data
-        print(roomSpecList)
     }
 }
 

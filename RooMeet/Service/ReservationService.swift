@@ -59,7 +59,9 @@ class ReservationService {
                         receiverID: receiverID,
                         status: .waiting,
                         reservation: reservation
-                    )
+                    ) { _ in
+                        print("insert message success")
+                    }
                 }
             }
         case .cancel, .accept:
@@ -84,7 +86,9 @@ class ReservationService {
             }
 
             // 更新 message / last message
-            insertMessage(senderID: sender, receiverID: receiver, status: status, reservation: reservation)
+            insertMessage(senderID: sender, receiverID: receiver, status: status, reservation: reservation) { _ in
+                print("insert message success")
+            }
         case .answer:
             break
         }
@@ -125,10 +129,9 @@ class ReservationService {
         senderID: String,
         receiverID: String,
         status: AcceptedStatus,
-        reservation: Reservation
+        reservation: Reservation,
+        completion: @escaping ((String?) -> Void)
     ) {
-        print("senderID", senderID)
-        print("receiverID", receiverID)
         FirebaseService.shared.getChatRoomByUserID(userA: senderID, userB: receiverID) { chatRoom in
             let messageRef = FirestoreEndpoint.chatRoom.colRef
                 .document(chatRoom.id)
@@ -162,6 +165,8 @@ class ReservationService {
                 "lastMessage": lastMessage.toDict,
                 "lastUpdated": lastMessage.createdTime
             ])
+
+            completion(chatRoom.id)
         }
     }
 
@@ -200,5 +205,105 @@ class ReservationService {
             "acceptedStatus": status.description,
             "modifiedTime": Timestamp()
         ])
+    }
+
+    func cancelReservation(reservation: Reservation, status: AcceptedStatus, requestUserID: String) {
+        var reservation = reservation
+        guard
+            let receiver = reservation.receiver,
+            let sender = reservation.sender else {
+            return
+        }
+
+        reservation.acceptedStatus = status.description
+        reservation.modifiedTime = Timestamp()
+
+        updateReservationStatus(status: status, reservation: reservation)
+
+        // 刪除發起者的 reservationID
+        if status == .cancel {
+            deleteUserReservation(userID: sender, reservationID: reservation.id)
+
+            deleteUserReservation(userID: receiver, reservationID: reservation.id)
+        }
+
+        // 更新 message / last message
+        insertMessage(
+            senderID: sender,
+            receiverID: receiver,
+            status: status,
+            reservation: reservation
+        ) { [weak self] chatRoomID in
+            guard
+                let self = self,
+                let chatRoomID = chatRoomID else {
+                return
+            }
+            self.deleteRequestReservationMessage(chatRoomID: chatRoomID, reservationID: reservation.id)
+        }
+    }
+
+    func deleteRequestReservationMessage(chatRoomID: String, reservationID: String) {
+        let query = FirestoreEndpoint.chatRoom.colRef
+            .document(chatRoomID)
+            .collection("Message")
+            .whereField("content", isEqualTo: "waiting")
+            .whereField("messageType", isEqualTo: 3)
+
+        query.getDocuments { snapshot, error in
+            guard let snapshot = snapshot else {
+                return
+            }
+
+            for document in snapshot.documents {
+                do {
+                    let data = try document.data(as: Message.self)
+                    if let reservation = data.reservation,
+                       reservation.id == reservationID {
+                        document.reference.delete()
+                        break
+                    }
+                } catch {
+                    print(error.localizedDescription)
+                }
+            }
+        }
+    }
+
+    func deleteExpiredReservations() {
+        let currentTimestamp = Timestamp()
+        let senderQuery = FirestoreEndpoint.reservation.colRef
+            .whereField("isDeleted", isEqualTo: false)
+            .whereField("requestTime", isLessThan: currentTimestamp)
+            .whereField("sender", isEqualTo: UserDefaults.id)
+        batchDeleteReservation(query: senderQuery)
+
+
+        let receiverQuery = FirestoreEndpoint.reservation.colRef
+            .whereField("isDeleted", isEqualTo: false)
+            .whereField("requestTime", isLessThan: currentTimestamp)
+            .whereField("receiver", isEqualTo: UserDefaults.id)
+        batchDeleteReservation(query: receiverQuery)
+    }
+
+    private func batchDeleteReservation(query: Query) {
+        let batch = Firestore.firestore().batch()
+
+        query.getDocuments { querySnapshot, error in
+            if let querySnapshot = querySnapshot {
+                querySnapshot.documents.forEach { document in
+                    batch.updateData(["isDeleted": true], forDocument: document.reference)
+                }
+
+                // Commit the batch
+                batch.commit { error in
+                    if let error = error {
+                        print("Error writing batch \(error)")
+                    } else {
+                        print("Batch write succeeded.")
+                    }
+                }
+            }
+        }
     }
 }

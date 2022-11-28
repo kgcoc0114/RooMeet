@@ -155,7 +155,8 @@
 		E5E143522930B8E400465B65 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E143502930B8E400465B65 /* SettingCell.xib */; };
 		E5E14354293266F400465B65 /* Roommates.json in Resources */ = {isa = PBXBuildFile; fileRef = E5E14353293266F300465B65 /* Roommates.json */; };
 		E5E1435729336C3400465B65 /* FirestoreEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1435629336C3400465B65 /* FirestoreEndpoint.swift */; };
-		E5E14359293396C100465B65 /* FirebaseService+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E14358293396C100465B65 /* FirebaseService+Extension.swift */; };
+		E5E14359293396C100465B65 /* FirebaseUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E14358293396C100465B65 /* FirebaseUserService.swift */; };
+		E5E1435B293469C600465B65 /* FirebasePostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1435A293469C600465B65 /* FirebasePostService.swift */; };
 		E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */; };
 		E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */; };
 		E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C75290D6E3100F07286 /* RMTabBarController.swift */; };
@@ -337,7 +338,8 @@
 		E5E143502930B8E400465B65 /* SettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
 		E5E14353293266F300465B65 /* Roommates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Roommates.json; sourceTree = "<group>"; };
 		E5E1435629336C3400465B65 /* FirestoreEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreEndpoint.swift; sourceTree = "<group>"; };
-		E5E14358293396C100465B65 /* FirebaseService+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FirebaseService+Extension.swift"; sourceTree = "<group>"; };
+		E5E14358293396C100465B65 /* FirebaseUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseUserService.swift; sourceTree = "<group>"; };
+		E5E1435A293469C600465B65 /* FirebasePostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebasePostService.swift; sourceTree = "<group>"; };
 		E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBaseCell.swift; sourceTree = "<group>"; };
 		E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		E5E64C75290D6E3100F07286 /* RMTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMTabBarController.swift; sourceTree = "<group>"; };
@@ -757,7 +759,8 @@
 			children = (
 				E5DC0FE22911FFB300EB57FD /* LocationService.swift */,
 				E5EEE2062912AE3B00CAAE84 /* FirebaseService.swift */,
-				E5E14358293396C100465B65 /* FirebaseService+Extension.swift */,
+				E5E14358293396C100465B65 /* FirebaseUserService.swift */,
+				E5E1435A293469C600465B65 /* FirebasePostService.swift */,
 				E5604FE22918EC22007AE655 /* WebRTCClient.swift */,
 				E59B83142919FEE800F02CEC /* DateFormatter.swift */,
 				E5ACE16C291BFC1C006CCF1A /* ReservationService.swift */,
@@ -1274,10 +1277,11 @@
 				E5D76CFB291D0BA90074DFD7 /* FavoritesViewController.swift in Sources */,
 				E5E1435729336C3400465B65 /* FirestoreEndpoint.swift in Sources */,
 				E5ACE16D291BFC1C006CCF1A /* ReservationService.swift in Sources */,
+				E5E1435B293469C600465B65 /* FirebasePostService.swift in Sources */,
 				E507B0CC292484FF002E501E /* AuthService.swift in Sources */,
 				E5DEFDA5291FC9550064E2C8 /* RoomDetailHeaderView.swift in Sources */,
 				E5B984C5291B905F006DD8D7 /* DateCell.swift in Sources */,
-				E5E14359293396C100465B65 /* FirebaseService+Extension.swift in Sources */,
+				E5E14359293396C100465B65 /* FirebaseUserService.swift in Sources */,
 				E539D249292F5869007D50FD /* SwiftJWTWrapper.swift in Sources */,
 				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,
 				E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */,
@@ -1453,7 +1457,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RooMeet/RooMeet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1473,7 +1477,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karenchiu.RooMeet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -1490,7 +1494,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = RooMeet/RooMeet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
@@ -1509,7 +1513,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.4.0;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.karenchiu.RooMeet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
