@@ -127,8 +127,6 @@ class ReservationService {
         status: AcceptedStatus,
         reservation: Reservation
     ) {
-        print("senderID", senderID)
-        print("receiverID", receiverID)
         FirebaseService.shared.getChatRoomByUserID(userA: senderID, userB: receiverID) { chatRoom in
             let messageRef = FirestoreEndpoint.chatRoom.colRef
                 .document(chatRoom.id)

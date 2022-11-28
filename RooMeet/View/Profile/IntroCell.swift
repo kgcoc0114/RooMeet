@@ -166,6 +166,8 @@ class IntroCell: UICollectionViewCell {
 
     func configureCell(edit: Bool = true, data: User) {
         self.user = data
+        // default value
+        self.user?.gender = genderSegmentedControl.selectedIndex
         if edit {
             guard let user = self.user else {
                 return
