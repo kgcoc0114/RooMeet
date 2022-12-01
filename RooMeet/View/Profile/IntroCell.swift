@@ -97,7 +97,7 @@ class IntroCell: UICollectionViewCell {
             datePicker.datePickerMode = .date
             datePicker.preferredDatePickerStyle = .inline
             datePicker.tintColor = .mainColor
-
+            datePicker.maximumDate = Date()
             birthdayTextField.placeholder = "YYYY/MM/DD"
             birthdayTextField.inputView = datePicker
 
