@@ -24,8 +24,10 @@ class FavoritesViewController: UIViewController {
     var rooms: [Room] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.stopPullToRefresh()
-                self?.updateDataSource()
+                guard let self = self else { return }
+                self.collectionView.stopPullToRefresh()
+                self.updateDataSource()
+                self.noneLabel.isHidden = !self.rooms.isEmpty
             }
         }
     }
@@ -35,6 +37,14 @@ class FavoritesViewController: UIViewController {
     var favoriteRooms: [FavoriteRoom] = []
 
     var entryPage: EntryPage = .fav
+
+    @IBOutlet weak var noneLabel: UILabel! {
+        didSet {
+            noneLabel.font = UIFont.regularSubTitle()
+            noneLabel.textColor = .mainDarkColor
+            noneLabel.isHidden = true
+        }
+    }
 
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
@@ -47,7 +57,7 @@ class FavoritesViewController: UIViewController {
             action: #selector(backAction))
 
         navigationItem.title = entryPage == .fav ? "Favorites" : "My Post"
-
+        noneLabel.text = entryPage == .fav ? "按下愛心加入我的最愛" : "還沒有貼文唷！可到首頁新增房源找室友！"
         collectionView.delegate = self
 
         configureCollectionView()

@@ -64,6 +64,9 @@ enum ImageAsset: String {
     case target_disable
     case target_enable
     case furniture_placeholder
+    case chair
+    case trash_1x
+    case lock
 }
 
 extension UIImage {

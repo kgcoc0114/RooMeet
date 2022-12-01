@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FavoritesViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="vZo-2g-Kew" id="Tjd-zt-rwr"/>
+                <outlet property="noneLabel" destination="Rhk-Ay-qdS" id="Haj-1z-tQb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -31,6 +32,12 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rhk-Ay-qdS">
+                    <rect key="frame" x="186" y="437.5" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -38,6 +45,8 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vZo-2g-Kew" secondAttribute="trailing" id="DmE-jQ-fuF"/>
                 <constraint firstItem="vZo-2g-Kew" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="G3N-gN-YDb"/>
                 <constraint firstItem="vZo-2g-Kew" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Nz5-cd-48n"/>
+                <constraint firstItem="Rhk-Ay-qdS" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="YTf-Rs-qLY"/>
+                <constraint firstItem="Rhk-Ay-qdS" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="gDr-ed-xRL"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="vZo-2g-Kew" secondAttribute="bottom" id="ueb-nx-cNn"/>
             </constraints>
             <point key="canvasLocation" x="132" y="132"/>

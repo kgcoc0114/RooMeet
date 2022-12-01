@@ -16,7 +16,18 @@ class FurnitureListViewController: UIViewController {
                 guard let self = self else { return }
                 self.tableView.stopPullToRefresh()
                 self.tableView.reloadData()
+
+                self.noneLabel.isHidden = !self.furnitures.isEmpty
             }
+        }
+    }
+
+    @IBOutlet weak var noneLabel: UILabel! {
+        didSet {
+            noneLabel.font = UIFont.regularSubTitle()
+            noneLabel.textColor = .mainDarkColor
+            noneLabel.isHidden = true
+            noneLabel.text = "Tips: 點擊右上角，建立自己的家具清單！"
         }
     }
 
