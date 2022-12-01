@@ -54,6 +54,12 @@
 		E57918E029387FB100427F83 /* FurnitureListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57918DE29387FB100427F83 /* FurnitureListViewController.xib */; };
 		E57918E32938809100427F83 /* FurnitureDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918E12938809100427F83 /* FurnitureDisplayCell.swift */; };
 		E57918E42938809100427F83 /* FurnitureDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57918E22938809100427F83 /* FurnitureDisplayCell.xib */; };
+		E57918EB293882F300427F83 /* FurnitureDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918E9293882F300427F83 /* FurnitureDetailCell.swift */; };
+		E57918EC293882F300427F83 /* FurnitureDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57918EA293882F300427F83 /* FurnitureDetailCell.xib */; };
+		E57918EE2938887900427F83 /* Furniture.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918ED2938887900427F83 /* Furniture.swift */; };
+		E57918F12938938300427F83 /* FurnitureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918EF2938938300427F83 /* FurnitureViewController.swift */; };
+		E57918F22938938300427F83 /* FurnitureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57918F02938938300427F83 /* FurnitureViewController.xib */; };
+		E57918F429389B1200427F83 /* FIRStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918F329389B1200427F83 /* FIRStorageService.swift */; };
 		E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E587292C291CA7BF00C12E9E /* CUReservationCell.swift */; };
 		E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E587292D291CA7BF00C12E9E /* CUReservationCell.xib */; };
 		E5872932291CAA7300C12E9E /* OUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5872930291CAA7300C12E9E /* OUReservationCell.swift */; };
@@ -242,6 +248,12 @@
 		E57918DE29387FB100427F83 /* FurnitureListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FurnitureListViewController.xib; sourceTree = "<group>"; };
 		E57918E12938809100427F83 /* FurnitureDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnitureDisplayCell.swift; sourceTree = "<group>"; };
 		E57918E22938809100427F83 /* FurnitureDisplayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FurnitureDisplayCell.xib; sourceTree = "<group>"; };
+		E57918E9293882F300427F83 /* FurnitureDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnitureDetailCell.swift; sourceTree = "<group>"; };
+		E57918EA293882F300427F83 /* FurnitureDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FurnitureDetailCell.xib; sourceTree = "<group>"; };
+		E57918ED2938887900427F83 /* Furniture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Furniture.swift; sourceTree = "<group>"; };
+		E57918EF2938938300427F83 /* FurnitureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnitureViewController.swift; sourceTree = "<group>"; };
+		E57918F02938938300427F83 /* FurnitureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FurnitureViewController.xib; sourceTree = "<group>"; };
+		E57918F329389B1200427F83 /* FIRStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRStorageService.swift; sourceTree = "<group>"; };
 		E587292C291CA7BF00C12E9E /* CUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUReservationCell.swift; sourceTree = "<group>"; };
 		E587292D291CA7BF00C12E9E /* CUReservationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUReservationCell.xib; sourceTree = "<group>"; };
 		E5872930291CAA7300C12E9E /* OUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUReservationCell.swift; sourceTree = "<group>"; };
@@ -443,6 +455,7 @@
 				E57918DB29387F3100427F83 /* Measure */,
 				E5B984C9291BD3E4006DD8D7 /* Reservation.swift */,
 				E539D23C292DFD84007D50FD /* ReportEvent.swift */,
+				E57918ED2938887900427F83 /* Furniture.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -557,6 +570,8 @@
 			children = (
 				E57918DD29387FB100427F83 /* FurnitureListViewController.swift */,
 				E57918DE29387FB100427F83 /* FurnitureListViewController.xib */,
+				E57918EF2938938300427F83 /* FurnitureViewController.swift */,
+				E57918F02938938300427F83 /* FurnitureViewController.xib */,
 			);
 			path = Furniture;
 			sourceTree = "<group>";
@@ -577,6 +592,8 @@
 				E5E143502930B8E400465B65 /* SettingCell.xib */,
 				E57918E12938809100427F83 /* FurnitureDisplayCell.swift */,
 				E57918E22938809100427F83 /* FurnitureDisplayCell.xib */,
+				E57918E9293882F300427F83 /* FurnitureDetailCell.swift */,
+				E57918EA293882F300427F83 /* FurnitureDetailCell.xib */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -811,6 +828,7 @@
 				E5ACE16C291BFC1C006CCF1A /* ReservationService.swift */,
 				E507B0CB292484FF002E501E /* AuthService.swift */,
 				E539D24A292F9629007D50FD /* KeyChainService.swift */,
+				E57918F329389B1200427F83 /* FIRStorageService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1119,8 +1137,10 @@
 				E5D76D04291D21900074DFD7 /* ProfileRSVNViewController.xib in Resources */,
 				E5B018AF2915692600A09788 /* OUTextCell.xib in Resources */,
 				E5B984C6291B905F006DD8D7 /* DateCell.xib in Resources */,
+				E57918F22938938300427F83 /* FurnitureViewController.xib in Resources */,
 				E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */,
 				E574A6932920EC1800EB8E5E /* ReservationDisplayCell.xib in Resources */,
+				E57918EC293882F300427F83 /* FurnitureDetailCell.xib in Resources */,
 				E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */,
 				E560135129271DC500EE0083 /* ProfileItemCell.xib in Resources */,
 				E539D23B292DF1CD007D50FD /* BlockCell.xib in Resources */,
@@ -1246,6 +1266,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E574A6922920EC1800EB8E5E /* ReservationDisplayCell.swift in Sources */,
+				E57918EB293882F300427F83 /* FurnitureDetailCell.swift in Sources */,
+				E57918EE2938887900427F83 /* Furniture.swift in Sources */,
 				E5D9BF78291E26AA00F416E6 /* RMConstants.swift in Sources */,
 				E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */,
 				E55C0960290D53F900DBF21B /* Gender.swift in Sources */,
@@ -1273,6 +1295,7 @@
 				E507B0C92923DE51002E501E /* RMSegmentedControl.swift in Sources */,
 				E5DEFD91291F3B0A0064E2C8 /* OUCallCell.swift in Sources */,
 				E5B018DD29175B7100A09788 /* FilterViewController.swift in Sources */,
+				E57918F429389B1200427F83 /* FIRStorageService.swift in Sources */,
 				E539D236292DF189007D50FD /* BlockViewController.swift in Sources */,
 				E539D244292F503E007D50FD /* AppConfig.swift in Sources */,
 				E539D24B292F962A007D50FD /* KeyChainService.swift in Sources */,
@@ -1345,6 +1368,7 @@
 				E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */,
 				E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */,
 				E55C0972290D628400DBF21B /* Constants.swift in Sources */,
+				E57918F12938938300427F83 /* FurnitureViewController.swift in Sources */,
 				E5872932291CAA7300C12E9E /* OUReservationCell.swift in Sources */,
 				E5EEE2152913B26B00CAAE84 /* ChatRoom.swift in Sources */,
 				E5604F7A29179539007AE655 /* RoomDisplayCell.swift in Sources */,

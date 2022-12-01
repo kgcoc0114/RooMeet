@@ -91,8 +91,8 @@ class MeasureViewController: UIViewController {
     let vectorZero = SCNVector3()
     var measuring = false
     private var line: LineNode?
-
     private var lines: [LineNode] = []
+    var completion: ((Int?, String?) -> Void)?
 
     private var measureValue: Float? {
         didSet {
@@ -211,8 +211,11 @@ extension MeasureViewController: ARSCNViewDelegate {
     }
 
     func saveResult(_ sender: UIButton) {
-        UIPasteboard.general.string = resultLabel.text
-        RMProgressHUD.showSuccess(text: "已複製結果")
+        guard
+            let measureValue = measureValue,
+            let measureValueInt = Int(String(format: "%.0f", measureValue * 100)) else { return }
+        completion?(measureValueInt, resultLabel.text)
+        dismiss(animated: true)
     }
 }
 

@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import ESPullToRefresh
 
 extension UITableView {
     func scrollToButtom(at scrollPosition: UITableView.ScrollPosition, animated: Bool) {
@@ -24,6 +25,16 @@ extension UITableView {
     func registerCellWithNib(identifier: String, bundle: Bundle?) {
         let nib = UINib(nibName: identifier, bundle: bundle)
         register(nib, forCellReuseIdentifier: identifier)
+    }
+}
+
+extension UITableView {
+    func addPullToRefresh(_ handler: @escaping ESRefreshHandler) {
+        self.es.addPullToRefresh(handler: handler)
+    }
+
+    func stopPullToRefresh() {
+        self.es.stopPullToRefresh()
     }
 }
 

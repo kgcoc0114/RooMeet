@@ -8,13 +8,12 @@
 import UIKit
 
 class SettingCell: UITableViewCell {
-
     @IBOutlet weak var iconImageView: UIImageView! {
         didSet {
             iconImageView.tintColor = .white
         }
     }
-    
+
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = .regularTitle()
