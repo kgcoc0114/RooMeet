@@ -1462,9 +1462,9 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "開啟相機即可上傳相片與視訊通話";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "開啟定位即可顯示附近的房源";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "開啟麥克風即可視訊通話";
+				INFOPLIST_KEY_NSCameraUsageDescription = "RooMeet 需要取用您相機權限，即可上傳相片建立貼文與視訊通話";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要取用您定位資訊，即可顯示附近的房源";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RooMeet 需要取用您麥克風權限，即可進行視訊通話";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1498,9 +1498,9 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "開啟相機即可上傳相片與視訊通話";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "開啟定位即可顯示附近的房源";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "開啟麥克風即可視訊通話";
+				INFOPLIST_KEY_NSCameraUsageDescription = "RooMeet 需要取用您相機權限，即可上傳相片建立貼文與視訊通話";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要取用您定位資訊，即可顯示附近的房源";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RooMeet 需要取用您麥克風權限，即可進行視訊通話";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
