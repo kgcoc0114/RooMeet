@@ -87,7 +87,7 @@ enum Profile: CaseIterable {
         case .reservations:
             return ProfileRSVNViewController()
         case .blockade:
-            return BlockViewController()
+            return MeasureViewController()
         case .signOut:
             return UIViewController()
         case .post:

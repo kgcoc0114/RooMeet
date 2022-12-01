@@ -58,6 +58,11 @@ enum ImageAsset: String {
     case roomeet
     case broom
     case trash
+    case undo
+    case copy
+    case ruler
+    case target_disable
+    case target_enable
 }
 
 extension UIImage {

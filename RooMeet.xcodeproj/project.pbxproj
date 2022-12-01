@@ -50,6 +50,10 @@
 		E5604FE92918F03F007AE655 /* Candidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE82918F03F007AE655 /* Candidate.swift */; };
 		E574A6922920EC1800EB8E5E /* ReservationDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574A6902920EC1800EB8E5E /* ReservationDisplayCell.swift */; };
 		E574A6932920EC1800EB8E5E /* ReservationDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E574A6912920EC1800EB8E5E /* ReservationDisplayCell.xib */; };
+		E57918DF29387FB100427F83 /* FurnitureListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918DD29387FB100427F83 /* FurnitureListViewController.swift */; };
+		E57918E029387FB100427F83 /* FurnitureListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57918DE29387FB100427F83 /* FurnitureListViewController.xib */; };
+		E57918E32938809100427F83 /* FurnitureDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918E12938809100427F83 /* FurnitureDisplayCell.swift */; };
+		E57918E42938809100427F83 /* FurnitureDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57918E22938809100427F83 /* FurnitureDisplayCell.xib */; };
 		E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E587292C291CA7BF00C12E9E /* CUReservationCell.swift */; };
 		E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E587292D291CA7BF00C12E9E /* CUReservationCell.xib */; };
 		E5872932291CAA7300C12E9E /* OUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5872930291CAA7300C12E9E /* OUReservationCell.swift */; };
@@ -64,6 +68,10 @@
 		E593F00A2910065C00B35550 /* RulesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F0082910065C00B35550 /* RulesCell.xib */; };
 		E593F013291012DF00B35550 /* OtherFeeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E593F011291012DF00B35550 /* OtherFeeHeaderCell.swift */; };
 		E593F014291012DF00B35550 /* OtherFeeHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E593F012291012DF00B35550 /* OtherFeeHeaderCell.xib */; };
+		E597815F293701A400ED8903 /* LineNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597815E293701A400ED8903 /* LineNode.swift */; };
+		E597817929374EBB00ED8903 /* MeasureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E597817729374EBB00ED8903 /* MeasureViewController.swift */; };
+		E597817A29374EBB00ED8903 /* MeasureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E597817829374EBB00ED8903 /* MeasureViewController.xib */; };
+		E597817C29375E5500ED8903 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E597817B29375E5400ED8903 /* Assets.xcassets */; };
 		E59B82F22919117300F02CEC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B82F02919117300F02CEC /* CallViewController.swift */; };
 		E59B82F32919117300F02CEC /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E59B82F12919117300F02CEC /* CallViewController.xib */; };
 		E59B83152919FEE800F02CEC /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B83142919FEE800F02CEC /* DateFormatter.swift */; };
@@ -113,7 +121,6 @@
 		E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */; };
 		E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB42290D0E2900F4A767 /* ViewController.swift */; };
 		E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5BDDB44290D0E2900F4A767 /* Main.storyboard */; };
-		E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5BDDB47290D0E2D00F4A767 /* Assets.xcassets */; };
 		E5BDDB4B290D0E2D00F4A767 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5BDDB49290D0E2D00F4A767 /* LaunchScreen.storyboard */; };
 		E5C5FE862910CB8000DA91DF /* FeeInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C5FE842910CB8000DA91DF /* FeeInfoCell.swift */; };
 		E5C5FE872910CB8000DA91DF /* FeeInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C5FE852910CB8000DA91DF /* FeeInfoCell.xib */; };
@@ -231,6 +238,10 @@
 		E5604FE82918F03F007AE655 /* Candidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Candidate.swift; sourceTree = "<group>"; };
 		E574A6902920EC1800EB8E5E /* ReservationDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationDisplayCell.swift; sourceTree = "<group>"; };
 		E574A6912920EC1800EB8E5E /* ReservationDisplayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReservationDisplayCell.xib; sourceTree = "<group>"; };
+		E57918DD29387FB100427F83 /* FurnitureListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnitureListViewController.swift; sourceTree = "<group>"; };
+		E57918DE29387FB100427F83 /* FurnitureListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FurnitureListViewController.xib; sourceTree = "<group>"; };
+		E57918E12938809100427F83 /* FurnitureDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnitureDisplayCell.swift; sourceTree = "<group>"; };
+		E57918E22938809100427F83 /* FurnitureDisplayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FurnitureDisplayCell.xib; sourceTree = "<group>"; };
 		E587292C291CA7BF00C12E9E /* CUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUReservationCell.swift; sourceTree = "<group>"; };
 		E587292D291CA7BF00C12E9E /* CUReservationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUReservationCell.xib; sourceTree = "<group>"; };
 		E5872930291CAA7300C12E9E /* OUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUReservationCell.swift; sourceTree = "<group>"; };
@@ -245,6 +256,10 @@
 		E593F0082910065C00B35550 /* RulesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RulesCell.xib; sourceTree = "<group>"; };
 		E593F011291012DF00B35550 /* OtherFeeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherFeeHeaderCell.swift; sourceTree = "<group>"; };
 		E593F012291012DF00B35550 /* OtherFeeHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherFeeHeaderCell.xib; sourceTree = "<group>"; };
+		E597815E293701A400ED8903 /* LineNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LineNode.swift; sourceTree = "<group>"; };
+		E597817729374EBB00ED8903 /* MeasureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeasureViewController.swift; sourceTree = "<group>"; };
+		E597817829374EBB00ED8903 /* MeasureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MeasureViewController.xib; sourceTree = "<group>"; };
+		E597817B29375E5400ED8903 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E59B82F02919117300F02CEC /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		E59B82F12919117300F02CEC /* CallViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		E59B83142919FEE800F02CEC /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
@@ -295,7 +310,6 @@
 		E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		E5BDDB42290D0E2900F4A767 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E5BDDB45290D0E2900F4A767 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E5BDDB47290D0E2D00F4A767 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E5BDDB4A290D0E2D00F4A767 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E5BDDB4C290D0E2D00F4A767 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E5C5FE842910CB8000DA91DF /* FeeInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeInfoCell.swift; sourceTree = "<group>"; };
@@ -426,6 +440,7 @@
 		E539D240292DFFC7007D50FD /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				E57918DB29387F3100427F83 /* Measure */,
 				E5B984C9291BD3E4006DD8D7 /* Reservation.swift */,
 				E539D23C292DFD84007D50FD /* ReportEvent.swift */,
 			);
@@ -529,6 +544,23 @@
 			path = WebRTC;
 			sourceTree = "<group>";
 		};
+		E57918DB29387F3100427F83 /* Measure */ = {
+			isa = PBXGroup;
+			children = (
+				E597815E293701A400ED8903 /* LineNode.swift */,
+			);
+			path = Measure;
+			sourceTree = "<group>";
+		};
+		E57918DC29387F7300427F83 /* Furniture */ = {
+			isa = PBXGroup;
+			children = (
+				E57918DD29387FB100427F83 /* FurnitureListViewController.swift */,
+				E57918DE29387FB100427F83 /* FurnitureListViewController.xib */,
+			);
+			path = Furniture;
+			sourceTree = "<group>";
+		};
 		E5872934291CF2F000C12E9E /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -543,6 +575,8 @@
 				E539D239292DF1CC007D50FD /* BlockCell.xib */,
 				E5E1434F2930B8E400465B65 /* SettingCell.swift */,
 				E5E143502930B8E400465B65 /* SettingCell.xib */,
+				E57918E12938809100427F83 /* FurnitureDisplayCell.swift */,
+				E57918E22938809100427F83 /* FurnitureDisplayCell.xib */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -550,7 +584,9 @@
 		E587293D291CFFA800C12E9E /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				E57918DC29387F7300427F83 /* Furniture */,
 				E5872937291CF49800C12E9E /* ProfileViewController.swift */,
+				E597817629374E7F00ED8903 /* Measure */,
 				E5D76D0F291D2F6A0074DFD7 /* Introduction */,
 				E5D76D0A291D23D10074DFD7 /* Favorite */,
 				E5D76D09291D23B90074DFD7 /* Reservation */,
@@ -609,6 +645,15 @@
 				E5DC0FEB29120C9300EB57FD /* RuleCell */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		E597817629374E7F00ED8903 /* Measure */ = {
+			isa = PBXGroup;
+			children = (
+				E597817729374EBB00ED8903 /* MeasureViewController.swift */,
+				E597817829374EBB00ED8903 /* MeasureViewController.xib */,
+			);
+			path = Measure;
 			sourceTree = "<group>";
 		};
 		E5B018B22915F1C100A09788 /* Home */ = {
@@ -686,7 +731,6 @@
 				E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */,
 				E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */,
 				E5BDDB42290D0E2900F4A767 /* ViewController.swift */,
-				E5BDDB47290D0E2D00F4A767 /* Assets.xcassets */,
 				E5BDDB49290D0E2D00F4A767 /* LaunchScreen.storyboard */,
 				E5BDDB4C290D0E2D00F4A767 /* Info.plist */,
 				E5DEEEC72922814900A649C1 /* Regions.plist */,
@@ -699,6 +743,7 @@
 				E5EEE1F7291214C300CAAE84 /* Explore.storyboard */,
 				E5EEE20C2913A8C900CAAE84 /* Chat.storyboard */,
 				E5B018D8291695CA00A09788 /* Profile.storyboard */,
+				E597817B29375E5400ED8903 /* Assets.xcassets */,
 			);
 			path = RooMeet;
 			sourceTree = "<group>";
@@ -1017,6 +1062,7 @@
 				TargetAttributes = {
 					E5BDDB3A290D0E2900F4A767 = {
 						CreatedOnToolsVersion = 13.4;
+						LastSwiftMigration = 1340;
 					};
 				};
 			};
@@ -1064,7 +1110,6 @@
 				E5119BA4291FDA8B00A632C9 /* RoomMapCell.xib in Resources */,
 				E5B33773290F65D800467404 /* PostViewController.xib in Resources */,
 				E5B018C72916354600A09788 /* RoomBasicCell.xib in Resources */,
-				E5BDDB48290D0E2D00F4A767 /* Assets.xcassets in Resources */,
 				E539D22F2929F189007D50FD /* LoginPageAnimation.json in Resources */,
 				E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */,
 				E5E143522930B8E400465B65 /* SettingCell.xib in Resources */,
@@ -1079,6 +1124,7 @@
 				E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */,
 				E560135129271DC500EE0083 /* ProfileItemCell.xib in Resources */,
 				E539D23B292DF1CD007D50FD /* BlockCell.xib in Resources */,
+				E57918E029387FB100427F83 /* FurnitureListViewController.xib in Resources */,
 				E587293C291CFFA100C12E9E /* IntroViewController.xib in Resources */,
 				E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */,
 				E5DEFD9F291F81DE0064E2C8 /* BookingPeriodCell.xib in Resources */,
@@ -1090,8 +1136,11 @@
 				E59B8319291A259500F02CEC /* CallCell.xib in Resources */,
 				E5DEEEB52921150A00A649C1 /* Reservation.json in Resources */,
 				E593F014291012DF00B35550 /* OtherFeeHeaderCell.xib in Resources */,
+				E597817C29375E5500ED8903 /* Assets.xcassets in Resources */,
+				E597817A29374EBB00ED8903 /* MeasureViewController.xib in Resources */,
 				E5B984DA291BD78A006DD8D7 /* BookingCell.xib in Resources */,
 				E593F00A2910065C00B35550 /* RulesCell.xib in Resources */,
+				E57918E42938809100427F83 /* FurnitureDisplayCell.xib in Resources */,
 				E5D9C042291E4E3100F416E6 /* CUImageCell.xib in Resources */,
 				E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */,
 				E539D237292DF189007D50FD /* BlockViewController.xib in Resources */,
@@ -1247,13 +1296,16 @@
 				E539D251292FAA9E007D50FD /* RefreshToken.swift in Sources */,
 				E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */,
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
+				E57918DF29387FB100427F83 /* FurnitureListViewController.swift in Sources */,
 				E5B984CA291BD3E4006DD8D7 /* Reservation.swift in Sources */,
 				E5DEFD8D291F3AF60064E2C8 /* CUCallCell.swift in Sources */,
 				E539D23A292DF1CD007D50FD /* BlockCell.swift in Sources */,
 				E560135029271DC500EE0083 /* ProfileItemCell.swift in Sources */,
+				E57918E32938809100427F83 /* FurnitureDisplayCell.swift in Sources */,
 				E5872938291CF49800C12E9E /* ProfileViewController.swift in Sources */,
 				E59B8318291A259500F02CEC /* CallCell.swift in Sources */,
 				E5604FE52918EDD3007AE655 /* Config.swift in Sources */,
+				E597817929374EBB00ED8903 /* MeasureViewController.swift in Sources */,
 				E5EEE20A2912BCC700CAAE84 /* RoomDetailViewController.swift in Sources */,
 				E5EEE20529129F6700CAAE84 /* PostalCode.swift in Sources */,
 				E5119BA3291FDA8B00A632C9 /* RoomMapCell.swift in Sources */,
@@ -1262,6 +1314,7 @@
 				E507B0D829260FAC002E501E /* UserDefaults+Extension.swift in Sources */,
 				E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */,
 				E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */,
+				E597815F293701A400ED8903 /* LineNode.swift in Sources */,
 				E539D23D292DFD84007D50FD /* ReportEvent.swift in Sources */,
 				E5EEE2072912AE3B00CAAE84 /* FirebaseService.swift in Sources */,
 				E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */,
@@ -1455,6 +1508,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RooMeet/RooMeet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
@@ -1481,6 +1535,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.karenchiu.RooMeet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1492,6 +1547,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = RooMeet/RooMeet.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;

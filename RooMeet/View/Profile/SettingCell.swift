@@ -8,7 +8,6 @@
 import UIKit
 
 class SettingCell: UITableViewCell {
-    static let identifier = "SettingCell"
 
     @IBOutlet weak var iconImageView: UIImageView! {
         didSet {
