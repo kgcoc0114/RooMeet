@@ -29,13 +29,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="436" height="66.5"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="貼文標題" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Drr-9h-tCV">
-                                                <rect key="frame" x="0.0" y="0.0" width="69.5" height="66.5"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="65.5" height="66.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="textColor" name="mainDarkColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder=" 請填寫標題 (必填)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="368-14-KjK" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
-                                                <rect key="frame" x="84.5" y="0.0" width="351.5" height="66.5"/>
+                                                <rect key="frame" x="80.5" y="0.0" width="355.5" height="66.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
