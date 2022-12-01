@@ -163,6 +163,8 @@ extension FirebaseService {
                         group.notify(queue: DispatchQueue.main) {
                             completion(users, nil)
                         }
+                    } else {
+                        completion([], RMError.noData)
                     }
                 } catch {
                     completion([], error)

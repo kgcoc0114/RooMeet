@@ -24,9 +24,20 @@ class HomeViewController: ViewController {
     var rooms: [Room] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.stopPullToRefresh()
-                self?.updateDataSource()
+                guard let self = self else { return }
+                self.collectionView.stopPullToRefresh()
+                self.updateDataSource()
+                self.noneLabel.isHidden = !self.rooms.isEmpty
             }
+        }
+    }
+
+    @IBOutlet weak var noneLabel: UILabel! {
+        didSet {
+            noneLabel.font = UIFont.regularSubTitle()
+            noneLabel.textColor = .mainDarkColor
+            noneLabel.text = "目前沒有相關房源"
+            noneLabel.isHidden = true
         }
     }
 
