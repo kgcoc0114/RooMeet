@@ -8,7 +8,6 @@
 import UIKit
 
 class ProfileCell: UITableViewCell {
-    static let identifier = "ProfileCell"
 
     @IBOutlet weak var iconImageView: UIImageView!
 
