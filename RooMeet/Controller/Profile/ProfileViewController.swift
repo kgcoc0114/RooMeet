@@ -250,15 +250,8 @@ extension ProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let profileType = Profile.allCases[indexPath.item]
         switch profileType {
-        case .favorite, .reservations, .post, .setting:
+        case .favorite, .reservations, .post, .setting, .furniture:
             let pushVC = profileType.viewConroller
-            navigationController?.pushViewController(pushVC, animated: true)
-        case .furniture:
-            let pushVC = profileType.viewConroller
-            self.hidesBottomBarWhenPushed = true
-            DispatchQueue.main.async {
-                self.hidesBottomBarWhenPushed = false
-            }
             navigationController?.pushViewController(pushVC, animated: true)
         case .signOut:
             AuthService.shared.logOut { [weak self] _ in

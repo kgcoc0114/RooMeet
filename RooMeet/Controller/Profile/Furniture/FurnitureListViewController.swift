@@ -118,7 +118,7 @@ extension FurnitureListViewController: UITableViewDelegate {
             }) { _ in
                 let viewMenu = UIAction(
                     title: "編輯",
-                    image: UIImage(systemName: "eye.fill"),
+                    image: UIImage(systemName: "square.and.pencil"),
                     identifier: UIAction.Identifier(rawValue: "view")
                 ) { [weak self] _ in
                     guard let self = self else { return }
