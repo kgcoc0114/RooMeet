@@ -18,7 +18,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="chV-nx-ngM">
-                        <rect key="frame" x="20" y="10" width="25" height="25"/>
+                        <rect key="frame" x="20" y="20" width="25" height="25"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="25" id="GMX-ER-u5k"/>
                             <constraint firstAttribute="height" constant="25" id="JeL-kf-vPe"/>
@@ -26,7 +26,7 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bSe-m3-syu">
-                        <rect key="frame" x="63" y="12" width="42" height="21"/>
+                        <rect key="frame" x="63" y="22" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -35,8 +35,8 @@
                 <constraints>
                     <constraint firstItem="chV-nx-ngM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="1Yh-BN-y9C"/>
                     <constraint firstItem="bSe-m3-syu" firstAttribute="leading" secondItem="chV-nx-ngM" secondAttribute="trailing" constant="18" id="DBQ-Xe-4wv"/>
-                    <constraint firstItem="chV-nx-ngM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="hNl-T3-FGa"/>
-                    <constraint firstAttribute="bottom" secondItem="chV-nx-ngM" secondAttribute="bottom" constant="10" id="j92-Vy-4i4"/>
+                    <constraint firstItem="chV-nx-ngM" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="hNl-T3-FGa"/>
+                    <constraint firstAttribute="bottom" secondItem="chV-nx-ngM" secondAttribute="bottom" constant="20" id="j92-Vy-4i4"/>
                     <constraint firstItem="bSe-m3-syu" firstAttribute="centerY" secondItem="chV-nx-ngM" secondAttribute="centerY" id="nqk-qV-Cr8"/>
                 </constraints>
             </tableViewCellContentView>
