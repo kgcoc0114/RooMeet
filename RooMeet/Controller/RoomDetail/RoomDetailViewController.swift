@@ -582,7 +582,11 @@ extension RoomDetailViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
         // SectionHeader
-        section.boundarySupplementaryItems = [createSectionHeader()]
+
+        if !feeDetails.isEmpty {
+            section.boundarySupplementaryItems = [createSectionHeader()]
+        }
+
         return section
     }
 
