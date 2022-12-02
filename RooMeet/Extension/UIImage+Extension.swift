@@ -40,6 +40,7 @@ enum ImageAsset: String {
     case refresh
     case person
     case add
+    case switch_camera
     case room_image_placeholder
     case room_placeholder
     case back
