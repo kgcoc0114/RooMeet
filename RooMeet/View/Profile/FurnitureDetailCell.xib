@@ -87,7 +87,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
-                        <color key="backgroundColor" name="mainBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93333333333333335" green="0.94901960784313721" blue="0.9882352941176471" alpha="0.42585885761589404" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="zMg-vF-tzT" firstAttribute="leading" secondItem="I8j-Id-9vj" secondAttribute="trailing" constant="20" id="8s1-tY-DMP"/>
                             <constraint firstItem="KXX-D7-qQu" firstAttribute="centerY" secondItem="b6f-Ge-mMt" secondAttribute="centerY" id="Aa6-BX-8Ik"/>
@@ -160,9 +160,6 @@
     <resources>
         <image name="add" width="512" height="512"/>
         <image name="arkit" catalog="system" width="128" height="128"/>
-        <namedColor name="mainBackgroundColor">
-            <color red="1" green="0.97600001096725464" blue="0.92900002002716064" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-        </namedColor>
         <namedColor name="mainColor">
             <color red="0.3919999897480011" green="0.53299999237060547" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>

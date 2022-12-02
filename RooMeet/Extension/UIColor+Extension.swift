@@ -20,7 +20,7 @@ extension UIColor {
     static let subTitleOrangeColor = UIColor(named: "subTitleOrangeColor") ?? UIColor.darkGray
     static let subTitleRedColor = UIColor(named: "subTitleRedColor") ?? UIColor.darkGray
     static let subTitleRedBGColor = UIColor(named: "subTitleRedBGColor") ?? UIColor.darkGray
-
+    static let mainDarkGrayColor = UIColor(named: "mainDarkGrayColor") ?? UIColor.darkGray
 
     static func hexColor(hex: String) -> UIColor {
         if hex[hex.startIndex] == "#" && hex.count == 7 {
