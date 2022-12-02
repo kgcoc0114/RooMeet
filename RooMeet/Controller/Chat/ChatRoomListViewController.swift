@@ -25,6 +25,7 @@ class ChatRoomListViewController: UIViewController {
     var chatRooms: [ChatRoom] = [] {
         didSet {
             updateDataSource()
+            self.noneLabel.isHidden = !self.chatRooms.isEmpty
         }
     }
 
@@ -37,6 +38,15 @@ class ChatRoomListViewController: UIViewController {
                 UINib(nibName: ChatRoomCell.reuseIdentifier, bundle: nil),
                 forCellReuseIdentifier: ChatRoomCell.reuseIdentifier
             )
+        }
+    }
+
+    @IBOutlet weak var noneLabel: UILabel! {
+        didSet {
+            noneLabel.font = UIFont.regularSubTitle()
+            noneLabel.textColor = .mainDarkColor
+            noneLabel.text = "目前還沒有聊天室唷！"
+            noneLabel.isHidden = true
         }
     }
 

@@ -80,6 +80,11 @@ class OUReservationCell: MessageBaseCell {
         ])
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        avatarView.image = nil
+    }
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }

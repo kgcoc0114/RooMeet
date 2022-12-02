@@ -155,6 +155,7 @@ class IntroViewController: UIViewController {
     }
 
     @IBAction func submitAction(_ sender: Any) {
+        RMProgressHUD.show()
         guard let profileImage = profileImage else {
             saveData(url: nil)
             return
@@ -389,8 +390,10 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
             }
             UIApplication.shared.windows.first?.rootViewController = RMTabBarVC
             UIApplication.shared.windows.first?.makeKeyAndVisible()
+            RMProgressHUD.showSuccess()
         } else {
             backToRoot(completion: nil)
+            RMProgressHUD.showSuccess()
         }
     }
 }

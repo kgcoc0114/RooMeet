@@ -16,6 +16,8 @@ class BlockViewController: UIViewController {
         case main(User)
     }
 
+    @IBOutlet weak var unlockBackgroundView: UIView!
+
     @IBOutlet weak var unlockButton: UIButton! {
         didSet {
             unlockButton.isEnabled = false
@@ -31,6 +33,15 @@ class BlockViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
 
+    @IBOutlet weak var noneLabel: UILabel! {
+        didSet {
+            noneLabel.font = UIFont.regularSubTitle()
+            noneLabel.textColor = .mainDarkColor
+            noneLabel.text = "Tips: 尊重 友善 包容 不被黑名單"
+            noneLabel.isHidden = true
+        }
+    }
+
     typealias BlockDataSource = UICollectionViewDiffableDataSource<Section, User>
     typealias BlockSnapshot = NSDiffableDataSourceSnapshot<Section, User>
     private var dataSource: BlockDataSource!
@@ -38,7 +49,10 @@ class BlockViewController: UIViewController {
     var users: [User] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.updateDataSource()
+                guard let self = self else { return }
+                self.updateDataSource()
+                self.noneLabel.isHidden = !self.users.isEmpty
+                self.unlockBackgroundView.isHidden = self.users.isEmpty
             }
         }
     }
@@ -74,12 +88,7 @@ class BlockViewController: UIViewController {
         super.viewWillAppear(animated)
         FirebaseService.shared.fatchBlockUsers { [weak self] users, error in
             guard let self = self else { return }
-            if error != nil {
-                RMProgressHUD.showFailure(text: "有地方出現問題！請洽客服人員！")
-                return
-            } else {
-                self.users = users
-            }
+            self.users = users
         }
     }
 

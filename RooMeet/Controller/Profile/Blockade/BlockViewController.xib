@@ -13,6 +13,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BlockViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="l76-BY-a3p" id="TlU-Gg-O5n"/>
+                <outlet property="noneLabel" destination="oBY-4T-hJ5" id="ChX-Wb-LNl"/>
+                <outlet property="unlockBackgroundView" destination="lBK-3h-bfo" id="pyh-jj-0Fg"/>
                 <outlet property="unlockButton" destination="0yJ-XW-qGy" id="Jx4-dk-drC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -53,6 +55,12 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oBY-4T-hJ5">
+                    <rect key="frame" x="186" y="437.5" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -60,7 +68,9 @@
                 <constraint firstItem="lBK-3h-bfo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="2qa-KR-ZFb"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="l76-BY-a3p" secondAttribute="trailing" id="Cla-Yg-JHV"/>
                 <constraint firstItem="l76-BY-a3p" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="FT0-Ii-Py5"/>
+                <constraint firstItem="oBY-4T-hJ5" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="TiM-6Y-EgX"/>
                 <constraint firstItem="lBK-3h-bfo" firstAttribute="top" secondItem="l76-BY-a3p" secondAttribute="bottom" id="WTy-BY-zkH"/>
+                <constraint firstItem="oBY-4T-hJ5" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="beE-1t-do6"/>
                 <constraint firstItem="l76-BY-a3p" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="d1U-U3-5hZ"/>
                 <constraint firstAttribute="bottom" secondItem="lBK-3h-bfo" secondAttribute="bottom" id="dUV-9D-57X"/>
                 <constraint firstItem="lBK-3h-bfo" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="iUE-vc-0Ef"/>

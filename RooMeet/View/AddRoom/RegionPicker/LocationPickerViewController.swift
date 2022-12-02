@@ -12,7 +12,7 @@ class LocationPickerViewController: RMButtomSheetViewController {
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "選擇地區"
-        label.font = UIFont.bold(size: 18)
+        label.font = UIFont.regularTitle()
         label.textColor = UIColor.mainColor
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -131,9 +131,9 @@ extension LocationPickerViewController: UITableViewDelegate {
                 return
             }
             if let selectedCell = selectedCell {
-                selectedCell.isPicked.toggle()
+                selectedCell.isPicked = false
             }
-            cell.isPicked.toggle()
+            cell.isPicked = true
             selectedCell = cell
             selectedTown = nil
             townTableView.reloadData()

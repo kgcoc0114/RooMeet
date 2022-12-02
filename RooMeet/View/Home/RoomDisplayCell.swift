@@ -67,6 +67,7 @@ class RoomDisplayCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        isLike = false
     }
 
     func configureCell(data: Room) {

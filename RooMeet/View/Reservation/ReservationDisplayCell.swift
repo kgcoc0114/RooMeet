@@ -138,6 +138,5 @@ class ReservationDisplayCell: UICollectionViewCell {
     }
     @IBAction func cancelAction(_ sender: Any) {
         delegate?.didCancelReservation(self)
-        
     }
 }
