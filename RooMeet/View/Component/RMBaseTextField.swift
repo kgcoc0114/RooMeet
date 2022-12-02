@@ -9,6 +9,8 @@ import UIKit
 
 class RMBaseTextField: UITextField {
 
+    lazy var underline = UIView()
+
     override func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12))
     }
@@ -30,8 +32,6 @@ class RMBaseTextField: UITextField {
     }
 
     private func addUnderLine() {
-        let underline = UIView()
-
         underline.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(underline)
@@ -59,6 +59,10 @@ class RMBaseTextField: UITextField {
         self.inputAccessoryView = toolbar
         self.layer.borderColor = UIColor.clear.cgColor
         self.layer.borderWidth = 0
+    }
+
+    func setUnderlineColor(color: UIColor) {
+        underline.backgroundColor = color
     }
 
     @objc private func textFieldDone() {
