@@ -20,23 +20,10 @@ class TagCell: UICollectionViewCell {
     var selectedTags: [String] = []
     weak var delegate: TagCellDelegate?
 
-//    @IBOutlet weak var tagButton: UIButton! {
-//        didSet {
-//            tagButton.isEnabled = false
-//            tagButton.layer.cornerRadius = RMConstants.shared.tagCornerRadius
-//            tagButton.titleLabel!.font = UIFont.regular(size: 12)
-//            tagButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-//        }
-//    }
-
     override func awakeFromNib() {
         super.awakeFromNib()
         tagView.delegate = self
     }
-
-//    func configureCell(data: String) {
-//        tagButton.setTitle(data, for: .normal)
-//    }
 
     func configureTagView(
         tags: [String],
@@ -84,12 +71,14 @@ extension TagCell: TTGTextTagCollectionViewDelegate {
     func textTagCollectionView(_ textTagCollectionView: TTGTextTagCollectionView!, didTap tag: TTGTextTag!, at index: UInt) {
         var selectedTags: [String] = []
 
-        tagView.allSelectedTags().forEach({ tag in
-            guard let tag = tag as? RMTag else {
+        tagView.allSelectedTags().forEach { tag in
+            guard
+                let tag = tag as? RMTag,
+                let title = tag.title else {
                 return
             }
-            selectedTags.append(tag.title!)
-        })
+            selectedTags.append(title)
+        }
 
         delegate?.tagCell(cell: self, selectedTags: selectedTags)
     }
