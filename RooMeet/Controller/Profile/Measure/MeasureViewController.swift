@@ -200,7 +200,7 @@ extension MeasureViewController: ARSCNViewDelegate {
 // MARK: - Target Action
 @objc private extension MeasureViewController {
     func backToParentPage(_ sender: UIButton) {
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 
     func undoNode(_ sender: UIButton) {

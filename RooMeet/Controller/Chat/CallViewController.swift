@@ -34,6 +34,18 @@ class CallViewController: UIViewController {
     var callStatus: String?
     var completion: ((Message) -> Void)?
 
+    @IBOutlet weak var swapCameraButton: UIButton! {
+        didSet {
+            swapCameraButton.setTitle("", for: .normal)
+        }
+    }
+
+    @IBOutlet weak var saveImageButton: UIButton! {
+        didSet {
+            saveImageButton.setTitle("", for: .normal)
+        }
+    }
+
     @IBOutlet weak var startVideoButton: UIButton! {
         didSet {
             startVideoButton.setTitle("", for: .normal)
@@ -99,7 +111,6 @@ class CallViewController: UIViewController {
         }
     }
 
-//    @IBOutlet weak var videoButton: UIButton!
     @IBOutlet weak var callTimeLabel: UILabel! {
         didSet {
             callTimeLabel.text = ""
@@ -302,6 +313,10 @@ class CallViewController: UIViewController {
     @IBAction private func videoDidTap(_ sender: UIButton) {
         updateVideoCallData(status: "startVideo")
         startVideo()
+    }
+
+    @IBAction func swapCamera(_ sender: Any) {
+        webRTCClient.swapToBackCamera()
     }
 
     private func startVideo() {
