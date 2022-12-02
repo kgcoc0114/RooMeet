@@ -20,8 +20,10 @@ class ProfileRSVNViewController: UIViewController {
     var reservations: [Reservation] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.stopPullToRefresh()
-                self?.updateDataSource()
+                guard let self = self else { return }
+                self.collectionView.stopPullToRefresh()
+                self.updateDataSource()
+                self.noneLabel.isHidden = !self.reservations.isEmpty
             }
         }
     }
@@ -32,12 +34,19 @@ class ProfileRSVNViewController: UIViewController {
 
     @IBOutlet weak var animationView: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var noneLabel: UILabel! {
+        didSet {
+            noneLabel.font = UIFont.regularSubTitle()
+            noneLabel.textColor = .mainDarkColor
+            noneLabel.text = "目前沒有看房預約唷！"
+            noneLabel.isHidden = true
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.title = "Reservations"
-
 
         collectionView.delegate = self
 

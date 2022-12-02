@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="animationView" destination="3qq-Qe-PCh" id="RMS-z2-LkT"/>
                 <outlet property="collectionView" destination="TMl-ZN-Fq3" id="chV-7h-dMk"/>
+                <outlet property="noneLabel" destination="TOs-6e-hSL" id="KMq-jD-im0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -38,16 +39,24 @@
                         <constraint firstAttribute="height" constant="120" id="Snd-35-h0T"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TOs-6e-hSL">
+                    <rect key="frame" x="186" y="437.5" width="42" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="3qq-Qe-PCh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="990-1n-7Ab"/>
                 <constraint firstItem="3qq-Qe-PCh" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="KnN-OS-dZx"/>
+                <constraint firstItem="TOs-6e-hSL" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="XVz-KS-XM8"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="TMl-ZN-Fq3" secondAttribute="bottom" id="aYE-qM-h8C"/>
                 <constraint firstItem="TMl-ZN-Fq3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="cof-DB-ftY"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TMl-ZN-Fq3" secondAttribute="trailing" id="eIY-3l-0Qd"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="3qq-Qe-PCh" secondAttribute="trailing" id="gLb-0P-aWh"/>
+                <constraint firstItem="TOs-6e-hSL" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="lbj-4G-GSk"/>
                 <constraint firstItem="TMl-ZN-Fq3" firstAttribute="top" secondItem="3qq-Qe-PCh" secondAttribute="bottom" id="uNP-GW-spU"/>
             </constraints>
             <point key="canvasLocation" x="132" y="92"/>

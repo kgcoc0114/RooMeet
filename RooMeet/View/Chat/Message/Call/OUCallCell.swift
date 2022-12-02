@@ -14,6 +14,11 @@ class OUCallCell: MessageBaseCell {
         super.awakeFromNib()
         // Initialization code
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        avatarView.image = nil
+    }
 
     override func layoutSubviews() {
         NSLayoutConstraint.activate([

@@ -131,3 +131,69 @@ extension FirebaseService {
         }
     }
 }
+
+// MARK: - User Action
+extension FirebaseService {
+    func fatchBlockUsers(completion: @escaping (([User], Error?) -> Void)) {
+        let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
+        query.getDocument { document, error in
+            if let error = error {
+                completion([], error)
+            }
+
+            if let document = document {
+                do {
+                    let user = try document.data(as: User.self)
+
+                    if let blocks = user.blocks {
+                        let group = DispatchGroup()
+                        var users: [User] = []
+
+                        blocks.forEach { blockID in
+                            group.enter()
+                            self.fetchUserByID(userID: blockID) { user, _ in
+                                guard let user = user else {
+                                    return
+                                }
+                                users.append(user)
+                                group.leave()
+                            }
+                        }
+
+                        group.notify(queue: DispatchQueue.main) {
+                            completion(users, nil)
+                        }
+                    } else {
+                        completion([], RMError.noData)
+                    }
+                } catch {
+                    completion([], error)
+                }
+            }
+        }
+    }
+
+    func insertBlock(blockedUser: String) {
+        let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
+        query.updateData([
+            "blocks": FieldValue.arrayUnion([blockedUser])
+        ])
+    }
+
+    func deleteBlock(blockedUsers: [String]) {
+        let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
+        query.updateData([
+            "blocks": FieldValue.arrayRemove(blockedUsers)
+        ])
+    }
+
+    func insertReportEvent(event: ReportEvent, completion: @escaping ((Error?) -> Void)) {
+        let query = FirestoreEndpoint.reportEvent.colRef.document()
+        do {
+            try query.setData(from: event)
+            completion(nil)
+        } catch {
+            completion(error)
+        }
+    }
+}

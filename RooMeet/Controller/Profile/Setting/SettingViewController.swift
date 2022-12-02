@@ -12,12 +12,15 @@ import CryptoKit
 
 enum SettingItem: CaseIterable {
     case privacy
+    case blockade
     case delete
 
     var title: String {
         switch self {
         case .privacy:
             return "隱私權政策"
+        case .blockade:
+            return "黑名單"
         default:
             return "刪除帳號"
         }
@@ -26,9 +29,11 @@ enum SettingItem: CaseIterable {
     var icon: UIImage {
         switch self {
         case .privacy:
-            return UIImage(systemName: "lock.circle")!
+            return UIImage.asset(.lock)
         case .delete:
-            return UIImage(systemName: "trash.circle")!
+            return UIImage.asset(.trash_1x)
+        case .blockade:
+            return UIImage.asset(.blockade)
         }
     }
 
@@ -36,6 +41,8 @@ enum SettingItem: CaseIterable {
         switch self {
         case .privacy:
             return .subTitleOrangeColor
+        case .blockade:
+            return .mainColor
         case .delete:
             return .subTitleRedColor
         }
@@ -95,6 +102,8 @@ extension SettingViewController: UITableViewDelegate {
         switch settingItem {
         case .privacy:
             showPrivacyPolicyPage()
+        case .blockade:
+            showBlockadePage()
         case .delete:
             deleteAccountAction()
         }
@@ -108,6 +117,15 @@ extension SettingViewController: SFSafariViewControllerDelegate {
             safari.delegate = self
             present(safari, animated: true, completion: nil)
         }
+    }
+
+    func showBlockadePage() {
+        let pushVC = BlockViewController()
+        self.hidesBottomBarWhenPushed = true
+        DispatchQueue.main.async {
+            self.hidesBottomBarWhenPushed = false
+        }
+        navigationController?.pushViewController(pushVC, animated: true)
     }
 }
 

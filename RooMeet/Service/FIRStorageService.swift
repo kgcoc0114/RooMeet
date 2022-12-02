@@ -1,0 +1,50 @@
+//
+//  FIRStorageService.swift
+//  RooMeet
+//
+//  Created by kgcoc on 2022/12/1.
+//
+
+import Foundation
+import UIKit
+import FirebaseStorage
+
+class FIRStorageService {
+    static let shared = FIRStorageService()
+
+    func uploadImage(image: UIImage, path: String, completion: @escaping (String?, Error?) -> Void) {
+        var uploadData: Data?
+
+        let uniqueString = NSUUID().uuidString
+
+        let imageSize = image.getSizeIn(.kilobyte)
+        if imageSize > RMConstants.shared.compressSizeGap {
+            let factor = RMConstants.shared.compressSizeGap / imageSize
+            uploadData = image.jpegData(compressionQuality: factor)
+        } else {
+            uploadData = image.pngData()
+        }
+
+        let storageRef = Storage.storage().reference(withPath: path).child("\(uniqueString).png")
+
+        if let uploadData = uploadData {
+            storageRef.putData(uploadData) { _, error in
+                if let error = error {
+                    // TODO: Error Handle
+                    print("Error: \(error.localizedDescription)")
+                    completion(nil, error)
+                    return
+                }
+
+                storageRef.downloadURL { url, _ in
+                    guard let downloadURL = url else {
+                        return
+                    }
+                    completion(downloadURL.absoluteString, nil)
+                }
+            }
+        } else {
+            completion(nil, RMError.noData)
+        }
+    }
+}

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="430" id="KGk-i7-Jjw" customClass="FurnitureDetailCell" customModule="RooMeet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="407" height="430"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="407" height="430"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="請幫家具取個名稱" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XVf-U7-6Lt" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                        <rect key="frame" x="150" y="68" width="237" height="18.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <textInputTraits key="textInputTraits"/>
+                    </textField>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wxC-U5-RF6">
+                        <rect key="frame" x="20" y="150" width="367" height="230"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="長" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gfL-J8-Zh4">
+                                <rect key="frame" x="20" y="9.5" width="17" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" name="mainDarkColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="寬" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I8j-Id-9vj">
+                                <rect key="frame" x="20" y="47.5" width="17.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" name="mainDarkColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="高" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KXX-D7-qQu">
+                                <rect key="frame" x="20" y="86.5" width="17" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" name="mainDarkColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="cm" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zMg-vF-tzT" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                <rect key="frame" x="57.5" y="48.5" width="252" height="18.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z63-mL-Elr">
+                                <rect key="frame" x="315" y="4" width="47" height="31"/>
+                                <color key="tintColor" name="mainColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="arkit" catalog="system"/>
+                                <connections>
+                                    <action selector="tapLengthAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="9Uq-Xz-Rml"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d5g-RQ-Hqc">
+                                <rect key="frame" x="314.5" y="42.5" width="47.5" height="31"/>
+                                <color key="tintColor" name="tagBackgroundColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="arkit" catalog="system"/>
+                                <connections>
+                                    <action selector="tapWidthAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="8C7-Qo-lMV"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="cm" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b6f-Ge-mMt" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                <rect key="frame" x="57.5" y="87" width="252.5" height="18.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o7a-wC-3pL">
+                                <rect key="frame" x="315" y="81" width="47" height="31"/>
+                                <color key="tintColor" name="subTitleRedColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="arkit" catalog="system"/>
+                                <connections>
+                                    <action selector="tapHeightAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="GfU-q7-Cvg"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="cm" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yx9-yW-3Bv" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                <rect key="frame" x="57" y="10" width="253" height="18.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <color key="backgroundColor" name="mainBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="zMg-vF-tzT" firstAttribute="leading" secondItem="I8j-Id-9vj" secondAttribute="trailing" constant="20" id="8s1-tY-DMP"/>
+                            <constraint firstItem="KXX-D7-qQu" firstAttribute="centerY" secondItem="b6f-Ge-mMt" secondAttribute="centerY" id="Aa6-BX-8Ik"/>
+                            <constraint firstItem="zMg-vF-tzT" firstAttribute="centerX" secondItem="yx9-yW-3Bv" secondAttribute="centerX" id="BhL-gn-Wd9"/>
+                            <constraint firstItem="yx9-yW-3Bv" firstAttribute="top" secondItem="wxC-U5-RF6" secondAttribute="top" constant="10" id="E0D-01-Hg8"/>
+                            <constraint firstItem="yx9-yW-3Bv" firstAttribute="leading" secondItem="gfL-J8-Zh4" secondAttribute="trailing" constant="20" id="HeM-50-2Jk"/>
+                            <constraint firstItem="b6f-Ge-mMt" firstAttribute="leading" secondItem="zMg-vF-tzT" secondAttribute="leading" id="MHZ-co-BJ9"/>
+                            <constraint firstAttribute="height" constant="230" id="MTp-Vz-UdG"/>
+                            <constraint firstAttribute="trailing" secondItem="o7a-wC-3pL" secondAttribute="trailing" constant="5" id="RnE-dC-Drz"/>
+                            <constraint firstAttribute="trailing" secondItem="d5g-RQ-Hqc" secondAttribute="trailing" constant="5" id="T3P-hQ-NDb"/>
+                            <constraint firstItem="KXX-D7-qQu" firstAttribute="leading" secondItem="wxC-U5-RF6" secondAttribute="leading" constant="20" id="TFd-Qz-NpA"/>
+                            <constraint firstItem="gfL-J8-Zh4" firstAttribute="leading" secondItem="wxC-U5-RF6" secondAttribute="leading" constant="20" id="TU7-5u-9MA"/>
+                            <constraint firstItem="d5g-RQ-Hqc" firstAttribute="centerY" secondItem="zMg-vF-tzT" secondAttribute="centerY" id="TUu-Np-kwN"/>
+                            <constraint firstAttribute="trailing" secondItem="z63-mL-Elr" secondAttribute="trailing" constant="5" id="Tca-Tl-w4g"/>
+                            <constraint firstItem="o7a-wC-3pL" firstAttribute="leading" secondItem="b6f-Ge-mMt" secondAttribute="trailing" constant="5" id="X7w-Mx-Q7d"/>
+                            <constraint firstItem="I8j-Id-9vj" firstAttribute="centerY" secondItem="zMg-vF-tzT" secondAttribute="centerY" id="fVa-I5-QoV"/>
+                            <constraint firstItem="o7a-wC-3pL" firstAttribute="centerY" secondItem="b6f-Ge-mMt" secondAttribute="centerY" id="gSh-hL-yHt"/>
+                            <constraint firstItem="zMg-vF-tzT" firstAttribute="top" secondItem="yx9-yW-3Bv" secondAttribute="bottom" constant="20" id="hIz-tT-L7x"/>
+                            <constraint firstItem="b6f-Ge-mMt" firstAttribute="top" secondItem="zMg-vF-tzT" secondAttribute="bottom" constant="20" id="ifV-A2-o3l"/>
+                            <constraint firstItem="z63-mL-Elr" firstAttribute="leading" secondItem="yx9-yW-3Bv" secondAttribute="trailing" constant="5" id="klc-7n-DAa"/>
+                            <constraint firstItem="gfL-J8-Zh4" firstAttribute="centerY" secondItem="yx9-yW-3Bv" secondAttribute="centerY" id="lH4-dh-t7J"/>
+                            <constraint firstItem="d5g-RQ-Hqc" firstAttribute="leading" secondItem="zMg-vF-tzT" secondAttribute="trailing" constant="5" id="qEz-Eg-VlZ"/>
+                            <constraint firstItem="z63-mL-Elr" firstAttribute="centerY" secondItem="yx9-yW-3Bv" secondAttribute="centerY" id="ucM-Jq-vMj"/>
+                            <constraint firstItem="I8j-Id-9vj" firstAttribute="leading" secondItem="wxC-U5-RF6" secondAttribute="leading" constant="20" id="yWm-zi-SRX"/>
+                        </constraints>
+                    </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="add" translatesAutoresizingMaskIntoConstraints="NO" id="dbz-LQ-WNG">
+                        <rect key="frame" x="20" y="20" width="110" height="110"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="110" id="HBB-WE-VFr"/>
+                            <constraint firstAttribute="height" constant="110" id="Yqs-mT-Atg"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="家具名稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x9Z-KV-wmm">
+                        <rect key="frame" x="150" y="30" width="66" height="20"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" name="mainDarkColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="XVf-U7-6Lt" secondAttribute="trailing" constant="20" id="AxK-Rk-IY5"/>
+                    <constraint firstItem="XVf-U7-6Lt" firstAttribute="leading" secondItem="x9Z-KV-wmm" secondAttribute="leading" id="C0u-mL-6fW"/>
+                    <constraint firstItem="wxC-U5-RF6" firstAttribute="top" secondItem="dbz-LQ-WNG" secondAttribute="bottom" constant="20" id="Lhw-lz-vjy"/>
+                    <constraint firstItem="XVf-U7-6Lt" firstAttribute="top" secondItem="x9Z-KV-wmm" secondAttribute="bottom" constant="18" id="NkF-rg-wXr"/>
+                    <constraint firstAttribute="bottom" secondItem="wxC-U5-RF6" secondAttribute="bottom" constant="10" id="bfy-5I-RtJ"/>
+                    <constraint firstItem="dbz-LQ-WNG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="gQk-J5-NQU"/>
+                    <constraint firstAttribute="trailing" secondItem="wxC-U5-RF6" secondAttribute="trailing" constant="20" id="hQp-gc-LvK"/>
+                    <constraint firstItem="x9Z-KV-wmm" firstAttribute="leading" secondItem="dbz-LQ-WNG" secondAttribute="trailing" constant="20" id="ofP-ON-PYv"/>
+                    <constraint firstItem="dbz-LQ-WNG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="pfc-93-LcP"/>
+                    <constraint firstItem="x9Z-KV-wmm" firstAttribute="top" secondItem="dbz-LQ-WNG" secondAttribute="top" constant="10" id="vUW-Yk-WJM"/>
+                    <constraint firstItem="wxC-U5-RF6" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="xvu-bf-qzp"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="heightButton" destination="o7a-wC-3pL" id="ILl-Tm-99X"/>
+                <outlet property="heightTextField" destination="b6f-Ge-mMt" id="VPc-2M-IvB"/>
+                <outlet property="lengthButton" destination="z63-mL-Elr" id="bDt-SQ-z3M"/>
+                <outlet property="lengthTextField" destination="yx9-yW-3Bv" id="Sff-OE-bFN"/>
+                <outlet property="photoImageView" destination="dbz-LQ-WNG" id="jjR-k7-VRe"/>
+                <outlet property="specBackgroundView" destination="wxC-U5-RF6" id="LbG-9z-xH9"/>
+                <outlet property="titleTextField" destination="XVf-U7-6Lt" id="X6d-WL-YJx"/>
+                <outlet property="widthButton" destination="d5g-RQ-Hqc" id="MYu-n6-nZs"/>
+                <outlet property="widthTextField" destination="zMg-vF-tzT" id="bW9-Aq-Fxb"/>
+            </connections>
+            <point key="canvasLocation" x="255.79710144927537" y="92.410714285714278"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="add" width="512" height="512"/>
+        <image name="arkit" catalog="system" width="128" height="128"/>
+        <namedColor name="mainBackgroundColor">
+            <color red="1" green="0.97600001096725464" blue="0.92900002002716064" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="mainColor">
+            <color red="0.3919999897480011" green="0.53299999237060547" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="mainDarkColor">
+            <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="subTitleRedColor">
+            <color red="0.83899998664855957" green="0.41999998688697815" blue="0.45100000500679016" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+        <namedColor name="tagBackgroundColor">
+            <color red="0.98000001907348633" green="0.77999997138977051" blue="0.28200000524520874" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>
