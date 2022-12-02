@@ -619,8 +619,8 @@
 				E5EEE2182913B4D000CAAE84 /* ChatRoomListViewController.swift */,
 				E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */,
 				E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */,
-				E59B82F12919117300F02CEC /* CallViewController.xib */,
 				E59B82F02919117300F02CEC /* CallViewController.swift */,
+				E59B82F12919117300F02CEC /* CallViewController.xib */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1540,10 +1540,10 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "RooMeet 需要取用您相簿權限，即可儲存照片至相簿中";
 				INFOPLIST_KEY_NSCameraUsageDescription = "RooMeet 需要取用您相機權限，即可上傳相片建立貼文與視訊通話";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要取用您定位資訊，即可顯示附近的房源";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RooMeet 需要取用您麥克風權限，即可進行視訊通話";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "RooMeet 需要取用您相簿權限，即可儲存照片至相簿中";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1579,10 +1579,10 @@
 				DEVELOPMENT_TEAM = 865VWL9WN4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = RooMeet/Info.plist;
-				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "RooMeet 需要取用您相簿權限，即可儲存照片至相簿中";
 				INFOPLIST_KEY_NSCameraUsageDescription = "RooMeet 需要取用您相機權限，即可上傳相片建立貼文與視訊通話";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要取用您定位資訊，即可顯示附近的房源";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RooMeet 需要取用您麥克風權限，即可進行視訊通話";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "RooMeet 需要取用您相簿權限，即可儲存照片至相簿中";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
