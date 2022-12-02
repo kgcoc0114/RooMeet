@@ -40,7 +40,7 @@ class RoomSpecCell: UICollectionViewCell {
         }
     }
 
-        @IBOutlet weak var segmentControl: RMSegmentedControl! {
+    @IBOutlet weak var segmentControl: RMSegmentedControl! {
         didSet {
             segmentControl.items = RoomType.allCases.map { $0.rawValue }
             segmentControl.borderColor = UIColor.mainLightColor
@@ -71,6 +71,7 @@ class RoomSpecCell: UICollectionViewCell {
             titleLabel.textColor = UIColor.mainDarkColor
         }
     }
+
     @IBOutlet weak var priceTextField: RMBaseTextField! {
         didSet {
             priceTextField.keyboardType = .numberPad
@@ -109,6 +110,11 @@ class RoomSpecCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        segmentControl.selectedIndex = 0
     }
 
     func configureLayout(roomSpec data: RoomSpec, indexPath: IndexPath) {
