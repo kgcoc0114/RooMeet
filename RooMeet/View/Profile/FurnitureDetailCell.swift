@@ -62,16 +62,19 @@ class FurnitureDetailCell: UITableViewCell {
             heightTextField.keyboardType = .numberPad
         }
     }
+
     @IBOutlet weak var lengthButton: UIButton! {
         didSet {
             lengthButton.setTitle("", for: .normal)
         }
     }
+
     @IBOutlet weak var widthButton: UIButton! {
         didSet {
             widthButton.setTitle("", for: .normal)
         }
     }
+
     @IBOutlet weak var heightButton: UIButton! {
         didSet {
             heightButton.setTitle("", for: .normal)
@@ -84,6 +87,9 @@ class FurnitureDetailCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
+        lengthTextField.delegate = self
+        heightTextField.delegate = self
+        widthTextField.delegate = self
     }
 
     func configureCell() {
@@ -168,6 +174,25 @@ class FurnitureDetailCell: UITableViewCell {
 
     func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         delegate?.didClickImageView(self)
+    }
+}
+
+extension FurnitureDetailCell: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        if textField.hasText,
+            let text = textField.text {
+            textField.text = text + "cm"
+        }
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        guard var text = textField.text else {
+            return
+        }
+
+        text = text.replace(target: "cm", withString: "")
+        print(text)
+        textField.text = text
     }
 }
 
