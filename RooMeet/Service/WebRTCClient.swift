@@ -193,6 +193,7 @@ final class WebRTCClient: NSObject {
 
     private func createVideoTrack() -> RTCVideoTrack {
         let videoSource = self.factory.videoSource()
+        videoSource.adaptOutputFormat(toWidth: 1280, height: 720, fps: 30)
         self.videoCapturer = RTCCameraVideoCapturer(delegate: videoSource)
         let videoTrack = self.factory.videoTrack(with: videoSource, trackId: "video0")
         return videoTrack
