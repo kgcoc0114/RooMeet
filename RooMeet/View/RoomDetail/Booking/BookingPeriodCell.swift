@@ -17,12 +17,16 @@ class BookingPeriodCell: UICollectionViewCell {
     var selectPeriod: BookingPeriod?
     weak var delegate: BookingPeriodCellDelegate?
 
+    lazy var periodPickerView: UIPickerView = {
+        let pickerView = UIPickerView()
+        pickerView.dataSource = self
+        pickerView.delegate = self
+        return pickerView
+    }()
+
     @IBOutlet weak var periodTextField: UITextField! {
         didSet {
-            let pickerView = UIPickerView()
-            pickerView.dataSource = self
-            pickerView.delegate = self
-            periodTextField.inputView = pickerView
+            periodTextField.inputView = periodPickerView
 
             let button = UIButton(type: .custom)
             button.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
@@ -37,7 +41,24 @@ class BookingPeriodCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        periodTextField.delegate = self
     }
+}
+
+extension BookingPeriodCell: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == periodTextField && !textField.hasText {
+            let defaultSelectedRow = 0
+            periodPickerView.selectRow(defaultSelectedRow, inComponent: 0, animated: false)
+            periodTextField.text = BookingPeriod.allCases[defaultSelectedRow].descrption
+            selectPeriod = BookingPeriod.allCases[defaultSelectedRow]
+            guard let selectPeriod = selectPeriod else {
+                return
+            }
+            delegate?.didSelectPeriod(selectedPeriod: selectPeriod)
+        }
+    }
+
 }
 
 extension BookingPeriodCell: UIPickerViewDataSource {
@@ -58,6 +79,9 @@ extension BookingPeriodCell: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         periodTextField.text = BookingPeriod.allCases[row].descrption
         selectPeriod = BookingPeriod.allCases[row]
-        delegate?.didSelectPeriod(selectedPeriod: selectPeriod!)
+        guard let selectPeriod = selectPeriod else {
+            return
+        }
+        delegate?.didSelectPeriod(selectedPeriod: selectPeriod)
     }
 }
