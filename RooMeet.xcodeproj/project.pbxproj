@@ -1543,6 +1543,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "RooMeet 需要使用相機";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要使用定位資訊";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RooMeet Requires microphone access in order to capture and transmit audio";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "RooMeet 需要取用您相簿權限，即可儲存照片至相簿中";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -1581,6 +1582,7 @@
 				INFOPLIST_KEY_NSCameraUsageDescription = "RooMeet 需要使用相機";
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "RooMeet 需要使用定位資訊";
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "RooMeet Requires microphone access in order to capture and transmit audio";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "RooMeet 需要取用您相簿權限，即可儲存照片至相簿中";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

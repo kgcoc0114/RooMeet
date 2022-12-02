@@ -54,7 +54,7 @@ class FurnitureViewController: UIViewController {
             action: #selector(saveData)
         )
 
-        navigationItem.title = "Add/Edit"
+        navigationItem.title = "Add / Edit"
     }
 
     @objc private func backAction() {
@@ -140,8 +140,15 @@ extension FurnitureViewController: FurnitureDetailCellDelegate {
                 print("")
             }
         }
-        showVC.modalPresentationStyle = .overFullScreen
-        present(showVC, animated: false)
+
+        showVC.modalPresentationStyle = .overCurrentContext
+
+        self.hidesBottomBarWhenPushed = true
+        DispatchQueue.main.async {
+            self.hidesBottomBarWhenPushed = false
+        }
+
+        navigationController?.pushViewController(showVC, animated: false)
     }
 }
 

@@ -8,6 +8,7 @@
 import UIKit
 import SceneKit
 import ARKit
+import Photos
 
 class MeasureViewController: UIViewController {
     enum MeasurementMode {
@@ -44,7 +45,7 @@ class MeasureViewController: UIViewController {
             backButton.backgroundColor = .mainLightColor
             backButton.tintColor = .mainDarkColor
             backButton.layer.cornerRadius = 45 / 2
-            backButton.setImage(UIImage.asset(.back), for: .normal)
+            backButton.setImage(UIImage.asset(.back_dark), for: .normal)
             backButton.addTarget(self, action: #selector(backToParentPage(_:)), for: .touchUpInside)
         }
     }
@@ -57,6 +58,18 @@ class MeasureViewController: UIViewController {
             undoButton.layer.cornerRadius = 45 / 2
             undoButton.setImage(UIImage.asset(.undo), for: .normal)
             undoButton.addTarget(self, action: #selector(undoNode(_:)), for: .touchUpInside)
+        }
+    }
+
+
+    @IBOutlet weak var saveImageButton: UIButton! {
+        didSet {
+            saveImageButton.setTitle("", for: .normal)
+            saveImageButton.backgroundColor = .mainLightColor
+            saveImageButton.tintColor = .mainDarkColor
+            saveImageButton.layer.cornerRadius = 45 / 2
+            saveImageButton.setImage(UIImage.asset(.save_picture), for: .normal)
+            saveImageButton.addTarget(self, action: #selector(saveImageAction(_:)), for: .touchUpInside)
         }
     }
 
@@ -76,7 +89,7 @@ class MeasureViewController: UIViewController {
             saveButton.setTitle("", for: .normal)
             saveButton.backgroundColor = .mainLightColor
             saveButton.tintColor = .mainDarkColor
-            saveButton.setImage(UIImage.asset(.copy), for: .normal)
+            saveButton.setImage(UIImage.asset(.check), for: .normal)
             saveButton.layer.cornerRadius = 45 / 2
             saveButton.addTarget(self, action: #selector(saveResult(_:)), for: .touchUpInside)
         }
@@ -117,11 +130,13 @@ class MeasureViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupSceneView()
+        self.navigationController?.navigationBar.isHidden = true
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         sceneView.session.pause()
+        self.navigationController?.navigationBar.isHidden = false
     }
 
 
@@ -215,7 +230,39 @@ extension MeasureViewController: ARSCNViewDelegate {
             let measureValue = measureValue,
             let measureValueInt = Int(String(format: "%.0f", measureValue * 100)) else { return }
         completion?(measureValueInt, resultLabel.text)
-        dismiss(animated: true)
+        RMProgressHUD.showSuccess()
+        navigationController?.popViewController(animated: true)
+    }
+
+    private func saveImage(image: UIImage) {
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }) { _, error in
+            if error != nil {
+                RMProgressHUD.showFailure(text: "儲存資料出現問題！")
+            } else {
+                RMProgressHUD.showSuccess()
+            }
+        }
+    }
+
+    func saveImageAction(_ sender: UIButton) {
+        RMProgressHUD.show()
+        let image = sceneView.snapshot()
+        switch PHPhotoLibrary.authorizationStatus() {
+        case .authorized:
+            saveImage(image: image)
+        default:
+            PHPhotoLibrary.requestAuthorization { [weak self] status in
+                guard let self = self else { return }
+                switch status {
+                case .authorized:
+                    self.saveImage(image: image)
+                default:
+                    RMProgressHUD.showFailure(text: "需要取得您的相簿權限！")
+                }
+            }
+        }
     }
 }
 

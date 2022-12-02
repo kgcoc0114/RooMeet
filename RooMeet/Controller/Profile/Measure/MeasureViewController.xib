@@ -4,6 +4,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,6 +17,7 @@
                 <outlet property="resultBackgroundView" destination="T8r-tc-bhH" id="glZ-bc-doj"/>
                 <outlet property="resultLabel" destination="lQr-Jc-uPR" id="gE2-qJ-MH9"/>
                 <outlet property="saveButton" destination="a1c-lR-oPV" id="Wvo-RT-dwo"/>
+                <outlet property="saveImageButton" destination="WH2-Fl-IFX" id="tEi-Ts-29N"/>
                 <outlet property="sceneView" destination="99I-it-8oo" id="fso-ca-den"/>
                 <outlet property="targetView" destination="Y7K-Lu-kA6" id="qBA-J7-E3l"/>
                 <outlet property="undoButton" destination="MHG-SO-wWy" id="AZk-Ti-qiE"/>
@@ -58,12 +60,12 @@
                     <buttonConfiguration key="configuration" style="plain" title="Button"/>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uVK-i2-2Nl">
-                    <rect key="frame" x="10" y="52" width="45" height="45"/>
+                    <rect key="frame" x="10" y="60" width="45" height="45"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="Q64-tL-4Et"/>
                         <constraint firstAttribute="width" constant="45" id="xYP-XO-HtX"/>
                     </constraints>
-                    <color key="tintColor" red="0.37647059560000001" green="0.75686275960000005" blue="0.55686277149999996" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    <color key="tintColor" name="mainDarkColor"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="plain" title="Button"/>
                 </button>
@@ -92,32 +94,47 @@
                         <constraint firstAttribute="width" constant="48" id="sLK-g0-MH3"/>
                     </constraints>
                 </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WH2-Fl-IFX">
+                    <rect key="frame" x="359" y="60" width="45" height="45"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="94o-YW-jzE"/>
+                        <constraint firstAttribute="width" constant="45" id="wNi-qG-Pi9"/>
+                    </constraints>
+                    <color key="tintColor" name="mainDarkColor"/>
+                    <state key="normal" title="Button"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="99I-it-8oo" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="15v-j3-wQR"/>
-                <constraint firstItem="uVK-i2-2Nl" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="5mm-lS-ae3"/>
+                <constraint firstItem="uVK-i2-2Nl" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="5mm-lS-ae3"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="nzD-aR-Ewz" secondAttribute="bottom" constant="20" id="DWQ-p0-EJJ"/>
                 <constraint firstItem="nzD-aR-Ewz" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="GBw-Av-qmN"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="99I-it-8oo" secondAttribute="trailing" id="I6j-RL-tBF"/>
                 <constraint firstItem="Y7K-Lu-kA6" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="PbY-oG-hRt"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="a1c-lR-oPV" secondAttribute="trailing" constant="40" id="UDe-nR-asC"/>
                 <constraint firstItem="T8r-tc-bhH" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="UqE-XX-FYg"/>
-                <constraint firstItem="T8r-tc-bhH" firstAttribute="top" secondItem="uVK-i2-2Nl" secondAttribute="top" id="bxs-r3-4ch"/>
+                <constraint firstItem="WH2-Fl-IFX" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="V2o-nD-aV3"/>
                 <constraint firstAttribute="bottom" secondItem="99I-it-8oo" secondAttribute="bottom" id="dH1-1k-kRl"/>
                 <constraint firstItem="Y7K-Lu-kA6" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="eK8-5P-d73"/>
                 <constraint firstItem="a1c-lR-oPV" firstAttribute="centerY" secondItem="nzD-aR-Ewz" secondAttribute="centerY" id="ezA-mi-O5g"/>
                 <constraint firstItem="MHG-SO-wWy" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="40" id="f8i-Xm-mVd"/>
                 <constraint firstItem="99I-it-8oo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="fXu-ad-MTG"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="WH2-Fl-IFX" secondAttribute="trailing" constant="10" id="jf0-TD-PBj"/>
+                <constraint firstItem="T8r-tc-bhH" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="qvO-72-Vf8"/>
                 <constraint firstItem="MHG-SO-wWy" firstAttribute="centerY" secondItem="nzD-aR-Ewz" secondAttribute="centerY" id="xGd-Hn-cOQ"/>
                 <constraint firstItem="uVK-i2-2Nl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="10" id="zGF-WA-o0Y"/>
             </constraints>
-            <point key="canvasLocation" x="132" y="107"/>
+            <point key="canvasLocation" x="131.8840579710145" y="106.47321428571428"/>
         </view>
     </objects>
     <resources>
         <image name="target_disable" width="48" height="48"/>
+        <namedColor name="mainDarkColor">
+            <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

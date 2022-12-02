@@ -43,6 +43,7 @@ enum ImageAsset: String {
     case room_image_placeholder
     case room_placeholder
     case back
+    case back_dark
     case comment_info
     case circle_phone
     case heart
@@ -67,6 +68,8 @@ enum ImageAsset: String {
     case chair
     case trash_1x
     case lock
+    case save_picture
+    case check
 }
 
 extension UIImage {
