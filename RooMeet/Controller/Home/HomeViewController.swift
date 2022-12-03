@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import MapKit
-
 
 class HomeViewController: ViewController {
     enum Section {
@@ -18,8 +16,6 @@ class HomeViewController: ViewController {
     typealias HomeDataSource = UICollectionViewDiffableDataSource<Section, Room>
     typealias HomeSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
     private var dataSource: HomeDataSource!
-
-    let locationManger = LocationService.shared.locationManger
 
     var rooms: [Room] = [] {
         didSet {
@@ -45,7 +41,6 @@ class HomeViewController: ViewController {
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            collectionView.backgroundColor = UIColor.mainBackgroundColor
             collectionView.translatesAutoresizingMaskIntoConstraints = false
         }
     }
@@ -64,13 +59,6 @@ class HomeViewController: ViewController {
             style: .plain,
             target: self,
             action: #selector(showFilterPage))
-
-        // get User Location
-        locationManger.delegate = self
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let self = self else { return }
-            self.locationManger.requestLocation()
-        }
 
         // set title
         navigationItem.title = "RooMeet"
@@ -123,8 +111,17 @@ class HomeViewController: ViewController {
     }
 
     @objc private func addRoomPost(_ sender: Any) {
-        let postViewController = PostViewController(entryType: .new, data: nil)
-        navigationController?.pushViewController(postViewController, animated: true)
+        if AuthService.shared.isLogin() {
+            let postViewController = PostViewController(entryType: .new, data: nil)
+            navigationController?.pushViewController(postViewController, animated: true)
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
+        }
     }
 
     @objc private func showFilterPage() {
@@ -188,18 +185,5 @@ extension HomeViewController: UICollectionViewDelegate {
         else { return }
         let detailViewController = RoomDetailViewController(room: room, user: user)
         navigationController?.pushViewController(detailViewController, animated: true)
-    }
-}
-
-// MARK: - CLLocationManagerDelegate
-extension HomeViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last {
-            RMConstants.shared.currentPosition = location.coordinate
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
     }
 }

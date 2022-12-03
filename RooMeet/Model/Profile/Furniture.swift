@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 struct Furniture: Codable {
     var id: String?
@@ -15,4 +17,5 @@ struct Furniture: Codable {
     var height: Int?
     var width: Int?
     var userID: String?
+    var createdTime: Timestamp?
 }

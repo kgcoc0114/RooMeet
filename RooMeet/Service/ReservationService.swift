@@ -125,6 +125,52 @@ class ReservationService {
         }
     }
 
+    func resetLastMessage(chatRoomID: String) {
+        let query = FirestoreEndpoint.chatRoom.colRef
+            .document(chatRoomID)
+            .collection("Message")
+            .order(by: "createdTime", descending: true)
+            .limit(to: 1)
+
+        query.getDocuments { [weak self] querySnapshot, error in
+            guard let self = self else { return }
+            if error != nil {
+                print("ERROR: - fetch data error")
+            }
+
+            if let querySnapshot = querySnapshot,
+               let document = querySnapshot.documents.first {
+                do {
+                    if let message = try? document.data(as: Message.self) {
+                        self.updateLastMessage(chatRoomID: chatRoomID, message: message)
+                    }
+                } catch {
+                    print("ERROR: - \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    func updateLastMessage(chatRoomID: String, message: Message) {
+        var content = message.content
+        let chatRoomRef = FirestoreEndpoint.chatRoom.colRef.document(chatRoomID)
+        if message.messageType == 3 {
+            let acceptedStatus = AcceptedStatus.init(rawValue: message.content)
+            content = acceptedStatus?.content ?? ""
+        }
+
+        let lastMessage = LastMessage(
+            id: message.id,
+            content: content,
+            createdTime: message.createdTime
+        )
+
+        chatRoomRef.updateData([
+            "lastMessage": lastMessage.toDict,
+            "lastUpdated": lastMessage.createdTime
+        ])
+    }
+
     func insertMessage(
         senderID: String,
         receiverID: String,
@@ -170,6 +216,31 @@ class ReservationService {
         }
     }
 
+    // 更新已被回覆過的預約訊息狀態
+    func updateCurrentMessageStatus(status: AcceptedStatus, currentUser: User, otherUser: User, message: Message) {
+        FirebaseService.shared.getChatRoomByUserID(userA: currentUser.id, userB: otherUser.id) { [weak self] chatroom in
+            guard let `self` = self else { return }
+            self.updateMessage(
+                chatRoomID: chatroom.id,
+                message: message,
+                status: status
+            )
+        }
+    }
+
+    // 更新已被回覆過的預約訊息狀態
+    func updateMessage(chatRoomID: String, message: Message, status: AcceptedStatus) {
+        let messageRef = Firestore.firestore()
+            .collection("ChatRoom")
+            .document(chatRoomID)
+            .collection("Message")
+            .document(message.id)
+
+        messageRef.updateData([
+            "content": status.description
+        ])
+    }
+
 
     func insertReservation(
         senderID: String,
@@ -207,7 +278,7 @@ class ReservationService {
         ])
     }
 
-    func cancelReservation(reservation: Reservation, status: AcceptedStatus, requestUserID: String) {
+    func replyReservation(reservation: Reservation, status: AcceptedStatus, requestUserID: String, completion: @escaping ((Error?) -> Void)) {
         var reservation = reservation
         guard
             let receiver = reservation.receiver,
@@ -223,35 +294,52 @@ class ReservationService {
         // 刪除發起者的 reservationID
         if status == .cancel {
             deleteUserReservation(userID: sender, reservationID: reservation.id)
-
             deleteUserReservation(userID: receiver, reservationID: reservation.id)
         }
 
         // 更新 message / last message
-        insertMessage(
-            senderID: sender,
-            receiverID: receiver,
-            status: status,
-            reservation: reservation
-        ) { [weak self] chatRoomID in
+        if sender == UserDefaults.id && status == .cancel {
             guard
-                let self = self,
-                let chatRoomID = chatRoomID else {
+                let sender = reservation.sender,
+                let receiver = reservation.receiver
+            else {
                 return
             }
-            self.deleteRequestReservationMessage(chatRoomID: chatRoomID, reservationID: reservation.id)
+
+            FirebaseService.shared.getChatRoomByUserID(userA: sender, userB: receiver) { [weak self] chatRoom in
+                guard let self = self else { return }
+                self.deleteRequestReservationMessage(chatRoomID: chatRoom.id, reservationID: reservation.id, status: .cancel)
+                completion(nil)
+            }
+        } else {
+            insertMessage(
+                senderID: sender,
+                receiverID: receiver,
+                status: status,
+                reservation: reservation
+            ) { [weak self] chatRoomID in
+                guard
+                    let self = self,
+                    let chatRoomID = chatRoomID else {
+                    return
+                }
+                self.deleteRequestReservationMessage(chatRoomID: chatRoomID, reservationID: reservation.id, status: .answer)
+                completion(nil)
+            }
         }
     }
 
-    func deleteRequestReservationMessage(chatRoomID: String, reservationID: String) {
+    func deleteRequestReservationMessage(chatRoomID: String, reservationID: String, status: AcceptedStatus) {
         let query = FirestoreEndpoint.chatRoom.colRef
             .document(chatRoomID)
             .collection("Message")
             .whereField("content", isEqualTo: "waiting")
             .whereField("messageType", isEqualTo: 3)
 
-        query.getDocuments { snapshot, error in
-            guard let snapshot = snapshot else {
+        query.getDocuments { [weak self] snapshot, error in
+            guard
+                let snapshot = snapshot,
+                let self = self else {
                 return
             }
 
@@ -259,8 +347,13 @@ class ReservationService {
                 do {
                     let data = try document.data(as: Message.self)
                     if let reservation = data.reservation,
-                       reservation.id == reservationID {
-                        document.reference.delete()
+                        reservation.id == reservationID {
+                        if status == .cancel {
+                            document.reference.delete()
+                            self.resetLastMessage(chatRoomID: chatRoomID)
+                        } else {
+                            document.reference.updateData(["content": status.description])
+                        }
                         break
                     }
                 } catch {

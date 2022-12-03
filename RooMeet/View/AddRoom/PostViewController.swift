@@ -113,38 +113,15 @@ class PostViewController: UIViewController {
             collectionView.dataSource = self
             collectionView.delegate = self
             collectionView.collectionViewLayout = configureLayout()
-            collectionView.register(
-                UINib(nibName: PostBasicCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: PostBasicCell.reuseIdentifier
-            )
-            collectionView.register(
-                UINib(nibName: RoomSpecCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: RoomSpecCell.reuseIdentifier
-            )
-            collectionView.register(
-                UINib(nibName: OtherFeeCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: OtherFeeCell.reuseIdentifier
-            )
-            collectionView.register(
-                UINib(nibName: PostImageCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: PostImageCell.reuseIdentifier
-            )
-            collectionView.register(
-                UINib(nibName: RulesCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: RulesCell.reuseIdentifier
-            )
-            collectionView.register(
-                UINib(nibName: ItemsCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: ItemsCell.reuseIdentifier
-            )
-            collectionView.register(
-                UINib(nibName: OtherFeeHeaderCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier
-            )
-            collectionView.register(
-                UINib(nibName: FeeDetailCell.reuseIdentifier, bundle: nil),
-                forCellWithReuseIdentifier: FeeDetailCell.reuseIdentifier
-            )
+
+            collectionView.registerCellWithNib(reuseIdentifier: PostBasicCell.reuseIdentifier, bundle: nil)
+            collectionView.registerCellWithNib(reuseIdentifier: RoomSpecCell.reuseIdentifier, bundle: nil)
+            collectionView.registerCellWithNib(reuseIdentifier: OtherFeeCell.reuseIdentifier, bundle: nil)
+            collectionView.registerCellWithNib(reuseIdentifier: PostImageCell.reuseIdentifier, bundle: nil)
+            collectionView.registerCellWithNib(reuseIdentifier: RulesCell.reuseIdentifier, bundle: nil)
+            collectionView.registerCellWithNib(reuseIdentifier: ItemsCell.reuseIdentifier, bundle: nil)
+            collectionView.registerCellWithNib(reuseIdentifier: OtherFeeHeaderCell.reuseIdentifier, bundle: nil)
+            collectionView.registerCellWithNib(reuseIdentifier: FeeDetailCell.reuseIdentifier, bundle: nil)
         }
     }
 
@@ -287,7 +264,7 @@ class PostViewController: UIViewController {
     }
 
     private func showAlert() {
-        let alertController = UIAlertController(title: "新增貼文", message: "請填寫完整資訊！", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "新增貼文", message: "標題、地區與最快可搬入時間為必填欄位", preferredStyle: .alert)
         let alertAction = UIAlertAction(title: "好的", style: .default)
         alertController.addAction(alertAction)
         present(alertController, animated: false)
@@ -413,7 +390,7 @@ extension PostViewController: UICollectionViewDataSource {
 
         cell.addColumnAction = { [weak self] cell in
             guard
-                let `self` = self,
+                let self = self,
                 let indexPath = collectionView.indexPath(for: cell) else { return }
             let roomSpec = RoomSpec()
             self.roomSpecList.insert(roomSpec, at: indexPath.item + 1)
@@ -422,7 +399,7 @@ extension PostViewController: UICollectionViewDataSource {
 
         cell.delectColumnAction = { [weak self] cell in
             guard
-                let `self` = self,
+                let self = self,
                 let indexPath = collectionView.indexPath(for: cell) else { return }
 
             self.roomSpecList.remove(at: indexPath.item)
@@ -571,7 +548,6 @@ extension PostViewController: PostBasicCellDelegate {
 extension PostViewController: RoomSpecCellDelegate {
     func didChangeData(_ cell: RoomSpecCell, data: RoomSpec) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-
         roomSpecList[indexPath.item] = data
     }
 }

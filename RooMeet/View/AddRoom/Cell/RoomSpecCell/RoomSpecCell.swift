@@ -13,7 +13,6 @@ protocol RoomSpecCellDelegate: AnyObject {
 
 class RoomSpecCell: UICollectionViewCell {
     @IBOutlet var typeButtons: [UIButton]!
-    static let reuseIdentifier = "\(RoomSpecCell.self)"
 
     @IBOutlet weak var typeSegmentControl: UISegmentedControl! {
         didSet {
@@ -160,7 +159,6 @@ class RoomSpecCell: UICollectionViewCell {
         }
 
         let roomType = RoomType.allCases[segmentControl.selectedIndex].rawValue
-        print("===", roomType)
         delegate?.didChangeData(self, data: RoomSpec(roomType: roomType, price: price, space: space))
     }
 
