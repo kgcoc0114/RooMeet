@@ -122,7 +122,7 @@ extension ProfileRSVNViewController {
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .estimated(150))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.edgeSpacing  = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(10), trailing: nil, bottom: .fixed(10))
+        item.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(10), trailing: nil, bottom: .fixed(10))
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
@@ -170,6 +170,7 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
                         if error != nil {
                             RMProgressHUD.showFailure(text: "更新狀態有誤")
                         } else {
+                            self.reservations[indexPath.item].acceptedStatus = "accept"
                             self.updateDataSource()
                         }
                     }
@@ -200,7 +201,11 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
                     identifier: nil
                 ) { [weak self] _ in
                     guard let self = self else { return }
-                    ReservationService.shared.replyReservation(reservation: reservation, status: .cancel, requestUserID: UserDefaults.id) { error in
+                    ReservationService.shared.replyReservation(
+                        reservation: reservation,
+                        status: .cancel,
+                        requestUserID: UserDefaults.id
+                    ) { error in
                         if error != nil {
                             RMProgressHUD.showFailure(text: "更新狀態有誤")
                         } else {
