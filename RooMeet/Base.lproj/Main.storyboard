@@ -48,7 +48,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vni-p0-mwb">
-                                <rect key="frame" x="41.5" y="174" width="331" height="331"/>
+                                <rect key="frame" x="41.5" y="144" width="331" height="331"/>
                                 <color key="backgroundColor" name="mainLightColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Vni-p0-mwb" secondAttribute="height" multiplier="1:1" id="rV0-SH-dYC"/>
@@ -78,11 +78,11 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="登入帳號以使用更多功能" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eu-0Z-AbV">
-                                <rect key="frame" x="125" y="627" width="135" height="15"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="登入帳號即可使用完整功能" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eu-0Z-AbV">
+                                <rect key="frame" x="125" y="627" width="196" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" name="mainDarkColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" name="mainColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m7b-pm-ei1">
@@ -103,7 +103,7 @@
                             <constraint firstItem="Vni-p0-mwb" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="SNt-ea-EDC"/>
                             <constraint firstItem="DG8-mR-lRB" firstAttribute="bottom" secondItem="tA3-hv-CgD" secondAttribute="bottom" constant="20" id="fkp-ag-SXf"/>
                             <constraint firstItem="m7b-pm-ei1" firstAttribute="top" secondItem="DG8-mR-lRB" secondAttribute="top" constant="10" id="riG-xm-Mgf"/>
-                            <constraint firstItem="Vni-p0-mwb" firstAttribute="top" secondItem="DG8-mR-lRB" secondAttribute="top" constant="130" id="rmE-Na-D1s"/>
+                            <constraint firstItem="Vni-p0-mwb" firstAttribute="top" secondItem="DG8-mR-lRB" secondAttribute="top" constant="100" id="rmE-Na-D1s"/>
                             <constraint firstItem="DG8-mR-lRB" firstAttribute="trailing" secondItem="m7b-pm-ei1" secondAttribute="trailing" constant="10" id="xCU-bg-KMX"/>
                         </constraints>
                     </view>
