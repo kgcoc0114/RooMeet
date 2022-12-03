@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class ProfileRSVNViewController: UIViewController {
     enum Section {
@@ -106,8 +108,9 @@ class ProfileRSVNViewController: UIViewController {
         FirebaseService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations, user in
             guard let self = self else { return }
             self.user = user
-            self.reservations = reservations
-            print(user.reservations)
+            self.reservations = reservations.sorted { rsvnA, rsvnB in
+                (rsvnA.requestTime ?? Timestamp()).seconds < (rsvnB.requestTime ?? Timestamp()).seconds
+            }
         }
     }
 }
@@ -117,15 +120,17 @@ extension ProfileRSVNViewController {
     private func createLayout() -> UICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(170))
+            heightDimension: .estimated(150))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        item.edgeSpacing  = NSCollectionLayoutEdgeSpacing(leading: nil, top: .fixed(10), trailing: nil, bottom: .fixed(10))
 
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(170))
+            heightDimension: .estimated(150))
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
             subitems: [item])
+
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
 
@@ -157,8 +162,11 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
                     identifier: nil
                 ) { [weak self] _ in
                     guard let self = self else { return }
-//                    ReservationService.shared.upsertReservationData(status: .accept, reservation: reservation)
-                    ReservationService.shared.replyReservation(reservation: reservation, status: .accept, requestUserID: UserDefaults.id) { error in
+                    ReservationService.shared.replyReservation(
+                        reservation: reservation,
+                        status: .accept,
+                        requestUserID: UserDefaults.id
+                    ) { error in
                         if error != nil {
                             RMProgressHUD.showFailure(text: "更新狀態有誤")
                         } else {
@@ -173,14 +181,16 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
                     identifier: UIAction.Identifier(rawValue: "view")
                 ) { [weak self] _ in
                     guard let self = self else { return }
-//                    ReservationService.shared.upsertReservationData(status: .cancel, reservation: reservation)
-                    ReservationService.shared.replyReservation(reservation: reservation, status: .cancel, requestUserID: UserDefaults.id) { error in
+                    ReservationService.shared.replyReservation(
+                        reservation: reservation,
+                        status: .cancel,
+                        requestUserID: UserDefaults.id
+                    ) { error in
                         if error != nil {
                             RMProgressHUD.showFailure(text: "更新狀態有誤")
                         } else {
                             self.reservations.remove(at: indexPath.item)
                         }
-
                     }
                 }
 
@@ -190,14 +200,12 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
                     identifier: nil
                 ) { [weak self] _ in
                     guard let self = self else { return }
-//                    let reservation = self.reservations[indexPath.item]
                     ReservationService.shared.replyReservation(reservation: reservation, status: .cancel, requestUserID: UserDefaults.id) { error in
                         if error != nil {
                             RMProgressHUD.showFailure(text: "更新狀態有誤")
                         } else {
                             self.reservations.remove(at: indexPath.item)
                         }
-
                     }
                 }
 
@@ -223,30 +231,3 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
-
-//extension ProfileRSVNViewController: ReservationDisplayCellDelegate {
-//    func didCancelReservation(_ cell: ReservationDisplayCell) {
-//        guard let indexPath = collectionView.indexPath(for: cell) else {
-//            return
-//        }
-//
-//        let reservation = reservations[indexPath.item]
-//
-//        let alertController = UIAlertController(title: "取消預約", message: "確定要取消預約嗎？", preferredStyle: .actionSheet)
-//
-//        let deleteAction = UIAlertAction(title: "取消預約", style: .destructive) { [unowned self] _ in
-//            ReservationService.shared.replyReservation(reservation: reservation, status: .cancel, requestUserID: UserDefaults.id)
-//            reservations.remove(at: indexPath.item)
-//        }
-//
-//        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-//            alertController.dismiss(animated: true)
-//        }
-//
-//        alertController.addAction(deleteAction)
-//        alertController.addAction(cancelAction)
-//
-//        present(alertController, animated: true)
-//    }
-//}
-//

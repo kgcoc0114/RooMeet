@@ -78,6 +78,7 @@ class RoomCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        featuteTagButton.isHidden = false
     }
 
     func configureCell(data: Room) {

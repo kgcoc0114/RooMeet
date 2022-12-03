@@ -125,6 +125,52 @@ class ReservationService {
         }
     }
 
+    func resetLastMessage(chatRoomID: String) {
+        let query = FirestoreEndpoint.chatRoom.colRef
+            .document(chatRoomID)
+            .collection("Message")
+            .order(by: "createdTime", descending: true)
+            .limit(to: 1)
+
+        query.getDocuments { [weak self] querySnapshot, error in
+            guard let self = self else { return }
+            if error != nil {
+                print("ERROR: - fetch data error")
+            }
+
+            if let querySnapshot = querySnapshot,
+               let document = querySnapshot.documents.first {
+                do {
+                    if let message = try? document.data(as: Message.self) {
+                        self.updateLastMessage(chatRoomID: chatRoomID, message: message)
+                    }
+                } catch {
+                    print("ERROR: - \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    func updateLastMessage(chatRoomID: String, message: Message) {
+        var content = message.content
+        let chatRoomRef = FirestoreEndpoint.chatRoom.colRef.document(chatRoomID)
+        if message.messageType == 3 {
+            let acceptedStatus = AcceptedStatus.init(rawValue: message.content)
+            content = acceptedStatus?.content ?? ""
+        }
+
+        let lastMessage = LastMessage(
+            id: message.id,
+            content: content,
+            createdTime: message.createdTime
+        )
+
+        chatRoomRef.updateData([
+            "lastMessage": lastMessage.toDict,
+            "lastUpdated": lastMessage.createdTime
+        ])
+    }
+
     func insertMessage(
         senderID: String,
         receiverID: String,
@@ -290,8 +336,10 @@ class ReservationService {
             .whereField("content", isEqualTo: "waiting")
             .whereField("messageType", isEqualTo: 3)
 
-        query.getDocuments { snapshot, error in
-            guard let snapshot = snapshot else {
+        query.getDocuments { [weak self] snapshot, error in
+            guard
+                let snapshot = snapshot,
+                let self = self else {
                 return
             }
 
@@ -302,6 +350,7 @@ class ReservationService {
                         reservation.id == reservationID {
                         if status == .cancel {
                             document.reference.delete()
+                            self.resetLastMessage(chatRoomID: chatRoomID)
                         } else {
                             document.reference.updateData(["content": status.description])
                         }

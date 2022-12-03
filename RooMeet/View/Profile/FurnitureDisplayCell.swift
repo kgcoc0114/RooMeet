@@ -70,7 +70,7 @@ class FurnitureDisplayCell: UITableViewCell {
         if let photoImageURL = data.imageURL {
             photoView.loadImage(photoImageURL, placeHolder: UIImage.asset(.furniture_placeholder))
         } else {
-            photoView.image = UIImage.asset(.room_placeholder)
+            photoView.image = UIImage.asset(.furniture_placeholder)
         }
 
         if specs.isEmpty {

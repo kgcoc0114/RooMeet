@@ -343,37 +343,46 @@ class RoomDetailViewController: UIViewController {
     }
 
     @objc private func userAction(_ sender: Any) {
-        let userActionAlertController = UIAlertController(
-            title: "檢舉",
-            message: "確定檢舉此則貼文，你的檢舉將被匿名。",
-            preferredStyle: .actionSheet
-        )
+        if AuthService.shared.isLogin() {
+            let userActionAlertController = UIAlertController(
+                title: "檢舉",
+                message: "確定檢舉此則貼文，你的檢舉將被匿名。",
+                preferredStyle: .actionSheet
+            )
 
-        let reportPostAction = UIAlertAction(title: "檢舉貼文", style: .default) { [weak self] _ in
-            guard
-                let self = self,
-                let roomID = self.room?.roomID
-            else { return }
+            let reportPostAction = UIAlertAction(title: "檢舉貼文", style: .destructive) { [weak self] _ in
+                guard
+                    let self = self,
+                    let roomID = self.room?.roomID
+                else { return }
 
-            let reportEvent = ReportEvent(reportUser: UserDefaults.id, type: "post", reportedID: roomID, createdTime: Timestamp())
+                let reportEvent = ReportEvent(reportUser: UserDefaults.id, type: "post", reportedID: roomID, createdTime: Timestamp())
 
-            FirebaseService.shared.insertReportEvent(event: reportEvent) { error in
-                if error != nil {
-                    RMProgressHUD.showFailure(text: "出點問題了，請稍後再試！")
-                } else {
-                    RMProgressHUD.showSuccess(text: "成功送出檢舉！")
+                FirebaseService.shared.insertReportEvent(event: reportEvent) { error in
+                    if error != nil {
+                        RMProgressHUD.showFailure(text: "出點問題了，請稍後再試！")
+                    } else {
+                        RMProgressHUD.showSuccess(text: "成功送出檢舉！")
+                    }
                 }
             }
+
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+                userActionAlertController.dismiss(animated: true)
+            }
+
+            userActionAlertController.addAction(reportPostAction)
+            userActionAlertController.addAction(cancelAction)
+
+            present(userActionAlertController, animated: true, completion: nil)
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
         }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            userActionAlertController.dismiss(animated: true)
-        }
-
-        userActionAlertController.addAction(reportPostAction)
-        userActionAlertController.addAction(cancelAction)
-
-        present(userActionAlertController, animated: true, completion: nil)
     }
 }
 

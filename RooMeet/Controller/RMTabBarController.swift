@@ -8,6 +8,7 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import MapKit
 
 private enum Tab: String, CaseIterable {
     case home = "首頁"
@@ -65,12 +66,19 @@ private enum Tab: String, CaseIterable {
 }
 
 class RMTabBarController: UITabBarController {
-//    private let tabs: [Tab] = Tab.allCases
+    let locationManger = LocationService.shared.locationManger
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
         listenPhoneCallEvent()
+
+        // get User Location
+        locationManger.delegate = self
+        DispatchQueue.global(qos: .background).async { [weak self] in
+            guard let self = self else { return }
+            self.locationManger.requestLocation()
+        }
     }
 
     func listenPhoneCallEvent() {
@@ -143,5 +151,18 @@ extension RMTabBarController: UITabBarControllerDelegate {
             }
         }
         return true
+    }
+}
+
+// MARK: - CLLocationManagerDelegate
+extension RMTabBarController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        if let location = locations.last {
+            RMConstants.shared.currentPosition = location.coordinate
+        }
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print(error.localizedDescription)
     }
 }
