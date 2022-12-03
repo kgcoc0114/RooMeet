@@ -14,7 +14,6 @@ protocol ItemsCellDelegate: AnyObject {
 
 
 class ItemsCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(ItemsCell.self)"
     var tags: [String] = []
     var ruleType: String = ""
     var previousSelection: UInt?

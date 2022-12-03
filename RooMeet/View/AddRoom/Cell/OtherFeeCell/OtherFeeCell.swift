@@ -8,7 +8,7 @@
 import UIKit
 
 class OtherFeeCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(OtherFeeCell.self)"
+
     var completion: (() -> Void)?
 
     lazy private var editButton: UIButton = {
