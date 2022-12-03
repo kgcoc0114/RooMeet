@@ -101,6 +101,6 @@ class RoomBasicCell: UICollectionViewCell {
     }
 
     @IBAction func likeAction(_ sender: Any) {
-        delegate?.didClickedLike(self, like: isLike)
+        delegate?.didClickedLike(self, like: !isLike)
     }
 }
