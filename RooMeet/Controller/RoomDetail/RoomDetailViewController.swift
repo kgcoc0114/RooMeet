@@ -427,15 +427,14 @@ extension RoomDetailViewController {
                 }
                 cell.configureCell(data: data)
                 cell.delegate = self
-
-                if
-                    let user = self.user,
-                    let roomID = data.roomID {
-                    if user.favoriteRoomIDs.contains(roomID) {
-                        cell.isLike = true
+                if AuthService.shared.isLogin() {
+                    if
+                        let user = self.user,
+                        let roomID = data.roomID {
+                        if user.favoriteRoomIDs.contains(roomID) {
+                            cell.isLike = true
+                        }
                     }
-                } else {
-                    cell.isLike = false
                 }
                 return cell
             case .feeDetail(let data):
@@ -555,7 +554,7 @@ extension RoomDetailViewController {
 
 // MARK: Layout
 extension RoomDetailViewController {
-    func createBasicInfoSection() -> NSCollectionLayoutSection {
+    private func createBasicInfoSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .estimated(1)))
@@ -580,7 +579,7 @@ extension RoomDetailViewController {
         return header
     }
 
-    func createFeeDetailSection() -> NSCollectionLayoutSection {
+    private func createFeeDetailSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -607,7 +606,7 @@ extension RoomDetailViewController {
         return section
     }
 
-    func createImagesSection() -> NSCollectionLayoutSection {
+    private func createImagesSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -626,7 +625,7 @@ extension RoomDetailViewController {
         return section
     }
 
-    func createReservationDaysSection() -> NSCollectionLayoutSection {
+    private func createReservationDaysSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth((1 / CGFloat(RMConstants.shared.reservationDays))),
@@ -649,7 +648,7 @@ extension RoomDetailViewController {
         return section
     }
 
-    func createMapSection() -> NSCollectionLayoutSection {
+    private func createMapSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -671,7 +670,7 @@ extension RoomDetailViewController {
         return section
     }
 
-    func createReservationPeriodSection() -> NSCollectionLayoutSection {
+    private func createReservationPeriodSection() -> NSCollectionLayoutSection {
         let item = NSCollectionLayoutItem(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
@@ -691,7 +690,7 @@ extension RoomDetailViewController {
         return section
     }
 
-    func sectionFor(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
+    private func sectionFor(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let section = Section.allCases[index]
         switch section {
         case .basicInfo, .highLight, .gender, .pet, .elevator, .cooking, .bathroom, .features:
@@ -709,13 +708,14 @@ extension RoomDetailViewController {
         }
     }
 
-    func createLayout() -> UICollectionViewLayout {
+    private func createLayout() -> UICollectionViewLayout {
         return UICollectionViewCompositionalLayout { [unowned self] index, env in
             return self.sectionFor(index: index, environment: env)
         }
     }
 }
 
+// MARK: - Basic Delegate
 extension RoomDetailViewController: RoomBasicCellDelegate {
     func didClickedLike(_ cell: RoomBasicCell, like: Bool) {
         if AuthService.shared.isLogin() {
@@ -726,9 +726,8 @@ extension RoomDetailViewController: RoomBasicCellDelegate {
                     let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
                     user?.favoriteRooms.append(favoriteRoom)
                 } else {
-                    if let index = user?.favoriteRoomIDs.firstIndex(of: roomID) {
-                        user?.favoriteRooms.remove(at: index)
-                    }
+                    guard let user = user else { return }
+                    self.user?.favoriteRooms = user.favoriteRooms.filter { $0.roomID != room.roomID }
                 }
                 cell.isLike.toggle()
                 shouldUpdate = true
