@@ -263,7 +263,6 @@ class RoomDetailViewController: UIViewController {
             loginVC.modalPresentationStyle = .overFullScreen
             present(loginVC, animated: false)
         }
-
     }
 
     @IBAction func chatWithOwner(_ sender: Any) {
@@ -283,9 +282,9 @@ class RoomDetailViewController: UIViewController {
         reservationButton.isEnabled = false
         guard let room = room else { return }
 
-        guard let selectedPeriod = selectedPeriod,
-              var selectedDate = selectedDate else {
-            print("請選擇預約時間")
+        guard
+            let selectedPeriod = selectedPeriod,
+            var selectedDate = selectedDate else {
             RMProgressHUD.showFailure(text: "請選擇預約時間")
             reservationButton.isEnabled.toggle()
             return
@@ -380,34 +379,16 @@ class RoomDetailViewController: UIViewController {
 
 extension RoomDetailViewController {
     private func registerCell() {
-        collectionView.register(
-            UINib(nibName: "RoomImagesCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomImagesCell.identifier)
-        collectionView.register(
-            UINib(nibName: "RoomBasicCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomBasicCell.identifier)
-        collectionView.register(
-            UINib(nibName: "RoomFeeCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomFeeCell.identifier)
-        collectionView.register(
-            UINib(nibName: "BookingCell", bundle: nil),
-            forCellWithReuseIdentifier: BookingCell.identifier)
-        collectionView.register(
-            UINib(nibName: ItemsCell.reuseIdentifier, bundle: nil),
-            forCellWithReuseIdentifier: ItemsCell.reuseIdentifier)
-        collectionView.register(
-            UINib(nibName: "BookingDateCell", bundle: nil),
-            forCellWithReuseIdentifier: BookingDateCell.identifier)
-        collectionView.register(
-            UINib(nibName: "BookingPeriodCell", bundle: nil),
-            forCellWithReuseIdentifier: BookingPeriodCell.identifier)
-        collectionView.register(
-            UINib(nibName: "RoomMapCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomMapCell.identifier)
-        collectionView.register(
-            UINib(nibName: "RoomDetailHeaderView", bundle: nil),
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: RoomDetailHeaderView.identifier)
+        collectionView.registerCellWithNib(reuseIdentifier: RoomImagesCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: RoomBasicCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: RoomFeeCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: BookingCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: ItemsCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: BookingDateCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: BookingPeriodCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: RoomMapCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: BookingPeriodCell.reuseIdentifier, bundle: nil)
+        collectionView.registerHeaderWithNib(reuseIdentifier: RoomDetailHeaderView.reuseIdentifier, bundle: nil)
     }
 
     private func configureCollectionView() {
@@ -418,7 +399,7 @@ extension RoomDetailViewController {
             case .images(let data):
                 guard
                     let cell = collectionView.dequeueReusableCell(
-                        withReuseIdentifier: RoomImagesCell.identifier,
+                        withReuseIdentifier: RoomImagesCell.reuseIdentifier,
                         for: indexPath
                     ) as? RoomImagesCell
                 else {
@@ -503,9 +484,9 @@ extension RoomDetailViewController {
         dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
-                withReuseIdentifier: RoomDetailHeaderView.identifier,
+                withReuseIdentifier: RoomDetailHeaderView.reuseIdentifier,
                 for: indexPath) as? RoomDetailHeaderView else {
-                fatalError("Could not dequeue sectionHeader: \(RoomDetailHeaderView.identifier)")
+                fatalError("Could not dequeue sectionHeader: \(RoomDetailHeaderView.reuseIdentifier)")
             }
 
             sectionHeader.titleLabel.text = Section.allCases[indexPath.section].title

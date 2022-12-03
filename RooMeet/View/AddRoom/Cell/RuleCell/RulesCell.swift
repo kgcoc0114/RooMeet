@@ -8,7 +8,6 @@
 import UIKit
 
 class RulesCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(RulesCell.self)"
 
     @IBOutlet weak var ruleButton: UIButton!
     override func awakeFromNib() {

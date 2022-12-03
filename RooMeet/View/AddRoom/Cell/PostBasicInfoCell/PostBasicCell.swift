@@ -25,7 +25,6 @@ protocol PostBasicCellDelegate: AnyObject {
 }
 
 class PostBasicCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(PostBasicCell.self)"
     var county: String? {
         didSet {
             postBasicData.county = county
