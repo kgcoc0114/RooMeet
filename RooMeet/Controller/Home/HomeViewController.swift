@@ -6,8 +6,6 @@
 //
 
 import UIKit
-import MapKit
-
 
 class HomeViewController: ViewController {
     enum Section {
@@ -19,14 +17,23 @@ class HomeViewController: ViewController {
     typealias HomeSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
     private var dataSource: HomeDataSource!
 
-    let locationManger = LocationService.shared.locationManger
-
     var rooms: [Room] = [] {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                self?.collectionView.stopPullToRefresh()
-                self?.updateDataSource()
+                guard let self = self else { return }
+                self.collectionView.stopPullToRefresh()
+                self.updateDataSource()
+                self.noneLabel.isHidden = !self.rooms.isEmpty
             }
+        }
+    }
+
+    @IBOutlet weak var noneLabel: UILabel! {
+        didSet {
+            noneLabel.font = UIFont.regularSubTitle()
+            noneLabel.textColor = .mainDarkColor
+            noneLabel.text = "目前沒有相關房源"
+            noneLabel.isHidden = true
         }
     }
 
@@ -34,7 +41,6 @@ class HomeViewController: ViewController {
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            collectionView.backgroundColor = UIColor.mainBackgroundColor
             collectionView.translatesAutoresizingMaskIntoConstraints = false
         }
     }
@@ -53,13 +59,6 @@ class HomeViewController: ViewController {
             style: .plain,
             target: self,
             action: #selector(showFilterPage))
-
-        // get User Location
-        locationManger.delegate = self
-        DispatchQueue.global(qos: .background).async { [weak self] in
-            guard let self = self else { return }
-            self.locationManger.requestLocation()
-        }
 
         // set title
         navigationItem.title = "RooMeet"
@@ -112,8 +111,17 @@ class HomeViewController: ViewController {
     }
 
     @objc private func addRoomPost(_ sender: Any) {
-        let postViewController = PostViewController(entryType: .new, data: nil)
-        navigationController?.pushViewController(postViewController, animated: true)
+        if AuthService.shared.isLogin() {
+            let postViewController = PostViewController(entryType: .new, data: nil)
+            navigationController?.pushViewController(postViewController, animated: true)
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
+        }
     }
 
     @objc private func showFilterPage() {
@@ -177,18 +185,5 @@ extension HomeViewController: UICollectionViewDelegate {
         else { return }
         let detailViewController = RoomDetailViewController(room: room, user: user)
         navigationController?.pushViewController(detailViewController, animated: true)
-    }
-}
-
-// MARK: - CLLocationManagerDelegate
-extension HomeViewController: CLLocationManagerDelegate {
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        if let location = locations.last {
-            RMConstants.shared.currentPosition = location.coordinate
-        }
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print(error.localizedDescription)
     }
 }

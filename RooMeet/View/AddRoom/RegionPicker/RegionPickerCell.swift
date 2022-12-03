@@ -29,7 +29,7 @@ class RegionPickerCell: UITableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         isPicked = false
-        regionLabel.textColor = UIColor.mainDarkColor
-        self.backgroundColor = .white
+        regionLabel.textColor = nil
+        self.backgroundColor = nil
     }
 }

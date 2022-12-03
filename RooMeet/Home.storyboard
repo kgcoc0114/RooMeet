@@ -28,18 +28,27 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7nl-u5-aW7">
+                                <rect key="frame" x="174" y="411.66666666666669" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="k8M-2s-oNA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="7nl-u5-aW7" firstAttribute="centerY" secondItem="hSt-y9-mOf" secondAttribute="centerY" id="Ohx-eG-YGB"/>
                             <constraint firstItem="k8M-2s-oNA" firstAttribute="bottom" secondItem="lVT-9k-oOq" secondAttribute="bottom" id="bhy-vg-iSA"/>
                             <constraint firstItem="lVT-9k-oOq" firstAttribute="top" secondItem="k8M-2s-oNA" secondAttribute="top" id="c29-hd-Iwk"/>
                             <constraint firstItem="k8M-2s-oNA" firstAttribute="trailing" secondItem="lVT-9k-oOq" secondAttribute="trailing" id="k7k-g1-8bc"/>
                             <constraint firstItem="lVT-9k-oOq" firstAttribute="leading" secondItem="k8M-2s-oNA" secondAttribute="leading" id="kLu-Ff-dNk"/>
+                            <constraint firstItem="7nl-u5-aW7" firstAttribute="centerX" secondItem="hSt-y9-mOf" secondAttribute="centerX" id="xMd-bn-ltY"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionView" destination="lVT-9k-oOq" id="ShA-6E-lBM"/>
+                        <outlet property="noneLabel" destination="7nl-u5-aW7" id="oAR-Qr-9c3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="opp-YK-hnd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

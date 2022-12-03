@@ -39,6 +39,7 @@ final class WebRTCClient: NSObject {
     private var remoteVideoTrack: RTCVideoTrack?
     private var localDataChannel: RTCDataChannel?
     private var remoteDataChannel: RTCDataChannel?
+    private var cameraDevicePosition: AVCaptureDevice.Position = .front
 
     @available(*, unavailable)
     override init() {
@@ -145,6 +146,40 @@ final class WebRTCClient: NSObject {
         self.localVideoTrack?.add(renderer)
     }
 
+    func swapToBackCamera() {
+        guard let capturer = self.videoCapturer as? RTCCameraVideoCapturer else {
+            return
+        }
+        capturer.stopCapture {
+            let position = self.cameraDevicePosition == .front ? AVCaptureDevice.Position.back : AVCaptureDevice.Position.front
+            self.cameraDevicePosition = position
+            guard let capturer = self.videoCapturer as? RTCCameraVideoCapturer else {
+                return
+            }
+
+            guard
+                let camera = RTCCameraVideoCapturer.captureDevices().first { $0.position == self.cameraDevicePosition },
+                // choose highest res
+                let format = (RTCCameraVideoCapturer.supportedFormats(for: camera)
+                    .sorted { f1Camera, f2Camera -> Bool in
+                        let width1 = CMVideoFormatDescriptionGetDimensions(f1Camera.formatDescription).width
+                        let width2 = CMVideoFormatDescriptionGetDimensions(f2Camera.formatDescription).width
+                        return width1 < width2
+                    }).last,
+                // choose highest fps
+                let fps = (format.videoSupportedFrameRateRanges
+                    .sorted {
+                        return $0.maxFrameRate < $1.maxFrameRate
+                    }.last) else { return }
+
+            capturer.startCapture(
+                with: camera,
+                format: format,
+                fps: Int(fps.maxFrameRate)
+            )
+        }
+    }
+
     func renderRemoteVideo(to renderer: RTCVideoRenderer) {
         self.remoteVideoTrack?.add(renderer)
     }
@@ -193,6 +228,7 @@ final class WebRTCClient: NSObject {
 
     private func createVideoTrack() -> RTCVideoTrack {
         let videoSource = self.factory.videoSource()
+        videoSource.adaptOutputFormat(toWidth: 1280, height: 720, fps: 30)
         self.videoCapturer = RTCCameraVideoCapturer(delegate: videoSource)
         let videoTrack = self.factory.videoTrack(with: videoSource, trackId: "video0")
         return videoTrack

@@ -25,7 +25,6 @@ protocol PostBasicCellDelegate: AnyObject {
 }
 
 class PostBasicCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(PostBasicCell.self)"
     var county: String? {
         didSet {
             postBasicData.county = county
@@ -83,6 +82,7 @@ class PostBasicCell: UICollectionViewCell {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .date
         datePicker.preferredDatePickerStyle = .inline
+        datePicker.minimumDate = Date()
         datePicker.tintColor = .mainColor
         datePicker.addTarget(self, action: #selector(movinDateChanged(_:)), for: .valueChanged)
         return datePicker

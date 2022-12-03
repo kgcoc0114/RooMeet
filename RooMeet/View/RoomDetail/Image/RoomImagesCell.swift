@@ -8,8 +8,6 @@
 import UIKit
 
 class RoomImagesCell: UICollectionViewCell {
-    static let identifier = "RoomImagesCell"
-
     @IBOutlet weak var stackView: UIStackView!
     @IBOutlet weak var scrollView: UIScrollView! {
         didSet {

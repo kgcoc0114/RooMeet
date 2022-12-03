@@ -11,8 +11,6 @@ protocol BlockCellDelegate: AnyObject {
 }
 
 class BlockCell: UICollectionViewCell {
-    static let reuseIdentifier = "BlockCell"
-
     @IBOutlet weak var unblockbutton: UIButton! {
         didSet {
             unblockbutton.setTitle("", for: .normal)

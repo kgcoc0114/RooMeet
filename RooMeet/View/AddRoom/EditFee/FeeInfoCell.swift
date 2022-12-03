@@ -60,6 +60,7 @@ class FeeInfoCell: UITableViewCell {
             segmentControl.addTarget(self, action: #selector(segmentValueChanged(_:)), for: .valueChanged)
         }
     }
+
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var govTypeButton: FeeButton! {
         didSet {
@@ -67,7 +68,13 @@ class FeeInfoCell: UITableViewCell {
             govTypeButton.isSelected = false
         }
     }
-    @IBOutlet weak var priceTextField: RMBaseTextField!
+
+    @IBOutlet weak var priceTextField: RMBaseTextField! {
+        didSet {
+            priceTextField.keyboardType = .decimalPad
+        }
+    }
+
     @IBOutlet weak var priceUnitLabel: UILabel!
 
     var feeType: FeeType?
@@ -91,13 +98,12 @@ class FeeInfoCell: UITableViewCell {
             }
         }
     }
-    
+
     weak var delegate: FeeInfoCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        priceTextField.keyboardType = .numbersAndPunctuation
         priceTextField.delegate = self
     }
 
@@ -125,8 +131,11 @@ class FeeInfoCell: UITableViewCell {
         if let data = data {
             feeDetail = data
             if feeDetail.paid == true {
-                segmentControl.selectedIndex
-                = AffordType.allCases.firstIndex(of: AffordType(rawValue: feeDetail.affordType ?? "sperate")!) ?? 0
+                var selectIndex = 0
+                if let affordType = AffordType(rawValue: feeDetail.affordType ?? "sperate") {
+                    selectIndex = AffordType.allCases.firstIndex(of: affordType) ?? 0
+                }
+                segmentControl.selectedIndex = selectIndex
             }
 
             if let fee = feeDetail.fee,

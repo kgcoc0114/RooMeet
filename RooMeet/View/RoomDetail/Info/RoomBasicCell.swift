@@ -8,7 +8,7 @@
 import UIKit
 
 protocol RoomBasicCellDelegate: AnyObject {
-    func didClickedLike(like: Bool)
+    func didClickedLike(_ cell: RoomBasicCell, like: Bool)
 }
 
 class RoomBasicCell: UICollectionViewCell {
@@ -101,7 +101,6 @@ class RoomBasicCell: UICollectionViewCell {
     }
 
     @IBAction func likeAction(_ sender: Any) {
-        isLike.toggle()
-        delegate?.didClickedLike(like: isLike)
+        delegate?.didClickedLike(self, like: isLike)
     }
 }

@@ -13,7 +13,6 @@ protocol RoomSpecCellDelegate: AnyObject {
 
 class RoomSpecCell: UICollectionViewCell {
     @IBOutlet var typeButtons: [UIButton]!
-    static let reuseIdentifier = "\(RoomSpecCell.self)"
 
     @IBOutlet weak var typeSegmentControl: UISegmentedControl! {
         didSet {
@@ -40,7 +39,7 @@ class RoomSpecCell: UICollectionViewCell {
         }
     }
 
-        @IBOutlet weak var segmentControl: RMSegmentedControl! {
+    @IBOutlet weak var segmentControl: RMSegmentedControl! {
         didSet {
             segmentControl.items = RoomType.allCases.map { $0.rawValue }
             segmentControl.borderColor = UIColor.mainLightColor
@@ -71,6 +70,7 @@ class RoomSpecCell: UICollectionViewCell {
             titleLabel.textColor = UIColor.mainDarkColor
         }
     }
+
     @IBOutlet weak var priceTextField: RMBaseTextField! {
         didSet {
             priceTextField.keyboardType = .numberPad
@@ -109,6 +109,11 @@ class RoomSpecCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        segmentControl.selectedIndex = 0
     }
 
     func configureLayout(roomSpec data: RoomSpec, indexPath: IndexPath) {
@@ -154,7 +159,6 @@ class RoomSpecCell: UICollectionViewCell {
         }
 
         let roomType = RoomType.allCases[segmentControl.selectedIndex].rawValue
-        print("===", roomType)
         delegate?.didChangeData(self, data: RoomSpec(roomType: roomType, price: price, space: space))
     }
 

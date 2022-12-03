@@ -17,7 +17,7 @@ enum Profile: CaseIterable {
     case favorite
     case reservations
     case post
-    case blockade
+    case furniture
     case setting
     case signOut
 
@@ -29,8 +29,8 @@ enum Profile: CaseIterable {
             return "預約"
         case .post:
             return "貼文"
-        case .blockade:
-            return "黑名單"
+        case .furniture:
+            return "家具清單"
         case .setting:
             return "帳號設定"
         case .signOut:
@@ -48,8 +48,8 @@ enum Profile: CaseIterable {
             return UIImage.asset(.home_white)
         case .setting:
             return UIImage.asset(.setting)
-        case .blockade:
-            return UIImage.asset(.blockade)
+        case .furniture:
+            return UIImage.asset(.chair)
         case .signOut:
             return UIImage.asset(.sign_out)
         }
@@ -73,7 +73,7 @@ enum Profile: CaseIterable {
             return ColorSet(font: .white, background: UIColor.subTitleRedColor)
         case .setting:
             return secondLineColorSet
-        case .blockade:
+        case .furniture:
             return secondLineColorSet
         case .signOut:
             return secondLineColorSet
@@ -86,8 +86,8 @@ enum Profile: CaseIterable {
             return FavoritesViewController(entryPage: .fav)
         case .reservations:
             return ProfileRSVNViewController()
-        case .blockade:
-            return BlockViewController()
+        case .furniture:
+            return FurnitureListViewController()
         case .signOut:
             return UIViewController()
         case .post:
@@ -250,15 +250,8 @@ extension ProfileViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let profileType = Profile.allCases[indexPath.item]
         switch profileType {
-        case .favorite, .reservations, .post, .setting:
+        case .favorite, .reservations, .post, .setting, .furniture:
             let pushVC = profileType.viewConroller
-            navigationController?.pushViewController(pushVC, animated: true)
-        case .blockade:
-            let pushVC = profileType.viewConroller
-            self.hidesBottomBarWhenPushed = true
-            DispatchQueue.main.async {
-                self.hidesBottomBarWhenPushed = false
-            }
             navigationController?.pushViewController(pushVC, animated: true)
         case .signOut:
             AuthService.shared.logOut { [weak self] _ in
@@ -270,6 +263,8 @@ extension ProfileViewController: UICollectionViewDelegate {
 
     private func showLoginVC() {
         DispatchQueue.main.async {
+            self.navigationController?.tabBarController?.selectedIndex = 0
+
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
             let loginVC = storyBoard.instantiateViewController(
                 withIdentifier: "LoginViewController"

@@ -123,7 +123,10 @@ class ReservationDisplayCell: UICollectionViewCell {
 
 
         if !roomDetail.roomImages.isEmpty {
-            roomImageView.loadImage(roomDetail.roomImages[0].absoluteString, placeHolder: UIImage.asset(.room_placeholder))
+            roomImageView.loadImage(
+                roomDetail.roomImages[0].absoluteString,
+                placeHolder: UIImage.asset(.room_placeholder)
+            )
         } else {
             roomImageView.image = UIImage.asset(.room_placeholder)
         }
@@ -138,6 +141,5 @@ class ReservationDisplayCell: UICollectionViewCell {
     }
     @IBAction func cancelAction(_ sender: Any) {
         delegate?.didCancelReservation(self)
-        
     }
 }

@@ -35,6 +35,12 @@ class LoginViewController: UIViewController, SFSafariViewControllerDelegate {
         }
     }
 
+    @IBOutlet weak var dismissAction: UIButton! {
+        didSet {
+            dismissAction.setTitle("", for: .normal)
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configureAnimationView()
@@ -49,7 +55,7 @@ class LoginViewController: UIViewController, SFSafariViewControllerDelegate {
         authAppleIDButton.addTarget(self, action: #selector(pressSignInWithApple), for: .touchUpInside)
 
         NSLayoutConstraint.activate([
-            authAppleIDButton.bottomAnchor.constraint(equalTo: privacyLabels.topAnchor, constant: -10),
+            authAppleIDButton.bottomAnchor.constraint(equalTo: privacyLabels.topAnchor, constant: -50),
             authAppleIDButton.widthAnchor.constraint(equalToConstant: 280),
             authAppleIDButton.heightAnchor.constraint(equalToConstant: 50),
             authAppleIDButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -93,6 +99,10 @@ class LoginViewController: UIViewController, SFSafariViewControllerDelegate {
             safari.delegate = self
             present(safari, animated: true, completion: nil)
         }
+    }
+
+    @IBAction func dismissAction(_ sender: Any) {
+        dismiss(animated: true)
     }
 }
 

@@ -253,12 +253,38 @@ class RoomDetailViewController: UIViewController {
     }
 
     @IBAction func requestReservation(_ sender: Any) {
+        if AuthService.shared.isLogin() {
+            requestAction()
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
+        }
+    }
+
+    @IBAction func chatWithOwner(_ sender: Any) {
+        if AuthService.shared.isLogin() {
+            chatAction()
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
+        }
+    }
+
+    private func requestAction() {
         reservationButton.isEnabled = false
         guard let room = room else { return }
 
-        guard let selectedPeriod = selectedPeriod,
+        guard
+            let selectedPeriod = selectedPeriod,
             var selectedDate = selectedDate else {
-            print("請選擇預約時間")
             RMProgressHUD.showFailure(text: "請選擇預約時間")
             reservationButton.isEnabled.toggle()
             return
@@ -296,7 +322,7 @@ class RoomDetailViewController: UIViewController {
         reservationButton.isEnabled = true
     }
 
-    @IBAction func chatWithOwner(_ sender: Any) {
+    private func chatAction() {
         chatButton.isEnabled = false
         guard let room = room else {
             print("ERROR: - Room Detail got empty room.")
@@ -317,70 +343,61 @@ class RoomDetailViewController: UIViewController {
     }
 
     @objc private func userAction(_ sender: Any) {
-        let userActionAlertController = UIAlertController(
-            title: "檢舉",
-            message: "確定檢舉此則貼文，你的檢舉將被匿名。",
-            preferredStyle: .actionSheet
-        )
+        if AuthService.shared.isLogin() {
+            let userActionAlertController = UIAlertController(
+                title: "檢舉",
+                message: "確定檢舉此則貼文，你的檢舉將被匿名。",
+                preferredStyle: .actionSheet
+            )
 
-        let reportPostAction = UIAlertAction(title: "檢舉貼文", style: .default) { [weak self] _ in
-            guard
-                let self = self,
-                let roomID = self.room?.roomID
-            else { return }
+            let reportPostAction = UIAlertAction(title: "檢舉貼文", style: .destructive) { [weak self] _ in
+                guard
+                    let self = self,
+                    let roomID = self.room?.roomID
+                else { return }
 
-            let reportEvent = ReportEvent(reportUser: UserDefaults.id, type: "post", reportedID: roomID, createdTime: Timestamp())
+                let reportEvent = ReportEvent(reportUser: UserDefaults.id, type: "post", reportedID: roomID, createdTime: Timestamp())
 
-            FirebaseService.shared.insertReportEvent(event: reportEvent) { error in
-                if error != nil {
-                    RMProgressHUD.showFailure(text: "出點問題了，請稍後再試！")
-                } else {
-                    RMProgressHUD.showSuccess(text: "成功送出檢舉！")
+                FirebaseService.shared.insertReportEvent(event: reportEvent) { error in
+                    if error != nil {
+                        RMProgressHUD.showFailure(text: "出點問題了，請稍後再試！")
+                    } else {
+                        RMProgressHUD.showSuccess(text: "成功送出檢舉！")
+                    }
                 }
             }
+
+            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+                userActionAlertController.dismiss(animated: true)
+            }
+
+            userActionAlertController.addAction(reportPostAction)
+            userActionAlertController.addAction(cancelAction)
+
+            present(userActionAlertController, animated: true, completion: nil)
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
         }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            userActionAlertController.dismiss(animated: true)
-        }
-
-        userActionAlertController.addAction(reportPostAction)
-        userActionAlertController.addAction(cancelAction)
-
-        present(userActionAlertController, animated: true, completion: nil)
     }
 }
 
 extension RoomDetailViewController {
     private func registerCell() {
-        collectionView.register(
-            UINib(nibName: "RoomImagesCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomImagesCell.identifier)
-        collectionView.register(
-            UINib(nibName: "RoomBasicCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomBasicCell.identifier)
-        collectionView.register(
-            UINib(nibName: "RoomFeeCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomFeeCell.identifier)
-        collectionView.register(
-            UINib(nibName: "BookingCell", bundle: nil),
-            forCellWithReuseIdentifier: BookingCell.identifier)
-        collectionView.register(
-            UINib(nibName: ItemsCell.reuseIdentifier, bundle: nil),
-            forCellWithReuseIdentifier: ItemsCell.reuseIdentifier)
-        collectionView.register(
-            UINib(nibName: "BookingDateCell", bundle: nil),
-            forCellWithReuseIdentifier: BookingDateCell.identifier)
-        collectionView.register(
-            UINib(nibName: "BookingPeriodCell", bundle: nil),
-            forCellWithReuseIdentifier: BookingPeriodCell.identifier)
-        collectionView.register(
-            UINib(nibName: "RoomMapCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomMapCell.identifier)
-        collectionView.register(
-            UINib(nibName: "RoomDetailHeaderView", bundle: nil),
-            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withReuseIdentifier: RoomDetailHeaderView.identifier)
+        collectionView.registerCellWithNib(reuseIdentifier: RoomImagesCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: RoomBasicCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: RoomFeeCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: BookingCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: ItemsCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: BookingDateCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: BookingPeriodCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: RoomMapCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: BookingPeriodCell.reuseIdentifier, bundle: nil)
+        collectionView.registerHeaderWithNib(reuseIdentifier: RoomDetailHeaderView.reuseIdentifier, bundle: nil)
     }
 
     private func configureCollectionView() {
@@ -391,7 +408,7 @@ extension RoomDetailViewController {
             case .images(let data):
                 guard
                     let cell = collectionView.dequeueReusableCell(
-                        withReuseIdentifier: RoomImagesCell.identifier,
+                        withReuseIdentifier: RoomImagesCell.reuseIdentifier,
                         for: indexPath
                     ) as? RoomImagesCell
                 else {
@@ -476,9 +493,9 @@ extension RoomDetailViewController {
         dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
             guard let sectionHeader = collectionView.dequeueReusableSupplementaryView(
                 ofKind: kind,
-                withReuseIdentifier: RoomDetailHeaderView.identifier,
+                withReuseIdentifier: RoomDetailHeaderView.reuseIdentifier,
                 for: indexPath) as? RoomDetailHeaderView else {
-                fatalError("Could not dequeue sectionHeader: \(RoomDetailHeaderView.identifier)")
+                fatalError("Could not dequeue sectionHeader: \(RoomDetailHeaderView.reuseIdentifier)")
             }
 
             sectionHeader.titleLabel.text = Section.allCases[indexPath.section].title
@@ -582,7 +599,11 @@ extension RoomDetailViewController {
         let section = NSCollectionLayoutSection(group: group)
         section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
         // SectionHeader
-        section.boundarySupplementaryItems = [createSectionHeader()]
+
+        if !feeDetails.isEmpty {
+            section.boundarySupplementaryItems = [createSectionHeader()]
+        }
+
         return section
     }
 
@@ -696,18 +717,29 @@ extension RoomDetailViewController {
 }
 
 extension RoomDetailViewController: RoomBasicCellDelegate {
-    func didClickedLike(like: Bool) {
-        if let room = room,
-            let roomID = room.roomID {
-            if like {
-                let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
-                user?.favoriteRooms.append(favoriteRoom)
-            } else {
-                if let index = user?.favoriteRoomIDs.firstIndex(of: roomID) {
-                    user?.favoriteRooms.remove(at: index)
+    func didClickedLike(_ cell: RoomBasicCell, like: Bool) {
+        if AuthService.shared.isLogin() {
+            if
+                let room = room,
+                let roomID = room.roomID {
+                if like {
+                    let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
+                    user?.favoriteRooms.append(favoriteRoom)
+                } else {
+                    if let index = user?.favoriteRoomIDs.firstIndex(of: roomID) {
+                        user?.favoriteRooms.remove(at: index)
+                    }
                 }
+                cell.isLike.toggle()
+                shouldUpdate = true
             }
-            shouldUpdate = true
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
         }
     }
 }
