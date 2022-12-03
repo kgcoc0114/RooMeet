@@ -123,8 +123,17 @@ class HomeViewController: ViewController {
     }
 
     @objc private func addRoomPost(_ sender: Any) {
-        let postViewController = PostViewController(entryType: .new, data: nil)
-        navigationController?.pushViewController(postViewController, animated: true)
+        if AuthService.shared.isLogin() {
+            let postViewController = PostViewController(entryType: .new, data: nil)
+            navigationController?.pushViewController(postViewController, animated: true)
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
+        }
     }
 
     @objc private func showFilterPage() {

@@ -263,6 +263,8 @@ extension ProfileViewController: UICollectionViewDelegate {
 
     private func showLoginVC() {
         DispatchQueue.main.async {
+            self.navigationController?.tabBarController?.selectedIndex = 0
+
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
             let loginVC = storyBoard.instantiateViewController(
                 withIdentifier: "LoginViewController"

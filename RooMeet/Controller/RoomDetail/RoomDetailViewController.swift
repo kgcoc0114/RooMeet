@@ -253,11 +253,38 @@ class RoomDetailViewController: UIViewController {
     }
 
     @IBAction func requestReservation(_ sender: Any) {
+        if AuthService.shared.isLogin() {
+            requestAction()
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
+        }
+
+    }
+
+    @IBAction func chatWithOwner(_ sender: Any) {
+        if AuthService.shared.isLogin() {
+            chatAction()
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
+        }
+    }
+
+    private func requestAction() {
         reservationButton.isEnabled = false
         guard let room = room else { return }
 
         guard let selectedPeriod = selectedPeriod,
-            var selectedDate = selectedDate else {
+              var selectedDate = selectedDate else {
             print("請選擇預約時間")
             RMProgressHUD.showFailure(text: "請選擇預約時間")
             reservationButton.isEnabled.toggle()
@@ -296,7 +323,7 @@ class RoomDetailViewController: UIViewController {
         reservationButton.isEnabled = true
     }
 
-    @IBAction func chatWithOwner(_ sender: Any) {
+    private func chatAction() {
         chatButton.isEnabled = false
         guard let room = room else {
             print("ERROR: - Room Detail got empty room.")
@@ -700,18 +727,29 @@ extension RoomDetailViewController {
 }
 
 extension RoomDetailViewController: RoomBasicCellDelegate {
-    func didClickedLike(like: Bool) {
-        if let room = room,
-            let roomID = room.roomID {
-            if like {
-                let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
-                user?.favoriteRooms.append(favoriteRoom)
-            } else {
-                if let index = user?.favoriteRoomIDs.firstIndex(of: roomID) {
-                    user?.favoriteRooms.remove(at: index)
+    func didClickedLike(_ cell: RoomBasicCell, like: Bool) {
+        if AuthService.shared.isLogin() {
+            if
+                let room = room,
+                let roomID = room.roomID {
+                if like {
+                    let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
+                    user?.favoriteRooms.append(favoriteRoom)
+                } else {
+                    if let index = user?.favoriteRoomIDs.firstIndex(of: roomID) {
+                        user?.favoriteRooms.remove(at: index)
+                    }
                 }
+                cell.isLike.toggle()
+                shouldUpdate = true
             }
-            shouldUpdate = true
+        } else {
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let loginVC = storyBoard.instantiateViewController(
+                withIdentifier: "LoginViewController"
+            )
+            loginVC.modalPresentationStyle = .overFullScreen
+            present(loginVC, animated: false)
         }
     }
 }
