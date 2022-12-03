@@ -104,7 +104,6 @@ class FeeInfoCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        priceTextField.keyboardType = .numbersAndPunctuation
         priceTextField.delegate = self
     }
 
