@@ -391,7 +391,6 @@ class FirebaseService {
 
         var blocks = user.blocks ?? []
         blocks.append(UserDefaults.id)
-        print("blocks = ", blocks)
 
         if let county = county {
             query = FirestoreEndpoint.room.colRef
