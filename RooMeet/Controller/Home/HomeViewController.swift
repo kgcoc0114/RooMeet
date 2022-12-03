@@ -45,7 +45,6 @@ class HomeViewController: ViewController {
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            collectionView.backgroundColor = UIColor.mainBackgroundColor
             collectionView.translatesAutoresizingMaskIntoConstraints = false
         }
     }
