@@ -90,7 +90,6 @@ class ProfileRSVNViewController: UIViewController {
             }
 
             cell.configureCell(data: reservation)
-            cell.delegate = self
             return cell
         }
 
@@ -146,6 +145,75 @@ extension ProfileRSVNViewController {
 
 // MARK: - UICollectionViewDelegate
 extension ProfileRSVNViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let config = UIContextMenuConfiguration(
+            identifier: "\(indexPath.item)" as NSCopying,
+            previewProvider: nil) { _ in
+                let reservation = self.reservations[indexPath.item]
+
+                let agreeMenu = UIAction(
+                    title: "同意預約邀請",
+                    image: UIImage(systemName: "checkmark.circle"),
+                    identifier: nil
+                ) { [weak self] _ in
+                    guard let self = self else { return }
+//                    ReservationService.shared.upsertReservationData(status: .accept, reservation: reservation)
+                    ReservationService.shared.replyReservation(reservation: reservation, status: .accept, requestUserID: UserDefaults.id) { error in
+                        if error != nil {
+                            RMProgressHUD.showFailure(text: "更新狀態有誤")
+                        } else {
+                            self.updateDataSource()
+                        }
+                    }
+                }
+
+                let rejectMenu = UIAction(
+                    title: "拒絕預約邀請",
+                    image: UIImage(systemName: "xmark.circle"),
+                    identifier: UIAction.Identifier(rawValue: "view")
+                ) { [weak self] _ in
+                    guard let self = self else { return }
+//                    ReservationService.shared.upsertReservationData(status: .cancel, reservation: reservation)
+                    ReservationService.shared.replyReservation(reservation: reservation, status: .cancel, requestUserID: UserDefaults.id) { error in
+                        if error != nil {
+                            RMProgressHUD.showFailure(text: "更新狀態有誤")
+                        } else {
+                            self.reservations.remove(at: indexPath.item)
+                        }
+
+                    }
+                }
+
+                let cancelMenu = UIAction(
+                    title: "取消預約",
+                    image: UIImage(systemName: "c.circle"),
+                    identifier: nil
+                ) { [weak self] _ in
+                    guard let self = self else { return }
+//                    let reservation = self.reservations[indexPath.item]
+                    ReservationService.shared.replyReservation(reservation: reservation, status: .cancel, requestUserID: UserDefaults.id) { error in
+                        if error != nil {
+                            RMProgressHUD.showFailure(text: "更新狀態有誤")
+                        } else {
+                            self.reservations.remove(at: indexPath.item)
+                        }
+
+                    }
+                }
+
+                var actions: [UIAction]
+
+                if reservation.acceptedStatus == "waiting" && reservation.sender != UserDefaults.id {
+                    actions = [agreeMenu, rejectMenu]
+                } else {
+                    actions = [cancelMenu]
+                }
+
+                return UIMenu(title: "", image: nil, identifier: nil, children: actions)
+            }
+        return config
+    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard
             let reservation = dataSource.itemIdentifier(for: indexPath),
@@ -156,28 +224,29 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
     }
 }
 
-extension ProfileRSVNViewController: ReservationDisplayCellDelegate {
-    func didCancelReservation(_ cell: ReservationDisplayCell) {
-        guard let indexPath = collectionView.indexPath(for: cell) else {
-            return
-        }
-
-        let reservation = reservations[indexPath.item]
-
-        let alertController = UIAlertController(title: "取消預約", message: "確定要取消預約嗎？", preferredStyle: .actionSheet)
-
-        let deleteAction = UIAlertAction(title: "取消預約", style: .destructive) { [unowned self] _ in
-            ReservationService.shared.cancelReservation(reservation: reservation, status: .cancel, requestUserID: UserDefaults.id)
-            reservations.remove(at: indexPath.item)
-        }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            alertController.dismiss(animated: true)
-        }
-
-        alertController.addAction(deleteAction)
-        alertController.addAction(cancelAction)
-
-        present(alertController, animated: true)
-    }
-}
+//extension ProfileRSVNViewController: ReservationDisplayCellDelegate {
+//    func didCancelReservation(_ cell: ReservationDisplayCell) {
+//        guard let indexPath = collectionView.indexPath(for: cell) else {
+//            return
+//        }
+//
+//        let reservation = reservations[indexPath.item]
+//
+//        let alertController = UIAlertController(title: "取消預約", message: "確定要取消預約嗎？", preferredStyle: .actionSheet)
+//
+//        let deleteAction = UIAlertAction(title: "取消預約", style: .destructive) { [unowned self] _ in
+//            ReservationService.shared.replyReservation(reservation: reservation, status: .cancel, requestUserID: UserDefaults.id)
+//            reservations.remove(at: indexPath.item)
+//        }
+//
+//        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+//            alertController.dismiss(animated: true)
+//        }
+//
+//        alertController.addAction(deleteAction)
+//        alertController.addAction(cancelAction)
+//
+//        present(alertController, animated: true)
+//    }
+//}
+//
