@@ -8,8 +8,6 @@
 import UIKit
 
 class RoomDetailHeaderView: UICollectionReusableView {
-    static let identifier = "RoomDetailHeaderView"
-
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.font = UIFont.regularTitle()
@@ -20,5 +18,4 @@ class RoomDetailHeaderView: UICollectionReusableView {
         super.awakeFromNib()
         // Initialization code
     }
-    
 }

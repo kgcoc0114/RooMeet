@@ -391,7 +391,6 @@ class FirebaseService {
 
         var blocks = user.blocks ?? []
         blocks.append(UserDefaults.id)
-        print("blocks = ", blocks)
 
         if let county = county {
             query = FirestoreEndpoint.room.colRef
@@ -611,7 +610,7 @@ extension FirebaseService {
                     do {
                         var item = try document.data(as: Room.self)
 
-                        self.fetchUserByID(userID: item.userID) { user, index in
+                        self.fetchUserByID(userID: item.userID) { user, _ in
                             if let user = user {
                                 item.userData = user
                             }
@@ -824,7 +823,9 @@ extension FirebaseService {
 // MARK: - Furniture
 extension FirebaseService {
     func fetchFurnituresByUserID(userID: String = UserDefaults.id, completion: @escaping (([Furniture]) -> Void)) {
-        let query = FirestoreEndpoint.furniture.colRef.whereField("userID", isEqualTo: userID).order(by: "id")
+        let query = FirestoreEndpoint.furniture.colRef
+            .whereField("userID", isEqualTo: userID)
+            .order(by: "createdTime", descending: true)
 
         getDocuments(query) { (furnitures: [Furniture]) in
             completion(furnitures)
@@ -858,7 +859,7 @@ extension FirebaseService {
     }
 
     func deleteFurniture(furnitureID: String, completion: @escaping ((Error?) -> Void)) {
-        FirestoreEndpoint.furniture.colRef.document(furnitureID).delete { [weak self] error in
+        FirestoreEndpoint.furniture.colRef.document(furnitureID).delete { error in
             if let error = error {
                 completion(error)
             } else {

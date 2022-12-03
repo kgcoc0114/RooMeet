@@ -48,7 +48,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vni-p0-mwb">
-                                <rect key="frame" x="41.5" y="174" width="331" height="331"/>
+                                <rect key="frame" x="41.5" y="144" width="331" height="331"/>
                                 <color key="backgroundColor" name="mainLightColor"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="Vni-p0-mwb" secondAttribute="height" multiplier="1:1" id="rV0-SH-dYC"/>
@@ -78,13 +78,22 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="登入帳號以啟用同步資料與備份功能" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eu-0Z-AbV">
-                                <rect key="frame" x="125" y="627" width="197" height="15"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="登入帳號即可使用完整功能" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7eu-0Z-AbV">
+                                <rect key="frame" x="125" y="627" width="196" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                <color key="textColor" name="mainDarkColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" name="mainColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m7b-pm-ei1">
+                                <rect key="frame" x="321" y="54" width="83" height="31"/>
+                                <color key="tintColor" name="mainColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="multiply" catalog="system" title="Button"/>
+                                <connections>
+                                    <action selector="dismissAction:" destination="uHV-5y-lmu" eventType="touchUpInside" id="chD-ho-skS"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="DG8-mR-lRB"/>
                         <color key="backgroundColor" name="mainLightColor"/>
@@ -93,12 +102,15 @@
                             <constraint firstItem="Vni-p0-mwb" firstAttribute="width" secondItem="Gch-PD-6HC" secondAttribute="width" multiplier="0.8" id="JIL-dW-fJJ"/>
                             <constraint firstItem="Vni-p0-mwb" firstAttribute="centerX" secondItem="Gch-PD-6HC" secondAttribute="centerX" id="SNt-ea-EDC"/>
                             <constraint firstItem="DG8-mR-lRB" firstAttribute="bottom" secondItem="tA3-hv-CgD" secondAttribute="bottom" constant="20" id="fkp-ag-SXf"/>
-                            <constraint firstItem="Vni-p0-mwb" firstAttribute="top" secondItem="DG8-mR-lRB" secondAttribute="top" constant="130" id="rmE-Na-D1s"/>
+                            <constraint firstItem="m7b-pm-ei1" firstAttribute="top" secondItem="DG8-mR-lRB" secondAttribute="top" constant="10" id="riG-xm-Mgf"/>
+                            <constraint firstItem="Vni-p0-mwb" firstAttribute="top" secondItem="DG8-mR-lRB" secondAttribute="top" constant="100" id="rmE-Na-D1s"/>
+                            <constraint firstItem="DG8-mR-lRB" firstAttribute="trailing" secondItem="m7b-pm-ei1" secondAttribute="trailing" constant="10" id="xCU-bg-KMX"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Soo-yR-9jV"/>
                     <connections>
                         <outlet property="animationView" destination="Vni-p0-mwb" id="EVr-MT-Jgy"/>
+                        <outlet property="dismissAction" destination="m7b-pm-ei1" id="fyd-S9-APe"/>
                         <outlet property="loginHintLabel" destination="7eu-0Z-AbV" id="s1m-sM-ihA"/>
                         <outlet property="privacyLabels" destination="tA3-hv-CgD" id="c3M-rO-i3z"/>
                         <outlet property="privacyPolicyLabel" destination="C6e-df-jP1" id="ZN8-RQ-g0x"/>
@@ -227,6 +239,7 @@
         <image name="map.fill" catalog="system" width="128" height="110"/>
         <image name="message" catalog="system" width="128" height="113"/>
         <image name="message.fill" catalog="system" width="128" height="113"/>
+        <image name="multiply" catalog="system" width="128" height="111"/>
         <image name="person" catalog="system" width="128" height="117"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <namedColor name="mainBackgroundColor">
@@ -239,7 +252,7 @@
             <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <namedColor name="mainLightColor">
-            <color red="0.93333333333333335" green="0.94901960784313721" blue="0.9882352941176471" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.93300002813339233" green="0.94900000095367432" blue="0.98799997568130493" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

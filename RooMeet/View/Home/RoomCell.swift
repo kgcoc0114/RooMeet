@@ -67,8 +67,6 @@ class RoomCell: UICollectionViewCell {
 
     @IBOutlet weak var roomCardView: UIView! {
         didSet {
-            roomCardView.layer.borderWidth = 0.5
-            roomCardView.layer.borderColor = UIColor.mainLightColor.cgColor
             roomCardView.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
         }
     }
@@ -80,6 +78,7 @@ class RoomCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        featuteTagButton.isHidden = false
     }
 
     func configureCell(data: Room) {

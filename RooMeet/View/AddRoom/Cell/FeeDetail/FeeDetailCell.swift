@@ -8,7 +8,6 @@
 import UIKit
 
 class FeeDetailCell: UICollectionViewCell {
-    static let reuseIdentifier = "\(FeeDetailCell.self)"
 
     @IBOutlet weak var otherDescTextView: UITextView! {
         didSet {

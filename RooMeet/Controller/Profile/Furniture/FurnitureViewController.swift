@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import FirebaseFirestore
+import FirebaseFirestoreSwift
 
 class FurnitureViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
@@ -68,7 +70,9 @@ extension FurnitureViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FurnitureDetailCell.identifier, for: indexPath) as? FurnitureDetailCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: FurnitureDetailCell.identifier,
+            for: indexPath) as? FurnitureDetailCell else { return UITableViewCell() }
         cell.delegate = self
         cell.funiture = furniture
         cell.configureCell()
@@ -178,7 +182,10 @@ extension FurnitureViewController: UIImagePickerControllerDelegate, UINavigation
 
         RMProgressHUD.show()
         if let furnitureImage = furnitureImage {
-            FIRStorageService.shared.uploadImage(image: furnitureImage, path: "FurnitureImages") { [weak self] url, error in
+            FIRStorageService.shared.uploadImage(
+                image: furnitureImage,
+                path: "FurnitureImages"
+            ) { [weak self] url, error in
                 guard let self = self else { return }
                 if error != nil {
                     RMProgressHUD.showFailure(text: "上傳圖片有誤")
@@ -193,6 +200,7 @@ extension FurnitureViewController: UIImagePickerControllerDelegate, UINavigation
     }
 
     private func upsertData() {
+        furniture.createdTime = Timestamp()
         if entryType == .new {
             FirebaseService.shared.insertFurniture(furniture: furniture) { error in
                 if error != nil {

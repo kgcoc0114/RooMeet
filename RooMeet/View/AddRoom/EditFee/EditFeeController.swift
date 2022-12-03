@@ -23,6 +23,13 @@ class EditFeeController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
 
+    @IBOutlet weak var titleLabel: UILabel! {
+        didSet {
+            titleLabel.text = "其他費用"
+            titleLabel.font = UIFont.regularTitle()
+        }
+    }
+
     var completion: ((BillInfo) -> Void)?
     var entryType: EntryType = .new
 
@@ -108,15 +115,13 @@ extension EditFeeController: UITableViewDataSource {
 extension EditFeeController: FeeInfoCellDelegate {
     func passData(_ cell: FeeInfoCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
-        var feeType = FeeType.allCases[indexPath.item]
+        let feeType = FeeType.allCases[indexPath.item]
         var feeDetail = cell.feeDetail
         if feeDetail.isGov == true || feeDetail.fee == 0 || feeDetail.fee == nil {
             feeDetail.paid = true
         } else {
             feeDetail.paid = false
         }
-        print(feeType)
-        print(feeDetail)
 
         switch feeType {
         case .electricity:
