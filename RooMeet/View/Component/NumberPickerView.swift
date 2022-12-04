@@ -88,7 +88,10 @@ class NumberPickerView: UIView {
 
     @objc private func textFieldDone() {
         if pickerType != "number" {
-            quantityField.text = "\(leaseTimePicked) \(leaseUnitPicked)"
+            if let lease = Int(leaseTimePicked) {
+                quantityField.text = "\(leaseTimePicked) \(leaseUnitPicked)"
+                delegate?.didPickLease(picker: self, lease: lease, unit: leaseUnitPicked)
+            }
         }
         quantityField.endEditing(true)
     }
