@@ -13,6 +13,7 @@
             <connections>
                 <outlet property="animationView" destination="3qq-Qe-PCh" id="RMS-z2-LkT"/>
                 <outlet property="collectionView" destination="TMl-ZN-Fq3" id="chV-7h-dMk"/>
+                <outlet property="goHomeButton" destination="N9R-bK-L1p" id="n1P-Ck-835"/>
                 <outlet property="noneLabel" destination="TOs-6e-hSL" id="KMq-jD-im0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -45,10 +46,17 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N9R-bK-L1p">
+                    <rect key="frame" x="184" y="468.5" width="46" height="30"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Button"/>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="N9R-bK-L1p" firstAttribute="top" secondItem="TOs-6e-hSL" secondAttribute="bottom" constant="10" id="7rV-dv-brh"/>
+                <constraint firstItem="N9R-bK-L1p" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="8HY-LY-aH8"/>
                 <constraint firstItem="3qq-Qe-PCh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="990-1n-7Ab"/>
                 <constraint firstItem="3qq-Qe-PCh" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="KnN-OS-dZx"/>
                 <constraint firstItem="TOs-6e-hSL" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="XVz-KS-XM8"/>
