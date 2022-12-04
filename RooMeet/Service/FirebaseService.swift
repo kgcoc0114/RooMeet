@@ -781,6 +781,32 @@ extension FirebaseService {
             "favoriteRooms": FieldValue.arrayUnion(favoriteRoomsMap)
         ])
     }
+
+    func deleteUserRsvnData(expiredRsvns: [String]) {
+        let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
+
+        query.getDocument { document, error in
+            if let error = error {
+                print(error.localizedDescription)
+            } else {
+                if let document = document {
+                    let user = try? document.data(as: User.self)
+                    if let user = user {
+                        let availableRsvns = user.reservations.filter { !expiredRsvns.contains($0)
+                        }
+
+                        query.updateData([
+                            "reservations": []
+                        ])
+
+                        query.updateData([
+                            "reservations": availableRsvns
+                        ])
+                    }
+                }
+            }
+        }
+    }
 }
 
 // MARK: - room

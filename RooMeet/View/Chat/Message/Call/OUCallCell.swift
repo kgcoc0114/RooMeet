@@ -8,11 +8,10 @@
 import UIKit
 
 class OUCallCell: MessageBaseCell {
-    static let reuseIdentifier = "\(OUCallCell.self)"
-    var msgType: MsgType = .other
+
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        msgType = .other
     }
     
     override func prepareForReuse() {
@@ -56,8 +55,6 @@ class OUCallCell: MessageBaseCell {
         }
     }
 
-    var message: Message?
-    var sendBy: ChatMember?
     var sendByMe = true
 
     override func setSelected(_ selected: Bool, animated: Bool) {

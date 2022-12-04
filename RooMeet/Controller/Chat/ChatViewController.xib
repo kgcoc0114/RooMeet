@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ChatViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
                 <outlet property="contentTextField" destination="UDU-vp-0jE" id="4iN-8y-EWV"/>
+                <outlet property="imageButton" destination="Uad-IV-5TM" id="PNc-Kn-BgQ"/>
                 <outlet property="sendButton" destination="Vg6-up-6qb" id="hDF-gm-6Jx"/>
                 <outlet property="tableView" destination="0H5-Gx-yal" id="hFS-O0-C05"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -31,6 +32,20 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aH2-mf-Ubq" userLabel="Buttom View">
                     <rect key="frame" x="0.0" y="821" width="414" height="75"/>
                     <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uad-IV-5TM">
+                            <rect key="frame" x="10" y="15" width="45" height="45"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="45" id="Xzg-bs-nHQ"/>
+                                <constraint firstAttribute="width" constant="45" id="b4j-2T-GZP"/>
+                            </constraints>
+                            <color key="tintColor" name="mainColor"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" image="photo" catalog="system"/>
+                            <connections>
+                                <action selector="addImageAction:" destination="-1" eventType="touchUpInside" id="DUx-3g-WeL"/>
+                                <action selector="sendMessage:" destination="-1" eventType="touchUpInside" id="iDL-tX-8m8"/>
+                            </connections>
+                        </button>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vg6-up-6qb">
                             <rect key="frame" x="359" y="15" width="45" height="45"/>
                             <constraints>
@@ -45,7 +60,7 @@
                             </connections>
                         </button>
                         <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UDU-vp-0jE">
-                            <rect key="frame" x="20" y="15" width="339" height="45"/>
+                            <rect key="frame" x="55" y="15" width="304" height="45"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="45" id="lA8-ct-vDR"/>
                             </constraints>
@@ -56,10 +71,12 @@
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="Vg6-up-6qb" secondAttribute="trailing" constant="10" id="Dvl-i7-TIV"/>
-                        <constraint firstItem="UDU-vp-0jE" firstAttribute="leading" secondItem="aH2-mf-Ubq" secondAttribute="leading" constant="20" id="JWQ-xG-BUi"/>
+                        <constraint firstItem="Uad-IV-5TM" firstAttribute="leading" secondItem="aH2-mf-Ubq" secondAttribute="leading" constant="10" id="Np4-5N-4x8"/>
                         <constraint firstItem="Vg6-up-6qb" firstAttribute="centerY" secondItem="UDU-vp-0jE" secondAttribute="centerY" id="PAE-k1-Nsr"/>
                         <constraint firstAttribute="height" constant="75" id="Sqw-V2-cF9"/>
+                        <constraint firstItem="Uad-IV-5TM" firstAttribute="centerY" secondItem="aH2-mf-Ubq" secondAttribute="centerY" id="bGL-D5-me6"/>
                         <constraint firstItem="Vg6-up-6qb" firstAttribute="leading" secondItem="UDU-vp-0jE" secondAttribute="trailing" id="car-Bz-DHC"/>
+                        <constraint firstItem="UDU-vp-0jE" firstAttribute="leading" secondItem="Uad-IV-5TM" secondAttribute="trailing" id="eug-0c-Rja"/>
                         <constraint firstItem="UDU-vp-0jE" firstAttribute="centerY" secondItem="aH2-mf-Ubq" secondAttribute="centerY" id="nFE-pb-3zu"/>
                     </constraints>
                 </view>
@@ -80,6 +97,7 @@
     </objects>
     <resources>
         <image name="paperplane" catalog="system" width="128" height="118"/>
+        <image name="photo" catalog="system" width="128" height="93"/>
         <namedColor name="Color-2">
             <color red="0.2630000114440918" green="0.45100000500679016" blue="0.43500000238418579" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

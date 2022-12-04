@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FavoritesViewController" customModule="RooMeet" customModuleProvider="target">
             <connections>
                 <outlet property="collectionView" destination="vZo-2g-Kew" id="Tjd-zt-rwr"/>
+                <outlet property="goHomeButton" destination="vSa-fu-WYg" id="E7I-Xh-YWB"/>
                 <outlet property="noneLabel" destination="Rhk-Ay-qdS" id="Haj-1z-tQb"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -38,6 +39,11 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vSa-fu-WYg">
+                    <rect key="frame" x="184" y="468.5" width="46" height="30"/>
+                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                    <state key="normal" title="Button"/>
+                </button>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -45,9 +51,11 @@
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vZo-2g-Kew" secondAttribute="trailing" id="DmE-jQ-fuF"/>
                 <constraint firstItem="vZo-2g-Kew" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="G3N-gN-YDb"/>
                 <constraint firstItem="vZo-2g-Kew" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Nz5-cd-48n"/>
+                <constraint firstItem="vSa-fu-WYg" firstAttribute="top" secondItem="Rhk-Ay-qdS" secondAttribute="bottom" constant="10" id="TGj-U9-kPf"/>
                 <constraint firstItem="Rhk-Ay-qdS" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="YTf-Rs-qLY"/>
                 <constraint firstItem="Rhk-Ay-qdS" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="gDr-ed-xRL"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="vZo-2g-Kew" secondAttribute="bottom" id="ueb-nx-cNn"/>
+                <constraint firstItem="vSa-fu-WYg" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="xJJ-lJ-OLa"/>
             </constraints>
             <point key="canvasLocation" x="132" y="132"/>
         </view>

@@ -106,7 +106,7 @@
     <resources>
         <image name="calendar" catalog="system" width="128" height="106"/>
         <namedColor name="mainDarkColor">
-            <color red="0.13725490870000001" green="0.14901961389999999" blue="0.28627452250000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+            <color red="0.13699999451637268" green="0.14900000393390656" blue="0.28600001335144043" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
