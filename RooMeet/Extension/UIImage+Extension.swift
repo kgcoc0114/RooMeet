@@ -95,9 +95,6 @@ extension UIImage {
         case .gigabyte:
             size = Double(data.count) / 1024 / 1024 / 1024
         }
-
-        print(String(format: "%.2f", size))
-
         return size
     }
 }
