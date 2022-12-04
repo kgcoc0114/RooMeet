@@ -10,8 +10,6 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class CUReservationCell: MessageBaseCell {
-    static let reuseIdentifier = "\(CUReservationCell.self)"
-    var msgType: MsgType = .currentUser
 
     @IBOutlet weak var messageView: UIView! {
         didSet {
@@ -58,7 +56,6 @@ class CUReservationCell: MessageBaseCell {
         }
     }
 
-    var message: Message?
     var chatroomID: String?
     var otherUser: ChatMember?
     var currentUser: ChatMember?

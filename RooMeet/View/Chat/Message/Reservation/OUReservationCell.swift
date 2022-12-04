@@ -11,7 +11,6 @@ import FirebaseFirestoreSwift
 
 class OUReservationCell: MessageBaseCell {
     static let reuseIdentifier = "\(OUReservationCell.self)"
-    var msgType: MsgType = .other
 
     @IBOutlet weak var denyButton: UIButton! {
         didSet {
@@ -58,13 +57,13 @@ class OUReservationCell: MessageBaseCell {
         }
     }
 
-    var message: Message?
     var otherUser: ChatMember?
     var currentUser: ChatMember?
     var sendByMe = true
 
     override func awakeFromNib() {
         super.awakeFromNib()
+        msgType = .other
         denyButton.isHidden = true
         agreeButton.isHidden = true
         denyButton.addTarget(self, action: #selector(deny), for: .touchUpInside)
