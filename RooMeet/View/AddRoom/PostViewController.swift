@@ -614,7 +614,6 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         guard let indexPath = collectionView.indexPath(for: cell) else {
             return
         }
-        print("indexPath.item", indexPath.item)
 
         if roomImages.count - 1 < indexPath.item {
             roomImages.append(image)
@@ -659,7 +658,6 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
                         guard let downloadURL = url else {
                             return
                         }
-                        print("Photo Url: \(downloadURL)")
                         self.roomImagesUrl.append(downloadURL)
                         group.leave()
                     }
