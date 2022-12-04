@@ -366,28 +366,42 @@ class ReservationService {
     }
 
     func deleteExpiredReservations() {
+        var expiredRsvns: [String] = []
+        let group = DispatchGroup()
+        group.enter()
         let currentTimestamp = Timestamp()
         let senderQuery = FirestoreEndpoint.reservation.colRef
             .whereField("isDeleted", isEqualTo: false)
             .whereField("requestTime", isLessThan: currentTimestamp)
             .whereField("sender", isEqualTo: UserDefaults.id)
-        batchDeleteReservation(query: senderQuery)
+        batchDeleteReservation(query: senderQuery) { rsvns in
+            expiredRsvns += rsvns
+            group.leave()
+        }
 
-
+        group.enter()
         let receiverQuery = FirestoreEndpoint.reservation.colRef
             .whereField("isDeleted", isEqualTo: false)
             .whereField("requestTime", isLessThan: currentTimestamp)
             .whereField("receiver", isEqualTo: UserDefaults.id)
-        batchDeleteReservation(query: receiverQuery)
+        batchDeleteReservation(query: receiverQuery) { rsvns in
+            expiredRsvns += rsvns
+            group.leave()
+        }
+
+        group.notify(queue: DispatchQueue.main) {
+            FirebaseService.shared.deleteUserRsvnData(expiredRsvns: expiredRsvns)
+        }
     }
 
-    private func batchDeleteReservation(query: Query) {
+    private func batchDeleteReservation(query: Query, completion: @escaping (([String]) -> Void)) {
         let batch = Firestore.firestore().batch()
-
+        var expiredRsvn: [String] = []
         query.getDocuments { querySnapshot, error in
             if let querySnapshot = querySnapshot {
                 querySnapshot.documents.forEach { document in
                     batch.updateData(["isDeleted": true], forDocument: document.reference)
+                    expiredRsvn.append(document.documentID)
                 }
 
                 // Commit the batch
@@ -398,6 +412,7 @@ class ReservationService {
                         print("Batch write succeeded.")
                     }
                 }
+                completion(expiredRsvn)
             }
         }
     }
