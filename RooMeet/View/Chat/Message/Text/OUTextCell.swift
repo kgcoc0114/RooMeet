@@ -22,11 +22,9 @@ enum MsgType {
 }
 
 class OUTextCell: MessageBaseCell {
-    static let reuseIdentifier = "\(OUTextCell.self)"
-
-    var msgType: MsgType = .other
-    var message: Message?
-    var sendBy: ChatMember?
+//    var msgType: MsgType = .other
+//    var message: Message?
+//    var sendBy: ChatMember?
 
     @IBOutlet weak var contentTextView: UITextView! {
         didSet {
@@ -50,6 +48,7 @@ class OUTextCell: MessageBaseCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        msgType = .other
         self.backgroundColor = UIColor.mainBackgroundColor
 
         NSLayoutConstraint.activate([

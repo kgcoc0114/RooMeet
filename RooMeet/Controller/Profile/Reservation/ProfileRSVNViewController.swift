@@ -26,6 +26,7 @@ class ProfileRSVNViewController: UIViewController {
                 self.collectionView.stopPullToRefresh()
                 self.updateDataSource()
                 self.noneLabel.isHidden = !self.reservations.isEmpty
+                self.goHomeButton.isHidden = !self.reservations.isEmpty
             }
         }
     }
@@ -42,6 +43,19 @@ class ProfileRSVNViewController: UIViewController {
             noneLabel.textColor = .mainDarkColor
             noneLabel.text = "目前沒有看房預約唷！"
             noneLabel.isHidden = true
+        }
+    }
+
+    @IBOutlet weak var goHomeButton: UIButton! {
+        didSet {
+            goHomeButton.isHidden = true
+            goHomeButton.setTitle("去逛逛", for: .normal)
+            goHomeButton.addTarget(self, action: #selector(goHomeAction), for: .touchUpInside)
+            goHomeButton.backgroundColor = .mainLightColor
+            goHomeButton.tintColor = .mainDarkColor
+            goHomeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            goHomeButton.titleLabel?.font = UIFont.regularText()
+            goHomeButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
         }
     }
 
@@ -111,6 +125,13 @@ class ProfileRSVNViewController: UIViewController {
             self.reservations = reservations.sorted { rsvnA, rsvnB in
                 (rsvnA.requestTime ?? Timestamp()).seconds < (rsvnB.requestTime ?? Timestamp()).seconds
             }
+        }
+    }
+
+    @objc private func goHomeAction() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.navigationController?.tabBarController?.selectedIndex = 0
         }
     }
 }

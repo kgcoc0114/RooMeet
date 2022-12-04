@@ -9,7 +9,6 @@ import UIKit
 
 class CUCallCell: MessageBaseCell {
     static let reuseIdentifier = "\(CUCallCell.self)"
-    var msgType: MsgType = .currentUser
 
     @IBOutlet weak var messageView: UIView! {
         didSet {
@@ -30,8 +29,6 @@ class CUCallCell: MessageBaseCell {
         }
     }
 
-    var message: Message?
-    var sendBy: ChatMember?
     var sendByMe = true
 
     override func awakeFromNib() {
