@@ -60,6 +60,7 @@
 		E57918F12938938300427F83 /* FurnitureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918EF2938938300427F83 /* FurnitureViewController.swift */; };
 		E57918F22938938300427F83 /* FurnitureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57918F02938938300427F83 /* FurnitureViewController.xib */; };
 		E57918F429389B1200427F83 /* FIRStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918F329389B1200427F83 /* FIRStorageService.swift */; };
+		E579195B293C30CE00427F83 /* ChatImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E579195A293C30CE00427F83 /* ChatImageViewController.swift */; };
 		E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E587292C291CA7BF00C12E9E /* CUReservationCell.swift */; };
 		E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E587292D291CA7BF00C12E9E /* CUReservationCell.xib */; };
 		E5872932291CAA7300C12E9E /* OUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5872930291CAA7300C12E9E /* OUReservationCell.swift */; };
@@ -254,6 +255,7 @@
 		E57918EF2938938300427F83 /* FurnitureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnitureViewController.swift; sourceTree = "<group>"; };
 		E57918F02938938300427F83 /* FurnitureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FurnitureViewController.xib; sourceTree = "<group>"; };
 		E57918F329389B1200427F83 /* FIRStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRStorageService.swift; sourceTree = "<group>"; };
+		E579195A293C30CE00427F83 /* ChatImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatImageViewController.swift; sourceTree = "<group>"; };
 		E587292C291CA7BF00C12E9E /* CUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUReservationCell.swift; sourceTree = "<group>"; };
 		E587292D291CA7BF00C12E9E /* CUReservationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUReservationCell.xib; sourceTree = "<group>"; };
 		E5872930291CAA7300C12E9E /* OUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUReservationCell.swift; sourceTree = "<group>"; };
@@ -576,6 +578,17 @@
 			path = Furniture;
 			sourceTree = "<group>";
 		};
+		E5791959293C2C8E00427F83 /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				E5D9C03F291E4E3100F416E6 /* CUImageCell.swift */,
+				E5D9C040291E4E3100F416E6 /* CUImageCell.xib */,
+				E5D9C043291E4FF900F416E6 /* OUImageCell.swift */,
+				E5D9C044291E4FF900F416E6 /* OUImageCell.xib */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
 		E5872934291CF2F000C12E9E /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -621,6 +634,7 @@
 				E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */,
 				E59B82F02919117300F02CEC /* CallViewController.swift */,
 				E59B82F12919117300F02CEC /* CallViewController.xib */,
+				E579195A293C30CE00427F83 /* ChatImageViewController.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -807,10 +821,7 @@
 				E5E2771D291E883A00E68D90 /* Text */,
 				E5DEFD8A291F3ACC0064E2C8 /* Call */,
 				E5E2771E291E884E00E68D90 /* Reservation */,
-				E5D9C03F291E4E3100F416E6 /* CUImageCell.swift */,
-				E5D9C040291E4E3100F416E6 /* CUImageCell.xib */,
-				E5D9C043291E4FF900F416E6 /* OUImageCell.swift */,
-				E5D9C044291E4FF900F416E6 /* OUImageCell.xib */,
+				E5791959293C2C8E00427F83 /* Image */,
 				E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */,
 			);
 			path = Message;
@@ -1309,6 +1320,7 @@
 				E5B018AA2915690C00A09788 /* CUTextCell.swift in Sources */,
 				E5DEFD9E291F81DE0064E2C8 /* BookingPeriodCell.swift in Sources */,
 				E55C095E290D51B800DBF21B /* Room.swift in Sources */,
+				E579195B293C30CE00427F83 /* ChatImageViewController.swift in Sources */,
 				E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */,
 				E5B984C2291B7CA3006DD8D7 /* Date+Extension.swift in Sources */,
 				E5DEFD99291F5D810064E2C8 /* RoomFeeCell.swift in Sources */,

@@ -21,6 +21,8 @@ class ChatViewController: UIViewController {
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
     private var dataSource: DataSource!
 
+    lazy var imagePickerController = UIImagePickerController()
+
     var chatRoom: ChatRoom?
     var otherData: ChatMember?
     var currentUserData = ChatMember(
@@ -46,12 +48,19 @@ class ChatViewController: UIViewController {
 
     @IBOutlet weak var contentTextField: UITextField! {
         didSet {
-            contentTextField.placeholder = "Aa"
+            contentTextField.placeholder = " Aa"
         }
     }
+    
     @IBOutlet weak var sendButton: UIButton! {
         didSet {
             sendButton.setTitle("", for: .normal)
+        }
+    }
+
+    @IBOutlet weak var imageButton: UIButton! {
+        didSet {
+            imageButton.setTitle("", for: .normal)
         }
     }
 
@@ -171,7 +180,39 @@ class ChatViewController: UIViewController {
         tableView.scrollToButtom(at: .bottom, animated: animated)
     }
 
-    @IBAction func showRuler(_ sender: Any) {
+    @IBAction func addImageAction(_ sender: Any) {
+        imagePickerController.delegate = self
+
+        let imagePickerAlertController = UIAlertController(
+            title: "上傳圖片",
+            message: "請選擇要上傳的圖片",
+            preferredStyle: .actionSheet
+        )
+
+        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
+                self.imagePickerController.sourceType = .photoLibrary
+                self.present(self.imagePickerController, animated: true, completion: nil)
+            }
+        }
+        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { _ in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                self.imagePickerController.sourceType = .camera
+                self.present(self.imagePickerController, animated: true, completion: nil)
+            }
+        }
+
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+            imagePickerAlertController.dismiss(animated: true, completion: nil)
+        }
+
+        imagePickerAlertController.addAction(imageFromLibAction)
+        imagePickerAlertController.addAction(imageFromCameraAction)
+        imagePickerAlertController.addAction(cancelAction)
+
+        present(imagePickerAlertController, animated: true, completion: nil)
+
     }
 
     @objc private func backAction() {
@@ -241,40 +282,14 @@ class ChatViewController: UIViewController {
 
 extension ChatViewController {
     private func configureDataSource() {
-        tableView.register(
-            UINib(nibName: OUTextCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: OUTextCell.reuseIdentifier
-        )
-
-        tableView.register(
-            UINib(nibName: CUTextCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: CUTextCell.reuseIdentifier
-        )
-
-        tableView.register(
-            UINib(nibName: CallCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: CallCell.reuseIdentifier
-        )
-
-        tableView.register(
-            UINib(nibName: CUReservationCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: CUReservationCell.reuseIdentifier
-        )
-
-        tableView.register(
-            UINib(nibName: OUReservationCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: OUReservationCell.reuseIdentifier
-        )
-
-        tableView.register(
-            UINib(nibName: OUCallCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: OUCallCell.reuseIdentifier
-        )
-
-        tableView.register(
-            UINib(nibName: CUCallCell.reuseIdentifier, bundle: nil),
-            forCellReuseIdentifier: CUCallCell.reuseIdentifier
-        )
+        tableView.registerCellWithNib(identifier: OUTextCell.identifier, bundle: nil)
+        tableView.registerCellWithNib(identifier: CUTextCell.identifier, bundle: nil)
+        tableView.registerCellWithNib(identifier: CUCallCell.identifier, bundle: nil)
+        tableView.registerCellWithNib(identifier: OUCallCell.identifier, bundle: nil)
+        tableView.registerCellWithNib(identifier: CUReservationCell.identifier, bundle: nil)
+        tableView.registerCellWithNib(identifier: OUReservationCell.identifier, bundle: nil)
+        tableView.registerCellWithNib(identifier: CUImageCell.identifier, bundle: nil)
+        tableView.registerCellWithNib(identifier: OUImageCell.identifier, bundle: nil)
 
         dataSource = DataSource(tableView: tableView) { [unowned self] tableView, indexPath, item in
             switch item {
@@ -291,7 +306,11 @@ extension ChatViewController {
                         return configureOtherUserCell(tableView: tableView, indexPath: indexPath, message: data)
                     }
                 case .image:
-                    return UITableViewCell()
+                    if sendByMe {
+                        return configureCUImageCell(tableView: tableView, indexPath: indexPath, message: data)
+                    } else {
+                        return configureOUImageCell(tableView: tableView, indexPath: indexPath, message: data)
+                    }
                 case .call:
                     if sendByMe {
                         return configureCUCallCell(tableView: tableView, indexPath: indexPath, message: data)
@@ -311,7 +330,7 @@ extension ChatViewController {
 
     private func configureCUCallCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CUCallCell.reuseIdentifier,
+            withIdentifier: CUCallCell.identifier,
             for: indexPath
         ) as? CUCallCell else {
             return UITableViewCell()
@@ -324,9 +343,10 @@ extension ChatViewController {
         return cell
     }
 
+
     private func configureOUCallCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: OUCallCell.reuseIdentifier,
+            withIdentifier: OUCallCell.identifier,
             for: indexPath
         ) as? OUCallCell else {
             return UITableViewCell()
@@ -341,7 +361,7 @@ extension ChatViewController {
 
     private func configureCUReservationCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CUReservationCell.reuseIdentifier,
+            withIdentifier: CUReservationCell.identifier,
             for: indexPath
         ) as? CUReservationCell else {
             return UITableViewCell()
@@ -355,7 +375,7 @@ extension ChatViewController {
 
     private func configureOUReservationCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: OUReservationCell.reuseIdentifier,
+            withIdentifier: OUReservationCell.identifier,
             for: indexPath
         ) as? OUReservationCell else {
             return UITableViewCell()
@@ -369,7 +389,7 @@ extension ChatViewController {
 
     private func configureCurrentUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CUTextCell.reuseIdentifier,
+            withIdentifier: CUTextCell.identifier,
             for: indexPath
         ) as? CUTextCell else {
             return UITableViewCell()
@@ -382,9 +402,41 @@ extension ChatViewController {
         return cell
     }
 
+    private func configureCUImageCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: CUImageCell.identifier,
+            for: indexPath
+        ) as? CUImageCell else {
+            return UITableViewCell()
+        }
+
+        cell.msgType = .currentUser
+        cell.sendBy = currentUserData
+        cell.message = message
+        cell.configureLayout()
+        cell.delegate = self
+        return cell
+    }
+
+    private func configureOUImageCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: OUImageCell.identifier,
+            for: indexPath
+        ) as? OUImageCell else {
+            return UITableViewCell()
+        }
+
+        cell.msgType = .other
+        cell.sendBy = otherData
+        cell.message = message
+        cell.configureLayout()
+        cell.delegate = self
+        return cell
+    }
+
     private func configureOtherUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: OUTextCell.reuseIdentifier,
+            withIdentifier: OUTextCell.identifier,
             for: indexPath
         ) as? OUTextCell else {
             return UITableViewCell()
@@ -410,5 +462,104 @@ extension ChatViewController {
 extension ChatViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         view.endEditing(true)
+    }
+}
+
+extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+
+    func imagePickerController(
+        _ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
+    ) {
+        RMProgressHUD.show()
+        // 取得從 UIImagePickerController 選擇的檔案
+        if let pickedImage = info[.originalImage] as? UIImage {
+            FIRStorageService.shared.uploadImage(image: pickedImage, path: "ChatImages") { [weak self] imageURL, error in
+                guard
+                    let self = self,
+                    let imageURL = imageURL else {
+                    return
+                }
+
+                if error != nil {
+                    RMProgressHUD.showFailure(text: "傳送圖片出現問題")
+                } else {
+                    self.sendMessage(content: imageURL, messageType: .image)
+                }
+            }
+        }
+
+        picker.dismiss(animated: true)
+    }
+
+    private func sendMessage(content: String, messageType: MessageType) {
+        guard let room = chatRoom else {
+            print("ERROR: chatRoom is not exist.")
+            return
+        }
+
+        let messageRef = Firestore.firestore()
+            .collection("ChatRoom")
+            .document(room.id)
+            .collection("Message")
+            .document()
+
+        let message = Message(
+            id: messageRef.documentID,
+            messageType: messageType.rawValue,
+            sendBy: UserDefaults.id,
+            content: content,
+            createdTime: Timestamp()
+        )
+
+        do {
+            try messageRef.setData(from: message)
+        } catch let error {
+            print("Error writing Message to Firestore: \(error)")
+        }
+
+        guard let chatRoom = chatRoom else {
+            return
+        }
+
+        let chatRoomRef = FirestoreEndpoint.chatRoom.colRef.document(chatRoom.id)
+
+        var lastMessageContent = content
+
+        if messageType == .image {
+            lastMessageContent = "已傳送圖片"
+        }
+
+        let lastMessage = LastMessage(
+            id: messageRef.documentID,
+            content: lastMessageContent,
+            createdTime: message.createdTime
+        )
+
+        chatRoomRef.updateData([
+            "lastMessage": lastMessage.toDict,
+            "lastUpdated": lastMessage.createdTime
+        ])
+
+        RMProgressHUD.showSuccess()
+    }
+}
+
+extension ChatViewController: OUImageCellDelegate {
+    func didClickImageView(_ cell: OUImageCell, imageURL: String) {
+        let imageViewVC = ChatImageViewController(imageURL: imageURL)
+        imageViewVC.modalPresentationStyle = .fullScreen
+        self.present(imageViewVC, animated: false)
+    }
+}
+
+extension ChatViewController: CUImageCellDelegate {
+    func didClickImageView(_ cell: CUImageCell, imageURL: String) {
+        let imageViewVC = ChatImageViewController(imageURL: imageURL)
+        imageViewVC.modalPresentationStyle = .fullScreen
+        self.present(imageViewVC, animated: false)
     }
 }

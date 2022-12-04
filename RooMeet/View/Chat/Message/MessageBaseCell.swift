@@ -8,6 +8,9 @@
 import UIKit
 
 class MessageBaseCell: UITableViewCell {
+    var msgType: MsgType = .currentUser
+    var message: Message?
+    var sendBy: ChatMember?
 
     lazy var dateLabel: UILabel = {
         let label = UILabel()

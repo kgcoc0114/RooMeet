@@ -10,10 +10,6 @@ import UIKit
 class CUTextCell: MessageBaseCell {
     static let reuseIdentifier = "\(CUTextCell.self)"
 
-    var msgType: MsgType = .currentUser
-    var message: Message?
-    var sendBy: ChatMember?
-
     @IBOutlet weak var contentTextView: UITextView! {
         didSet {
             contentTextView.translatesAutoresizingMaskIntoConstraints = false

@@ -18,22 +18,22 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RhS-gr-4u0">
-                        <rect key="frame" x="229" y="5" width="120" height="120"/>
+                        <rect key="frame" x="205.5" y="5" width="143.5" height="120"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="120" id="Ttn-sV-rEn"/>
                             <constraint firstAttribute="height" constant="120" id="sHL-fq-BpE"/>
                         </constraints>
                     </imageView>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="RhS-gr-4u0" secondAttribute="bottom" constant="5" id="5E5-L8-opl"/>
                     <constraint firstItem="RhS-gr-4u0" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="JT2-2o-zeS"/>
+                    <constraint firstAttribute="bottom" secondItem="RhS-gr-4u0" secondAttribute="bottom" constant="10" id="Lgp-y7-z7H"/>
+                    <constraint firstItem="RhS-gr-4u0" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.4" id="QjR-yf-Nl9"/>
                     <constraint firstAttribute="trailing" secondItem="RhS-gr-4u0" secondAttribute="trailing" constant="10" id="a0G-4x-Xyo"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
-                <outlet property="messageImageView" destination="RhS-gr-4u0" id="zcP-qc-B0C"/>
+                <outlet property="photoView" destination="RhS-gr-4u0" id="4Ve-7D-1TA"/>
             </connections>
             <point key="canvasLocation" x="160.1449275362319" y="141.62946428571428"/>
         </tableViewCell>
