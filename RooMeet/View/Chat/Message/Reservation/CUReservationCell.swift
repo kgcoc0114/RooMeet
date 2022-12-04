@@ -10,8 +10,6 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class CUReservationCell: MessageBaseCell {
-    static let reuseIdentifier = "\(CUReservationCell.self)"
-    var msgType: MsgType = .currentUser
 
     @IBOutlet weak var messageView: UIView! {
         didSet {
@@ -58,7 +56,6 @@ class CUReservationCell: MessageBaseCell {
         }
     }
 
-    var message: Message?
     var chatroomID: String?
     var otherUser: ChatMember?
     var currentUser: ChatMember?
@@ -104,15 +101,32 @@ class CUReservationCell: MessageBaseCell {
             agreeButton.isHidden = true
         } else {
             if reservation.acceptedStatus == "waiting" {
-                statusLabel.isHidden = true
+                let currentDate = FirebaseService.shared.currentTimestamp
+                let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
+                statusLabel.text = "\(dateString)\n\(requestPeriod)"
+                statusLabel.isHidden = false
                 if reservation.sender == UserDefaults.id {
-                    titleLabel.text = "已發起預約，等候回覆"
+                    if requestTime.seconds >= currentDate.seconds {
+                        titleLabel.text = "已發起預約，等候回覆"
+                    } else {
+                        titleLabel.text = "已發起預約，等候回覆 - 已過期"
+                    }
                     denyButton.isHidden = true
                     agreeButton.isHidden = true
                 } else {
-                    titleLabel.text = "\(otherUser.name)已發來預約\n \(requestTime)\n\(requestPeriod)"
-                    denyButton.isHidden = false
-                    agreeButton.isHidden = false
+                    if requestTime.seconds >= currentDate.seconds {
+                        titleLabel.text = "\(otherUser.name)已發來預約"
+                        statusLabel.text = "\(dateString)\n\(requestPeriod)"
+                        statusLabel.isHidden = false
+                        denyButton.isHidden = false
+                        agreeButton.isHidden = false
+                    } else {
+                        titleLabel.text = "\(otherUser.name)預約已過期"
+                        statusLabel.text = "\(dateString)\n\(requestPeriod)"
+                        statusLabel.isHidden = false
+                        denyButton.isHidden = true
+                        agreeButton.isHidden = true
+                    }
                 }
             } else if reservation.acceptedStatus == "accept" {
                 titleLabel.text = "預約已完成"

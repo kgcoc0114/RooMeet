@@ -28,6 +28,7 @@ class FavoritesViewController: UIViewController {
                 self.collectionView.stopPullToRefresh()
                 self.updateDataSource()
                 self.noneLabel.isHidden = !self.rooms.isEmpty
+                self.goHomeButton.isHidden = self.noneLabel.isHidden
             }
         }
     }
@@ -46,6 +47,18 @@ class FavoritesViewController: UIViewController {
         }
     }
 
+    @IBOutlet weak var goHomeButton: UIButton! {
+        didSet {
+            goHomeButton.addTarget(self, action: #selector(goHomeAction), for: .touchUpInside)
+            goHomeButton.backgroundColor = .mainLightColor
+            goHomeButton.tintColor = .mainDarkColor
+            goHomeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            goHomeButton.titleLabel?.font = UIFont.regularText()
+            goHomeButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+
+        }
+    }
+
     @IBOutlet weak var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,6 +71,8 @@ class FavoritesViewController: UIViewController {
 
         navigationItem.title = entryPage == .fav ? "Favorites" : "My Post"
         noneLabel.text = entryPage == .fav ? "按下愛心加入我的最愛" : "還沒有貼文唷！可到首頁新增房源找室友！"
+        goHomeButton.setTitle(entryPage == .fav ? "去逛逛" : "新增房源", for: .normal)
+
         collectionView.delegate = self
 
         configureCollectionView()
@@ -129,6 +144,18 @@ class FavoritesViewController: UIViewController {
 
     @objc private func backAction() {
         navigationController?.popViewController(animated: false)
+    }
+
+    @objc private func goHomeAction() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            if self.entryPage == .ownPost {
+                let postViewController = PostViewController(entryType: .new, data: nil)
+                self.navigationController?.pushViewController(postViewController, animated: true)
+            } else {
+                self.navigationController?.tabBarController?.selectedIndex = 0
+            }
+        }
     }
 }
 
