@@ -286,6 +286,8 @@ class ReservationService {
             return
         }
 
+        let oriStatus = AcceptedStatus.init(rawValue: reservation.acceptedStatus ?? "waiting")
+
         reservation.acceptedStatus = status.description
         reservation.modifiedTime = Timestamp()
 
@@ -298,7 +300,7 @@ class ReservationService {
         }
 
         // 更新 message / last message
-        if sender == UserDefaults.id && status == .cancel {
+        if sender == UserDefaults.id && status == .cancel && oriStatus == .waiting {
             guard
                 let sender = reservation.sender,
                 let receiver = reservation.receiver
