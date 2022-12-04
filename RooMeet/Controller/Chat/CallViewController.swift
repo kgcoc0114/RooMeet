@@ -152,6 +152,8 @@ class CallViewController: UIViewController {
 
         view.addSubview(animationView)
 
+        animationView.isHidden = false
+
         NSLayoutConstraint.activate([
             animationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             animationView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.2),
