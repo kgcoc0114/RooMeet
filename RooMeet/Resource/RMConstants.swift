@@ -19,19 +19,10 @@ class RMConstants {
     let dataPickerCornerRadius: CGFloat = 10
     let tagCornerRadius: CGFloat = 8
     let reservationDays: Int = 6
-    let textFontSize: CGFloat = 12
-    let title3FontSize: CGFloat = 15
-    let title2FontSize: CGFloat = 20
-    let title2FontColor = UIColor.hexColor(hex: "#363130")
     let mapCenterButtonWidth: CGFloat = 36
-    let mainColor = UIColor.hexColor(hex: "#43736F")
-    let mainLightColor = UIColor.hexColor(hex: "#F3F3F5")
-    let mainLightBackgroundColor = UIColor.hexColor(hex: "#DFE4E5")
-    // Intorduction Page
+    // MARK: -- Intorduction Page
     let profileImageWidth: CGFloat = 120
-    // MARK: - Room Detail Page
 
-    // MARK: - Chat Page
     // MARK: -- message
     let avatarImageWidth: CGFloat = 40
     let messageImageWidth: CGFloat = 120
@@ -67,4 +58,61 @@ class RMConstants {
 enum EntryType {
     case edit
     case new
+
+    var title: String {
+        switch self {
+        case .edit:
+            return "編輯"
+        case .new:
+            return "新增"
+        }
+    }
+}
+
+enum EntryPage {
+    case fav
+    case ownPost
+
+    var title: String {
+        switch self {
+        case .fav:
+            return "Favorites"
+        case .ownPost:
+            return "My Post"
+        }
+    }
+
+    var noneLabelString: String {
+        switch self {
+        case .fav:
+            return "按下愛心加入我的最愛"
+        case .ownPost:
+            return "還沒有貼文唷！可到首頁新增房源找室友！"
+        }
+    }
+
+    var goHomeButtonTitle: String {
+        switch self {
+        case .fav:
+            return "去逛逛"
+        case .ownPost:
+            return "新增房源"
+        }
+    }
+}
+
+enum PostVCString: String {
+    case submit = "貼文"
+    case title = "物件貼文"
+    case delete = "刪除貼文"
+    case add = "新增貼文"
+    case addMessage = "標題、地區與最快可搬入時間為必填欄位"
+    case deleteMessage = "確定要刪除貼文嗎？"
+    case confirm = "好的"
+    case deleteActionTitle = "確定刪除"
+    case otherFee = "其他費用"
+    case town = "中正區"
+    case county = "臺北市"
+    case postTitle = "房間出租"
+    case cancel = "取消"
 }
