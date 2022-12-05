@@ -6,66 +6,7 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 import FirebaseStorage
-
-enum PostSection: CaseIterable {
-    case basic
-    case roomSpec
-    case highLight
-    case gender
-    case pet
-    case elevator
-    case cooking
-    case bathroom
-    case features
-    case feeHeader
-    case feeDetail
-    case images
-
-    var title: String {
-        switch self {
-        case .highLight:
-            return "亮點"
-        case .gender:
-            return "租客性別"
-        case .pet:
-            return "寵物"
-        case .elevator:
-            return "電梯"
-        case .cooking:
-            return "開伙"
-        case .features:
-            return "設施"
-        case .bathroom:
-            return "衛浴"
-        default:
-            return ""
-        }
-    }
-
-    var tags: [String] {
-        switch self {
-        case .highLight:
-            return RMConstants.shared.roomHighLights
-        case .gender:
-            return RMConstants.shared.roomGenderRules
-        case .pet:
-            return RMConstants.shared.roomPetsRules
-        case .elevator:
-            return RMConstants.shared.roomElevatorRules
-        case .cooking:
-            return RMConstants.shared.roomCookingRules
-        case .features:
-            return RMConstants.shared.roomFeatures
-        case .bathroom:
-            return RMConstants.shared.roomBathroomRules
-        default:
-            return []
-        }
-    }
-}
 
 class PostViewController: UIViewController {
     private var roomSpecList: [RoomSpec] = [RoomSpec()]
@@ -88,20 +29,19 @@ class PostViewController: UIViewController {
 
     var roomImagesUrl: [URL] = []
     var oriRoomImagesUrl: [URL] = []
-    var checkImages: [Bool] = [false, false, false]
     var roomImages: [UIImage] = []
 
     var otherDescriction: String?
     var latitude: Double?
     var longitude: Double?
     var postalCode: String?
-    var createdTime = Timestamp()
+    var createdTime = FirebaseService.shared.currentTimestamp
     var isDeleted = false
     var room: Room?
 
     @IBOutlet weak var submitButton: UIButton! {
         didSet {
-            submitButton.setTitle("Add Post", for: .normal)
+            submitButton.setTitle(entryType.title + PostVCString.submit.rawValue, for: .normal)
             submitButton.backgroundColor = UIColor.mainColor
             submitButton.tintColor = UIColor.mainBackgroundColor
             submitButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
@@ -141,7 +81,7 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         collectionView.keyboardDismissMode = .interactive
-        navigationItem.title = "新增物件貼文"
+        navigationItem.title = entryType.title + PostVCString.title.rawValue
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
@@ -238,9 +178,16 @@ class PostViewController: UIViewController {
     }
 
     @objc private func deletePostAction() {
-        let alertController = UIAlertController(title: "刪除貼文", message: "確定要刪除貼文嗎？", preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: PostVCString.delete.rawValue,
+            message: PostVCString.deleteMessage.rawValue,
+            preferredStyle: .alert
+        )
 
-        let deleteAction = UIAlertAction(title: "確定刪除", style: .destructive) { [unowned self] _ in
+        let deleteAction = UIAlertAction(
+            title: PostVCString.deleteActionTitle.rawValue,
+            style: .destructive
+        ) { [unowned self] _ in
             RMProgressHUD.show()
             guard
                 let room = room,
@@ -253,7 +200,7 @@ class PostViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
 
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
+        let cancelAction = UIAlertAction(title: PostVCString.cancel.rawValue, style: .cancel) { _ in
             alertController.dismiss(animated: true)
         }
 
@@ -264,8 +211,12 @@ class PostViewController: UIViewController {
     }
 
     private func showAlert() {
-        let alertController = UIAlertController(title: "新增貼文", message: "標題、地區與最快可搬入時間為必填欄位", preferredStyle: .alert)
-        let alertAction = UIAlertAction(title: "好的", style: .default)
+        let alertController = UIAlertController(
+            title: PostVCString.add.rawValue,
+            message: PostVCString.addMessage.rawValue,
+            preferredStyle: .alert
+        )
+        let alertAction = UIAlertAction(title: PostVCString.confirm.rawValue, style: .default)
         alertController.addAction(alertAction)
         present(alertController, animated: false)
     }
@@ -321,7 +272,7 @@ extension PostViewController: UICollectionViewDataSource {
 
             cell.editAction.tag = tag
             cell.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
-            cell.titleLabel.text = "其他費用"
+            cell.titleLabel.text = PostVCString.otherFee.rawValue
             return cell
         case .feeDetail:
             guard let cell = collectionView.dequeueReusableCell(
@@ -681,8 +632,8 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         var inputRoom = Room(
             userID: UserDefaults.id,
             createdTime: createdTime,
-            modifiedTime: Timestamp(),
-            title: postBasicData.title ?? "房間出租",
+            modifiedTime: FirebaseService.shared.currentTimestamp,
+            title: postBasicData.title ?? PostVCString.postTitle.rawValue,
             roomImages: roomImagesUrl,
             rooms: roomSpecList,
             roomFeatures: roomFeatures,
@@ -692,8 +643,8 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             roomCookingRules: roomCookingRules,
             roomElevatorRules: roomElevatorRules,
             roomBathroomRules: roomBathroomRules,
-            town: postBasicData.town ?? "中正區",
-            county: postBasicData.county ?? "臺北市",
+            town: postBasicData.town ?? PostVCString.town.rawValue,
+            county: postBasicData.county ?? PostVCString.county.rawValue,
             address: postBasicData.address ?? "",
             lat: latitude,
             long: longitude,
@@ -756,12 +707,5 @@ extension PostViewController: ItemsCellDelegate {
         default:
             break
         }
-    }
-}
-
-extension Double {
-    public func roundedTo(places: Int) -> Double {
-        let divisor = pow(10.0, Double(places))
-        return (self * divisor).rounded()
     }
 }
