@@ -38,7 +38,7 @@ enum Weekday: CaseIterable {
 extension Date {
     func getDaysInWeek(days: Int) -> [DateComponents] {
         var dates: [DateComponents] = []
-        for day in 0...(days - 1) {
+        for day in 1...days {
             let date = Calendar.current.date(byAdding: .day, value: day, to: self)
             let dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: date!)
             dates.append(dateComponents)
