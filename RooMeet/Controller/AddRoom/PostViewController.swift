@@ -159,20 +159,29 @@ class PostViewController: UIViewController {
     }
 
     @IBAction func submitAction(_ sender: Any) {
+        var alert = false
         guard let postBasicData = postBasicData else {
             showAlert()
             return
         }
-
+        
         if postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
             roomSpecList.isEmpty {
             showAlert()
         } else {
-            if roomImages.isEmpty {
-                room?.roomImages = []
-                saveData()
-            } else {
-                uploadImages(images: roomImages)
+            roomSpecList.forEach { roomSpec in
+                if roomSpec.price == nil || roomSpec.space == nil {
+                    alert = true
+                    showAlert(message: PostVCString.roomSpecAlertMessage.rawValue)
+                }
+            }
+            if alert == false {
+                if roomImages.isEmpty {
+                    room?.roomImages = []
+                    saveData()
+                } else {
+                    uploadImages(images: roomImages)
+                }
             }
         }
     }
@@ -210,10 +219,10 @@ class PostViewController: UIViewController {
         present(alertController, animated: true)
     }
 
-    private func showAlert() {
+    private func showAlert(message: String = PostVCString.addMessage.rawValue) {
         let alertController = UIAlertController(
             title: PostVCString.add.rawValue,
-            message: PostVCString.addMessage.rawValue,
+            message: message,
             preferredStyle: .alert
         )
         let alertAction = UIAlertAction(title: PostVCString.confirm.rawValue, style: .default)

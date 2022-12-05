@@ -107,6 +107,7 @@ enum PostVCString: String {
     case delete = "刪除貼文"
     case add = "新增貼文"
     case addMessage = "標題、地區與最快可搬入時間為必填欄位"
+    case roomSpecAlertMessage = "月租金與坪數為必填欄位"
     case deleteMessage = "確定要刪除貼文嗎？"
     case confirm = "好的"
     case deleteActionTitle = "確定刪除"
