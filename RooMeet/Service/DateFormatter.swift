@@ -32,7 +32,11 @@ class RMDateFormatter {
         return formatter.string(from: timeInterval)
     }
 
-    let dateFormatter = DateFormatter()
+    let dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "zh_tw")
+        return dateFormatter
+    }()
 
     func datetimeString(date: Date) -> String {
         dateFormatter.dateFormat = "YY/MM/dd HH:mm"
@@ -61,13 +65,15 @@ class RMDateFormatter {
     }
 
     func genMessageTimeString(messageTime: Timestamp) -> String {
-        let dateComponents = Calendar.current.dateComponents(in: TimeZone.current, from: messageTime.dateValue())
-        let messageTime = Date(timeIntervalSince1970: TimeInterval(messageTime.seconds))
         let currentTime = Date()
-        let timeDiff = currentTime.timeIntervalSince(messageTime)
+
+        let messageTimeComponents = Calendar.current.dateComponents(in: TimeZone.current, from: messageTime.dateValue())
+        let messageTime = Date(timeIntervalSince1970: TimeInterval(messageTime.seconds))
+
+        let diffDays = Calendar.current.dateComponents([.day], from: currentTime, to: messageTime)
 
         // 昨天
-        let lastDateTime = currentTime.addingTimeInterval(-(24*60*60))
+        let lastDateTime = currentTime.addingTimeInterval(-(24 * 60 * 60))
 
         let messageDateString = dateString(date: messageTime)
         let currentDateString = dateString(date: currentTime)
@@ -80,9 +86,13 @@ class RMDateFormatter {
         } else if messageDateString == lastDateString {
             return RMConstants.shared.yesterday
         }
-        let days = Int(timeDiff / 3600 / 24)
-        if days < 7 && days > 1 {
-            return RMWeekday.allCases[dateComponents.weekday!].descZhTw
+        let days = abs(diffDays.day ?? 0)
+        if days < 7 && days >= 1 {
+            guard let weekday = messageTimeComponents.weekday else {
+                return messageDateString
+            }
+
+            return RMWeekday.allCases[weekday - 1].descZhTw
         }
         return messageDateString
     }

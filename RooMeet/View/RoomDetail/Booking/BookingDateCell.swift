@@ -112,7 +112,7 @@ class BookingDateCell: UICollectionViewCell {
 
     @IBOutlet weak var weekdayLabel: UILabel! {
         didSet {
-            weekdayLabel.font = UIFont.regular(size: RMConstants.shared.textFontSize)
+            weekdayLabel.font = UIFont.regularSmallText()
             weekdayLabel.textColor = unselectedColor
         }
     }
