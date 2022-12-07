@@ -153,19 +153,19 @@ struct FeeDetail: Codable, Hashable {
 }
 
 enum AffordType: String, Hashable, CaseIterable {
-    case seperate = "separate"
+    case separate = "separate"
     case share = "share"
 
     var description: String {
         switch self {
-        case .seperate: return "獨立支付"
+        case .separate: return "獨立支付"
         case .share: return "費用均分"
         }
     }
 
     var index: Int {
         switch self {
-        case .seperate: return 0
+        case .separate: return 0
         case .share: return 1
         }
     }
@@ -222,7 +222,7 @@ enum BillType: CaseIterable {
         }
     }
 
-    var seperateString: String {
+    var separateString: String {
         switch self {
         case .water, .cable, .internet, .management:
             return "個別支付"

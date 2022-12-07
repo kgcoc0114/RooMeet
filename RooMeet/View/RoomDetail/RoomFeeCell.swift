@@ -57,7 +57,7 @@ class RoomFeeCell: UICollectionViewCell {
             }
         }
 
-        let separateString = data.affordType == "separate" ? billType.seperateString : "總費用均分"
+        let separateString = data.affordType == "separate" ? billType.separateString : "總費用均分"
 
         affordTypeLabel.text = separateString
     }
