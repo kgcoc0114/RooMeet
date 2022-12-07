@@ -152,7 +152,7 @@ class FeeInfoCell: UITableViewCell {
 
         if let data = data {
             feeDetail = data
-            segmentControl.selectedIndex = AffordType(rawValue: feeDetail.affordType ?? "sperate")!.index
+            segmentControl.selectedIndex = AffordType(rawValue: feeDetail.affordType ?? "separate")!.index
 
             if let fee = feeDetail.fee,
                 fee != 0 {
@@ -164,12 +164,12 @@ class FeeInfoCell: UITableViewCell {
     @IBAction func tapGovTypeButton(_ sender: Any) {
         govTypeButton.isSelected.toggle()
         feeDetail.isGov = govTypeButton.isSelected
-        feeDetail.affordType = segmentControl.selectedIndex == 0 ? "sperate" : "share"
+        feeDetail.affordType = segmentControl.selectedIndex == 0 ? "separate" : "share"
         delegate?.passData(self)
     }
 
     @objc func segmentValueChanged(_ sender: RMSegmentedControl) {
-        feeDetail.affordType = sender.selectedIndex == 0 ? "sperate" : "share"
+        feeDetail.affordType = sender.selectedIndex == 0 ? "separate" : "share"
         delegate?.passData(self)
     }
 }
@@ -181,7 +181,7 @@ extension FeeInfoCell: UITextFieldDelegate {
         } else {
             feeDetail.fee = nil
         }
-        feeDetail.affordType = segmentControl.selectedIndex == 0 ? "sperate" : "share"
+        feeDetail.affordType = segmentControl.selectedIndex == 0 ? "separate" : "share"
         delegate?.passData(self)
     }
 }

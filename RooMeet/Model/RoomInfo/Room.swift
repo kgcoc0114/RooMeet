@@ -139,7 +139,7 @@ struct FeeDetail: Codable, Hashable {
     var paid: Bool? = false
     var fee: Double?
     var isGov: Bool?
-    var affordType: String = "sperate"
+    var affordType: String = "separate"
 
     var description: String {
         if paid == false {
@@ -153,19 +153,19 @@ struct FeeDetail: Codable, Hashable {
 }
 
 enum AffordType: String, Hashable, CaseIterable {
-    case sperate = "sperate"
+    case seperate = "separate"
     case share = "share"
 
     var description: String {
         switch self {
-        case .sperate: return "獨立支付"
+        case .seperate: return "獨立支付"
         case .share: return "費用均分"
         }
     }
 
     var index: Int {
         switch self {
-        case .sperate: return 0
+        case .seperate: return 0
         case .share: return 1
         }
     }
@@ -222,7 +222,7 @@ enum BillType: CaseIterable {
         }
     }
 
-    var sperateString: String {
+    var seperateString: String {
         switch self {
         case .water, .cable, .internet, .management:
             return "個別支付"
