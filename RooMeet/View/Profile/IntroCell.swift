@@ -14,7 +14,6 @@ protocol IntroCellDelegate: AnyObject {
 }
 
 class IntroCell: UICollectionViewCell {
-    static let identifier = "IntroCell"
 
     @IBOutlet weak var imageButton: UIButton! {
         didSet {
@@ -152,57 +151,19 @@ class IntroCell: UICollectionViewCell {
         introTextView.delegate = self
     }
 
-    func configureCell(edit: Bool = true, data: User) {
-        self.user = data
-        // default value
-        if edit {
-            guard let user = self.user else {
-                return
-            }
-
-            nameTextField.text = user.name
-
-            if let birthday = user.birthday {
-                birthdayTextField.text = RMDateFormatter.shared.dateString(date: birthday)
-            } else {
-                birthdayTextField.text = ""
-            }
-
-            if let gender = user.gender {
-                genderSegmentedControl.selectedIndex = gender
-            } else {
-                genderSegmentedControl.selectedIndex = 0
-            }
-
-            if let profilePhoto = user.profilePhoto {
-                imageView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
-            } else {
-                imageView.image = UIImage.asset(.roomeet)
-            }
-
-            if let favoriteCounty = user.favoriteCounty,
-                let favoriteTown = user.favoriteTown {
-                regionTextField.text = "\(favoriteCounty)\(favoriteTown)"
-            }
-
-            if let introduction = user.introduction {
-                introTextView.text = "\(introduction)"
-            }
-
-            guard let rules = user.rules else {
-                return
-            }
-
-            self.rules = rules
-        } else {
-            self.user?.gender = genderSegmentedControl.selectedIndex
-            introTextView.text = ""
-        }
+    func configureCell(introScenario: IntroScenario) {
+        self.user = introScenario.user
+        nameTextField.text = introScenario.name
+        birthdayTextField.text = introScenario.birthdayString
+        genderSegmentedControl.selectedIndex = introScenario.gender
+        imageView.loadImage(introScenario.profilePhoto, placeHolder: UIImage.asset(.roomeet))
+        regionTextField.text = introScenario.regionString
+        introTextView.text = introScenario.introduction
+        rules = introScenario.rules
     }
 
     @objc func textFieldDone(_ sender: UIBarButtonItem) {
         self.endEditing(true)
-
         guard let user = user else { return }
         delegate?.passData(cell: self, data: user)
     }
@@ -249,7 +210,6 @@ extension IntroCell: UITextFieldDelegate {
 
     func textFieldDidEndEditing(_ textField: UITextField) {
         user?.name = nameTextField.text ?? ""
-
         guard let user = user else { return }
         delegate?.passData(cell: self, data: user)
     }
@@ -258,7 +218,6 @@ extension IntroCell: UITextFieldDelegate {
 extension IntroCell: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         user?.introduction = textView.text
-
         guard let user = user else { return }
         delegate?.passData(cell: self, data: user)
     }

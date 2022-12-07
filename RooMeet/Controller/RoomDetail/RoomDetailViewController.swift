@@ -77,6 +77,8 @@ class RoomDetailViewController: UIViewController {
         case reservationDays(DateComponents)
         case reservationPeriod(Room)
         case map(Room)
+
+//        var container:
     }
 
     typealias DetailDataSource = UICollectionViewDiffableDataSource<Section, Item>

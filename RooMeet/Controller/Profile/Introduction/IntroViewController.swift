@@ -38,7 +38,7 @@ class IntroViewController: UIViewController {
 
     let imagePickerController = UIImagePickerController()
 
-    var user: User?
+    var user: User
 
     var rules: [String] = RMConstants.shared.roomHighLights
         + RMConstants.shared.roomCookingRules
@@ -59,9 +59,9 @@ class IntroViewController: UIViewController {
     private var dataSource: IntroDataSource!
 
     init(entryType: EntryType, user: User? = nil) {
+        self.user = user ?? User(id: UserDefaults.id)
         super.init(nibName: "IntroViewController", bundle: nil)
         self.entryType = entryType
-        self.user = user ?? User(id: UserDefaults.id)
     }
 
     required init?(coder: NSCoder) {
@@ -72,7 +72,7 @@ class IntroViewController: UIViewController {
         super.viewDidLoad()
         configureCollectionView()
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) {[weak self] user, _ in
-            guard let self = self else { return }
+            guard let self = self, let user = user else { return }
             self.user = user
         }
         dismissButton.isHidden = entryType == .new
@@ -91,19 +91,15 @@ class IntroViewController: UIViewController {
     }
 
     private func configureCollectionView() {
-        collectionView.register(
-            UINib(nibName: "IntroCell", bundle: nil),
-            forCellWithReuseIdentifier: IntroCell.identifier)
-        collectionView.register(
-            UINib(nibName: "ItemsCell", bundle: nil),
-            forCellWithReuseIdentifier: ItemsCell.reuseIdentifier)
+        collectionView.registerCellWithNib(reuseIdentifier: IntroCell.reuseIdentifier, bundle: nil)
+        collectionView.registerCellWithNib(reuseIdentifier: ItemsCell.reuseIdentifier, bundle: nil)
 
         dataSource = IntroDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
             guard let self = self else { return UICollectionViewCell() }
             switch item {
             case .main(let data):
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: IntroCell.identifier,
+                    withReuseIdentifier: IntroCell.reuseIdentifier,
                     for: indexPath) as? IntroCell else {
                     return UICollectionViewCell()
                 }
@@ -117,7 +113,11 @@ class IntroViewController: UIViewController {
                 }
 
                 let edit = self.entryType == .edit && self.user != nil
-                cell.configureCell(edit: edit, data: data)
+                var introScenario: IntroScenario = IntroScenario.create(user: self.user)
+                if edit {
+                    introScenario = IntroScenario.edit(user: self.user)
+                }
+                cell.configureCell(introScenario: introScenario)
                 return cell
             case .rules:
                 guard let cell = collectionView.dequeueReusableCell(
@@ -133,7 +133,7 @@ class IntroViewController: UIViewController {
                 cell.configureTagView(
                     ruleType: "要求",
                     tags: self.rules,
-                    selectedTags: self.user?.rules ?? [],
+                    selectedTags: self.user.rules ?? [],
                     mainColor: UIColor.mainColor,
                     lightColor: UIColor.mainLightColor,
                     mainLightBackgroundColor: UIColor.mainBackgroundColor,
@@ -149,7 +149,7 @@ class IntroViewController: UIViewController {
 
     private func fetchUser() {
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
-            guard let self = self else { return }
+            guard let self = self, let user = user  else { return }
             self.user = user
         }
     }
@@ -233,7 +233,7 @@ extension IntroViewController {
 // MARK: - Snapshot
 extension IntroViewController {
     private func updateDataSource() {
-        guard let user = user else { return }
+//        guard let user = user else { return }
         var newSnapshot = IntroSnapshot()
         newSnapshot.appendSections([.main, .rules])
         newSnapshot.appendItems([.main(user)], toSection: .main)
@@ -255,8 +255,8 @@ extension IntroViewController: IntroCellDelegate {
         regionPickerVC.completion = { [self] county, town in
             cell.county = county
             cell.town = town
-            self.user?.favoriteCounty = county
-            self.user?.favoriteTown = town
+            self.user.favoriteCounty = county
+            self.user.favoriteTown = town
         }
         present(regionPickerVC, animated: false)
     }
@@ -348,7 +348,7 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
 
 
     private func saveData(url: URL?) {
-        guard var user = user else { return }
+//        guard var user = user else { return }
 
         let userRef = FirestoreEndpoint.user.colRef.document(user.id)
 
@@ -422,6 +422,6 @@ extension UIViewController {
 
 extension IntroViewController: ItemsCellDelegate {
     func itemsCell(cell: ItemsCell, selectedTags: [String]) {
-        user?.rules = selectedTags
+        user.rules = selectedTags
     }
 }

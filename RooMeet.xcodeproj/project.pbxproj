@@ -135,6 +135,7 @@
 		E5C5FE8B2910EF9E00DA91DF /* FeeDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C5FE892910EF9E00DA91DF /* FeeDetailCell.xib */; };
 		E5C95488293E40B400FCB655 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C95487293E40B400FCB655 /* Double+Extension.swift */; };
 		E5C9548C293E414E00FCB655 /* PostSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C9548B293E414E00FCB655 /* PostSection.swift */; };
+		E5C954902940993B00FCB655 /* IntroScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C9548F2940993B00FCB655 /* IntroScenario.swift */; };
 		E5D76CFB291D0BA90074DFD7 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D76CF9291D0BA90074DFD7 /* FavoritesViewController.swift */; };
 		E5D76CFC291D0BA90074DFD7 /* FavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D76CFA291D0BA90074DFD7 /* FavoritesViewController.xib */; };
 		E5D76D03291D21900074DFD7 /* ProfileRSVNViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D76D01291D21900074DFD7 /* ProfileRSVNViewController.swift */; };
@@ -332,6 +333,7 @@
 		E5C5FE892910EF9E00DA91DF /* FeeDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeeDetailCell.xib; sourceTree = "<group>"; };
 		E5C95487293E40B400FCB655 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
 		E5C9548B293E414E00FCB655 /* PostSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSection.swift; sourceTree = "<group>"; };
+		E5C9548F2940993B00FCB655 /* IntroScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroScenario.swift; sourceTree = "<group>"; };
 		E5D76CF9291D0BA90074DFD7 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		E5D76CFA291D0BA90074DFD7 /* FavoritesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoritesViewController.xib; sourceTree = "<group>"; };
 		E5D76D01291D21900074DFD7 /* ProfileRSVNViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRSVNViewController.swift; sourceTree = "<group>"; };
@@ -458,6 +460,7 @@
 				E5B984C9291BD3E4006DD8D7 /* Reservation.swift */,
 				E539D23C292DFD84007D50FD /* ReportEvent.swift */,
 				E57918ED2938887900427F83 /* Furniture.swift */,
+				E5C9548F2940993B00FCB655 /* IntroScenario.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1385,6 +1388,7 @@
 				E5E1435B293469C600465B65 /* FirebasePostService.swift in Sources */,
 				E507B0CC292484FF002E501E /* AuthService.swift in Sources */,
 				E5DEFDA5291FC9550064E2C8 /* RoomDetailHeaderView.swift in Sources */,
+				E5C954902940993B00FCB655 /* IntroScenario.swift in Sources */,
 				E5B984C5291B905F006DD8D7 /* DateCell.swift in Sources */,
 				E5E14359293396C100465B65 /* FirebaseUserService.swift in Sources */,
 				E539D249292F5869007D50FD /* SwiftJWTWrapper.swift in Sources */,
