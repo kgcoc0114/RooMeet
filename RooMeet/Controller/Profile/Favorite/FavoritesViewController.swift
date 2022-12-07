@@ -12,11 +12,6 @@ class FavoritesViewController: UIViewController {
         case main
     }
 
-    enum EntryPage {
-        case fav
-        case ownPost
-    }
-
     typealias FavoriteDataSource = UICollectionViewDiffableDataSource<Section, Room>
     typealias FavoriteSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
     private var dataSource: FavoriteDataSource!
@@ -39,6 +34,8 @@ class FavoritesViewController: UIViewController {
 
     var entryPage: EntryPage = .fav
 
+    var shouldUpdate = false
+
     @IBOutlet weak var noneLabel: UILabel! {
         didSet {
             noneLabel.font = UIFont.regularSubTitle()
@@ -55,7 +52,6 @@ class FavoritesViewController: UIViewController {
             goHomeButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
             goHomeButton.titleLabel?.font = UIFont.regularText()
             goHomeButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
-
         }
     }
 
@@ -69,9 +65,9 @@ class FavoritesViewController: UIViewController {
             target: self,
             action: #selector(backAction))
 
-        navigationItem.title = entryPage == .fav ? "Favorites" : "My Post"
-        noneLabel.text = entryPage == .fav ? "按下愛心加入我的最愛" : "還沒有貼文唷！可到首頁新增房源找室友！"
-        goHomeButton.setTitle(entryPage == .fav ? "去逛逛" : "新增房源", for: .normal)
+        navigationItem.title = entryPage.title
+        noneLabel.text = entryPage.noneLabelString
+        goHomeButton.setTitle(entryPage.goHomeButtonTitle, for: .normal)
 
         collectionView.delegate = self
 
@@ -93,10 +89,15 @@ class FavoritesViewController: UIViewController {
         fetchRooms()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if shouldUpdate {
+            FirebaseService.shared.updateUserFavoriteRoomsData(favoriteRooms: favoriteRooms)
+        }
+    }
+
     private func configureCollectionView() {
-        collectionView.register(
-            UINib(nibName: "RoomDisplayCell", bundle: nil),
-            forCellWithReuseIdentifier: RoomDisplayCell.identifier)
+        collectionView.registerCellWithNib(reuseIdentifier: RoomDisplayCell.identifier, bundle: nil)
 
         dataSource = FavoriteDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, room in
             guard
@@ -210,9 +211,11 @@ extension FavoritesViewController: RoomDisplayCellDelegate {
         guard let indexPath = collectionView.indexPath(for: cell) else {
             return
         }
-        let updateFavRooms = favoriteRooms.filter { $0.roomID != rooms[indexPath.item].roomID }
-        let updateRooms = rooms.filter { $0.roomID != rooms[indexPath.item].roomID }
-        rooms = updateRooms
-        FirebaseService.shared.updateUserFavoriteRoomsData(favoriteRooms: updateFavRooms)
+
+        shouldUpdate = true
+
+        favoriteRooms = favoriteRooms.filter { $0.roomID != rooms[indexPath.item].roomID }
+
+        rooms = rooms.filter { $0.roomID != rooms[indexPath.item].roomID }
     }
 }

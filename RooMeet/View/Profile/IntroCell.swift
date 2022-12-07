@@ -47,40 +47,15 @@ class IntroCell: UICollectionViewCell {
         }
     }
 
-    @IBOutlet weak var nameLabel: UILabel! {
-        didSet {
-            nameLabel.textColor = .mainDarkColor
-            nameLabel.font = .regularSubTitle()
-        }
-    }
+    @IBOutlet weak var nameLabel: UILabel!
 
-    @IBOutlet weak var genderLabel: UILabel! {
-        didSet {
-            genderLabel.textColor = .mainDarkColor
-            genderLabel.font = .regularSubTitle()
-        }
-    }
+    @IBOutlet weak var genderLabel: UILabel!
 
-    @IBOutlet weak var birthLabel: UILabel! {
-        didSet {
-            birthLabel.textColor = .mainDarkColor
-            birthLabel.font = .regularSubTitle()
-        }
-    }
+    @IBOutlet weak var birthLabel: UILabel!
 
-    @IBOutlet weak var areaLabel: UILabel! {
-        didSet {
-            areaLabel.textColor = .mainDarkColor
-            areaLabel.font = .regularSubTitle()
-        }
-    }
+    @IBOutlet weak var areaLabel: UILabel!
 
-    @IBOutlet weak var introLabel: UILabel! {
-        didSet {
-            introLabel.textColor = .mainDarkColor
-            introLabel.font = .regularSubTitle()
-        }
-    }
+    @IBOutlet weak var introLabel: UILabel!
 
     @IBOutlet weak var regionTextField: RMBaseTextField!
     @IBOutlet weak var birthdayTextField: RMBaseTextField! {
@@ -154,20 +129,32 @@ class IntroCell: UICollectionViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        nameTextField.delegate = self
-        birthdayTextField.delegate = self
-        regionTextField.delegate = self
-        introTextView.delegate = self
+        setupUI()
     }
 
     override func layoutSubviews() {
         imageButton.layer.cornerRadius = imageButton.bounds.width / 2
     }
 
+    private func setupUI() {
+        [nameLabel, genderLabel, birthLabel, areaLabel, introLabel].forEach { label in
+            guard let label = label else { return }
+            label.textColor = .mainDarkColor
+            label.font = .regularSubTitle()
+        }
+
+        // set delegate
+        [nameTextField, birthdayTextField, regionTextField].forEach { textField in
+            guard let textField = textField else { return }
+            textField.delegate = self
+        }
+
+        introTextView.delegate = self
+    }
+
     func configureCell(edit: Bool = true, data: User) {
         self.user = data
         // default value
-        self.user?.gender = genderSegmentedControl.selectedIndex
         if edit {
             guard let user = self.user else {
                 return
@@ -183,6 +170,8 @@ class IntroCell: UICollectionViewCell {
 
             if let gender = user.gender {
                 genderSegmentedControl.selectedIndex = gender
+            } else {
+                genderSegmentedControl.selectedIndex = 0
             }
 
             if let profilePhoto = user.profilePhoto {
@@ -206,6 +195,7 @@ class IntroCell: UICollectionViewCell {
 
             self.rules = rules
         } else {
+            self.user?.gender = genderSegmentedControl.selectedIndex
             introTextView.text = ""
         }
     }

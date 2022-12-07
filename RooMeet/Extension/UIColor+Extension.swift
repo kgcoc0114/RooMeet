@@ -8,19 +8,38 @@
 import Foundation
 import UIKit
 
+
+private enum RMColor: String {
+    case mainColor
+    case mainLightColor
+    case mainDarkColor
+    case mainDarkGrayColor
+    case mainBackgroundColor
+    case subTitleColor
+    case subTitleOrangeColor
+    case subTitleRedColor
+    case subTitleRedBGColor
+    case subColor
+    case msgBackgroundColor
+}
+
 extension UIColor {
-    static let messageOUColor = UIColor.white
-    static let mainColor = UIColor(named: "mainColor") ?? UIColor.darkGray
-    static let mainLightColor = UIColor(named: "mainLightColor") ?? UIColor.darkGray
-    static let mainBackgroundColor = UIColor(named: "mainBackgroundColor") ?? UIColor.darkGray
-    static let subTitleColor = UIColor(named: "subTitleColor") ?? UIColor.darkGray
-    static let subColor = UIColor(named: "subColor") ?? UIColor.darkGray
-    static let mainDarkColor = UIColor(named: "mainDarkColor") ?? UIColor.darkGray
-    static let msgBackgroundColor = UIColor(named: "msgBackgroundColor") ?? UIColor.darkGray
-    static let subTitleOrangeColor = UIColor(named: "subTitleOrangeColor") ?? UIColor.darkGray
-    static let subTitleRedColor = UIColor(named: "subTitleRedColor") ?? UIColor.darkGray
-    static let subTitleRedBGColor = UIColor(named: "subTitleRedBGColor") ?? UIColor.darkGray
-    static let mainDarkGrayColor = UIColor(named: "mainDarkGrayColor") ?? UIColor.darkGray
+    static let mainColor = RMColor(.mainColor)
+    static let mainLightColor = RMColor(.mainLightColor)
+    static let mainBackgroundColor = RMColor(.mainBackgroundColor)
+    static let subTitleColor = RMColor(.subTitleColor)
+    static let subColor = RMColor(.subColor)
+    static let mainDarkColor = RMColor(.mainDarkColor)
+    static let msgBackgroundColor = RMColor(.msgBackgroundColor)
+    static let subTitleOrangeColor = RMColor(.subTitleOrangeColor)
+    static let subTitleRedColor = RMColor(.subTitleRedColor)
+    static let subTitleRedBGColor = RMColor(.subTitleRedBGColor)
+    static let mainDarkGrayColor = RMColor(.mainDarkGrayColor)
+
+    private static func RMColor(_ color: RMColor) -> UIColor {
+        guard let color = UIColor(named: color.rawValue) else { return .darkGray}
+        return color
+    }
 
     static func hexColor(hex: String) -> UIColor {
         if hex[hex.startIndex] == "#" && hex.count == 7 {

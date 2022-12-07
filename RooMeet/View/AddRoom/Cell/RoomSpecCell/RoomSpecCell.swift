@@ -18,7 +18,7 @@ class RoomSpecCell: UICollectionViewCell {
         didSet {
             typeSegmentControl.backgroundColor = UIColor.hexColor(hex: "#E9EEEE")
             typeSegmentControl.selectedSegmentTintColor = .white
-            typeSegmentControl.tintColor = RMConstants.shared.mainColor
+            typeSegmentControl.tintColor = .mainDarkColor
         }
     }
 

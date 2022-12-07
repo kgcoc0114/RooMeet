@@ -133,12 +133,12 @@
 		E5C5FE872910CB8000DA91DF /* FeeInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C5FE852910CB8000DA91DF /* FeeInfoCell.xib */; };
 		E5C5FE8A2910EF9E00DA91DF /* FeeDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C5FE882910EF9E00DA91DF /* FeeDetailCell.swift */; };
 		E5C5FE8B2910EF9E00DA91DF /* FeeDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5C5FE892910EF9E00DA91DF /* FeeDetailCell.xib */; };
+		E5C95488293E40B400FCB655 /* Double+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C95487293E40B400FCB655 /* Double+Extension.swift */; };
+		E5C9548C293E414E00FCB655 /* PostSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C9548B293E414E00FCB655 /* PostSection.swift */; };
 		E5D76CFB291D0BA90074DFD7 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D76CF9291D0BA90074DFD7 /* FavoritesViewController.swift */; };
 		E5D76CFC291D0BA90074DFD7 /* FavoritesViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D76CFA291D0BA90074DFD7 /* FavoritesViewController.xib */; };
 		E5D76D03291D21900074DFD7 /* ProfileRSVNViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D76D01291D21900074DFD7 /* ProfileRSVNViewController.swift */; };
 		E5D76D04291D21900074DFD7 /* ProfileRSVNViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D76D02291D21900074DFD7 /* ProfileRSVNViewController.xib */; };
-		E5D9BF75291DFBE700F416E6 /* TagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BF73291DFBE700F416E6 /* TagCell.swift */; };
-		E5D9BF76291DFBE700F416E6 /* TagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D9BF74291DFBE700F416E6 /* TagCell.xib */; };
 		E5D9BF78291E26AA00F416E6 /* RMConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9BF77291E26AA00F416E6 /* RMConstants.swift */; };
 		E5D9C041291E4E3100F416E6 /* CUImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9C03F291E4E3100F416E6 /* CUImageCell.swift */; };
 		E5D9C042291E4E3100F416E6 /* CUImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D9C040291E4E3100F416E6 /* CUImageCell.xib */; };
@@ -208,7 +208,7 @@
 		E507B0C82923DE50002E501E /* RMSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSegmentedControl.swift; sourceTree = "<group>"; };
 		E507B0CA2924848F002E501E /* RooMeet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RooMeet.entitlements; sourceTree = "<group>"; };
 		E507B0CB292484FF002E501E /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
-		E507B0CD292487A4002E501E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = Home/LoginViewController.swift; sourceTree = "<group>"; };
+		E507B0CD292487A4002E501E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E507B0D529253968002E501E /* Region.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Region.json; sourceTree = "<group>"; };
 		E507B0D729260FAB002E501E /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
 		E507B0D929263075002E501E /* UserDefaultValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultValue.swift; sourceTree = "<group>"; };
@@ -330,12 +330,12 @@
 		E5C5FE852910CB8000DA91DF /* FeeInfoCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeeInfoCell.xib; sourceTree = "<group>"; };
 		E5C5FE882910EF9E00DA91DF /* FeeDetailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeDetailCell.swift; sourceTree = "<group>"; };
 		E5C5FE892910EF9E00DA91DF /* FeeDetailCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FeeDetailCell.xib; sourceTree = "<group>"; };
+		E5C95487293E40B400FCB655 /* Double+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extension.swift"; sourceTree = "<group>"; };
+		E5C9548B293E414E00FCB655 /* PostSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSection.swift; sourceTree = "<group>"; };
 		E5D76CF9291D0BA90074DFD7 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
 		E5D76CFA291D0BA90074DFD7 /* FavoritesViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FavoritesViewController.xib; sourceTree = "<group>"; };
 		E5D76D01291D21900074DFD7 /* ProfileRSVNViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRSVNViewController.swift; sourceTree = "<group>"; };
 		E5D76D02291D21900074DFD7 /* ProfileRSVNViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProfileRSVNViewController.xib; sourceTree = "<group>"; };
-		E5D9BF73291DFBE700F416E6 /* TagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCell.swift; sourceTree = "<group>"; };
-		E5D9BF74291DFBE700F416E6 /* TagCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TagCell.xib; sourceTree = "<group>"; };
 		E5D9BF77291E26AA00F416E6 /* RMConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMConstants.swift; sourceTree = "<group>"; };
 		E5D9C03F291E4E3100F416E6 /* CUImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUImageCell.swift; sourceTree = "<group>"; };
 		E5D9C040291E4E3100F416E6 /* CUImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUImageCell.xib; sourceTree = "<group>"; };
@@ -476,6 +476,7 @@
 		E55C095B290D4F5800DBF21B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E5C95489293E412E00FCB655 /* AddRoomPost */,
 				E5604FE62918F028007AE655 /* WebRTC */,
 				E5EEE2112913B00400CAAE84 /* User */,
 				E5EEE20E2913AFA300CAAE84 /* Chat */,
@@ -486,25 +487,16 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		E55C0961290D5BB700DBF21B /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		E55C0962290D5BF600DBF21B /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E5E64C75290D6E3100F07286 /* RMTabBarController.swift */,
-				E560135C29277A7100EE0083 /* RMButtomSheetViewController.swift */,
-				E5119BAA292081F100A632C9 /* RMNavigationController.swift */,
+				E5C95485293E35B700FCB655 /* AddRoom */,
+				E5C95486293E364C00FCB655 /* Base */,
 				E5872941291D000B00C12E9E /* Explore */,
 				E587293F291CFFE900C12E9E /* RoomDetail */,
 				E5872940291CFFFB00C12E9E /* Home */,
 				E587293E291CFFB600C12E9E /* Chat */,
 				E587293D291CFFA800C12E9E /* Profile */,
-				E507B0CD292487A4002E501E /* LoginViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -595,8 +587,6 @@
 				E5872935291CF32D00C12E9E /* ProfileCell.swift */,
 				E5872942291D022000C12E9E /* IntroCell.swift */,
 				E5872943291D022000C12E9E /* IntroCell.xib */,
-				E5D9BF73291DFBE700F416E6 /* TagCell.swift */,
-				E5D9BF74291DFBE700F416E6 /* TagCell.xib */,
 				E560134E29271DC500EE0083 /* ProfileItemCell.swift */,
 				E560134F29271DC500EE0083 /* ProfileItemCell.xib */,
 				E539D238292DF1CC007D50FD /* BlockCell.swift */,
@@ -651,6 +641,7 @@
 		E5872940291CFFFB00C12E9E /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				E507B0CD292487A4002E501E /* LoginViewController.swift */,
 				E5B018DC29175B7100A09788 /* FilterViewController.swift */,
 				E5604F7129178B1F007AE655 /* HomeViewController.swift */,
 			);
@@ -720,7 +711,6 @@
 		E5B3376B290F639F00467404 /* AddRoom */ = {
 			isa = PBXGroup;
 			children = (
-				E5B33770290F65D800467404 /* PostViewController.swift */,
 				E5B33771290F65D800467404 /* PostViewController.xib */,
 				E5DC0FEE29120D1400EB57FD /* EditFee */,
 				E5E64C8F290E3B9300F07286 /* RegionPicker */,
@@ -756,17 +746,16 @@
 				E5DC0FE12911FF2700EB57FD /* Service */,
 				E5E64C94290E3E0C00F07286 /* Extension */,
 				E55C0970290D627000DBF21B /* Resource */,
-				E55C0962290D5BF600DBF21B /* Controller */,
-				E55C0961290D5BB700DBF21B /* ViewModel */,
 				E55C095B290D4F5800DBF21B /* Model */,
+				E55C0962290D5BF600DBF21B /* Controller */,
 				E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */,
 				E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */,
-				E5BDDB42290D0E2900F4A767 /* ViewController.swift */,
 				E5BDDB49290D0E2D00F4A767 /* LaunchScreen.storyboard */,
-				E5BDDB4C290D0E2D00F4A767 /* Info.plist */,
+				E5BDDB42290D0E2900F4A767 /* ViewController.swift */,
 				E5DEEEC72922814900A649C1 /* Regions.plist */,
 				E5ACE16A291BFA79006CCF1A /* GoogleService-Info.plist */,
 				E539D241292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 */,
+				E5BDDB4C290D0E2D00F4A767 /* Info.plist */,
 				E539D243292F503E007D50FD /* AppConfig.swift */,
 				E5A12A622910B8C4006907D9 /* NibLoadble.swift */,
 				E5BDDB44290D0E2900F4A767 /* Main.storyboard */,
@@ -777,6 +766,34 @@
 				E597817B29375E5400ED8903 /* Assets.xcassets */,
 			);
 			path = RooMeet;
+			sourceTree = "<group>";
+		};
+		E5C95485293E35B700FCB655 /* AddRoom */ = {
+			isa = PBXGroup;
+			children = (
+				E5601358292771D600EE0083 /* LocationPickerViewController.swift */,
+				E5A12A642910C7BF006907D9 /* EditFeeController.swift */,
+				E5B33770290F65D800467404 /* PostViewController.swift */,
+			);
+			path = AddRoom;
+			sourceTree = "<group>";
+		};
+		E5C95486293E364C00FCB655 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				E5E64C75290D6E3100F07286 /* RMTabBarController.swift */,
+				E560135C29277A7100EE0083 /* RMButtomSheetViewController.swift */,
+				E5119BAA292081F100A632C9 /* RMNavigationController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		E5C95489293E412E00FCB655 /* AddRoomPost */ = {
+			isa = PBXGroup;
+			children = (
+				E5C9548B293E414E00FCB655 /* PostSection.swift */,
+			);
+			path = AddRoomPost;
 			sourceTree = "<group>";
 		};
 		E5D76D09291D23B90074DFD7 /* Reservation */ = {
@@ -908,7 +925,6 @@
 		E5DC0FEE29120D1400EB57FD /* EditFee */ = {
 			isa = PBXGroup;
 			children = (
-				E5A12A642910C7BF006907D9 /* EditFeeController.swift */,
 				E5A12A652910C7BF006907D9 /* EditFeeController.xib */,
 				E5C5FE842910CB8000DA91DF /* FeeInfoCell.swift */,
 				E5C5FE852910CB8000DA91DF /* FeeInfoCell.xib */,
@@ -994,7 +1010,6 @@
 			children = (
 				E5E64C8B290E1AA700F07286 /* RegionPickerCell.swift */,
 				E5E64C8C290E1AA700F07286 /* RegionPickerCell.xib */,
-				E5601358292771D600EE0083 /* LocationPickerViewController.swift */,
 			);
 			path = RegionPicker;
 			sourceTree = "<group>";
@@ -1011,6 +1026,7 @@
 				E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */,
 				E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */,
 				E507B0D729260FAB002E501E /* UserDefaults+Extension.swift */,
+				E5C95487293E40B400FCB655 /* Double+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -1185,7 +1201,6 @@
 				E5B3376F290F64D800467404 /* RoomSpecCell.xib in Resources */,
 				E5C5FE8B2910EF9E00DA91DF /* FeeDetailCell.xib in Resources */,
 				E5DEFD9A291F5D810064E2C8 /* RoomFeeCell.xib in Resources */,
-				E5D9BF76291DFBE700F416E6 /* TagCell.xib in Resources */,
 				E5D76CFC291D0BA90074DFD7 /* FavoritesViewController.xib in Resources */,
 				E5E14354293266F400465B65 /* Roommates.json in Resources */,
 			);
@@ -1310,6 +1325,7 @@
 				E539D236292DF189007D50FD /* BlockViewController.swift in Sources */,
 				E539D244292F503E007D50FD /* AppConfig.swift in Sources */,
 				E539D24B292F962A007D50FD /* KeyChainService.swift in Sources */,
+				E5C9548C293E414E00FCB655 /* PostSection.swift in Sources */,
 				E5B018B82915F21E00A09788 /* CardView.swift in Sources */,
 				E507B0C72923BA03002E501E /* TagView.swift in Sources */,
 				E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */,
@@ -1334,6 +1350,7 @@
 				E57918DF29387FB100427F83 /* FurnitureListViewController.swift in Sources */,
 				E5B984CA291BD3E4006DD8D7 /* Reservation.swift in Sources */,
 				E5DEFD8D291F3AF60064E2C8 /* CUCallCell.swift in Sources */,
+				E5C95488293E40B400FCB655 /* Double+Extension.swift in Sources */,
 				E539D23A292DF1CD007D50FD /* BlockCell.swift in Sources */,
 				E560135029271DC500EE0083 /* ProfileItemCell.swift in Sources */,
 				E57918E32938809100427F83 /* FurnitureDisplayCell.swift in Sources */,
@@ -1375,7 +1392,6 @@
 				E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */,
 				E507B0DA29263076002E501E /* UserDefaultValue.swift in Sources */,
 				E5A12A632910B8C4006907D9 /* NibLoadble.swift in Sources */,
-				E5D9BF75291DFBE700F416E6 /* TagCell.swift in Sources */,
 				E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */,
 				E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */,
 				E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */,
