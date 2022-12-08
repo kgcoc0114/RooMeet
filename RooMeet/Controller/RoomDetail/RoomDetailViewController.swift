@@ -83,7 +83,7 @@ class RoomDetailViewController: UIViewController {
     typealias DetailSnapshot = NSDiffableDataSourceSnapshot<Section, Item>
     private var dataSource: DetailDataSource!
 
-    var room: Room?
+    var room: Room
     var user: User?
 
     var selectedPeriod: BookingPeriod?
@@ -150,10 +150,11 @@ class RoomDetailViewController: UIViewController {
     @IBOutlet weak var collectionView: UICollectionView!
 
     init(room: Room, user: User?) {
+        self.room = room
+
         super.init(nibName: "RoomDetailViewController", bundle: nil)
 
         self.user = user
-        self.room = room
     }
 
     required init?(coder: NSCoder) {
@@ -192,8 +193,7 @@ class RoomDetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if let room = room,
-            let userData = room.userData {
+        if let userData = room.userData {
             nameLabel.text = userData.name
             ageLabel.text = "\(userData.age)"
             genderImageView.image = Gender.allCases[userData.gender ?? 0].image
@@ -238,9 +238,7 @@ class RoomDetailViewController: UIViewController {
     }
 
     private func dealWithBillInfo() {
-        if
-            let room = room,
-            let billInfo = room.billInfo {
+        if let billInfo = room.billInfo {
             BillType.allCases.forEach { billType in
                 let feeDetail = billType.feeDetail(billInfo: billInfo)
 
@@ -278,38 +276,57 @@ class RoomDetailViewController: UIViewController {
         }
     }
 
+    enum ReservationError {
+        case lessData
+        case duplicate
+
+        var errorString: String {
+            switch self {
+            case .lessData:
+                return "請選擇預約時間"
+            case .duplicate:
+                return "已預約過此房源"
+            }
+        }
+    }
+
+    func canSendRequest() -> (ReservationError?) {
+        if selectedPeriod == nil || selectedDate == nil {
+            return ReservationError.lessData
+        }
+
+        guard let user = user else {
+            return nil
+        }
+
+        if user.reservations.contains(room.roomID!) {
+            return ReservationError.duplicate
+        }
+
+        return nil
+    }
+
     private func requestAction() {
         reservationButton.isEnabled = false
-        guard let room = room else { return }
 
-        guard
-            let selectedPeriod = selectedPeriod,
-            var selectedDate = selectedDate else {
-            RMProgressHUD.showFailure(text: "請選擇預約時間")
+        if let reservationError = canSendRequest() {
+            RMProgressHUD.showFailure(text: reservationError.errorString)
             reservationButton.isEnabled.toggle()
-            return
-        }
+        } else {
+            selectedDate?.hour = selectedPeriod?.hour
 
-        selectedDate.hour = selectedPeriod.hour
+            guard
+                let user = user,
+                let roomID = room.roomID,
+                let sDate = selectedDate?.date else {
+                reservationButton.isEnabled.toggle()
+                return
+            }
 
-        guard let sDate = selectedDate.date else {
-            print("ERROR: - Reservations Date got error.")
-            reservationButton.isEnabled.toggle()
-            return
-        }
-
-        guard
-            let user = user,
-            let roomID = room.roomID else {
-            reservationButton.isEnabled.toggle()
-            return
-        }
-
-        if !user.reservations.contains(roomID) {
             ReservationService.shared.upsertReservationData(
                 status: .waiting,
                 requestTime: sDate,
-                period: selectedPeriod.subDesc,
+                period: selectedPeriod?.subDesc,
                 room: room,
                 senderID: UserDefaults.id,
                 receiverID: room.userID,
@@ -317,18 +334,13 @@ class RoomDetailViewController: UIViewController {
             )
             self.user?.reservations.append(roomID)
             RMProgressHUD.showSuccess()
-        } else {
-            RMProgressHUD.showFailure(text: "已預約過此房源")
         }
+
         reservationButton.isEnabled = true
     }
 
     private func chatAction() {
         chatButton.isEnabled = false
-        guard let room = room else {
-            print("ERROR: - Room Detail got empty room.")
-            return
-        }
 
         FirebaseService.shared.getChatRoomByUserID(userA: UserDefaults.id, userB: room.userID) { [weak self] chatRoom in
             guard let self = self else { return }
@@ -354,7 +366,7 @@ class RoomDetailViewController: UIViewController {
             let reportPostAction = UIAlertAction(title: "檢舉貼文", style: .destructive) { [weak self] _ in
                 guard
                     let self = self,
-                    let roomID = self.room?.roomID
+                    let roomID = self.room.roomID
                 else { return }
 
                 let reportEvent = ReportEvent(reportUser: UserDefaults.id, type: "post", reportedID: roomID, createdTime: Timestamp())
@@ -421,7 +433,7 @@ extension RoomDetailViewController {
 
             case .basicInfo(let data):
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RoomBasicCell.identifier,
+                    withReuseIdentifier: RoomBasicCell.reuseIdentifier,
                     for: indexPath
                 ) as? RoomBasicCell else {
                     return UICollectionViewCell()
@@ -459,7 +471,7 @@ extension RoomDetailViewController {
                 return cell
             case .reservationPeriod(_):
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: BookingPeriodCell.identifier,
+                    withReuseIdentifier: BookingPeriodCell.reuseIdentifier,
                     for: indexPath
                 ) as? BookingPeriodCell else {
                     return UICollectionViewCell()
@@ -509,8 +521,7 @@ extension RoomDetailViewController {
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: ItemsCell.reuseIdentifier,
             for: indexPath
-        ) as? ItemsCell,
-            let room = room else {
+        ) as? ItemsCell else {
             return UICollectionViewCell() as! ItemsCell
         }
 
@@ -721,7 +732,6 @@ extension RoomDetailViewController: RoomBasicCellDelegate {
     func didClickedLike(_ cell: RoomBasicCell, like: Bool) {
         if AuthService.shared.isLogin() {
             if
-                let room = room,
                 let roomID = room.roomID {
                 if like {
                     let favoriteRoom = FavoriteRoom(roomID: roomID, createdTime: Timestamp())
@@ -748,9 +758,9 @@ extension RoomDetailViewController: RoomBasicCellDelegate {
 extension RoomDetailViewController {
     private func updateDataSource() {
         var newSnapshot = DetailSnapshot()
-        guard let room = room else {
-            return
-        }
+//        guard let room = room else {
+//            return
+//        }
         newSnapshot.appendSections(Section.allCases)
         newSnapshot.appendItems([.images(room)], toSection: .images)
         newSnapshot.appendItems([.pet(room)], toSection: .pet)

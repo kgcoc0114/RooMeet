@@ -160,30 +160,41 @@ class PostViewController: UIViewController {
 
     @IBAction func submitAction(_ sender: Any) {
         var alert = false
-        guard let postBasicData = postBasicData else {
+
+        guard canSave() == true else {
             showAlert()
             return
         }
-        
-        if postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
-            roomSpecList.isEmpty {
-            showAlert()
-        } else {
-            roomSpecList.forEach { roomSpec in
-                if roomSpec.price == nil || roomSpec.space == nil {
-                    alert = true
-                    showAlert(message: PostVCString.roomSpecAlertMessage.rawValue)
-                }
-            }
-            if alert == false {
-                if roomImages.isEmpty {
-                    room?.roomImages = []
-                    saveData()
-                } else {
-                    uploadImages(images: roomImages)
-                }
+
+        roomSpecList.forEach { roomSpec in
+            if roomSpec.price == nil || roomSpec.space == nil {
+                alert = true
+                showAlert(message: PostVCString.roomSpecAlertMessage.rawValue)
             }
         }
+
+        if !alert {
+            if roomImages.isEmpty {
+                room?.roomImages = []
+                saveData()
+            } else {
+                uploadImages(images: roomImages)
+            }
+        }
+    }
+
+    func canSave() -> Bool {
+        guard let postBasicData = postBasicData else {
+            return false
+        }
+
+        if postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
+            roomSpecList.isEmpty {
+            return false
+        }
+
+
+        return true
     }
 
     @objc private func deletePostAction() {
