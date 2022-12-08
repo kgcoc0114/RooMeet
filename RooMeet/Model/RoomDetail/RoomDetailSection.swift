@@ -11,8 +11,8 @@ import UIKit
 enum RoomDetailSection: CaseIterable {
     case images
     case basicInfo
-    case bookingDate
-    case bookingPeriod
+    case reservationDays
+    case reservationPeriod
     case map
     case highLight
     case gender
@@ -46,9 +46,9 @@ enum RoomDetailSection: CaseIterable {
             return "衛浴"
         case .feeDetail:
             return "費用明細"
-        case .bookingDate:
+        case .reservationDays:
             return "預約看房"
-        case .bookingPeriod:
+        case .reservationPeriod:
             return ""
         case .map:
             return "地圖"
@@ -108,7 +108,7 @@ enum RoomDetailSection: CaseIterable {
             let section = NSCollectionLayoutSection(group: group)
 
             return section
-        case .bookingDate:
+        case .reservationDays:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth((1 / CGFloat(RMConstants.shared.reservationDays))),
@@ -129,7 +129,7 @@ enum RoomDetailSection: CaseIterable {
             // SectionHeader
             section.boundarySupplementaryItems = [createSectionHeader()]
             return section
-        case .bookingPeriod:
+        case .reservationPeriod:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1.0),
@@ -193,8 +193,8 @@ enum RoomDetailItem: Hashable {
     case bathroom(Room)
     case features(Room)
     case feeDetail(RoomDetailFee)
-    case bookingDate(DateComponents)
-    case bookingPeriod(Room)
+    case reservationDays(DateComponents)
+    case reservationPeriod(Room)
     case map(Room)
 
 
@@ -204,9 +204,9 @@ enum RoomDetailItem: Hashable {
             return RoomImagesCell.reuseIdentifier
         case .basicInfo:
             return RoomBasicCell.reuseIdentifier
-        case .bookingDate:
+        case .reservationDays:
             return BookingDateCell.reuseIdentifier
-        case .bookingPeriod:
+        case .reservationPeriod:
             return BookingPeriodCell.reuseIdentifier
         case .map:
             return RoomMapCell.reuseIdentifier
@@ -221,11 +221,11 @@ enum RoomDetailItem: Hashable {
         switch self {
         case .feeDetail(let roomDetailFee):
             return FeeDetailContainer(roomDetailFee: roomDetailFee)
-        case .bookingDate(let dateComponents):
+        case .reservationDays(let dateComponents):
             return BookingContainer(bookingDate: dateComponents)
         case .images(let room),
             .basicInfo(let room),
-            .bookingPeriod(let room),
+            .reservationPeriod(let room),
             .map(let room):
             return RoomContainer(room: room)
         case .highLight(_),

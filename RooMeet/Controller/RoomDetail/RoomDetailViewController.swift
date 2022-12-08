@@ -81,8 +81,8 @@ class RoomDetailViewController: UIViewController {
 //        var container:
     }
 
-    typealias DetailDataSource = UICollectionViewDiffableDataSource<Section, Item>
-    typealias DetailSnapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias DetailDataSource = UICollectionViewDiffableDataSource<RoomDetailSection, RoomDetailItem>
+    typealias DetailSnapshot = NSDiffableDataSourceSnapshot<RoomDetailSection, RoomDetailItem>
     private var dataSource: DetailDataSource!
 
     var room: Room?
@@ -180,7 +180,6 @@ class RoomDetailViewController: UIViewController {
         navigationItem.title = "RooMeet"
 
         configureCollectionView()
-        collectionView.collectionViewLayout = createLayout()
     }
 
     @IBOutlet weak var buttomView: UIView! {
@@ -406,6 +405,8 @@ extension RoomDetailViewController {
     private func configureCollectionView() {
         registerCell()
 
+        collectionView.collectionViewLayout = createLayout()
+
         dataSource = DetailDataSource(collectionView: collectionView) { [self] collectionView, indexPath, item in
             switch item {
             case .images(let data):
@@ -423,7 +424,7 @@ extension RoomDetailViewController {
 
             case .basicInfo(let data):
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RoomBasicCell.identifier,
+                    withReuseIdentifier: RoomBasicCell.reuseIdentifier,
                     for: indexPath
                 ) as? RoomBasicCell else {
                     return UICollectionViewCell()
@@ -442,7 +443,7 @@ extension RoomDetailViewController {
                 return cell
             case .feeDetail(let data):
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RoomFeeCell.identifier,
+                    withReuseIdentifier: RoomFeeCell.reuseIdentifier,
                     for: indexPath
                 ) as? RoomFeeCell else {
                     return UICollectionViewCell()
@@ -451,7 +452,7 @@ extension RoomDetailViewController {
                 return cell
             case .reservationDays(let data):
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: BookingDateCell.identifier,
+                    withReuseIdentifier: BookingDateCell.reuseIdentifier,
                     for: indexPath
                 ) as? BookingDateCell else {
                     return UICollectionViewCell()
@@ -461,7 +462,7 @@ extension RoomDetailViewController {
                 return cell
             case .reservationPeriod(_):
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: BookingPeriodCell.identifier,
+                    withReuseIdentifier: BookingPeriodCell.reuseIdentifier,
                     for: indexPath
                 ) as? BookingPeriodCell else {
                     return UICollectionViewCell()
@@ -470,7 +471,7 @@ extension RoomDetailViewController {
                 return cell
             case .map(let data):
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RoomMapCell.identifier,
+                    withReuseIdentifier: RoomMapCell.reuseIdentifier,
                     for: indexPath
                 ) as? RoomMapCell else {
                     return UICollectionViewCell()
@@ -753,7 +754,7 @@ extension RoomDetailViewController {
         guard let room = room else {
             return
         }
-        newSnapshot.appendSections(Section.allCases)
+        newSnapshot.appendSections(RoomDetailSection.allCases)
         newSnapshot.appendItems([.images(room)], toSection: .images)
         newSnapshot.appendItems([.pet(room)], toSection: .pet)
         newSnapshot.appendItems([.elevator(room)], toSection: .elevator)
@@ -766,12 +767,12 @@ extension RoomDetailViewController {
         if room.billInfo != nil {
             newSnapshot.appendItems(
                 room.billInfoList.map { roomDetailFees in
-                    roomDetailFees.map { Item.feeDetail($0) }
+                    roomDetailFees.map { RoomDetailItem.feeDetail($0) }
                 }!,
                 toSection: .feeDetail
             )
         }
-        newSnapshot.appendItems(dates.map { Item.reservationDays($0) }, toSection: .reservationDays)
+        newSnapshot.appendItems(dates.map { RoomDetailItem.reservationDays($0) }, toSection: .reservationDays)
         newSnapshot.appendItems([.reservationPeriod(room)], toSection: .reservationPeriod)
         newSnapshot.appendItems([.map(room)], toSection: .map)
 

@@ -100,7 +100,6 @@ protocol BookingDateCellDelegate: AnyObject {
 }
 
 class BookingDateCell: UICollectionViewCell {
-    static let identifier = "BookingDateCell"
     private let selectedColor = UIColor.mainDarkColor
     private let unselectedColor = UIColor.mainColor
 

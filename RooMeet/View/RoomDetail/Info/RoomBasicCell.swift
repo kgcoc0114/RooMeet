@@ -12,7 +12,6 @@ protocol RoomBasicCellDelegate: AnyObject {
 }
 
 class RoomBasicCell: UICollectionViewCell {
-    static let identifier = "RoomBasicCell"
     weak var delegate: RoomBasicCellDelegate?
 
     var isLike = false {

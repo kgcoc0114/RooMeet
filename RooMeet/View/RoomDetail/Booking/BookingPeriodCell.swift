@@ -12,8 +12,6 @@ protocol BookingPeriodCellDelegate: AnyObject {
 }
 
 class BookingPeriodCell: UICollectionViewCell {
-    static let identifier = "BookingPeriodCell"
-
     var selectPeriod: BookingPeriod?
     weak var delegate: BookingPeriodCellDelegate?
 
