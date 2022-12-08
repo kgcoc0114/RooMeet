@@ -7,6 +7,24 @@
 
 import UIKit
 
+enum FeeInfoScenario {
+    case create(FeeType)
+    case edit(FeeType, FeeDetail)
+
+    var selectedIndex: Int {
+        switch self {
+        case .create(_):
+            return 0
+        case .edit(_, let feeDetail):
+            if let affordType = AffordType(rawValue: feeDetail.affordType) {
+                return affordType.index
+            } else {
+                return 0
+            }
+        }
+    }
+}
+
 enum FeeType: String, CaseIterable {
     case electricity = "電費"
     case water = "水費"
@@ -14,7 +32,7 @@ enum FeeType: String, CaseIterable {
     case internet = "網路"
     case management = "管理費"
 
-    func isGovString() -> String {
+    var isGovString: String {
         var isGovString: String
         switch self {
         case .water:
@@ -27,7 +45,7 @@ enum FeeType: String, CaseIterable {
         return isGovString
     }
 
-    func priceUnit() -> String {
+    var priceUnit: String {
         var priceUnit: String
         switch self {
         case .water:
@@ -86,15 +104,19 @@ class FeeInfoCell: UITableViewCell {
                 return
             }
 
-            if feeType == .water || feeType == .electricity {
-                feeDetail.paid = true
-            } else {
+            switch feeType {
+            case .electricity, .water:
                 if priceTextField.text == "" {
-                    feeDetail.paid = false
-                    feeDetail.affordType = nil
+                    if let isGov = feeDetail.isGov, isGov {
+                        feeDetail.paid = isGov
+                    } else {
+                        feeDetail.paid = false
+                    }
                 } else {
                     feeDetail.paid = true
                 }
+            default:
+                feeDetail.paid = !priceTextField.text!.isEmpty
             }
         }
     }
@@ -114,11 +136,11 @@ class FeeInfoCell: UITableViewCell {
     func configureCell(feeType: FeeType, entryType: EntryType, data: FeeDetail?) {
         self.feeType = feeType
         titleLabel.text = feeType.rawValue
-        priceUnitLabel.text = feeType.priceUnit()
+        priceUnitLabel.text = feeType.priceUnit
 
         switch feeType {
         case .water, .electricity:
-            govTypeButton.setTitle(feeType.isGovString(), for: .normal)
+            govTypeButton.setTitle(feeType.isGovString, for: .normal)
             if entryType == .edit,
                 let data = data,
                 let isGov = data.isGov {
@@ -130,13 +152,7 @@ class FeeInfoCell: UITableViewCell {
 
         if let data = data {
             feeDetail = data
-            if feeDetail.paid == true {
-                var selectIndex = 0
-                if let affordType = AffordType(rawValue: feeDetail.affordType ?? "sperate") {
-                    selectIndex = AffordType.allCases.firstIndex(of: affordType) ?? 0
-                }
-                segmentControl.selectedIndex = selectIndex
-            }
+            segmentControl.selectedIndex = AffordType(rawValue: feeDetail.affordType ?? "separate")!.index
 
             if let fee = feeDetail.fee,
                 fee != 0 {
@@ -148,12 +164,12 @@ class FeeInfoCell: UITableViewCell {
     @IBAction func tapGovTypeButton(_ sender: Any) {
         govTypeButton.isSelected.toggle()
         feeDetail.isGov = govTypeButton.isSelected
-        feeDetail.affordType = segmentControl.selectedIndex == 0 ? "sperate" : "share"
+        feeDetail.affordType = segmentControl.selectedIndex == 0 ? "separate" : "share"
         delegate?.passData(self)
     }
 
     @objc func segmentValueChanged(_ sender: RMSegmentedControl) {
-        feeDetail.affordType = sender.selectedIndex == 0 ? "sperate" : "share"
+        feeDetail.affordType = sender.selectedIndex == 0 ? "separate" : "share"
         delegate?.passData(self)
     }
 }
@@ -162,9 +178,11 @@ extension FeeInfoCell: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if let fee = priceTextField.text {
             feeDetail.fee = Double(fee)
-            feeDetail.affordType = segmentControl.selectedIndex == 0 ? "sperate" : "share"
-            delegate?.passData(self)
+        } else {
+            feeDetail.fee = nil
         }
+        feeDetail.affordType = segmentControl.selectedIndex == 0 ? "separate" : "share"
+        delegate?.passData(self)
     }
 }
 

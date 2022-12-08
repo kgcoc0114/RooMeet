@@ -112,9 +112,7 @@ struct BillInfo: Codable, Hashable {
             let unitString = type == .electricity ? "度/元" : "元"
             let priceString = "\(data.isGov == true ? typeString : String(describing: data.fee))"
             var affordString: String
-            if
-                let affordType = data.affordType,
-                let afford = AffordType(rawValue: affordType) {
+            if let afford = AffordType(rawValue: data.affordType) {
                 affordString = " - \(afford.description)"
             } else {
                 affordString = ""
@@ -141,7 +139,7 @@ struct FeeDetail: Codable, Hashable {
     var paid: Bool? = false
     var fee: Double?
     var isGov: Bool?
-    var affordType: String?
+    var affordType: String = "separate"
 
     var description: String {
         if paid == false {
@@ -150,16 +148,25 @@ struct FeeDetail: Codable, Hashable {
             return String(describing: fee)
         }
     }
+
+    
 }
 
 enum AffordType: String, Hashable, CaseIterable {
-    case sperate = "sperate"
+    case separate = "separate"
     case share = "share"
 
     var description: String {
         switch self {
-        case .sperate: return "獨立支付"
+        case .separate: return "獨立支付"
         case .share: return "費用均分"
+        }
+    }
+
+    var index: Int {
+        switch self {
+        case .separate: return 0
+        case .share: return 1
         }
     }
 }
@@ -215,7 +222,7 @@ enum BillType: CaseIterable {
         }
     }
 
-    var sperateString: String {
+    var separateString: String {
         switch self {
         case .water, .cable, .internet, .management:
             return "個別支付"
