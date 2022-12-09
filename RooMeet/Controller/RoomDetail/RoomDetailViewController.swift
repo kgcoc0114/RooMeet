@@ -257,9 +257,8 @@ class RoomDetailViewController: UIViewController {
         if AuthService.shared.isLogin() {
             requestAction()
         } else {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyBoard.instantiateViewController(
-                withIdentifier: "LoginViewController"
+            let loginVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: LoginViewController.self)
             )
             loginVC.modalPresentationStyle = .overFullScreen
             present(loginVC, animated: false)
@@ -270,9 +269,8 @@ class RoomDetailViewController: UIViewController {
         if AuthService.shared.isLogin() {
             chatAction()
         } else {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyBoard.instantiateViewController(
-                withIdentifier: "LoginViewController"
+            let loginVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: LoginViewController.self)
             )
             loginVC.modalPresentationStyle = .overFullScreen
             present(loginVC, animated: false)
@@ -378,9 +376,8 @@ class RoomDetailViewController: UIViewController {
 
             present(userActionAlertController, animated: true, completion: nil)
         } else {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyBoard.instantiateViewController(
-                withIdentifier: "LoginViewController"
+            let loginVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: LoginViewController.self)
             )
             loginVC.modalPresentationStyle = .overFullScreen
             present(loginVC, animated: false)
@@ -737,9 +734,8 @@ extension RoomDetailViewController: RoomBasicCellDelegate {
                 shouldUpdate = true
             }
         } else {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyBoard.instantiateViewController(
-                withIdentifier: "LoginViewController"
+            let loginVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: LoginViewController.self)
             )
             loginVC.modalPresentationStyle = .overFullScreen
             present(loginVC, animated: false)

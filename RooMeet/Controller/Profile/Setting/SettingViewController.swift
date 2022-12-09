@@ -293,9 +293,8 @@ extension SettingViewController {
 
     private func showLoginVC() {
         DispatchQueue.main.async {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyBoard.instantiateViewController(
-                withIdentifier: "LoginViewController"
+            let loginVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: LoginViewController.self)
             )
             loginVC.modalPresentationStyle = .fullScreen
             self.present(loginVC, animated: false)

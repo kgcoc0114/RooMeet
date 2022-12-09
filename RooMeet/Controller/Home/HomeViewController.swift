@@ -115,9 +115,8 @@ class HomeViewController: ViewController {
             let postViewController = PostViewController(entryType: .new, data: nil)
             navigationController?.pushViewController(postViewController, animated: true)
         } else {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyBoard.instantiateViewController(
-                withIdentifier: "LoginViewController"
+            let loginVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: LoginViewController.self)
             )
             loginVC.modalPresentationStyle = .overFullScreen
             present(loginVC, animated: false)
