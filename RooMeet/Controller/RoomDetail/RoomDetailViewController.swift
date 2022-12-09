@@ -461,7 +461,7 @@ extension RoomDetailViewController {
                 return cell
             case .reservationDays(let data):
                 guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: BookingDateCell.identifier,
+                    withReuseIdentifier: BookingDateCell.reuseIdentifier,
                     for: indexPath
                 ) as? BookingDateCell else {
                     return UICollectionViewCell()
