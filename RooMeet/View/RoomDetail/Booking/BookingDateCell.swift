@@ -176,6 +176,8 @@ extension BookingDateCell: RoomDetailCell {
             return
         }
 
+        self.date = bookingDate
+
         if
             let weekday = bookingDate.weekday,
             let day = bookingDate.day {
