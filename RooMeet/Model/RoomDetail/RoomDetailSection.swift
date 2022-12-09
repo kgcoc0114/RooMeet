@@ -55,9 +55,9 @@ enum RoomDetailSection: CaseIterable {
         }
     }
 
-    var layoutSection: NSCollectionLayoutSection  {
-        switch self { //
-        case  .basicInfo, .highLight, .gender, .pet, .elevator, .cooking, .bathroom, .features:
+    var layoutSection: NSCollectionLayoutSection {
+        switch self {
+        case .basicInfo, .highLight, .gender, .pet, .elevator, .cooking, .bathroom, .features:
             let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .estimated(1)))
@@ -87,9 +87,10 @@ enum RoomDetailSection: CaseIterable {
 
             let section = NSCollectionLayoutSection(group: group)
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
-            // SectionHeader
 
+            // SectionHeader
             section.boundarySupplementaryItems = [createSectionHeader()]
+
             return section
         case .images:
             let item = NSCollectionLayoutItem(
@@ -147,7 +148,6 @@ enum RoomDetailSection: CaseIterable {
             section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
 
             return section
-
         case .map:
             let item = NSCollectionLayoutItem(
                 layoutSize: NSCollectionLayoutSize(
@@ -315,4 +315,3 @@ struct RoomTagContainer: RoomDetailContainer {
     let mainColor: UIColor
     let lightColor: UIColor = .mainBackgroundColor
 }
-

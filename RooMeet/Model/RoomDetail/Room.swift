@@ -175,7 +175,7 @@ struct RoomList: Codable {
     let data: [Room]
 }
 
-enum BillType: CaseIterable {
+enum BillType: String, CaseIterable {
     case water
     case electricity
     case cable

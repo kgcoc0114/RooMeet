@@ -170,6 +170,21 @@ class BookingDateCell: UICollectionViewCell {
     }
 }
 
+extension BookingDateCell: RoomDetailCell {
+    func configure(container: RoomDetailContainer) {
+        guard let bookingDate = (container as? BookingContainer)?.bookingDate else {
+            return
+        }
+
+        if
+            let weekday = bookingDate.weekday,
+            let day = bookingDate.day {
+            let weekdayString = RMWeekday.allCases[weekday - 1].descrption
+            weekdayLabel.text = weekdayString
+            dateLabel.text = "\(day)"
+        }
+    }
+}
 
 class DateView: UIView {
     var date: DateComponents?

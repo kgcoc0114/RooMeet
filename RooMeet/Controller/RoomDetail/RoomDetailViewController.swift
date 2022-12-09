@@ -15,71 +15,71 @@ struct RoomDetailFee: Hashable {
 }
 
 class RoomDetailViewController: UIViewController {
-    enum Section: String, CaseIterable {
-        case images
-        case basicInfo
-        case reservationDays
-        case reservationPeriod
-        case map
-        case highLight
-        case gender
-        case pet
-        case elevator
-        case cooking
-        case bathroom
-        case features
-        case feeDetail
-
-
-        var title: String {
-            switch self {
-            case .images:
-                return ""
-            case .basicInfo:
-                return ""
-            case .highLight:
-                return "亮點"
-            case .gender:
-                return "租客性別"
-            case .pet:
-                return "寵物"
-            case .elevator:
-                return "電梯"
-            case .cooking:
-                return "開伙"
-            case .features:
-                return "設施"
-            case .bathroom:
-                return "衛浴"
-            case .feeDetail:
-                return "費用明細"
-            case .reservationDays:
-                return "預約看房"
-            case .reservationPeriod:
-                return ""
-            case .map:
-                return "地圖"
-            }
-        }
-    }
-
-    enum Item: Hashable {
-        case images(Room)
-        case basicInfo(Room)
-        case highLight(Room)
-        case gender(Room)
-        case pet(Room)
-        case elevator(Room)
-        case cooking(Room)
-        case bathroom(Room)
-        case features(Room)
-        case feeDetail(RoomDetailFee)
-        case reservationDays(DateComponents)
-        case reservationPeriod(Room)
-        case map(Room)
-
-//        var container:
-    }
+//    enum Section: String, CaseIterable {
+//        case images
+//        case basicInfo
+//        case reservationDays
+//        case reservationPeriod
+//        case map
+//        case highLight
+//        case gender
+//        case pet
+//        case elevator
+//        case cooking
+//        case bathroom
+//        case features
+//        case feeDetail
+//
+//
+//        var title: String {
+//            switch self {
+//            case .images:
+//                return ""
+//            case .basicInfo:
+//                return ""
+//            case .highLight:
+//                return "亮點"
+//            case .gender:
+//                return "租客性別"
+//            case .pet:
+//                return "寵物"
+//            case .elevator:
+//                return "電梯"
+//            case .cooking:
+//                return "開伙"
+//            case .features:
+//                return "設施"
+//            case .bathroom:
+//                return "衛浴"
+//            case .feeDetail:
+//                return "費用明細"
+//            case .reservationDays:
+//                return "預約看房"
+//            case .reservationPeriod:
+//                return ""
+//            case .map:
+//                return "地圖"
+//            }
+//        }
+//    }
+//
+//    enum Item: Hashable {
+//        case images(Room)
+//        case basicInfo(Room)
+//        case highLight(Room)
+//        case gender(Room)
+//        case pet(Room)
+//        case elevator(Room)
+//        case cooking(Room)
+//        case bathroom(Room)
+//        case features(Room)
+//        case feeDetail(RoomDetailFee)
+//        case reservationDays(DateComponents)
+//        case reservationPeriod(Room)
+//        case map(Room)
+//
+////        var container:
+//    }
 
     typealias DetailDataSource = UICollectionViewDiffableDataSource<RoomDetailSection, RoomDetailItem>
     typealias DetailSnapshot = NSDiffableDataSourceSnapshot<RoomDetailSection, RoomDetailItem>
@@ -405,89 +405,37 @@ extension RoomDetailViewController {
         collectionView.collectionViewLayout = createLayout()
 
         dataSource = DetailDataSource(collectionView: collectionView) { [self] collectionView, indexPath, item in
-            switch item {
-            case .images(let data):
-                guard
-                    let cell = collectionView.dequeueReusableCell(
-                        withReuseIdentifier: RoomImagesCell.reuseIdentifier,
-                        for: indexPath
-                    ) as? RoomImagesCell
-                else {
-                    return UICollectionViewCell()
-                }
-
-                cell.configureCell(images: data.roomImages)
-                return cell
-
-            case .basicInfo(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RoomBasicCell.reuseIdentifier,
+            guard
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: item.cellIdentifier,
                     for: indexPath
-                ) as? RoomBasicCell else {
-                    return UICollectionViewCell()
-                }
-                cell.configureCell(data: data)
-                cell.delegate = self
+                ) as? RoomDetailCell
+            else {
+                return UICollectionViewCell()
+            }
+
+            cell.configure(container: item.container)
+
+            switch item {
+            case .basicInfo(let data):
+                (cell as? RoomBasicCell)?.delegate = self
                 if AuthService.shared.isLogin() {
                     if
                         let user = self.user,
                         let roomID = data.roomID {
                         if user.favoriteRoomIDs.contains(roomID) {
-                            cell.isLike = true
+                            (cell as? RoomBasicCell)?.isLike = true
                         }
                     }
                 }
-                return cell
-            case .feeDetail(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RoomFeeCell.reuseIdentifier,
-                    for: indexPath
-                ) as? RoomFeeCell else {
-                    return UICollectionViewCell()
-                }
-                cell.configureCell(billType: data.billType, data: data.feeDatail)
-                return cell
-            case .reservationDays(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: BookingDateCell.reuseIdentifier,
-                    for: indexPath
-                ) as? BookingDateCell else {
-                    return UICollectionViewCell()
-                }
-                cell.delegate = self
-                cell.configureCell(date: data)
-                return cell
+            case .reservationDays(_):
+                (cell as? BookingDateCell)?.delegate = self
             case .reservationPeriod(_):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: BookingPeriodCell.reuseIdentifier,
-                    for: indexPath
-                ) as? BookingPeriodCell else {
-                    return UICollectionViewCell()
-                }
-                cell.delegate = self
-                return cell
-            case .map(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: RoomMapCell.reuseIdentifier,
-                    for: indexPath
-                ) as? RoomMapCell else {
-                    return UICollectionViewCell()
-                }
-                print(data)
-                cell.configureCell(
-                    latitude: data.lat ?? RMConstants.shared.currentPosition.latitude,
-                    longitude: data.long ?? RMConstants.shared.currentPosition.longitude
-                )
-                return cell
-            case .highLight(let data),
-                .gender(let data),
-                .pet(let data),
-                .elevator(let data),
-                .cooking(let data),
-                .bathroom(let data),
-                .features(let data):
-                return genTagCell(item: data, indexPath: indexPath)
+                (cell as? BookingPeriodCell)?.delegate = self
+            default:
+                print("")
             }
+            return cell
         }
 
         dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
@@ -498,215 +446,17 @@ extension RoomDetailViewController {
                 fatalError("Could not dequeue sectionHeader: \(RoomDetailHeaderView.reuseIdentifier)")
             }
 
-            sectionHeader.titleLabel.text = Section.allCases[indexPath.section].title
+            sectionHeader.titleLabel.text = RoomDetailSection.allCases[indexPath.section].title
             return sectionHeader
         }
-
-        collectionView.collectionViewLayout = createLayout()
-    }
-
-    func genTagCell(item: Room, indexPath: IndexPath) -> ItemsCell {
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: ItemsCell.reuseIdentifier,
-            for: indexPath
-        ) as? ItemsCell,
-            let room = room else {
-            return UICollectionViewCell() as! ItemsCell
-        }
-
-        var tags: [String] = []
-        var mainColor = UIColor.mainColor
-        var lightColor = UIColor.mainBackgroundColor
-
-        let section = Section.allCases[indexPath.section]
-        switch section {
-        case .highLight:
-            tags = room.roomHighLights
-        case .gender:
-            tags = room.roomGenderRules
-        case .pet:
-            tags = room.roomPetsRules
-        case .elevator:
-            tags = room.roomElevatorRules
-        case .cooking:
-            tags = room.roomCookingRules
-        case .bathroom:
-            tags = room.roomBathroomRules
-        case .features:
-            tags = room.roomFeatures
-            mainColor = UIColor.subTitleColor
-            lightColor = UIColor.mainBackgroundColor
-        default:
-            break
-        }
-        cell.configureTitleInDetailPage()
-        cell.configureTagView(
-            ruleType: section.title,
-            tags: tags,
-            selectedTags: tags,
-            mainColor: mainColor,
-            lightColor: lightColor,
-            mainLightBackgroundColor: UIColor.white,
-            enableTagSelection: false)
-
-        return cell
     }
 }
 
 // MARK: Layout
 extension RoomDetailViewController {
-    private func createBasicInfoSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(layoutSize: NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(1.0),
-            heightDimension: .estimated(1)))
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(1)), subitems: [item])
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
-
-        return section
-    }
-
-    private func createSectionHeader() -> NSCollectionLayoutBoundarySupplementaryItem {
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(50))
-        let header = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .top
-        )
-        return header
-    }
-
-    private func createFeeDetailSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(1)
-            )
-        )
-
-        let group = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(1)
-            ),
-            subitems: [item]
-        )
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
-        // SectionHeader
-
-        if !feeDetails.isEmpty {
-            section.boundarySupplementaryItems = [createSectionHeader()]
-        }
-
-        return section
-    }
-
-    private func createImagesSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-        )
-
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(300)),
-            subitems: [item])
-
-        let section = NSCollectionLayoutSection(group: group)
-
-        return section
-    }
-
-    private func createReservationDaysSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth((1 / CGFloat(RMConstants.shared.reservationDays))),
-                heightDimension: .fractionalHeight(1.0)
-            )
-        )
-        item.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 5, bottom: 0, trailing: 5)
-
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(75)),
-            subitems: [item])
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20)
-
-        // SectionHeader
-        section.boundarySupplementaryItems = [createSectionHeader()]
-        return section
-    }
-
-    private func createMapSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-        )
-
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(150)),
-            subitems: [item])
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
-
-        // SectionHeader
-        section.boundarySupplementaryItems = [createSectionHeader()]
-        return section
-    }
-
-    private func createReservationPeriodSection() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
-            )
-        )
-
-        let group = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(60)),
-            subitems: [item])
-
-        let section = NSCollectionLayoutSection(group: group)
-        section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 20, trailing: 20)
-
-        return section
-    }
-
     private func sectionFor(index: Int, environment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
-        let section = Section.allCases[index]
-        switch section {
-        case .basicInfo, .highLight, .gender, .pet, .elevator, .cooking, .bathroom, .features:
-            return createBasicInfoSection()
-        case .feeDetail:
-            return createFeeDetailSection()
-        case .images:
-            return createImagesSection()
-        case .reservationDays:
-            return createReservationDaysSection()
-        case .reservationPeriod:
-            return createReservationPeriodSection()
-        case .map:
-            return createMapSection()
-        }
+        let section = RoomDetailSection.allCases[index]
+        return section.layoutSection
     }
 
     private func createLayout() -> UICollectionViewLayout {
@@ -750,7 +500,22 @@ extension RoomDetailViewController {
         guard let room = room else {
             return
         }
-        newSnapshot.appendSections(RoomDetailSection.allCases)
+        var sections = RoomDetailSection.allCases
+        if room.billInfo != nil {
+            newSnapshot.appendSections(sections)
+
+            newSnapshot.appendItems(
+                room.billInfoList.map { roomDetailFees in
+                    roomDetailFees.map { RoomDetailItem.feeDetail($0) }
+                }!,
+                toSection: .feeDetail
+            )
+        } else {
+            guard let index = sections.firstIndex(of: .feeDetail) else { return }
+            sections.remove(at: index)
+            newSnapshot.appendSections(sections)
+        }
+
         newSnapshot.appendItems([.images(room)], toSection: .images)
         newSnapshot.appendItems([.pet(room)], toSection: .pet)
         newSnapshot.appendItems([.elevator(room)], toSection: .elevator)
@@ -760,14 +525,7 @@ extension RoomDetailViewController {
         newSnapshot.appendItems([.gender(room)], toSection: .gender)
         newSnapshot.appendItems([.highLight(room)], toSection: .highLight)
         newSnapshot.appendItems([.basicInfo(room)], toSection: .basicInfo)
-        if room.billInfo != nil {
-            newSnapshot.appendItems(
-                room.billInfoList.map { roomDetailFees in
-                    roomDetailFees.map { RoomDetailItem.feeDetail($0) }
-                }!,
-                toSection: .feeDetail
-            )
-        }
+
         newSnapshot.appendItems(dates.map { RoomDetailItem.reservationDays($0) }, toSection: .reservationDays)
         newSnapshot.appendItems([.reservationPeriod(room)], toSection: .reservationPeriod)
         newSnapshot.appendItems([.map(room)], toSection: .map)

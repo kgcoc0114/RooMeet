@@ -110,6 +110,26 @@ extension ItemsCell: TTGTextTagCollectionViewDelegate {
     }
 }
 
+extension ItemsCell: RoomDetailCell {
+    func configure(container: RoomDetailContainer) {
+        guard
+            let data = (container as? RoomTagContainer)
+        else {
+            return
+        }
+
+        configureTitleInDetailPage()
+        configureTagView(
+            ruleType: data.title,
+            tags: data.tags,
+            selectedTags: data.tags,
+            mainColor: data.mainColor,
+            lightColor: data.lightColor,
+            mainLightBackgroundColor: UIColor.white,
+            enableTagSelection: false)
+    }
+}
+
 class RMTag: TTGTextTag {
     var title: String?
 }

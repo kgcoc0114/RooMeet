@@ -56,7 +56,6 @@ extension BookingPeriodCell: UITextFieldDelegate {
             delegate?.didSelectPeriod(selectedPeriod: selectPeriod)
         }
     }
-
 }
 
 extension BookingPeriodCell: UIPickerViewDataSource {
@@ -81,5 +80,10 @@ extension BookingPeriodCell: UIPickerViewDelegate {
             return
         }
         delegate?.didSelectPeriod(selectedPeriod: selectPeriod)
+    }
+}
+
+extension BookingPeriodCell: RoomDetailCell {
+    func configure(container: RoomDetailContainer) {
     }
 }
