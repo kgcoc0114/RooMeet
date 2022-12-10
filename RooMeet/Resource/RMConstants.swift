@@ -85,9 +85,9 @@ enum EntryPage {
     var noneLabelString: String {
         switch self {
         case .fav:
-            return "按下愛心加入我的最愛"
+            return NoDataDisplay.favorite.displayString
         case .ownPost:
-            return "還沒有貼文唷！可到首頁新增房源找室友！"
+            return NoDataDisplay.post.displayString
         }
     }
 

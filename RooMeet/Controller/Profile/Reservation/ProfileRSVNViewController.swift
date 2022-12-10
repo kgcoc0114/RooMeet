@@ -41,7 +41,7 @@ class ProfileRSVNViewController: UIViewController {
         didSet {
             noneLabel.font = UIFont.regularSubTitle()
             noneLabel.textColor = .mainDarkColor
-            noneLabel.text = "目前沒有看房預約唷！"
+            noneLabel.text = NoDataDisplay.reservation.displayString
             noneLabel.isHidden = true
         }
     }

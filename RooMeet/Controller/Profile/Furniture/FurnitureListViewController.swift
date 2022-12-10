@@ -27,7 +27,7 @@ class FurnitureListViewController: UIViewController {
             noneLabel.font = UIFont.regularSubTitle()
             noneLabel.textColor = .mainDarkColor
             noneLabel.isHidden = true
-            noneLabel.text = "Tips: 點擊右上角，建立自己的家具清單！"
+            noneLabel.text = NoDataDisplay.furniture.displayString
         }
     }
 

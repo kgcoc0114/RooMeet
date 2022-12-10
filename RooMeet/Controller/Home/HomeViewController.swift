@@ -32,7 +32,7 @@ class HomeViewController: ViewController {
         didSet {
             noneLabel.font = UIFont.regularSubTitle()
             noneLabel.textColor = .mainDarkColor
-            noneLabel.text = "目前沒有相關房源"
+            noneLabel.text = NoDataDisplay.home.displayString
             noneLabel.isHidden = true
         }
     }

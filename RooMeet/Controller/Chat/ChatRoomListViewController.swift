@@ -45,7 +45,7 @@ class ChatRoomListViewController: UIViewController {
         didSet {
             noneLabel.font = UIFont.regularSubTitle()
             noneLabel.textColor = .mainDarkColor
-            noneLabel.text = "目前還沒有聊天室唷！"
+            noneLabel.text = NoDataDisplay.chatRoom.displayString
             noneLabel.isHidden = true
         }
     }
