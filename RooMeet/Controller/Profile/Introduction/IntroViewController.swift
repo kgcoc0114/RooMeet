@@ -40,7 +40,6 @@ class IntroViewController: UIViewController {
         }
     }
 
-    let imagePickerController = UIImagePickerController()
     lazy var imagePicker: ImagePickerManager = {
         return ImagePickerManager(presentationController: self)
     }()

@@ -63,15 +63,15 @@ class FurnitureListViewController: UIViewController {
     }
 
     @objc private func addFurnitures() {
-        showFurnitures(entryType: .new, data: Furniture(userID: UserDefaults.id))
+        showFurnitures(scenario: FurnitureScenario.create(Furniture(userID: UserDefaults.id)))
     }
 
     private func editFurnitures(furniture: Furniture) {
-        showFurnitures(entryType: .edit, data: furniture)
+        showFurnitures(scenario: FurnitureScenario.edit(furniture))
     }
 
-    private func showFurnitures(entryType: EntryType, data: Furniture?) {
-        let furnitureViewController = FurnitureViewController(entryType: entryType, data: data)
+    private func showFurnitures(scenario: FurnitureScenario) {
+        let furnitureViewController = FurnitureViewController(scenario: scenario)
         navigationController?.pushViewController(furnitureViewController, animated: true)
     }
 
@@ -100,7 +100,10 @@ extension FurnitureListViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: FurnitureDisplayCell.identifier, for: indexPath) as? FurnitureDisplayCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: FurnitureDisplayCell.identifier,
+            for: indexPath) as? FurnitureDisplayCell
+        else {
             return FurnitureDisplayCell()
         }
         let furniture = furnitures[indexPath.item]
@@ -114,7 +117,7 @@ extension FurnitureListViewController: UITableViewDelegate {
         let config = UIContextMenuConfiguration(
             identifier: "\(indexPath.item)" as NSCopying,
             previewProvider: {
-                return FurnitureViewController(entryType: .edit, data: self.furnitures[indexPath.item])
+                return FurnitureViewController(scenario: FurnitureScenario.edit(self.furnitures[indexPath.item]))
             }) { _ in
                 let viewMenu = UIAction(
                     title: "編輯",
@@ -138,8 +141,8 @@ extension FurnitureListViewController: UITableViewDelegate {
                         FirebaseService.shared.deleteFurniture(furnitureID: furnitureID) { _ in
                             print("done")
                         }
-                        self.tableView.reloadData()
                     }
+                    tableView.reloadData()
                 }
 
             return UIMenu(title: "", image: nil, identifier: nil, children: [viewMenu, deleteMenu])

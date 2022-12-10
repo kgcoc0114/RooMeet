@@ -108,6 +108,7 @@
 		E5B1209A294327DC004E65AB /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B12099294327DC004E65AB /* ChatCell.swift */; };
 		E5B1209C29448267004E65AB /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209B29448267004E65AB /* ImagePickerManager.swift */; };
 		E5B1209E2944AFB4004E65AB /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209D2944AFB4004E65AB /* UIViewController+Extension.swift */; };
+		E5B120A02944CFC9004E65AB /* FurnitureScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209F2944CFC9004E65AB /* FurnitureScenario.swift */; };
 		E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33761290E71A600467404 /* NumberPickerView.swift */; };
 		E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33767290EA2FA00467404 /* RMBaseTextField.swift */; };
 		E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B3376C290F64D800467404 /* RoomSpecCell.swift */; };
@@ -306,6 +307,7 @@
 		E5B12099294327DC004E65AB /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		E5B1209B29448267004E65AB /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
 		E5B1209D2944AFB4004E65AB /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
+		E5B1209F2944CFC9004E65AB /* FurnitureScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnitureScenario.swift; sourceTree = "<group>"; };
 		E5B33761290E71A600467404 /* NumberPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPickerView.swift; sourceTree = "<group>"; };
 		E5B33767290EA2FA00467404 /* RMBaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMBaseTextField.swift; sourceTree = "<group>"; };
 		E5B3376C290F64D800467404 /* RoomSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpecCell.swift; sourceTree = "<group>"; };
@@ -465,6 +467,7 @@
 				E539D23C292DFD84007D50FD /* ReportEvent.swift */,
 				E57918ED2938887900427F83 /* Furniture.swift */,
 				E5C9548F2940993B00FCB655 /* IntroScenario.swift */,
+				E5B1209F2944CFC9004E65AB /* FurnitureScenario.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1357,6 +1360,7 @@
 				E57918E32938809100427F83 /* FurnitureDisplayCell.swift in Sources */,
 				E5872938291CF49800C12E9E /* ProfileViewController.swift in Sources */,
 				E5604FE52918EDD3007AE655 /* Config.swift in Sources */,
+				E5B120A02944CFC9004E65AB /* FurnitureScenario.swift in Sources */,
 				E597817929374EBB00ED8903 /* MeasureViewController.swift in Sources */,
 				E5B1209829423007004E65AB /* Region.swift in Sources */,
 				E5EEE20A2912BCC700CAAE84 /* RoomDetailViewController.swift in Sources */,

@@ -11,26 +11,22 @@ import FirebaseFirestoreSwift
 
 class FurnitureViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-    lazy var imagePickerController = UIImagePickerController()
+
+    lazy var imagePicker: ImagePickerManager = {
+        return ImagePickerManager(presentationController: self)
+    }()
+
     var waitForUpdateImageCell: FurnitureDetailCell?
 
     var furniture = Furniture()
     var furnitureImage: UIImage?
 
-    var entryType: EntryType = .new
+    let scenario: FurnitureScenario
 
-    init(entryType: EntryType, data: Furniture?) {
-        super.init(nibName: "FurnitureViewController", bundle: nil)
-
-        self.entryType = entryType
-        switch entryType {
-        case .edit:
-            if let furniture = data {
-                self.furniture = furniture
-            }
-        case .new:
-            self.furniture = Furniture()
-        }
+    init(scenario: FurnitureScenario) {
+        self.scenario = scenario
+        self.furniture = scenario.furniture
+        super.init(nibName: String(describing: FurnitureViewController.self), bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -39,6 +35,8 @@ class FurnitureViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        imagePicker.delegate = self
+
         tableView.dataSource = self
         tableView.registerCellWithNib(identifier: FurnitureDetailCell.identifier, bundle: nil)
         tableView.separatorStyle = .none
@@ -74,47 +72,16 @@ extension FurnitureViewController: UITableViewDataSource {
             withIdentifier: FurnitureDetailCell.identifier,
             for: indexPath) as? FurnitureDetailCell else { return UITableViewCell() }
         cell.delegate = self
-        cell.funiture = furniture
-        cell.configureCell()
+        cell.configure(scenario: scenario)
         return cell
     }
 }
 
 extension FurnitureViewController: FurnitureDetailCellDelegate {
     func didClickImageView(_ cell: FurnitureDetailCell) {
-        imagePickerController.delegate = self
         waitForUpdateImageCell = cell
-        let imagePickerAlertController = UIAlertController(
-            title: "上傳圖片",
-            message: "請選擇要上傳的圖片",
-            preferredStyle: .actionSheet
-        )
-
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                self.imagePickerController.sourceType = .photoLibrary
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
-        }
-        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                self.imagePickerController.sourceType = .camera
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
-        }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            imagePickerAlertController.dismiss(animated: true, completion: nil)
-        }
-
-        imagePickerAlertController.addAction(imageFromLibAction)
-        imagePickerAlertController.addAction(imageFromCameraAction)
-        imagePickerAlertController.addAction(cancelAction)
-
-        present(imagePickerAlertController, animated: true, completion: nil)
+        imagePicker.present(from: cell)
     }
-
 
     func passData(_ cell: FurnitureDetailCell, data: Furniture) {
         self.furniture = data
@@ -156,35 +123,14 @@ extension FurnitureViewController: FurnitureDetailCellDelegate {
     }
 }
 
-extension FurnitureViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true)
-    }
-
-    func imagePickerController(
-        _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
-    ) {
-        // 取得從 UIImagePickerController 選擇的檔案
-        if let pickedImage = info[.originalImage] as? UIImage {
-            furnitureImage = pickedImage
-            guard let cell = self.waitForUpdateImageCell else {
-                return
-            }
-            cell.photoImageView.image = pickedImage
-        }
-
-        picker.dismiss(animated: true)
-    }
-
+extension FurnitureViewController {
     @objc private func saveData() {
         furniture.userID = UserDefaults.id
-
         RMProgressHUD.show()
         if let furnitureImage = furnitureImage {
             FIRStorageService.shared.uploadImage(
                 image: furnitureImage,
-                path: "FurnitureImages"
+                path: FIRStorageEndpoint.furnitureImages.path
             ) { [weak self] url, error in
                 guard let self = self else { return }
                 if error != nil {
@@ -201,7 +147,8 @@ extension FurnitureViewController: UIImagePickerControllerDelegate, UINavigation
 
     private func upsertData() {
         furniture.createdTime = Timestamp()
-        if entryType == .new {
+        switch scenario {
+        case .create:
             FirebaseService.shared.insertFurniture(furniture: furniture) { error in
                 if error != nil {
                     RMProgressHUD.showFailure()
@@ -210,7 +157,7 @@ extension FurnitureViewController: UIImagePickerControllerDelegate, UINavigation
                 }
                 self.navigationController?.popViewController(animated: true)
             }
-        } else {
+        case .edit:
             if let furnitureID = furniture.id {
                 FirebaseService.shared.updateFurniture(furnitureID: furnitureID, furniture: furniture) { error in
                     if error != nil {
@@ -225,7 +172,6 @@ extension FurnitureViewController: UIImagePickerControllerDelegate, UINavigation
     }
 }
 
-
 extension FurnitureViewController {
     func transToInt(input: String) -> Int? {
         if let outputNumber = Int(input.replace(target: "cm", withString: "")) {
@@ -233,5 +179,14 @@ extension FurnitureViewController {
         } else {
             return nil
         }
+    }
+}
+
+// MARK: - Profile Image Picker Delegate
+extension FurnitureViewController: ImagePickerManagerDelegate {
+    func imagePickerController(didSelect: UIImage?) {
+        guard let image = didSelect else { return }
+        waitForUpdateImageCell?.photoImageView.image = image
+        furnitureImage = image
     }
 }
