@@ -149,7 +149,7 @@ extension CUReservationCell: ChatCell {
         else {
             return
         }
-        
+
         titleLabel.text = acceptedStatus.content
         let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
         statusLabel.text = "\(dateString)\n\(requestPeriod)"
@@ -160,20 +160,14 @@ extension CUReservationCell: ChatCell {
         switch acceptedStatus {
         case .waiting:
             let currentDate = FirebaseService.shared.currentTimestamp
+            let expiredInd = requestTime.seconds >= currentDate.seconds
+
             if reservation.sender == UserDefaults.id {
-                if requestTime.seconds >= currentDate.seconds {
-                    titleLabel.text = "已發起預約，等候回覆"
-                } else {
-                    titleLabel.text = "已發起預約，等候回覆 - 已過期"
-                }
+                titleLabel.text = "已發起預約，等候回覆" + (expiredInd == true ? "" : " - 已過期")
             } else {
-                if requestTime.seconds >= currentDate.seconds {
-                    titleLabel.text = "\(otherUser.name)已發來預約"
-                    denyButton.isHidden = false
-                    agreeButton.isHidden = false
-                } else {
-                    titleLabel.text = "\(otherUser.name)預約已過期"
-                }
+                titleLabel.text = "\(otherUser.name) " + (expiredInd == true ? "已發來預約" : "預約已過期")
+                denyButton.isHidden = !expiredInd
+                agreeButton.isHidden = !expiredInd
             }
         default:
             break

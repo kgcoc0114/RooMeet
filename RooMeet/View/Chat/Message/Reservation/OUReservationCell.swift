@@ -165,13 +165,10 @@ extension OUReservationCell: ChatCell {
         switch acceptedStatus {
         case .waiting:
             let currentDate = FirebaseService.shared.currentTimestamp
-            if requestTime.seconds >= currentDate.seconds {
-                titleLabel.text = "\(otherUser.name)已發來預約"
-                denyButton.isHidden = false
-                agreeButton.isHidden = false
-            } else {
-                titleLabel.text = "\(otherUser.name) 預約已過期"
-            }
+            let expiredInd = requestTime.seconds >= currentDate.seconds
+            titleLabel.text = "\(otherUser.name) " + (expiredInd == true ? "已發來預約" : "預約已過期")
+            denyButton.isHidden = !expiredInd
+            agreeButton.isHidden = !expiredInd
         default:
             break
         }
