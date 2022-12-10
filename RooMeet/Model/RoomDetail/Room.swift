@@ -123,16 +123,6 @@ struct BillInfo: Codable, Hashable {
         }
         return desc
     }
-
-    var description: String {
-        return """
-電費：\(self.genString(data: electricity, type: .electricity))\n
-水費：\(self.genString(data: water, type: .water))\n
-第四臺：\(self.genString(data: cable, type: .cable))\n
-網路費：\(self.genString(data: internet, type: .internet))\n
-管理費：\(self.genString(data: management, type: .management))\n
-"""
-    }
 }
 
 struct FeeDetail: Codable, Hashable {
@@ -148,13 +138,11 @@ struct FeeDetail: Codable, Hashable {
             return String(describing: fee)
         }
     }
-
-    
 }
 
 enum AffordType: String, Hashable, CaseIterable {
-    case separate = "separate"
-    case share = "share"
+    case separate
+    case share
 
     var description: String {
         switch self {

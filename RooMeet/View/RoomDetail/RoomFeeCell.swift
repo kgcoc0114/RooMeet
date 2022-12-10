@@ -89,7 +89,7 @@ extension RoomFeeCell: RoomDetailCell {
                 feeLabel.text = "$ \(fee) \(billType.unitString)"
             }
         }
-
+        print(feeDatail.affordType)
         let separateString = BillType(rawValue: feeDatail.affordType)?.separateString
 
         affordTypeLabel.text = separateString

@@ -51,7 +51,7 @@ enum AcceptedStatus: String, CaseIterable {
         case .accept:
             return "預約已接受"
         case .answer:
-            return "answer"
+            return "預約已回覆"
         }
     }
 

@@ -6,12 +6,8 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 class OUReservationCell: MessageBaseCell {
-    static let reuseIdentifier = "\(OUReservationCell.self)"
-
     @IBOutlet weak var denyButton: UIButton! {
         didSet {
             denyButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
@@ -59,7 +55,6 @@ class OUReservationCell: MessageBaseCell {
 
     var otherUser: ChatMember?
     var currentUser: ChatMember?
-    var sendByMe = true
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -86,81 +81,6 @@ class OUReservationCell: MessageBaseCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-    }
-
-    override func configureLayout() {
-        guard
-            let message = message,
-            let otherUser = otherUser,
-            let reservation = message.reservation else {
-            return
-        }
-
-        if let profilePhoto = otherUser.profilePhoto {
-            avatarView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
-        } else {
-            avatarView.image = UIImage.asset(.roomeet)
-        }
-
-        statusLabel.text = reservation.acceptedStatus
-
-        if message.content == "answer" {
-            titleLabel.text = "預約已回覆"
-            statusLabel.isHidden = true
-            denyButton.isHidden = true
-            agreeButton.isHidden = true
-        } else {
-            guard
-                let reservationPeriod = reservation.period,
-                let requestTime = reservation.requestTime else {
-                return
-            }
-
-            if reservation.acceptedStatus == "waiting" {
-                if reservation.sender == UserDefaults.standard.string(forKey: UserDefaults.id) {
-                    titleLabel.text = "已發起預約，等候回覆"
-                    statusLabel.isHidden = true
-                    denyButton.isHidden = true
-                    agreeButton.isHidden = true
-                } else {
-                    let currentDate = FirebaseService.shared.currentTimestamp
-                    let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
-                    if requestTime.seconds >= currentDate.seconds {
-                        titleLabel.text = "\(otherUser.name)已發來預約"
-                        statusLabel.text = "\(dateString)\n\(reservationPeriod)"
-                        statusLabel.isHidden = false
-                        denyButton.isHidden = false
-                        agreeButton.isHidden = false
-                    } else {
-                        titleLabel.text = "\(otherUser.name) 預約已過期"
-                        statusLabel.text = "\(dateString)\n\(reservationPeriod)"
-                        statusLabel.isHidden = false
-                        denyButton.isHidden = true
-                        agreeButton.isHidden = true
-                    }
-
-//                    titleLabel.text = "\(otherUser.name) 已發來預約"
-//                    let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
-//                    denyButton.isHidden = false
-//                    agreeButton.isHidden = false
-                }
-            } else if reservation.acceptedStatus == "accept" {
-                titleLabel.text = "預約已完成"
-                let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
-                statusLabel.text = "\(dateString)\n\(reservationPeriod)"
-                statusLabel.isHidden = false
-                denyButton.isHidden = true
-                agreeButton.isHidden = true
-            } else if reservation.acceptedStatus == "cancel" {
-                titleLabel.text = "預約已取消"
-                let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
-                statusLabel.text = "\(dateString)\n\(reservationPeriod)"
-                statusLabel.isHidden = false
-                denyButton.isHidden = true
-                agreeButton.isHidden = true
-            }
-        }
-        assignDatetime(messageDate: message.createdTime.dateValue())
     }
 
     @objc func deny() {
@@ -196,7 +116,7 @@ class OUReservationCell: MessageBaseCell {
         }
 
         FirebaseService.shared.getChatRoomByUserID(userA: currentUser.id, userB: otherUser.id) { [weak self] chatroom in
-            guard let `self` = self else { return }
+            guard let self = self else { return }
             self.updateMessage(
                 chatRoomID: chatroom.id,
                 message: message,
@@ -207,8 +127,7 @@ class OUReservationCell: MessageBaseCell {
 
     // 更新已被回覆過的預約訊息狀態
     func updateMessage(chatRoomID: String, message: Message, status: AcceptedStatus) {
-        let messageRef = Firestore.firestore()
-            .collection("ChatRoom")
+        let messageRef = FirestoreEndpoint.chatRoom.colRef
             .document(chatRoomID)
             .collection("Message")
             .document(message.id)
@@ -216,5 +135,47 @@ class OUReservationCell: MessageBaseCell {
         messageRef.updateData([
             "content": status.description
         ])
+    }
+}
+
+extension OUReservationCell: ChatCell {
+    func configure(for data: ChatData) {
+        self.message = data.message
+        self.currentUser = data.currentUser
+        self.otherUser = data.otherUser
+        guard
+            let otherUser = data.otherUser,
+            let reservation = data.message.reservation,
+            let requestTime = reservation.requestTime,
+            let requestPeriod = reservation.period,
+            let acceptedStatus = AcceptedStatus(rawValue: data.message.content)
+        else {
+            return
+        }
+
+        avatarView.loadImage(otherUser.profilePhoto, placeHolder: UIImage.asset(.roomeet))
+
+        titleLabel.text = acceptedStatus.content
+        let dateString = RMDateFormatter.shared.dateString(date: requestTime.dateValue())
+        statusLabel.text = "\(dateString)\n\(requestPeriod)"
+        statusLabel.isHidden = false
+        denyButton.isHidden = true
+        agreeButton.isHidden = true
+
+        switch acceptedStatus {
+        case .waiting:
+            let currentDate = FirebaseService.shared.currentTimestamp
+            if requestTime.seconds >= currentDate.seconds {
+                titleLabel.text = "\(otherUser.name)已發來預約"
+                denyButton.isHidden = false
+                agreeButton.isHidden = false
+            } else {
+                titleLabel.text = "\(otherUser.name) 預約已過期"
+            }
+        default:
+            break
+        }
+
+        assignDatetime(messageDate: data.message.createdTime.dateValue())
     }
 }

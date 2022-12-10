@@ -22,10 +22,6 @@ enum MsgType {
 }
 
 class OUTextCell: MessageBaseCell {
-//    var msgType: MsgType = .other
-//    var message: Message?
-//    var sendBy: ChatMember?
-
     @IBOutlet weak var contentTextView: UITextView! {
         didSet {
             contentTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +30,7 @@ class OUTextCell: MessageBaseCell {
             contentTextView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             contentTextView.isScrollEnabled = false
             contentTextView.isEditable = false
-            contentTextView.font = UIFont.regularText()
+            contentTextView.font = UIFont.regularSubTitle()
         }
     }
 
@@ -68,11 +64,13 @@ class OUTextCell: MessageBaseCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
+}
 
+extension OUTextCell: ChatCell {
+    func configure(for data: ChatData) {
+        let message = data.message
 
-    override func configureLayout() {
-        if let message = message,
-            let sendBy = sendBy {
+        if let sendBy = data.otherUser {
             if let profilePhoto = sendBy.profilePhoto {
                 avatarView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
             } else {

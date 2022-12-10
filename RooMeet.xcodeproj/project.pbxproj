@@ -80,8 +80,6 @@
 		E59B82F22919117300F02CEC /* CallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B82F02919117300F02CEC /* CallViewController.swift */; };
 		E59B82F32919117300F02CEC /* CallViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E59B82F12919117300F02CEC /* CallViewController.xib */; };
 		E59B83152919FEE800F02CEC /* DateFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B83142919FEE800F02CEC /* DateFormatter.swift */; };
-		E59B8318291A259500F02CEC /* CallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B8316291A259500F02CEC /* CallCell.swift */; };
-		E59B8319291A259500F02CEC /* CallCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E59B8317291A259500F02CEC /* CallCell.xib */; };
 		E5A12A632910B8C4006907D9 /* NibLoadble.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A12A622910B8C4006907D9 /* NibLoadble.swift */; };
 		E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A12A642910C7BF006907D9 /* EditFeeController.swift */; };
 		E5A12A672910C7BF006907D9 /* EditFeeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5A12A652910C7BF006907D9 /* EditFeeController.xib */; };
@@ -107,6 +105,7 @@
 		E5B1209629423007004E65AB /* RoomDetailSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209129423007004E65AB /* RoomDetailSection.swift */; };
 		E5B1209729423007004E65AB /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209229423007004E65AB /* Room.swift */; };
 		E5B1209829423007004E65AB /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209329423007004E65AB /* Region.swift */; };
+		E5B1209A294327DC004E65AB /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B12099294327DC004E65AB /* ChatCell.swift */; };
 		E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33761290E71A600467404 /* NumberPickerView.swift */; };
 		E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B33767290EA2FA00467404 /* RMBaseTextField.swift */; };
 		E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B3376C290F64D800467404 /* RoomSpecCell.swift */; };
@@ -277,8 +276,6 @@
 		E59B82F02919117300F02CEC /* CallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallViewController.swift; sourceTree = "<group>"; };
 		E59B82F12919117300F02CEC /* CallViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallViewController.xib; sourceTree = "<group>"; };
 		E59B83142919FEE800F02CEC /* DateFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormatter.swift; sourceTree = "<group>"; };
-		E59B8316291A259500F02CEC /* CallCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CallCell.swift; sourceTree = "<group>"; };
-		E59B8317291A259500F02CEC /* CallCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CallCell.xib; sourceTree = "<group>"; };
 		E5A12A622910B8C4006907D9 /* NibLoadble.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NibLoadble.swift; sourceTree = "<group>"; };
 		E5A12A642910C7BF006907D9 /* EditFeeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeeController.swift; sourceTree = "<group>"; };
 		E5A12A652910C7BF006907D9 /* EditFeeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditFeeController.xib; sourceTree = "<group>"; };
@@ -304,6 +301,7 @@
 		E5B1209129423007004E65AB /* RoomDetailSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoomDetailSection.swift; sourceTree = "<group>"; };
 		E5B1209229423007004E65AB /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E5B1209329423007004E65AB /* Region.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		E5B12099294327DC004E65AB /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		E5B33761290E71A600467404 /* NumberPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberPickerView.swift; sourceTree = "<group>"; };
 		E5B33767290EA2FA00467404 /* RMBaseTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMBaseTextField.swift; sourceTree = "<group>"; };
 		E5B3376C290F64D800467404 /* RoomSpecCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomSpecCell.swift; sourceTree = "<group>"; };
@@ -942,8 +940,6 @@
 		E5DEFD8A291F3ACC0064E2C8 /* Call */ = {
 			isa = PBXGroup;
 			children = (
-				E59B8316291A259500F02CEC /* CallCell.swift */,
-				E59B8317291A259500F02CEC /* CallCell.xib */,
 				E5DEFD8B291F3AF60064E2C8 /* CUCallCell.swift */,
 				E5DEFD8C291F3AF60064E2C8 /* CUCallCell.xib */,
 				E5DEFD8F291F3B0A0064E2C8 /* OUCallCell.swift */,
@@ -1035,6 +1031,7 @@
 				E5604FE82918F03F007AE655 /* Candidate.swift */,
 				E5EEE2142913B26B00CAAE84 /* ChatRoom.swift */,
 				E5EEE2162913B2B800CAAE84 /* Message.swift */,
+				E5B12099294327DC004E65AB /* ChatCell.swift */,
 			);
 			path = Chat;
 			sourceTree = "<group>";
@@ -1178,7 +1175,6 @@
 				E5EEE21E2913B4F900CAAE84 /* ChatRoomCell.xib in Resources */,
 				E5E64C93290E3D3E00F07286 /* Home.storyboard in Resources */,
 				E5EEE1F8291214C300CAAE84 /* Explore.storyboard in Resources */,
-				E59B8319291A259500F02CEC /* CallCell.xib in Resources */,
 				E5DEEEB52921150A00A649C1 /* Reservation.json in Resources */,
 				E593F014291012DF00B35550 /* OtherFeeHeaderCell.xib in Resources */,
 				E597817C29375E5500ED8903 /* Assets.xcassets in Resources */,
@@ -1334,6 +1330,7 @@
 				E5B018AA2915690C00A09788 /* CUTextCell.swift in Sources */,
 				E5DEFD9E291F81DE0064E2C8 /* BookingPeriodCell.swift in Sources */,
 				E579195B293C30CE00427F83 /* ChatImageViewController.swift in Sources */,
+				E5B1209A294327DC004E65AB /* ChatCell.swift in Sources */,
 				E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */,
 				E5B984C2291B7CA3006DD8D7 /* Date+Extension.swift in Sources */,
 				E5DEFD99291F5D810064E2C8 /* RoomFeeCell.swift in Sources */,
@@ -1352,7 +1349,6 @@
 				E560135029271DC500EE0083 /* ProfileItemCell.swift in Sources */,
 				E57918E32938809100427F83 /* FurnitureDisplayCell.swift in Sources */,
 				E5872938291CF49800C12E9E /* ProfileViewController.swift in Sources */,
-				E59B8318291A259500F02CEC /* CallCell.swift in Sources */,
 				E5604FE52918EDD3007AE655 /* Config.swift in Sources */,
 				E597817929374EBB00ED8903 /* MeasureViewController.swift in Sources */,
 				E5B1209829423007004E65AB /* Region.swift in Sources */,
