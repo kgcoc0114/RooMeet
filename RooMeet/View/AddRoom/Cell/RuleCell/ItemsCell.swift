@@ -12,8 +12,13 @@ protocol ItemsCellDelegate: AnyObject {
     func itemsCell(cell: ItemsCell, selectedTags: [String])
 }
 
-
 class ItemsCell: UICollectionViewCell {
+    var rules: [String] = RMConstants.shared.roomHighLights
+    + RMConstants.shared.roomCookingRules
+    + RMConstants.shared.roomElevatorRules
+    + RMConstants.shared.roomBathroomRules
+    + RMConstants.shared.roomPetsRules
+
     var tags: [String] = []
     var ruleType: String = ""
     var previousSelection: UInt?
@@ -36,6 +41,10 @@ class ItemsCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         tagView.delegate = self
+
+        if let tmpRemoveIndex = self.rules.firstIndex(of: "可議") {
+            self.rules.remove(at: tmpRemoveIndex)
+        }
     }
 
     func configureTitleInDetailPage() {
@@ -127,6 +136,20 @@ extension ItemsCell: RoomDetailCell {
             lightColor: data.lightColor,
             mainLightBackgroundColor: UIColor.white,
             enableTagSelection: false)
+    }
+}
+
+extension ItemsCell: IntroDataCell {
+    func configure(for introScenario: IntroScenario) {
+        configureTagView(
+            ruleType: "要求",
+            tags: self.rules,
+            selectedTags: introScenario.user?.rules ?? [],
+            mainColor: UIColor.mainColor,
+            lightColor: UIColor.mainLightColor,
+            mainLightBackgroundColor: UIColor.mainBackgroundColor,
+            enableTagSelection: true
+        )
     }
 }
 

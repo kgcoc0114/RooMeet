@@ -36,9 +36,20 @@ extension UserDefaults {
         id = "testUser"
         birthday = Date()
         gender = 2
+        name = "User Name"
         profilePhoto = "empty"
         favoriteCounty = "臺北市"
         favoriteTown = "中正區"
         rules = []
+    }
+
+    static func update(user: User) {
+        birthday = user.birthday ?? Date()
+        gender = user.gender ?? 2
+        name = user.name ?? "User Name"
+        profilePhoto = user.profilePhoto ?? "empty"
+        favoriteCounty = user.favoriteCounty ?? "臺北市"
+        favoriteTown = user.favoriteTown ?? "中正區"
+        rules = user.rules ?? []
     }
 }

@@ -5,9 +5,13 @@
 //  Created by kgcoc on 2022/12/7.
 //
 
-import Foundation
+import UIKit
 
-enum IntroScenario {
+protocol IntroDataCell: UICollectionViewCell {
+    func configure(for introScenario: IntroScenario)
+}
+
+enum IntroScenario: Hashable {
     case create(user: User)
     case edit(user: User)
 
@@ -43,7 +47,10 @@ enum IntroScenario {
         case .create:
             return ""
         case .edit(let user):
-            return user.favoriteCounty == nil ? "" : "\(user.favoriteCounty!)\(user.favoriteTown!)"
+            guard
+                let favoriteCounty = user.favoriteCounty,
+                let favoriteTown = user.favoriteTown else { return "" }
+            return "\(favoriteCounty)\(favoriteTown)"
         }
     }
 
@@ -80,6 +87,38 @@ enum IntroScenario {
             return nil
         case .edit(let user):
             return user
+        }
+    }
+
+    var dismissBtnStatus: Bool {
+        switch self {
+        case .create:
+            return true
+        case .edit:
+            return false
+        }
+    }
+}
+
+enum IntroItem: Hashable {
+    case main(IntroScenario)
+    case rules(IntroScenario)
+
+    var cellIdentifier: String {
+        switch self {
+        case .main:
+            return IntroCell.reuseIdentifier
+        case .rules:
+            return ItemsCell.reuseIdentifier
+        }
+    }
+
+    var introScenario: IntroScenario {
+        switch self {
+        case .main(let introScenario):
+            return introScenario
+        case .rules(let introScenario):
+            return introScenario
         }
     }
 }

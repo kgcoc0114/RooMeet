@@ -14,7 +14,7 @@ protocol IntroCellDelegate: AnyObject {
 }
 
 class IntroCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var imageButton: UIButton! {
         didSet {
             imageButton.setImage(UIImage.asset(.refresh), for: .normal)
@@ -151,16 +151,16 @@ class IntroCell: UICollectionViewCell {
         introTextView.delegate = self
     }
 
-    func configureCell(introScenario: IntroScenario) {
-        self.user = introScenario.user
-        nameTextField.text = introScenario.name
-        birthdayTextField.text = introScenario.birthdayString
-        genderSegmentedControl.selectedIndex = introScenario.gender
-        imageView.loadImage(introScenario.profilePhoto, placeHolder: UIImage.asset(.roomeet))
-        regionTextField.text = introScenario.regionString
-        introTextView.text = introScenario.introduction
-        rules = introScenario.rules
-    }
+//    func configureCell(introScenario: IntroScenario) {
+//        self.user = introScenario.user
+//        nameTextField.text = introScenario.name
+//        birthdayTextField.text = introScenario.birthdayString
+//        genderSegmentedControl.selectedIndex = introScenario.gender
+//        imageView.loadImage(introScenario.profilePhoto, placeHolder: UIImage.asset(.roomeet))
+//        regionTextField.text = introScenario.regionString
+//        introTextView.text = introScenario.introduction
+//        rules = introScenario.rules
+//    }
 
     @objc func textFieldDone(_ sender: UIBarButtonItem) {
         self.endEditing(true)
@@ -220,5 +220,18 @@ extension IntroCell: UITextViewDelegate {
         user?.introduction = textView.text
         guard let user = user else { return }
         delegate?.passData(cell: self, data: user)
+    }
+}
+
+extension IntroCell: IntroDataCell {
+    func configure(for introScenario: IntroScenario) {
+        self.user = introScenario.user
+        nameTextField.text = introScenario.name
+        birthdayTextField.text = introScenario.birthdayString
+        genderSegmentedControl.selectedIndex = introScenario.gender
+        imageView.loadImage(introScenario.profilePhoto, placeHolder: UIImage.asset(.roomeet))
+        regionTextField.text = introScenario.regionString
+        introTextView.text = introScenario.introduction
+        rules = introScenario.rules
     }
 }

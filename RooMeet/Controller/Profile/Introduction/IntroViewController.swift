@@ -29,39 +29,43 @@ class IntroViewController: UIViewController {
     enum Section: CaseIterable {
         case main
         case rules
-    }
 
-    enum Item: Hashable {
-        case main(User)
-        case rules(User)
+        var contentInsets: NSDirectionalEdgeInsets {
+            switch self {
+            case .main:
+                return NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 16, trailing: 20)
+            case .rules:
+                return NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 16, trailing: 20)
+            }
+        }
     }
 
     let imagePickerController = UIImagePickerController()
+    lazy var imagePicker: ImagePickerManager = {
+        return ImagePickerManager(presentationController: self)
+    }()
 
     var user: User
-
-    var rules: [String] = RMConstants.shared.roomHighLights
-        + RMConstants.shared.roomCookingRules
-        + RMConstants.shared.roomElevatorRules
-        + RMConstants.shared.roomBathroomRules
-        + RMConstants.shared.roomPetsRules
 
     var completion: ((User) -> Void)?
 
     private var profileImageCell: IntroCell?
     private var profileImage: UIImage?
+    private var profileImageURL: String?
+
     private var favoriteCounty: String?
     private var favoriteTown: String?
-    private var entryType: EntryType?
 
-    typealias IntroDataSource = UICollectionViewDiffableDataSource<Section, Item>
-    typealias IntroSnapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    private let scenario: IntroScenario
+
+    typealias IntroDataSource = UICollectionViewDiffableDataSource<Section, IntroItem>
+    typealias IntroSnapshot = NSDiffableDataSourceSnapshot<Section, IntroItem>
     private var dataSource: IntroDataSource!
 
-    init(entryType: EntryType, user: User? = nil) {
-        self.user = user ?? User(id: UserDefaults.id)
-        super.init(nibName: "IntroViewController", bundle: nil)
-        self.entryType = entryType
+    init(_ scenario: IntroScenario) {
+        self.scenario = scenario
+        self.user = scenario.user ?? User(id: UserDefaults.id)
+        super.init(nibName: String(describing: IntroViewController.self), bundle: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -71,17 +75,13 @@ class IntroViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) {[weak self] user, _ in
-            guard let self = self, let user = user else { return }
-            self.user = user
-        }
-        dismissButton.isHidden = entryType == .new
+        dismissButton.isHidden = scenario.dismissBtnStatus
+        imagePicker.delegate = self
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.tabBarController?.tabBar.isHidden = true
-        fetchUser()
         updateDataSource()
     }
 
@@ -94,57 +94,26 @@ class IntroViewController: UIViewController {
         collectionView.registerCellWithNib(reuseIdentifier: IntroCell.reuseIdentifier, bundle: nil)
         collectionView.registerCellWithNib(reuseIdentifier: ItemsCell.reuseIdentifier, bundle: nil)
 
-        dataSource = IntroDataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
-            guard let self = self else { return UICollectionViewCell() }
-            switch item {
-            case .main(let data):
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: IntroCell.reuseIdentifier,
-                    for: indexPath) as? IntroCell else {
-                    return UICollectionViewCell()
-                }
-                cell.delegate = self
-
-                let profilePhoto = UserDefaults.profilePhoto
-                if profilePhoto != "empty" {
-                    cell.imageView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
-                } else {
-                    cell.imageView.image = UIImage.asset(.roomeet)
-                }
-
-                let edit = self.entryType == .edit && self.user != nil
-                var introScenario: IntroScenario = IntroScenario.create(user: self.user)
-                if edit {
-                    introScenario = IntroScenario.edit(user: self.user)
-                }
-                cell.configureCell(introScenario: introScenario)
-                return cell
-            case .rules:
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: ItemsCell.reuseIdentifier,
-                    for: indexPath) as? ItemsCell else {
-                    return UICollectionViewCell()
-                }
-
-                if let tmpRemoveIndex = self.rules.firstIndex(of: "可議") {
-                    self.rules.remove(at: tmpRemoveIndex)
-                }
-
-                cell.configureTagView(
-                    ruleType: "要求",
-                    tags: self.rules,
-                    selectedTags: self.user.rules ?? [],
-                    mainColor: UIColor.mainColor,
-                    lightColor: UIColor.mainLightColor,
-                    mainLightBackgroundColor: UIColor.mainBackgroundColor,
-                    enableTagSelection: true
-                )
-                cell.delegate = self
-                return cell
-            }
-        }
-
         collectionView.collectionViewLayout = configureLayout()
+
+        dataSource = IntroDataSource(collectionView: collectionView) { collectionView, indexPath, item in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: item.cellIdentifier,
+                for: indexPath) as? IntroDataCell
+            else {
+                return UICollectionViewCell()
+            }
+
+            cell.configure(for: item.introScenario)
+
+            switch item {
+            case .main:
+                (cell as? IntroCell)?.delegate = self
+            case .rules:
+                (cell as? ItemsCell)?.delegate = self
+            }
+            return cell
+        }
     }
 
     private func fetchUser() {
@@ -160,37 +129,22 @@ class IntroViewController: UIViewController {
             saveData(url: nil)
             return
         }
-        uploadImages(image: profileImage)
+
+        uploadImages(image: profileImage) { [weak self] profileImageURL in
+            guard
+                let self = self,
+                let profileImageURL = profileImageURL
+            else {
+                RMProgressHUD.showFailure(text: "傳送圖片出現問題")
+                return
+            }
+
+            self.saveData(url: profileImageURL)
+        }
     }
 
     @IBAction func dismissAction(_ sender: Any) {
         dismiss(animated: true)
-    }
-
-    func updateUserDefault(user: User) {
-        if let rules = user.rules {
-            UserDefaults.rules = rules
-        }
-
-        if let name = user.name {
-            UserDefaults.name = name
-        }
-
-        if let birthday = user.birthday {
-            UserDefaults.birthday = birthday
-        }
-
-        if let profilePhoto = user.profilePhoto {
-            UserDefaults.profilePhoto = profilePhoto
-        }
-
-        if let favoriteCounty = user.favoriteCounty {
-            UserDefaults.favoriteCounty = favoriteCounty
-        }
-
-        if let favoriteTown = user.favoriteTown {
-            UserDefaults.favoriteTown = favoriteTown
-        }
     }
 }
 
@@ -198,34 +152,19 @@ class IntroViewController: UIViewController {
 extension IntroViewController {
     private func configureLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { sectionIndex, _ in
-            switch Section.allCases[sectionIndex] {
-            case .main:
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .estimated(30))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(30))
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .estimated(30))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 16, trailing: 20)
-                return section
-            case .rules:
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .estimated(30))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .estimated(30))
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
 
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .estimated(30))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 1)
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 16, trailing: 20)
-                return section
-            }
+            let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets = Section.allCases[sectionIndex].contentInsets
+            return section
         }
     }
 }
@@ -233,15 +172,15 @@ extension IntroViewController {
 // MARK: - Snapshot
 extension IntroViewController {
     private func updateDataSource() {
-//        guard let user = user else { return }
         var newSnapshot = IntroSnapshot()
         newSnapshot.appendSections([.main, .rules])
-        newSnapshot.appendItems([.main(user)], toSection: .main)
-        newSnapshot.appendItems([.rules(user)], toSection: .rules)
+        newSnapshot.appendItems([.main(scenario)], toSection: .main)
+        newSnapshot.appendItems([.rules(scenario)], toSection: .rules)
         dataSource.apply(newSnapshot)
     }
 }
 
+// MARK: - Intro Data Delegate
 extension IntroViewController: IntroCellDelegate {
     func passData(cell: IntroCell, data: User) {
         user = data
@@ -252,7 +191,8 @@ extension IntroViewController: IntroCellDelegate {
         let regionPickerVC = LocationPickerViewController()
         regionPickerVC.modalPresentationStyle = .overCurrentContext
 
-        regionPickerVC.completion = { [self] county, town in
+        regionPickerVC.completion = { [weak self] county, town in
+            guard let self = self else { return }
             cell.county = county
             cell.town = town
             self.user.favoriteCounty = county
@@ -263,97 +203,39 @@ extension IntroViewController: IntroCellDelegate {
 
     func didClickImageView(_ cell: IntroCell) {
         profileImageCell = cell
-        imagePickerController.delegate = self
-
-        let imagePickerAlertController = UIAlertController(
-            title: "上傳圖片",
-            message: "請選擇要上傳的圖片",
-            preferredStyle: .actionSheet
-        )
-
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { [weak self] _ in
+        DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                self.imagePickerController.sourceType = .photoLibrary
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
+            self.imagePicker.present(from: cell)
         }
-
-        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                self.imagePickerController.sourceType = .camera
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
-        }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            imagePickerAlertController.dismiss(animated: true, completion: nil)
-        }
-
-        imagePickerAlertController.addAction(imageFromLibAction)
-        imagePickerAlertController.addAction(imageFromCameraAction)
-        imagePickerAlertController.addAction(cancelAction)
-
-        present(imagePickerAlertController, animated: true, completion: nil)
     }
 }
 
-
-extension IntroViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true)
+// MARK: - Profile Image Picker Delegate
+extension IntroViewController: ImagePickerManagerDelegate {
+    func imagePickerController(didSelect: UIImage?) {
+        guard let image = didSelect else { return }
+        profileImageCell?.imageView.image = image
+        profileImage = image
     }
+}
 
-    func imagePickerController(
-        _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
-    ) {
-        if let pickedImage = info[.originalImage] as? UIImage {
-            guard let cell = profileImageCell else {
+// MARK: - Save Data
+extension IntroViewController {
+    private func uploadImages(image: UIImage, completion: @escaping ((URL?) -> Void)) {
+        FIRStorageService.shared.uploadImage(image: image, path: FIRStorageEndpoint.profile.path) { imageURL, _ in
+            guard
+                let imageURL = imageURL else {
+                completion(nil)
                 return
             }
-
-            cell.imageView.image = pickedImage
-            profileImage = pickedImage
-        }
-
-        picker.dismiss(animated: true)
-    }
-
-    private func uploadImages(image: UIImage) {
-        DispatchQueue.global().async {
-            let uniqueString = NSUUID().uuidString
-            let storageRef = Storage.storage().reference(withPath: "Profile").child("\(uniqueString).png")
-            if let uploadData = image.scale(scaleFactor: 0.1).jpegData(compressionQuality: 0.1) {
-                storageRef.putData(uploadData) { [weak self] _, error in
-                    if let error = error {
-                        // TODO: Error Handle
-                        print("Error: \(error.localizedDescription)")
-                        return
-                    }
-
-                    storageRef.downloadURL { [weak self] url, _ in
-                        guard let downloadURL = url else {
-                            return
-                        }
-                        print("Photo Url: \(downloadURL)")
-                        print(Thread.current)
-                        self?.saveData(url: downloadURL)
-                    }
-                }
-            }
+            completion(imageURL)
         }
     }
-
 
     private func saveData(url: URL?) {
-//        guard var user = user else { return }
-
         let userRef = FirestoreEndpoint.user.colRef.document(user.id)
 
         var updateData: [AnyHashable: Any]
-
 
         updateData = [
             "rules": user.rules as Any,
@@ -379,47 +261,30 @@ extension IntroViewController: UIImagePickerControllerDelegate, UINavigationCont
         }
 
         userRef.updateData(updateData)
-        updateUserDefault(user: user)
+
+        UserDefaults.update(user: user)
+
         completion?(user)
-        if entryType == .new {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            guard let RMTabBarVC = storyBoard.instantiateViewController(
-                withIdentifier: "RMTabBarController") as? RMTabBarController
+
+        switch scenario {
+        case .create:
+            guard let RMTabBarVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: RMTabBarController.self)
+            ) as? RMTabBarController
             else {
                 return
             }
             UIApplication.shared.windows.first?.rootViewController = RMTabBarVC
             UIApplication.shared.windows.first?.makeKeyAndVisible()
             RMProgressHUD.showSuccess()
-        } else {
+        case .edit:
             backToRoot(completion: nil)
             RMProgressHUD.showSuccess()
         }
     }
 }
 
-extension UIViewController {
-    func backToRoot(completion: (() -> Void)? = nil) {
-        if presentingViewController != nil {
-            let superVC = presentingViewController
-            dismiss(animated: false, completion: nil)
-            superVC?.backToRoot(completion: completion)
-            return
-        }
-
-        if let tabbarVC = self as? UITabBarController {
-            tabbarVC.selectedViewController?.backToRoot(completion: completion)
-            return
-        }
-
-        if let navigateVC = self as? UINavigationController {
-            navigateVC.popToRootViewController(animated: false)
-        }
-
-        completion?()
-    }
-}
-
+// MARK: - Tag Delegate
 extension IntroViewController: ItemsCellDelegate {
     func itemsCell(cell: ItemsCell, selectedTags: [String]) {
         user.rules = selectedTags

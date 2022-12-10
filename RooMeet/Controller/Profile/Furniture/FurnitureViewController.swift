@@ -190,7 +190,7 @@ extension FurnitureViewController: UIImagePickerControllerDelegate, UINavigation
                 if error != nil {
                     RMProgressHUD.showFailure(text: "上傳圖片有誤")
                 } else {
-                    self.furniture.imageURL = url
+                    self.furniture.imageURL = url?.absoluteString ?? nil
                     self.upsertData()
                 }
             }

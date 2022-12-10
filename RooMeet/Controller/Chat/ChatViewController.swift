@@ -356,7 +356,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                 if error != nil {
                     RMProgressHUD.showFailure(text: "傳送圖片出現問題")
                 } else {
-                    self.sendMessage(content: imageURL, messageType: .image)
+                    self.sendMessage(content: imageURL.absoluteString, messageType: .image)
                 }
             }
         }
