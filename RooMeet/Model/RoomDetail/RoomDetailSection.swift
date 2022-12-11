@@ -248,6 +248,7 @@ enum RoomDetailItem: Hashable {
         }
     }
 
+    
     var tags: [String] {
         switch self {
         case .highLight(let room):

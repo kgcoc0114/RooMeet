@@ -27,7 +27,21 @@ class PostImageCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
+
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         delegate?.didClickImageView(self)
+    }
+}
+
+extension PostImageCell: PostCell {
+    func configure(container: RMCellContainer) {
+        guard
+            let container = (container as? PostDataContainer),
+            let indexPath = container.indexPath else { return }
+        imageView.image = container.postScenario.roomDisplayImages[indexPath.item]
     }
 }

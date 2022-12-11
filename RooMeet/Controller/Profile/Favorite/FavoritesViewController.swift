@@ -151,7 +151,9 @@ class FavoritesViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             if self.entryPage == .ownPost {
-                let postViewController = PostViewController(entryType: .new, data: nil)
+                let postViewController = PostViewController(postScenario: PostScenario.create)
+
+//                (entryType: .new, data: nil)
                 self.navigationController?.pushViewController(postViewController, animated: true)
             } else {
                 self.navigationController?.tabBarController?.selectedIndex = 0
@@ -200,7 +202,8 @@ extension FavoritesViewController: UICollectionViewDelegate {
             let detailViewController = RoomDetailViewController(room: room, user: user)
             navigationController?.pushViewController(detailViewController, animated: true)
         } else {
-            let postViewController = PostViewController(entryType: .edit, data: room)
+            let postViewController = PostViewController(postScenario: PostScenario.edit(room))
+
             navigationController?.pushViewController(postViewController, animated: true)
         }
     }

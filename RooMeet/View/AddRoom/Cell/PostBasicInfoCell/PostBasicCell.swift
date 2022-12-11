@@ -16,7 +16,6 @@ struct PostBasicData {
     var parlor: Int?
     var leaseMonth: Int?
     var movinDate: Date?
-    var gender: Int?
 }
 
 protocol PostBasicCellDelegate: AnyObject {
@@ -106,11 +105,11 @@ class PostBasicCell: UICollectionViewCell {
         }
     }
 
-    @IBOutlet weak var genderSegmentControl: UISegmentedControl! {
-        didSet {
-            postBasicData.gender = genderSegmentControl.selectedSegmentIndex
-        }
-    }
+//    @IBOutlet weak var genderSegmentControl: UISegmentedControl! {
+//        didSet {
+//            postBasicData.gender = genderSegmentControl.selectedSegmentIndex
+//        }
+//    }
 
     private var parlor: Int = 0
     private var room: Int = 0
@@ -141,41 +140,41 @@ class PostBasicCell: UICollectionViewCell {
         delegate?.passData(cell: self, data: postBasicData)
     }
 
-    func configureCell(data: PostBasicData?) {
-        guard let basicData = data else {
-            return
-        }
-        postBasicData = basicData
-
-        titleTextField.text = postBasicData.title
-        addressTextField.text = postBasicData.address
-
-        if let county = postBasicData.county,
-            let town = postBasicData.town {
-            regionSelectView.text = "\(county)\(town)"
-        }
-
-        if let parlor = postBasicData.parlor {
-            parlorCountView.quantityField.text = "\(parlor)"
-        }
-
-        if let room = postBasicData.room {
-            roomCountView.quantityField.text = "\(room)"
-        }
-
-        if let movinDate = postBasicData.movinDate {
-            datePickerTextField.text = RMDateFormatter.shared.dateString(date: movinDate)
-        }
-
-        if let leaseMonth = postBasicData.leaseMonth {
-            if leaseMonth >= 12 {
-                let year = leaseMonth / 12
-                leasePickerView.quantityField.text = "\(year) 年"
-            } else {
-                leasePickerView.quantityField.text = "\(leaseMonth) 月"
-            }
-        }
-    }
+//    func configureCell(data: PostBasicData?) {
+//        guard let basicData = data else {
+//            return
+//        }
+//        postBasicData = basicData
+//
+//        titleTextField.text = postBasicData.title
+//        addressTextField.text = postBasicData.address
+//
+//        if let county = postBasicData.county,
+//            let town = postBasicData.town {
+//            regionSelectView.text = "\(county)\(town)"
+//        }
+//
+//        if let parlor = postBasicData.parlor {
+//            parlorCountView.quantityField.text = "\(parlor)"
+//        }
+//
+//        if let room = postBasicData.room {
+//            roomCountView.quantityField.text = "\(room)"
+//        }
+//
+//        if let movinDate = postBasicData.movinDate {
+//            datePickerTextField.text = RMDateFormatter.shared.dateString(date: movinDate)
+//        }
+//
+//        if let leaseMonth = postBasicData.leaseMonth {
+//            if leaseMonth >= 12 {
+//                let year = leaseMonth / 12
+//                leasePickerView.quantityField.text = "\(year) 年"
+//            } else {
+//                leasePickerView.quantityField.text = "\(leaseMonth) 月"
+//            }
+//        }
+//    }
 
     @objc private func movinDateChanged(_ sender: UIDatePicker) {
         postBasicData.movinDate = sender.date
@@ -219,5 +218,23 @@ extension PostBasicCell: NumberPickerViewDelegate {
             postBasicData.parlor = parlor
             delegate?.passData(cell: self, data: postBasicData)
         }
+    }
+}
+
+extension PostBasicCell: PostCell {
+    func configure(container: RMCellContainer) {
+        guard let container = (container as? PostDataContainer) else {
+            return
+        }
+
+        postBasicData = container.postScenario.postBasicData ?? PostBasicData()
+        let postScenario = container.postScenario
+        titleTextField.text = postScenario.title
+        addressTextField.text = postScenario.address
+        regionSelectView.text = postScenario.region
+        parlorCountView.quantityField.text = postScenario.parlor
+        roomCountView.quantityField.text = postScenario.roomCount
+        datePickerTextField.text = postScenario.movinDate
+        leasePickerView.quantityField.text = postScenario.leaseMonth
     }
 }
