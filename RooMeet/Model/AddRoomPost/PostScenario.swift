@@ -101,21 +101,21 @@ enum PostScenario: Hashable {
         }
     }
 
-    var editFeeScenario: EditFeeScenario {
-        let billInfo = billInfo ?? BillInfo(
-            water: FeeDetail(),
-            electricity: FeeDetail(),
-            cable: FeeDetail(),
-            internet: FeeDetail(),
-            management: FeeDetail()
-        )
-        switch self {
-        case .create:
-            return EditFeeScenario.create(billInfo)
-        case .edit:
-            return EditFeeScenario.edit(billInfo)
-        }
-    }
+//    var editFeeScenario: EditFeeScenario {
+//        let billInfo = billInfo ?? BillInfo(
+//            water: FeeDetail(),
+//            electricity: FeeDetail(),
+//            cable: FeeDetail(),
+//            internet: FeeDetail(),
+//            management: FeeDetail()
+//        )
+//        switch self {
+//        case .create:
+//            return EditFeeScenario.create(billInfo)
+//        case .edit:
+//            return EditFeeScenario.edit(billInfo)
+//        }
+//    }
 
     var postBasicData: PostBasicData? {
         switch self {

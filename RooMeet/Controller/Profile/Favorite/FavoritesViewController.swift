@@ -151,7 +151,7 @@ class FavoritesViewController: UIViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             if self.entryPage == .ownPost {
-                let postViewController = PostViewController(postScenario: PostScenario.create)
+                let postViewController = PostViewController(entryType: .new, data: nil)
 
 //                (entryType: .new, data: nil)
                 self.navigationController?.pushViewController(postViewController, animated: true)
@@ -195,6 +195,8 @@ extension FavoritesViewController {
 // MARK: - UICollectionViewDelegate
 extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        RMProgressHUD.show()
+
         guard
             let room = dataSource.itemIdentifier(for: indexPath)
         else { return }
@@ -202,9 +204,9 @@ extension FavoritesViewController: UICollectionViewDelegate {
             let detailViewController = RoomDetailViewController(room: room, user: user)
             navigationController?.pushViewController(detailViewController, animated: true)
         } else {
-            let postViewController = PostViewController(postScenario: PostScenario.edit(room))
-
+            let postViewController = PostViewController(entryType: .edit, data: room)
             navigationController?.pushViewController(postViewController, animated: true)
+            RMProgressHUD.dismiss()
         }
     }
 }

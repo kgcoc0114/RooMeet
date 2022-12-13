@@ -9,6 +9,8 @@ import UIKit
 
 protocol RoomSpecCellDelegate: AnyObject {
     func didChangeData(_ cell: RoomSpecCell, data: RoomSpec)
+    func addSpec(_ cell: RoomSpecCell)
+    func deleteSpec(_ cell: RoomSpecCell)
 }
 
 class RoomSpecCell: UICollectionViewCell {
@@ -116,25 +118,25 @@ class RoomSpecCell: UICollectionViewCell {
         segmentControl.selectedIndex = 0
     }
 
-//    func configureLayout(roomSpec data: RoomSpec, indexPath: IndexPath) {
-//        self.indexPath = indexPath
-//        self.roomSpec = data
-//        if let roomSpec = self.roomSpec {
-//            priceTextField.text = setTextFieldDisplay(data: roomSpec.price)
-//            spaceTextField.text = setTextFieldDisplay(data: roomSpec.space)
-//            if let dataRoomType = data.roomType,
-//                let roomType = RoomType(rawValue: dataRoomType),
-//                let roomTypeIndex = RoomType.allCases.firstIndex(of: roomType) {
-//                segmentControl.selectedIndex = roomTypeIndex
-//            }
-//        }
-//
-//        if indexPath.item == 0 {
-//            setButtonStatus(deleteIsHidden: true, addIsHidden: false)
-//        } else {
-//            setButtonStatus(deleteIsHidden: false, addIsHidden: false)
-//        }
-//    }
+    func configureLayout(roomSpec data: RoomSpec, indexPath: IndexPath) {
+        self.indexPath = indexPath
+        self.roomSpec = data
+        if let roomSpec = self.roomSpec {
+            priceTextField.text = setTextFieldDisplay(data: roomSpec.price)
+            spaceTextField.text = setTextFieldDisplay(data: roomSpec.space)
+            if let dataRoomType = data.roomType,
+                let roomType = RoomType(rawValue: dataRoomType),
+                let roomTypeIndex = RoomType.allCases.firstIndex(of: roomType) {
+                segmentControl.selectedIndex = roomTypeIndex
+            }
+        }
+
+        if indexPath.item == 0 {
+            setButtonStatus(deleteIsHidden: true, addIsHidden: false)
+        } else {
+            setButtonStatus(deleteIsHidden: false, addIsHidden: false)
+        }
+    }
 
     private func setButtonStatus(deleteIsHidden: Bool, addIsHidden: Bool) {
         deleteButton.isHidden = deleteIsHidden
@@ -167,11 +169,11 @@ class RoomSpecCell: UICollectionViewCell {
     }
 
     @IBAction func addRoomSpecColumn(_ sender: Any) {
-        self.addColumnAction?(self)
+        delegate?.addSpec(self)
     }
 
     @IBAction func delectRoomSpecColumn(_ sender: Any) {
-        self.delectColumnAction?(self)
+        delegate?.deleteSpec(self)
     }
 }
 

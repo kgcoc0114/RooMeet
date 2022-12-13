@@ -140,41 +140,41 @@ class PostBasicCell: UICollectionViewCell {
         delegate?.passData(cell: self, data: postBasicData)
     }
 
-//    func configureCell(data: PostBasicData?) {
-//        guard let basicData = data else {
-//            return
-//        }
-//        postBasicData = basicData
-//
-//        titleTextField.text = postBasicData.title
-//        addressTextField.text = postBasicData.address
-//
-//        if let county = postBasicData.county,
-//            let town = postBasicData.town {
-//            regionSelectView.text = "\(county)\(town)"
-//        }
-//
-//        if let parlor = postBasicData.parlor {
-//            parlorCountView.quantityField.text = "\(parlor)"
-//        }
-//
-//        if let room = postBasicData.room {
-//            roomCountView.quantityField.text = "\(room)"
-//        }
-//
-//        if let movinDate = postBasicData.movinDate {
-//            datePickerTextField.text = RMDateFormatter.shared.dateString(date: movinDate)
-//        }
-//
-//        if let leaseMonth = postBasicData.leaseMonth {
-//            if leaseMonth >= 12 {
-//                let year = leaseMonth / 12
-//                leasePickerView.quantityField.text = "\(year) 年"
-//            } else {
-//                leasePickerView.quantityField.text = "\(leaseMonth) 月"
-//            }
-//        }
-//    }
+    func configureCell(data: PostBasicData?) {
+        guard let basicData = data else {
+            return
+        }
+        postBasicData = basicData
+
+        titleTextField.text = postBasicData.title
+        addressTextField.text = postBasicData.address
+
+        if let county = postBasicData.county,
+            let town = postBasicData.town {
+            regionSelectView.text = "\(county)\(town)"
+        }
+
+        if let parlor = postBasicData.parlor {
+            parlorCountView.quantityField.text = "\(parlor)"
+        }
+
+        if let room = postBasicData.room {
+            roomCountView.quantityField.text = "\(room)"
+        }
+
+        if let movinDate = postBasicData.movinDate {
+            datePickerTextField.text = RMDateFormatter.shared.dateString(date: movinDate)
+        }
+
+        if let leaseMonth = postBasicData.leaseMonth {
+            if leaseMonth >= 12 {
+                let year = leaseMonth / 12
+                leasePickerView.quantityField.text = "\(year) 年"
+            } else {
+                leasePickerView.quantityField.text = "\(leaseMonth) 月"
+            }
+        }
+    }
 
     @objc private func movinDateChanged(_ sender: UIDatePicker) {
         postBasicData.movinDate = sender.date

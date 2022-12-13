@@ -120,4 +120,29 @@ enum PostSection: CaseIterable {
             return section
         }
     }
+
+    func getSelectedTags(room: Room?) -> [String] {
+        guard let room = room else {
+            return []
+        }
+
+        switch self {
+        case .highLight:
+            return room.roomHighLights
+        case .gender:
+            return room.roomGenderRules
+        case .pet:
+            return room.roomPetsRules
+        case .elevator:
+            return room.roomElevatorRules
+        case .cooking:
+            return room.roomCookingRules
+        case .bathroom:
+            return room.roomBathroomRules
+        case .features:
+            return room.roomFeatures
+        default:
+            return []
+        }
+    }
 }

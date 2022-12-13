@@ -9,6 +9,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
+
 struct Room: Codable, Hashable {
     var roomID: String?
     var userID: String
@@ -38,7 +39,7 @@ struct Room: Codable, Hashable {
     var parlor: Int
     var movinDate: Date
     var otherDescriction: String?
-    var isDeleted: Bool = false
+    var isDeleted = false
 
     var roomMinPrice: Int?
     var billInfoList: [RoomDetailFee]? {

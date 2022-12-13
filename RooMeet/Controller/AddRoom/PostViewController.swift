@@ -21,7 +21,11 @@ class PostViewController: UIViewController {
 
     var billInfo: BillInfo?
 
-    lazy var imagePickerController = UIImagePickerController()
+    lazy var imagePicker: ImagePickerManager = {
+        let imagePicker = ImagePickerManager(presentationController: self)
+        imagePicker.delegate = self
+        return imagePicker
+    }()
 
     var postBasicData: PostBasicData?
 
@@ -29,7 +33,12 @@ class PostViewController: UIViewController {
 
     var roomImagesUrl: [URL] = []
     var oriRoomImagesUrl: [URL] = []
-    var roomImages: [UIImage] = []
+    var roomImages: [UIImage] = [
+        UIImage.asset(.add),
+        UIImage.asset(.add),
+        UIImage.asset(.add)
+    ]
+    var roomImagesStatus = [false, false, false]
 
     var otherDescriction: String?
     var latitude: Double?
@@ -38,11 +47,10 @@ class PostViewController: UIViewController {
     var createdTime = FirebaseService.shared.currentTimestamp
     var isDeleted = false
     var room: Room?
-    let postScenario: PostScenario
 
     @IBOutlet weak var submitButton: UIButton! {
         didSet {
-            submitButton.setTitle(postScenario.pageTitle + PostVCString.submit.rawValue, for: .normal)
+            submitButton.setTitle(entryType.title + PostVCString.submit.rawValue, for: .normal)
             submitButton.backgroundColor = UIColor.mainColor
             submitButton.tintColor = UIColor.mainBackgroundColor
             submitButton.layer.cornerRadius = RMConstants.shared.buttonCornerRadius
@@ -51,10 +59,6 @@ class PostViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            collectionView.dataSource = self
-            collectionView.delegate = self
-            collectionView.collectionViewLayout = configureLayout()
-
             collectionView.registerCellWithNib(reuseIdentifier: PostBasicCell.reuseIdentifier, bundle: nil)
             collectionView.registerCellWithNib(reuseIdentifier: RoomSpecCell.reuseIdentifier, bundle: nil)
             collectionView.registerCellWithNib(reuseIdentifier: OtherFeeCell.reuseIdentifier, bundle: nil)
@@ -63,21 +67,21 @@ class PostViewController: UIViewController {
             collectionView.registerCellWithNib(reuseIdentifier: ItemsCell.reuseIdentifier, bundle: nil)
             collectionView.registerCellWithNib(reuseIdentifier: OtherFeeHeaderCell.reuseIdentifier, bundle: nil)
             collectionView.registerCellWithNib(reuseIdentifier: FeeDetailCell.reuseIdentifier, bundle: nil)
+
+            collectionView.dataSource = self
+            collectionView.delegate = self
+            collectionView.collectionViewLayout = configureLayout()
+            collectionView.keyboardDismissMode = .interactive
         }
     }
 
+    var entryType: EntryType = .new
 
-    init(postScenario: PostScenario) {
-        self.postScenario = postScenario
-
+    init(entryType: EntryType, data: Room?) {
         super.init(nibName: "PostViewController", bundle: nil)
 
-        switch postScenario {
-        case .create:
-            break
-        case .edit(let room):
-            self.room = room
-        }
+        self.entryType = entryType
+        self.room = data
     }
 
     required init?(coder: NSCoder) {
@@ -86,8 +90,9 @@ class PostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.keyboardDismissMode = .interactive
-        navigationItem.title = postScenario.pageTitle + PostVCString.title.rawValue
+        imagePicker.delegate = self
+
+        navigationItem.title = entryType.title + PostVCString.title.rawValue
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
@@ -95,16 +100,16 @@ class PostViewController: UIViewController {
             target: self,
             action: #selector(backAction))
 
-        switch postScenario {
-        case .create:
-            break
-        case .edit:
+        if entryType == .edit {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 image: UIImage.asset(.trash).withRenderingMode(.alwaysOriginal),
                 style: .plain,
                 target: self,
                 action: #selector(deletePostAction))
-            configureData(postScenario: postScenario)
+        }
+
+        if let room = room {
+            configureData(data: room)
         }
     }
 
@@ -118,46 +123,58 @@ class PostViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
 
-    func configureData(postScenario: PostScenario) {
-        roomSpecList = postScenario.roomSpecList
-        roomHighLights = postScenario.roomHighLights
-        roomGenderRules = postScenario.roomGenderRules
-        roomPetsRules = postScenario.roomPetsRules
-        roomElevatorRules = postScenario.roomElevatorRules
-        roomCookingRules = postScenario.roomCookingRules
-        roomFeatures = postScenario.roomFeatures
-        roomBathroomRules = postScenario.roomBathroomRules
-        featureSelection = postScenario.roomFeatures
-        billInfo = postScenario.billInfo
-        postBasicData = postScenario.postBasicData
-        oriRoomImagesUrl = postScenario.roomImagesUrl
-        roomImagesUrl = postScenario.roomImagesUrl
-        otherDescriction = postScenario.otherDescriction
-        latitude = postScenario.latitude
-        longitude = postScenario.longitude
-        createdTime = postScenario.createdTime
-        roomImages = postScenario.roomDisplayImages
-    }
+    func configureData(data: Room) {
+        if entryType == .edit {
+            roomSpecList = data.rooms
+            roomHighLights = data.roomHighLights
+            roomGenderRules = data.roomGenderRules
+            roomPetsRules = data.roomPetsRules
+            roomElevatorRules = data.roomElevatorRules
+            roomCookingRules = data.roomCookingRules
+            roomFeatures = data.roomFeatures
+            roomBathroomRules = data.roomBathroomRules
+            featureSelection = data.roomFeatures
+            billInfo = data.billInfo
+            postBasicData = PostBasicData(
+                title: data.title,
+                county: data.county,
+                town: data.town,
+                address: data.address,
+                room: data.room,
+                parlor: data.parlor,
+                leaseMonth: data.leaseMonth,
+                movinDate: data.movinDate
+            )
+            oriRoomImagesUrl = data.roomImages
+            roomImagesUrl = data.roomImages
+            otherDescriction = data.otherDescriction
+            latitude = data.lat
+            longitude = data.long
+            postalCode = data.postalCode
+            createdTime = data.createdTime
 
-    private func isSavable() -> Bool {
-        guard let postBasicData = postBasicData else {
-            return false
+            data.roomImages.enumerated().forEach { index, url in
+                DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    if let imageData = try? Data(contentsOf: url) {
+                        if let loadedImage = UIImage(data: imageData) {
+                            self.roomImages[index] = loadedImage
+                        }
+                    }
+                }
+            }
         }
-
-        if postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
-             roomSpecList.isEmpty {
-            return false
-        }
-        return true
     }
 
     @IBAction func submitAction(_ sender: Any) {
+        RMProgressHUD.show()
+
         var alert = false
         guard let postBasicData = postBasicData else {
             showAlert()
             return
         }
-        
+
         if postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
             roomSpecList.isEmpty {
             showAlert()
@@ -168,6 +185,7 @@ class PostViewController: UIViewController {
                     showAlert(message: PostVCString.roomSpecAlertMessage.rawValue)
                 }
             }
+
             if alert == false {
                 if roomImages.isEmpty {
                     room?.roomImages = []
@@ -246,64 +264,136 @@ extension PostViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let section = PostSection.allCases[indexPath.section]
-        guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: section.cellIdentifier,
-            for: indexPath) as? PostCell else {
-            print("ERROR: - PostCell Generate error")
-            return UICollectionViewCell()
-        }
-
-        cell.configure(container: PostDataContainer(
-            postScenario: postScenario,
-            section: section,
-            indexPath: indexPath
-        ))
-
-
-        switch section{
+        switch PostSection.allCases[indexPath.section] {
         case .basic:
-            (cell as? PostBasicCell)?.delegate = self
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: PostBasicCell.reuseIdentifier,
+                for: indexPath) as? PostBasicCell else {
+                fatalError("PostBasicCell Error")
+            }
+            if entryType == .edit {
+                cell.configureCell(data: postBasicData)
+            }
+            cell.delegate = self
+            return cell
         case .roomSpec:
-            congifureRoomSpecCell(cell: cell)
+            return makeRoomSpecCell(collectionView: collectionView, indexPath: indexPath)
         case .images:
-            (cell as? PostImageCell)?.delegate = self
+            return makePostImageCell(collectionView: collectionView, indexPath: indexPath)
         case .feeHeader:
-            (cell as? OtherFeeHeaderCell)?.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
+            guard
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier,
+                    for: indexPath) as? OtherFeeHeaderCell,
+                let tag = PostSection.allCases.firstIndex(of: .feeHeader)
+            else {
+                fatalError("OtherFeeHeaderCell Error")
+            }
+
+            cell.editAction.tag = tag
+            cell.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
+            cell.titleLabel.text = PostVCString.otherFee.rawValue
+            return cell
         case .feeDetail:
-            (cell as? FeeDetailCell)?.completion = { [unowned self] otherDesc in
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: FeeDetailCell.reuseIdentifier,
+                for: indexPath) as? FeeDetailCell else {
+                fatalError("FeeDetailCell Error")
+            }
+            cell.completion = { [unowned self] otherDesc in
                 self.otherDescriction = otherDesc
             }
+            return cell
         case .highLight, .gender, .pet, .elevator, .cooking, .features, .bathroom:
-            (cell as? ItemsCell)?.delegate = self
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ItemsCell.reuseIdentifier,
+                for: indexPath) as? ItemsCell else {
+                fatalError("OtherFeeHeaderCell Error")
+            }
+
+            let section = PostSection.allCases[indexPath.section]
+            let title = section.title
+            var selectedTags: [String] = []
+
+            switch section {
+            case .highLight:
+                selectedTags = roomHighLights
+            case .gender:
+                selectedTags = roomGenderRules
+            case .pet:
+                selectedTags = roomPetsRules
+            case .elevator:
+                selectedTags = roomElevatorRules
+            case .cooking:
+                selectedTags = roomCookingRules
+            case .bathroom:
+                selectedTags = roomBathroomRules
+            case .features:
+                selectedTags = roomFeatures
+            default:
+                break
+            }
+
+            cell.configureTagView(
+                ruleType: title,
+                tags: PostSection.allCases[indexPath.section].tags,
+                selectedTags: selectedTags,
+                mainColor: UIColor.mainColor,
+                lightColor: UIColor.mainBackgroundColor,
+                mainLightBackgroundColor: .white,
+                enableTagSelection: true
+            )
+            cell.delegate = self
+            return cell
         }
-        return cell
     }
 
-    @objc private func backAction() {
-        navigationController?.popViewController(animated: false)
-    }
+    private func makeRoomSpecCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: RoomSpecCell.reuseIdentifier,
+            for: indexPath
+        ) as? RoomSpecCell else {
+            fatalError("RoomSpecCell Error")
+        }
 
-    private func congifureRoomSpecCell(cell: PostCell) {
-        (cell as? RoomSpecCell)?.delegate = self
+        cell.delegate = self
+        cell.configureLayout(roomSpec: roomSpecList[indexPath.item], indexPath: indexPath)
 
-        (cell as? RoomSpecCell)?.addColumnAction = { [weak self] cell in
+        cell.addColumnAction = { [weak self] cell in
             guard
                 let self = self,
-                let indexPath = self.collectionView.indexPath(for: cell) else { return }
+                let indexPath = collectionView.indexPath(for: cell) else { return }
             let roomSpec = RoomSpec()
             self.roomSpecList.insert(roomSpec, at: indexPath.item + 1)
             self.collectionView.reloadData()
         }
 
-        (cell as? RoomSpecCell)?.delectColumnAction = { [weak self] cell in
+        cell.delectColumnAction = { [weak self] cell in
             guard
                 let self = self,
-                let indexPath = self.collectionView.indexPath(for: cell) else { return }
+                let indexPath = collectionView.indexPath(for: cell) else { return }
 
             self.roomSpecList.remove(at: indexPath.item)
             self.collectionView.reloadData()
         }
+        return cell
+    }
+
+    private func makePostImageCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: PostImageCell.reuseIdentifier,
+            for: indexPath
+        ) as? PostImageCell else {
+            fatalError("PostImageCell Error")
+        }
+
+        cell.imageView.image = roomImages[indexPath.item]
+        cell.delegate = self
+        return cell
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 }
 
@@ -312,12 +402,13 @@ extension PostViewController: UICollectionViewDelegate {
         let postSection = PostSection.allCases[sender.tag]
         switch postSection {
         case .feeHeader:
-            let editFeeVC = EditFeeController(billInfo: billInfo)
+            var editFeeVC: EditFeeController
+
+            editFeeVC = EditFeeController(entryType: entryType, data: billInfo)
 
             editFeeVC.completion = { [weak self] billInfo in
                 self?.billInfo = billInfo
             }
-
             editFeeVC.modalPresentationStyle = .overCurrentContext
             present(editFeeVC, animated: true)
         default:
@@ -329,7 +420,7 @@ extension PostViewController: UICollectionViewDelegate {
 extension PostViewController {
     private func configureLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { sectionIndex, _ in
-            PostSection.allCases[sectionIndex].sectionLayout
+            return PostSection.allCases[sectionIndex].sectionLayout
         }
     }
 }
@@ -355,8 +446,7 @@ extension PostViewController: PostBasicCellDelegate {
         cell.regionSelectView.resignFirstResponder()
         cell.endEditing(true)
         let regionPickerVC = LocationPickerViewController()
-        regionPickerVC.modalPresentationStyle = .overCurrentContext
-        // FIXME:
+
         regionPickerVC.completion = { county, town in
             cell.county = county
             cell.town = town
@@ -367,6 +457,20 @@ extension PostViewController: PostBasicCellDelegate {
 }
 
 extension PostViewController: RoomSpecCellDelegate {
+    func addSpec(_ cell: RoomSpecCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+
+        roomSpecList.insert(RoomSpec(), at: indexPath.item + 1)
+        collectionView.reloadData()
+    }
+
+    func deleteSpec(_ cell: RoomSpecCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+
+        roomSpecList.remove(at: indexPath.item)
+        collectionView.reloadData()
+    }
+
     func didChangeData(_ cell: RoomSpecCell, data: RoomSpec) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
         roomSpecList[indexPath.item] = data
@@ -376,113 +480,42 @@ extension PostViewController: RoomSpecCellDelegate {
 extension PostViewController: PostImageCellDelegate {
     func didClickImageView(_ cell: PostImageCell) {
         waitForUpdateImageCell = cell
-        
-        imagePickerController.delegate = self
-
-        let imagePickerAlertController = UIAlertController(
-            title: "上傳圖片",
-            message: "請選擇要上傳的圖片",
-            preferredStyle: .actionSheet
-        )
-
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                self.imagePickerController.sourceType = .photoLibrary
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
-        }
-        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                self.imagePickerController.sourceType = .camera
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
-        }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            imagePickerAlertController.dismiss(animated: true, completion: nil)
-        }
-
-        imagePickerAlertController.addAction(imageFromLibAction)
-        imagePickerAlertController.addAction(imageFromCameraAction)
-        imagePickerAlertController.addAction(cancelAction)
-
-        present(imagePickerAlertController, animated: true, completion: nil)
+        imagePicker.present(from: cell)
     }
 }
 
 extension PostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true)
-    }
-
-    func imagePickerController(
-        _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
-    ) {
-        // 取得從 UIImagePickerController 選擇的檔案
-        if let pickedImage = info[.originalImage] as? UIImage {
-            waitForUpdateImageCell?.imageView.image = pickedImage
-            guard let cell = self.waitForUpdateImageCell else {
-                return
-            }
-            self.insertRoomImages(cell: cell, image: pickedImage)
-        }
-
-        picker.dismiss(animated: true)
-    }
-
-    private func insertRoomImages(cell: UICollectionViewCell, image: UIImage) {
+    private func updateRoomImages(cell: PostImageCell, image: UIImage) {
         guard let indexPath = collectionView.indexPath(for: cell) else {
             return
         }
-
-        if roomImages.count - 1 < indexPath.item {
-            roomImages.append(image)
-        } else {
-            roomImages[indexPath.item] = image
-        }
-        print(roomImages)
+        roomImages[indexPath.item] = image
+        roomImagesStatus[indexPath.item] = true
     }
 
     private func uploadImages(images: [UIImage]) {
-        RMProgressHUD.show()
         let group = DispatchGroup()
 
         roomImagesUrl = []
 
-        images.forEach { image in
-            group.enter()
-            var uploadData: Data?
+        roomImagesUrl = oriRoomImagesUrl
 
-            let uniqueString = NSUUID().uuidString
-
-            let imageSize = image.getSizeIn(.kilobyte)
-            if imageSize > RMConstants.shared.compressSizeGap {
-                let factor = RMConstants.shared.compressSizeGap / imageSize
-                uploadData = image.jpegData(compressionQuality: factor)
-            } else {
-                uploadData = image.pngData()
-            }
-
-            let storageRef = Storage.storage().reference(withPath: "RoomImages").child("\(uniqueString).png")
-
-            if let uploadData = uploadData {
-                storageRef.putData(uploadData) { [weak self] _, error in
-                    if let error = error {
-                        // TODO: Error Handle
-                        print("Error: \(error.localizedDescription)")
+        roomImagesStatus.enumerated().forEach { index, status in
+            if status && images[index] != UIImage.asset(.add) {
+                group.enter()
+                FIRStorageService.shared.uploadImage(
+                    image: images[index],
+                    path: FIRStorageEndpoint.roomImages.path
+                ) { [weak self] url, _ in
+                    guard let self = self, let url = url else {
                         return
                     }
-
-                    storageRef.downloadURL { [weak self] url, _ in
-                        guard let self = self else { return }
-                        guard let downloadURL = url else {
-                            return
-                        }
-                        self.roomImagesUrl.append(downloadURL)
-                        group.leave()
+                    if self.oriRoomImagesUrl.count > index {
+                        self.roomImagesUrl[index] = url
+                    } else {
+                        self.roomImagesUrl.append(url)
                     }
+                    group.leave()
                 }
             }
         }
@@ -493,7 +526,6 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             self.saveData()
         }
     }
-
 
     private func saveData() {
         guard let postBasicData = postBasicData else {
@@ -529,33 +561,29 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
 
         inputRoom.roomMinPrice = inputRoom.getRoomMinPrice()
 
-        switch postScenario {
-        case .create:
-            FirebaseService.shared.insertRoom(room: inputRoom) { error in
-                RMProgressHUD.dismiss()
-
-                if error != nil {
-                    RMProgressHUD.showFailure()
-                } else {
-                    RMProgressHUD.showSuccess()
-                }
-                self.navigationController?.popViewController(animated: true)
+        if entryType == .new {
+            FirebaseService.shared.insertRoom(room: inputRoom) { [weak self] error in
+                guard let self = self else { return }
+                self.dealWithUpdateResult(error: error)
             }
-        case .edit:
+        } else {
             if let room = room,
-               let roomID = room.roomID {
-                FirebaseService.shared.updateRoomInfo(roomID: roomID, room: inputRoom) { error in
-                    RMProgressHUD.dismiss()
-
-                    if error != nil {
-                        RMProgressHUD.showFailure()
-                    } else {
-                        RMProgressHUD.showSuccess()
-                    }
-                    self.navigationController?.popViewController(animated: true)
+                let roomID = room.roomID {
+                FirebaseService.shared.updateRoomInfo(roomID: roomID, room: inputRoom) { [weak self] error in
+                    guard let self = self else { return }
+                    self.dealWithUpdateResult(error: error)
                 }
             }
         }
+    }
+
+    private func dealWithUpdateResult(error: Error?) {
+        if error != nil {
+            RMProgressHUD.showFailure()
+        } else {
+            RMProgressHUD.showSuccess()
+        }
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -579,5 +607,17 @@ extension PostViewController: ItemsCellDelegate {
         default:
             break
         }
+    }
+}
+
+// MARK: - Profile Image Picker Delegate
+extension PostViewController: ImagePickerManagerDelegate {
+    func imagePickerController(didSelect: UIImage?) {
+        guard
+            let image = didSelect,
+            let waitForUpdateImageCell = waitForUpdateImageCell
+        else { return }
+        waitForUpdateImageCell.imageView.image = image
+        updateRoomImages(cell: waitForUpdateImageCell, image: image)
     }
 }

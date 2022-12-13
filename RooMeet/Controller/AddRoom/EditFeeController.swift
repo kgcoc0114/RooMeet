@@ -7,11 +7,6 @@
 
 import UIKit
 
-enum EditFeeScenario {
-    case create(BillInfo)
-    case edit(BillInfo)
-}
-
 class EditFeeController: UIViewController {
     @IBOutlet weak var dismissButton: UIButton! {
         didSet {
@@ -46,11 +41,13 @@ class EditFeeController: UIViewController {
         management: FeeDetail()
     )
 
-    init(billInfo: BillInfo?) {
-        super.init(nibName: String(describing: EditFeeController.self), bundle: nil)
-        if let billInfo = billInfo {
-            self.billInfo = billInfo
+    init(entryType: EntryType, data: BillInfo?) {
+        super.init(nibName: "EditFeeController", bundle: nil)
+
+        if let data = data {
+            self.billInfo = data
         }
+        self.entryType = entryType
     }
 
     required init?(coder: NSCoder) {
@@ -60,7 +57,10 @@ class EditFeeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
-        tableView.registerCellWithNib(identifier: FeeInfoCell.reuseIdentifier, bundle: nil)
+        tableView.register(
+            UINib(nibName: FeeInfoCell.reuseIdentifier, bundle: nil),
+            forCellReuseIdentifier: FeeInfoCell.reuseIdentifier
+        )
     }
 
     @IBAction func confirmAction(_ sender: Any) {

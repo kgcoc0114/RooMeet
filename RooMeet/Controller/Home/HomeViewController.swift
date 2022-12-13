@@ -112,7 +112,7 @@ class HomeViewController: ViewController {
 
     @objc private func addRoomPost(_ sender: Any) {
         if AuthService.shared.isLogin() {
-            let postViewController = PostViewController(postScenario: PostScenario.create)
+            let postViewController = PostViewController(entryType: .new, data: nil)
             navigationController?.pushViewController(postViewController, animated: true)
         } else {
             let loginVC = UIStoryboard.main.instantiateViewController(
