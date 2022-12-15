@@ -1,5 +1,5 @@
 //
-//  FirebaseUserService.swift
+//  FIRUserService.swift
 //  RooMeet
 //
 //  Created by kgcoc on 2022/11/27.
@@ -8,8 +8,46 @@
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-// MARK: - Delete Account
-extension FirebaseService {
+class FIRUserService {
+    static let shared = FIRUserService()
+
+    let firebaseService = FirebaseService.shared
+
+    func upsertUser(userID: String, email: String?, user: User? = nil, completion: @escaping ((Bool, User?) -> Void)) {
+        let docRef = FirestoreEndpoint.user.colRef.document(userID)
+        
+        self.firebaseService.getDocument(docRef) { (fetchedUser: User?) in
+            if fetchedUser != nil {
+                guard let user = user else {
+                    // get user info
+                    self.firebaseService.fetchUserByID(userID: userID) { user, _ in
+                        if let user = user {
+                            UserDefaults.id = user.id
+                            completion(false, user)
+                        }
+                    }
+                    return
+                }
+                docRef.updateData(user.dictionary)
+            } else {
+                // create new user
+                var updateData = [
+                    "id": userID
+                ]
+
+                if let email = email {
+                    updateData["email"] = email
+                }
+
+                docRef.setData(updateData)
+
+                // new user -> should present information page
+                completion(true, nil)
+            }
+        }
+    }
+
+    // MARK: - Delete Account
     func deleteAccount(userID: String, completion: @escaping ((Result<String>) -> Void)) {
         let group = DispatchGroup()
         group.enter()

@@ -118,8 +118,7 @@ class ProfileRSVNViewController: UIViewController {
     }
 
     private func fetchReservations() {
-        print(UserDefaults.id)
-        FirebaseService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations, user in
+        FIRRoomService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations, user in
             guard let self = self else { return }
             self.user = user
             self.reservations = reservations.sorted { rsvnA, rsvnB in

@@ -4,6 +4,7 @@
 //
 //  Created by kgcoc on 2022/11/16.
 //
+
 import FirebaseAuth
 import SwiftJWT
 
@@ -70,7 +71,7 @@ class AuthService {
         print("使用者資料 uid:\(uid) email:\(String(describing: email))")
         UserDefaults.id = uid
 
-        FirebaseService.shared.upsertUser(uid: uid, email: email) { [weak self] isNewUser, user in
+        FIRUserService.shared.upsertUser(userID: uid, email: email) { [weak self] isNewUser, user in
             guard let self = self else { return }
             if isNewUser {
                 let user = User(id: uid, email: email, favoriteRooms: [], reservations: [], chatRooms: [])
@@ -104,7 +105,7 @@ class AuthService {
 
         // delete data in firebase
         group.enter()
-        FirebaseService.shared.deleteAccount(userID: UserDefaults.id) { _ in
+        FIRUserService.shared.deleteAccount(userID: UserDefaults.id) { _ in
             print("deleteAccount")
             group.leave()
         }

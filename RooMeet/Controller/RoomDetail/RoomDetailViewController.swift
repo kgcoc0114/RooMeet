@@ -264,15 +264,20 @@ class RoomDetailViewController: UIViewController {
             return
         }
 
-        FirebaseService.shared.getChatRoomByUserID(userA: UserDefaults.id, userB: room.userID) { [weak self] chatRoom in
+        FIRChatRoomService.shared.getChatRoomByMembers(members: [UserDefaults.id, room.userID]) { [weak self] result in
             guard let self = self else { return }
-            let chatVC = ChatViewController()
-            chatVC.setup(chatRoom: chatRoom)
-            self.hidesBottomBarWhenPushed = true
-            DispatchQueue.main.async {
-                self.hidesBottomBarWhenPushed = false
+            switch result {
+            case .success(let chatRoom):
+                let chatVC = ChatViewController()
+                chatVC.setup(chatRoom: chatRoom)
+                self.hidesBottomBarWhenPushed = true
+                DispatchQueue.main.async {
+                    self.hidesBottomBarWhenPushed = false
+                }
+                self.navigationController?.pushViewController(chatVC, animated: false)
+            case .failure(let error):
+                debugPrint("replyReservation", error.localizedDescription)
             }
-            self.navigationController?.pushViewController(chatVC, animated: false)
         }
         chatButton.isEnabled = true
     }

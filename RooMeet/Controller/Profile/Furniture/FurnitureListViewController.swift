@@ -56,7 +56,7 @@ class FurnitureListViewController: UIViewController {
     }
 
     private func fetchFurnitures() {
-        FirebaseService.shared.fetchFurnituresByUserID { [weak self] furnitures in
+        FIRFurnitureService.shared.fetchFurnituresByUserID { [weak self] furnitures in
             guard let self = self else { return }
             self.furnitures = furnitures
         }
@@ -138,7 +138,7 @@ extension FurnitureListViewController: UITableViewDelegate {
                     let furniture = self.furnitures[indexPath.item]
                     if let furnitureID = furniture.id {
                         self.furnitures.remove(at: indexPath.item)
-                        FirebaseService.shared.deleteFurniture(furnitureID: furnitureID) { _ in
+                        FIRFurnitureService.shared.deleteFurniture(furnitureID: furnitureID) { _ in
                             print("done")
                         }
                     }

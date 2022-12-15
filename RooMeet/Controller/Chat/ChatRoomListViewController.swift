@@ -59,7 +59,7 @@ class ChatRoomListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        FirebaseService.shared.listenToChatRoomUpdate {[weak self] chatRooms, error in
+        FIRChatRoomService.shared.listenToChatRoomUpdate {[weak self] chatRooms, error in
             if let error = error {
                 print(
                     "ERROR: FirebaseService listenToChatRoomUpdate",

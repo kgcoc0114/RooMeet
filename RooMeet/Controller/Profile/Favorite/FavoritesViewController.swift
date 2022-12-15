@@ -130,13 +130,13 @@ class FavoritesViewController: UIViewController {
         }
 
         if entryPage == .fav {
-            FirebaseService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms, favoriteRooms in
+            FIRRoomService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms, favoriteRooms in
                 guard let self = self else { return }
                 self.rooms = rooms
                 self.favoriteRooms = favoriteRooms
             }
         } else {
-            FirebaseService.shared.fetchRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
+            FIRRoomService.shared.fetchRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
                 guard let self = self else { return }
                 self.rooms = rooms
             }
@@ -152,8 +152,6 @@ class FavoritesViewController: UIViewController {
             guard let self = self else { return }
             if self.entryPage == .ownPost {
                 let postViewController = PostViewController(entryType: .new, data: nil)
-
-//                (entryType: .new, data: nil)
                 self.navigationController?.pushViewController(postViewController, animated: true)
             } else {
                 self.navigationController?.tabBarController?.selectedIndex = 0
@@ -195,8 +193,6 @@ extension FavoritesViewController {
 // MARK: - UICollectionViewDelegate
 extension FavoritesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        RMProgressHUD.show()
-
         guard
             let room = dataSource.itemIdentifier(for: indexPath)
         else { return }
@@ -206,7 +202,6 @@ extension FavoritesViewController: UICollectionViewDelegate {
         } else {
             let postViewController = PostViewController(entryType: .edit, data: room)
             navigationController?.pushViewController(postViewController, animated: true)
-            RMProgressHUD.dismiss()
         }
     }
 }

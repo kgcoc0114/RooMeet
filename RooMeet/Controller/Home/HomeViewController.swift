@@ -104,7 +104,7 @@ class HomeViewController: ViewController {
     }
 
     private func fetchRooms() {
-        FirebaseService.shared.fetchRooms(user: self.user) { [weak self] rooms in
+        FIRRoomService.shared.fetchRooms(user: self.user) { [weak self] rooms in
             guard let self = self else { return }
             self.rooms = rooms
         }
@@ -137,7 +137,7 @@ class HomeViewController: ViewController {
         filterVC.blockUserIDs = user.blocks ?? []
 
         filterVC.completion = { query in
-            FirebaseService.shared.fetchRoomDatabyQuery(user: user, query: query) { rooms in
+            FIRRoomService.shared.fetchRoomDataByQuery(user: user, query: query) { rooms in
                 self.rooms = rooms
             }
         }

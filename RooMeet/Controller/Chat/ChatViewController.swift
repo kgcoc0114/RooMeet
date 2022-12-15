@@ -107,7 +107,7 @@ class ChatViewController: UIViewController {
             return
         }
 
-        FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { [weak self] messages, error in
+        FIRChatRoomService.shared.listenToMessageUpdate(chatRoomID: chatRoom.id) { [weak self] messages, error in
             guard let self = self else { return }
             if let error = error {
                 print("Error getting documents: \(error)")

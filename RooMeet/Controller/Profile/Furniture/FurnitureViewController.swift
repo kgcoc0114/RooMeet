@@ -149,7 +149,7 @@ extension FurnitureViewController {
         furniture.createdTime = Timestamp()
         switch scenario {
         case .create:
-            FirebaseService.shared.insertFurniture(furniture: furniture) { error in
+            FIRFurnitureService.shared.insertFurniture(furniture: furniture) { error in
                 if error != nil {
                     RMProgressHUD.showFailure()
                 } else {
@@ -159,7 +159,7 @@ extension FurnitureViewController {
             }
         case .edit:
             if let furnitureID = furniture.id {
-                FirebaseService.shared.updateFurniture(furnitureID: furnitureID, furniture: furniture) { error in
+                FIRFurnitureService.shared.updateFurniture(furnitureID: furnitureID, furniture: furniture) { error in
                     if error != nil {
                         RMProgressHUD.showFailure()
                     } else {

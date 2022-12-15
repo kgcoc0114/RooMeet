@@ -111,14 +111,18 @@ class CUReservationCell: MessageBaseCell {
             return
         }
 
-        FirebaseService.shared.getChatRoomByUserID(
-            userA: currentUser.id, userB: otherUser.id) { [weak self] chatroom in
-                guard let self = self else { return }
+        FIRChatRoomService.shared.getChatRoomByMembers(members: [currentUser.id, otherUser.id]) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let chatroom):
                 self.updateMessage(
                     chatRoomID: chatroom.id,
                     message: message,
                     status: status
                 )
+            case .failure(let error):
+                debugPrint("FirebaseService getChatRoomByMembers", error.localizedDescription)
+            }
         }
     }
 
