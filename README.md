@@ -1,6 +1,6 @@
 # RooMeet
 <p align="center">
-  <img src="![roomeet](https://user-images.githubusercontent.com/55936956/207886457-e84c637a-eb0c-4048-9478-cf58bba2e8e4.png)" width="130" height="130"/>
+  <img src="https://user-images.githubusercontent.com/55936956/207886457-e84c637a-eb0c-4048-9478-cf58bba2e8e4.png" width="130" height="130"/>
 </p>
 
 <p align="center">
@@ -54,25 +54,25 @@ Concerned about expensive rent prices when looking for a place to rent? Worried 
 
 ## Screen Shots
 <p align="center">
-   <img src="![1](https://user-images.githubusercontent.com/55936956/207887341-ad148741-604c-49ac-8f79-fb074a2e469e.png)" width="550" />
+   <img src="https://user-images.githubusercontent.com/55936956/207887341-ad148741-604c-49ac-8f79-fb074a2e469e.png" width="550" />
 </p>
 <p align="center">
-   <img src="![2](https://user-images.githubusercontent.com/55936956/207887420-ef68be5a-3e0c-442f-9631-95de1a4a9f5c.png)" width="550" />
+   <img src="https://user-images.githubusercontent.com/55936956/207887420-ef68be5a-3e0c-442f-9631-95de1a4a9f5c.png" width="550" />
 </p>
 <p align="center">
-   <img src="![3](https://user-images.githubusercontent.com/55936956/207887457-29bf2e61-9fe8-43e3-b004-772b3d3cc938.png)" width="550" />
+   <img src="https://user-images.githubusercontent.com/55936956/207887457-29bf2e61-9fe8-43e3-b004-772b3d3cc938.png" width="550" />
 </p>
 <p align="center">
-   <img src="![4](https://user-images.githubusercontent.com/55936956/207887512-46982a58-62a8-4880-89d4-8aff475ab94d.png)" width="550" />
+   <img src="https://user-images.githubusercontent.com/55936956/207887512-46982a58-62a8-4880-89d4-8aff475ab94d.png" width="550" />
 </p>
 <p align="center">
-   <img src="![5](https://user-images.githubusercontent.com/55936956/207887549-919d39df-df8a-422c-830c-d3f36e6525f5.png)" width="550" />
+   <img src="https://user-images.githubusercontent.com/55936956/207887549-919d39df-df8a-422c-830c-d3f36e6525f5.png" width="550" />
 </p>
 <p align="center">
-   <img src="![6](https://user-images.githubusercontent.com/55936956/207887643-44a76770-0141-495f-9a13-1f9a9f16e460.png)" width="550" />
+   <img src="https://user-images.githubusercontent.com/55936956/207887643-44a76770-0141-495f-9a13-1f9a9f16e460.png" width="550" />
 </p>
 <p align="center">
-   <img src="![7](https://user-images.githubusercontent.com/55936956/207887820-edd208ed-c062-4f05-b01d-bab8987a2b7e.png)" width="550" />
+   <img src="https://user-images.githubusercontent.com/55936956/207887820-edd208ed-c062-4f05-b01d-bab8987a2b7e.png" width="550" />
 </p>
 
 ## Libraries
