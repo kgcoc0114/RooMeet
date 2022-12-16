@@ -12,7 +12,6 @@
 		E507B0C52923B08F002E501E /* ItemsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E507B0C32923B08F002E501E /* ItemsCell.xib */; };
 		E507B0C72923BA03002E501E /* TagView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E507B0C62923BA03002E501E /* TagView.swift */; };
 		E507B0C92923DE51002E501E /* RMSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E507B0C82923DE50002E501E /* RMSegmentedControl.swift */; };
-		E507B0CC292484FF002E501E /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E507B0CB292484FF002E501E /* AuthService.swift */; };
 		E507B0CE292487A4002E501E /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E507B0CD292487A4002E501E /* LoginViewController.swift */; };
 		E507B0D629253968002E501E /* Region.json in Resources */ = {isa = PBXBuildFile; fileRef = E507B0D529253968002E501E /* Region.json */; };
 		E507B0D829260FAC002E501E /* UserDefaults+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E507B0D729260FAB002E501E /* UserDefaults+Extension.swift */; };
@@ -31,7 +30,6 @@
 		E539D242292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 in Resources */ = {isa = PBXBuildFile; fileRef = E539D241292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 */; };
 		E539D244292F503E007D50FD /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D243292F503E007D50FD /* AppConfig.swift */; };
 		E539D249292F5869007D50FD /* SwiftJWTWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D248292F5869007D50FD /* SwiftJWTWrapper.swift */; };
-		E539D24B292F962A007D50FD /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D24A292F9629007D50FD /* KeyChainService.swift */; };
 		E539D251292FAA9E007D50FD /* RefreshToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D250292FAA9E007D50FD /* RefreshToken.swift */; };
 		E55E6FCB2914CA3000CBB0EB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */; };
 		E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */; };
@@ -42,7 +40,6 @@
 		E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7129178B1F007AE655 /* HomeViewController.swift */; };
 		E5604F7A29179539007AE655 /* RoomDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604F7829179539007AE655 /* RoomDisplayCell.swift */; };
 		E5604F7B29179539007AE655 /* RoomDisplayCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5604F7929179539007AE655 /* RoomDisplayCell.xib */; };
-		E5604FE32918EC22007AE655 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE22918EC22007AE655 /* WebRTCClient.swift */; };
 		E5604FE52918EDD3007AE655 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE42918EDD3007AE655 /* Config.swift */; };
 		E5604FE92918F03F007AE655 /* Candidate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5604FE82918F03F007AE655 /* Candidate.swift */; };
 		E574A6922920EC1800EB8E5E /* ReservationDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E574A6902920EC1800EB8E5E /* ReservationDisplayCell.swift */; };
@@ -56,7 +53,6 @@
 		E57918EE2938887900427F83 /* Furniture.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918ED2938887900427F83 /* Furniture.swift */; };
 		E57918F12938938300427F83 /* FurnitureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918EF2938938300427F83 /* FurnitureViewController.swift */; };
 		E57918F22938938300427F83 /* FurnitureViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57918F02938938300427F83 /* FurnitureViewController.xib */; };
-		E57918F429389B1200427F83 /* FIRStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57918F329389B1200427F83 /* FIRStorageService.swift */; };
 		E579195B293C30CE00427F83 /* ChatImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E579195A293C30CE00427F83 /* ChatImageViewController.swift */; };
 		E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E587292C291CA7BF00C12E9E /* CUReservationCell.swift */; };
 		E587292F291CA7BF00C12E9E /* CUReservationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E587292D291CA7BF00C12E9E /* CUReservationCell.xib */; };
@@ -83,10 +79,6 @@
 		E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A12A642910C7BF006907D9 /* EditFeeController.swift */; };
 		E5A12A672910C7BF006907D9 /* EditFeeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5A12A652910C7BF006907D9 /* EditFeeController.xib */; };
 		E5ACE16B291BFA79006CCF1A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E5ACE16A291BFA79006CCF1A /* GoogleService-Info.plist */; };
-		E5ACE16D291BFC1C006CCF1A /* ReservationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ACE16C291BFC1C006CCF1A /* ReservationService.swift */; };
-		E5AE1FF4294A0CED0006F940 /* FIRFurnitureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AE1FF3294A0CED0006F940 /* FIRFurnitureService.swift */; };
-		E5AE1FF7294A0EE00006F940 /* FIRRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AE1FF6294A0EE00006F940 /* FIRRoomService.swift */; };
-		E5AE1FF9294A0F110006F940 /* FIRChatRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AE1FF8294A0F110006F940 /* FIRChatRoomService.swift */; };
 		E5B018AA2915690C00A09788 /* CUTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018A82915690C00A09788 /* CUTextCell.swift */; };
 		E5B018AB2915690C00A09788 /* CUTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018A92915690C00A09788 /* CUTextCell.xib */; };
 		E5B018AE2915692600A09788 /* OUTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018AC2915692600A09788 /* OUTextCell.swift */; };
@@ -108,7 +100,6 @@
 		E5B1209729423007004E65AB /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209229423007004E65AB /* Room.swift */; };
 		E5B1209829423007004E65AB /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209329423007004E65AB /* Region.swift */; };
 		E5B1209A294327DC004E65AB /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B12099294327DC004E65AB /* ChatCell.swift */; };
-		E5B1209C29448267004E65AB /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209B29448267004E65AB /* ImagePickerManager.swift */; };
 		E5B1209E2944AFB4004E65AB /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209D2944AFB4004E65AB /* UIViewController+Extension.swift */; };
 		E5B120A02944CFC9004E65AB /* FurnitureScenario.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B1209F2944CFC9004E65AB /* FurnitureScenario.swift */; };
 		E5B120A42944D23B004E65AB /* NoDataDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B120A32944D23B004E65AB /* NoDataDisplay.swift */; };
@@ -125,6 +116,18 @@
 		E5B3377D290FAA4800467404 /* PostImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B3377B290FAA4800467404 /* PostImageCell.xib */; };
 		E5B33780290FB61900467404 /* OtherFeeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B3377E290FB61900467404 /* OtherFeeCell.swift */; };
 		E5B33781290FB61900467404 /* OtherFeeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B3377F290FB61900467404 /* OtherFeeCell.xib */; };
+		E5B923A2294C7B80001062A8 /* ImagePickerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B92395294C7B80001062A8 /* ImagePickerManager.swift */; };
+		E5B923A3294C7B80001062A8 /* FIRRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B92397294C7B80001062A8 /* FIRRoomService.swift */; };
+		E5B923A4294C7B80001062A8 /* FIRChatRoomService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B92398294C7B80001062A8 /* FIRChatRoomService.swift */; };
+		E5B923A5294C7B80001062A8 /* FIRUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B92399294C7B80001062A8 /* FIRUserService.swift */; };
+		E5B923A6294C7B80001062A8 /* FIRFurnitureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9239A294C7B80001062A8 /* FIRFurnitureService.swift */; };
+		E5B923A7294C7B80001062A8 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9239B294C7B80001062A8 /* FirebaseService.swift */; };
+		E5B923A8294C7B80001062A8 /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9239C294C7B80001062A8 /* KeyChainService.swift */; };
+		E5B923A9294C7B80001062A8 /* FIRStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9239D294C7B80001062A8 /* FIRStorageService.swift */; };
+		E5B923AA294C7B80001062A8 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9239E294C7B80001062A8 /* AuthService.swift */; };
+		E5B923AB294C7B80001062A8 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9239F294C7B80001062A8 /* WebRTCClient.swift */; };
+		E5B923AC294C7B80001062A8 /* ReservationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923A0294C7B80001062A8 /* ReservationService.swift */; };
+		E5B923AD294C7B80001062A8 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923A1294C7B80001062A8 /* LocationService.swift */; };
 		E5B984BE291B6EF1006DD8D7 /* BookingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B984BD291B6EF1006DD8D7 /* BookingView.xib */; };
 		E5B984C0291B6F04006DD8D7 /* BookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984BF291B6F04006DD8D7 /* BookingView.swift */; };
 		E5B984C2291B7CA3006DD8D7 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */; };
@@ -153,7 +156,6 @@
 		E5D9C042291E4E3100F416E6 /* CUImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D9C040291E4E3100F416E6 /* CUImageCell.xib */; };
 		E5D9C045291E4FF900F416E6 /* OUImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D9C043291E4FF900F416E6 /* OUImageCell.swift */; };
 		E5D9C046291E4FF900F416E6 /* OUImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D9C044291E4FF900F416E6 /* OUImageCell.xib */; };
-		E5DC0FE32911FFB300EB57FD /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC0FE22911FFB300EB57FD /* LocationService.swift */; };
 		E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */; };
 		E5DEEEB52921150A00A649C1 /* Reservation.json in Resources */ = {isa = PBXBuildFile; fileRef = E5DEEEB42921150A00A649C1 /* Reservation.json */; };
 		E5DEEEBD292226E800A649C1 /* RoomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DEEEBB292226E800A649C1 /* RoomCell.swift */; };
@@ -178,7 +180,6 @@
 		E5E143522930B8E400465B65 /* SettingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5E143502930B8E400465B65 /* SettingCell.xib */; };
 		E5E14354293266F400465B65 /* Roommates.json in Resources */ = {isa = PBXBuildFile; fileRef = E5E14353293266F300465B65 /* Roommates.json */; };
 		E5E1435729336C3400465B65 /* FirestoreEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E1435629336C3400465B65 /* FirestoreEndpoint.swift */; };
-		E5E14359293396C100465B65 /* FIRUserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E14358293396C100465B65 /* FIRUserService.swift */; };
 		E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */; };
 		E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */; };
 		E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E64C75290D6E3100F07286 /* RMTabBarController.swift */; };
@@ -190,7 +191,6 @@
 		E5EEE1F8291214C300CAAE84 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE1F7291214C300CAAE84 /* Explore.storyboard */; };
 		E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE1F9291218F300CAAE84 /* ExploreViewController.swift */; };
 		E5EEE20329129C6000CAAE84 /* PostalCode.json in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE20229129C6000CAAE84 /* PostalCode.json */; };
-		E5EEE2072912AE3B00CAAE84 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2062912AE3B00CAAE84 /* FirebaseService.swift */; };
 		E5EEE20A2912BCC700CAAE84 /* RoomDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EEE2082912BCC600CAAE84 /* RoomDetailViewController.swift */; };
 		E5EEE20B2912BCC700CAAE84 /* RoomDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE2092912BCC600CAAE84 /* RoomDetailViewController.xib */; };
 		E5EEE20D2913A8C900CAAE84 /* Chat.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5EEE20C2913A8C900CAAE84 /* Chat.storyboard */; };
@@ -213,7 +213,6 @@
 		E507B0C62923BA03002E501E /* TagView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagView.swift; sourceTree = "<group>"; };
 		E507B0C82923DE50002E501E /* RMSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMSegmentedControl.swift; sourceTree = "<group>"; };
 		E507B0CA2924848F002E501E /* RooMeet.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = RooMeet.entitlements; sourceTree = "<group>"; };
-		E507B0CB292484FF002E501E /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		E507B0CD292487A4002E501E /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E507B0D529253968002E501E /* Region.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Region.json; sourceTree = "<group>"; };
 		E507B0D729260FAB002E501E /* UserDefaults+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefaults+Extension.swift"; sourceTree = "<group>"; };
@@ -232,7 +231,6 @@
 		E539D241292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AuthKey_7HW8LJJ2ZQ.p8; sourceTree = "<group>"; };
 		E539D243292F503E007D50FD /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		E539D248292F5869007D50FD /* SwiftJWTWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftJWTWrapper.swift; sourceTree = "<group>"; };
-		E539D24A292F9629007D50FD /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
 		E539D250292FAA9E007D50FD /* RefreshToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshToken.swift; sourceTree = "<group>"; };
 		E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
@@ -243,7 +241,6 @@
 		E5604F7129178B1F007AE655 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		E5604F7829179539007AE655 /* RoomDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDisplayCell.swift; sourceTree = "<group>"; };
 		E5604F7929179539007AE655 /* RoomDisplayCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDisplayCell.xib; sourceTree = "<group>"; };
-		E5604FE22918EC22007AE655 /* WebRTCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
 		E5604FE42918EDD3007AE655 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		E5604FE82918F03F007AE655 /* Candidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Candidate.swift; sourceTree = "<group>"; };
 		E574A6902920EC1800EB8E5E /* ReservationDisplayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationDisplayCell.swift; sourceTree = "<group>"; };
@@ -257,7 +254,6 @@
 		E57918ED2938887900427F83 /* Furniture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Furniture.swift; sourceTree = "<group>"; };
 		E57918EF2938938300427F83 /* FurnitureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnitureViewController.swift; sourceTree = "<group>"; };
 		E57918F02938938300427F83 /* FurnitureViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FurnitureViewController.xib; sourceTree = "<group>"; };
-		E57918F329389B1200427F83 /* FIRStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRStorageService.swift; sourceTree = "<group>"; };
 		E579195A293C30CE00427F83 /* ChatImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatImageViewController.swift; sourceTree = "<group>"; };
 		E587292C291CA7BF00C12E9E /* CUReservationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUReservationCell.swift; sourceTree = "<group>"; };
 		E587292D291CA7BF00C12E9E /* CUReservationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUReservationCell.xib; sourceTree = "<group>"; };
@@ -284,10 +280,6 @@
 		E5A12A642910C7BF006907D9 /* EditFeeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeeController.swift; sourceTree = "<group>"; };
 		E5A12A652910C7BF006907D9 /* EditFeeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditFeeController.xib; sourceTree = "<group>"; };
 		E5ACE16A291BFA79006CCF1A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		E5ACE16C291BFC1C006CCF1A /* ReservationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationService.swift; sourceTree = "<group>"; };
-		E5AE1FF3294A0CED0006F940 /* FIRFurnitureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRFurnitureService.swift; sourceTree = "<group>"; };
-		E5AE1FF6294A0EE00006F940 /* FIRRoomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRRoomService.swift; sourceTree = "<group>"; };
-		E5AE1FF8294A0F110006F940 /* FIRChatRoomService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRChatRoomService.swift; sourceTree = "<group>"; };
 		E5B018A82915690C00A09788 /* CUTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CUTextCell.swift; sourceTree = "<group>"; };
 		E5B018A92915690C00A09788 /* CUTextCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUTextCell.xib; sourceTree = "<group>"; };
 		E5B018AC2915692600A09788 /* OUTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUTextCell.swift; sourceTree = "<group>"; };
@@ -309,7 +301,6 @@
 		E5B1209229423007004E65AB /* Room.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		E5B1209329423007004E65AB /* Region.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
 		E5B12099294327DC004E65AB /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
-		E5B1209B29448267004E65AB /* ImagePickerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
 		E5B1209D2944AFB4004E65AB /* UIViewController+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extension.swift"; sourceTree = "<group>"; };
 		E5B1209F2944CFC9004E65AB /* FurnitureScenario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FurnitureScenario.swift; sourceTree = "<group>"; };
 		E5B120A32944D23B004E65AB /* NoDataDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDataDisplay.swift; sourceTree = "<group>"; };
@@ -326,6 +317,18 @@
 		E5B3377B290FAA4800467404 /* PostImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostImageCell.xib; sourceTree = "<group>"; };
 		E5B3377E290FB61900467404 /* OtherFeeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherFeeCell.swift; sourceTree = "<group>"; };
 		E5B3377F290FB61900467404 /* OtherFeeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OtherFeeCell.xib; sourceTree = "<group>"; };
+		E5B92395294C7B80001062A8 /* ImagePickerManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImagePickerManager.swift; sourceTree = "<group>"; };
+		E5B92397294C7B80001062A8 /* FIRRoomService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIRRoomService.swift; sourceTree = "<group>"; };
+		E5B92398294C7B80001062A8 /* FIRChatRoomService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIRChatRoomService.swift; sourceTree = "<group>"; };
+		E5B92399294C7B80001062A8 /* FIRUserService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIRUserService.swift; sourceTree = "<group>"; };
+		E5B9239A294C7B80001062A8 /* FIRFurnitureService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIRFurnitureService.swift; sourceTree = "<group>"; };
+		E5B9239B294C7B80001062A8 /* FirebaseService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		E5B9239C294C7B80001062A8 /* KeyChainService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
+		E5B9239D294C7B80001062A8 /* FIRStorageService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FIRStorageService.swift; sourceTree = "<group>"; };
+		E5B9239E294C7B80001062A8 /* AuthService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		E5B9239F294C7B80001062A8 /* WebRTCClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
+		E5B923A0294C7B80001062A8 /* ReservationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReservationService.swift; sourceTree = "<group>"; };
+		E5B923A1294C7B80001062A8 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		E5B984BD291B6EF1006DD8D7 /* BookingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookingView.xib; sourceTree = "<group>"; };
 		E5B984BF291B6F04006DD8D7 /* BookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingView.swift; sourceTree = "<group>"; };
 		E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
@@ -356,7 +359,6 @@
 		E5D9C040291E4E3100F416E6 /* CUImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CUImageCell.xib; sourceTree = "<group>"; };
 		E5D9C043291E4FF900F416E6 /* OUImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OUImageCell.swift; sourceTree = "<group>"; };
 		E5D9C044291E4FF900F416E6 /* OUImageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OUImageCell.xib; sourceTree = "<group>"; };
-		E5DC0FE22911FFB300EB57FD /* LocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		E5DC0FE4291204D200EB57FD /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 		E5DEEEB42921150A00A649C1 /* Reservation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Reservation.json; sourceTree = "<group>"; };
 		E5DEEEBB292226E800A649C1 /* RoomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomCell.swift; sourceTree = "<group>"; };
@@ -381,7 +383,6 @@
 		E5E143502930B8E400465B65 /* SettingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SettingCell.xib; sourceTree = "<group>"; };
 		E5E14353293266F300465B65 /* Roommates.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Roommates.json; sourceTree = "<group>"; };
 		E5E1435629336C3400465B65 /* FirestoreEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreEndpoint.swift; sourceTree = "<group>"; };
-		E5E14358293396C100465B65 /* FIRUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRUserService.swift; sourceTree = "<group>"; };
 		E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBaseCell.swift; sourceTree = "<group>"; };
 		E5E2771B291E703D00E68D90 /* UIFont+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
 		E5E64C75290D6E3100F07286 /* RMTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMTabBarController.swift; sourceTree = "<group>"; };
@@ -393,7 +394,6 @@
 		E5EEE1F7291214C300CAAE84 /* Explore.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		E5EEE1F9291218F300CAAE84 /* ExploreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		E5EEE20229129C6000CAAE84 /* PostalCode.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PostalCode.json; sourceTree = "<group>"; };
-		E5EEE2062912AE3B00CAAE84 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		E5EEE2082912BCC600CAAE84 /* RoomDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewController.swift; sourceTree = "<group>"; };
 		E5EEE2092912BCC600CAAE84 /* RoomDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomDetailViewController.xib; sourceTree = "<group>"; };
 		E5EEE20C2913A8C900CAAE84 /* Chat.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Chat.storyboard; sourceTree = "<group>"; };
@@ -676,18 +676,6 @@
 			path = Measure;
 			sourceTree = "<group>";
 		};
-		E5AE1FF5294A0EBB0006F940 /* FirebaseService */ = {
-			isa = PBXGroup;
-			children = (
-				E5EEE2062912AE3B00CAAE84 /* FirebaseService.swift */,
-				E5AE1FF3294A0CED0006F940 /* FIRFurnitureService.swift */,
-				E5E14358293396C100465B65 /* FIRUserService.swift */,
-				E5AE1FF6294A0EE00006F940 /* FIRRoomService.swift */,
-				E5AE1FF8294A0F110006F940 /* FIRChatRoomService.swift */,
-			);
-			path = FirebaseService;
-			sourceTree = "<group>";
-		};
 		E5B018B22915F1C100A09788 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -749,6 +737,33 @@
 			path = AddRoom;
 			sourceTree = "<group>";
 		};
+		E5B92394294C7B80001062A8 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				E5B92396294C7B80001062A8 /* FirebaseService */,
+				E5B9239C294C7B80001062A8 /* KeyChainService.swift */,
+				E5B9239D294C7B80001062A8 /* FIRStorageService.swift */,
+				E5B9239E294C7B80001062A8 /* AuthService.swift */,
+				E5B9239F294C7B80001062A8 /* WebRTCClient.swift */,
+				E5B923A0294C7B80001062A8 /* ReservationService.swift */,
+				E5B923A1294C7B80001062A8 /* LocationService.swift */,
+				E5B92395294C7B80001062A8 /* ImagePickerManager.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
+		E5B92396294C7B80001062A8 /* FirebaseService */ = {
+			isa = PBXGroup;
+			children = (
+				E5B92397294C7B80001062A8 /* FIRRoomService.swift */,
+				E5B92398294C7B80001062A8 /* FIRChatRoomService.swift */,
+				E5B92399294C7B80001062A8 /* FIRUserService.swift */,
+				E5B9239A294C7B80001062A8 /* FIRFurnitureService.swift */,
+				E5B9239B294C7B80001062A8 /* FirebaseService.swift */,
+			);
+			path = FirebaseService;
+			sourceTree = "<group>";
+		};
 		E5BDDB32290D0E2900F4A767 = {
 			isa = PBXGroup;
 			children = (
@@ -773,11 +788,11 @@
 				E507B0CA2924848F002E501E /* RooMeet.entitlements */,
 				E5EEE2812913F94600CAAE84 /* ThirdPartyWrapper */,
 				E55C0963290D5C2D00DBF21B /* View */,
-				E5DC0FE12911FF2700EB57FD /* Utility */,
 				E5E64C94290E3E0C00F07286 /* Extension */,
 				E55C0970290D627000DBF21B /* Resource */,
 				E5EF07E3294B76A900C1E528 /* Helper */,
 				E55C095B290D4F5800DBF21B /* Model */,
+				E5B92394294C7B80001062A8 /* Utility */,
 				E55C0962290D5BF600DBF21B /* Controller */,
 				E5EF07E2294B759000C1E528 /* Application */,
 				E5DEEEC72922814900A649C1 /* Regions.plist */,
@@ -865,21 +880,6 @@
 				E5E27719291E6B3700E68D90 /* MessageBaseCell.swift */,
 			);
 			path = Message;
-			sourceTree = "<group>";
-		};
-		E5DC0FE12911FF2700EB57FD /* Utility */ = {
-			isa = PBXGroup;
-			children = (
-				E5AE1FF5294A0EBB0006F940 /* FirebaseService */,
-				E5DC0FE22911FFB300EB57FD /* LocationService.swift */,
-				E5604FE22918EC22007AE655 /* WebRTCClient.swift */,
-				E5ACE16C291BFC1C006CCF1A /* ReservationService.swift */,
-				E507B0CB292484FF002E501E /* AuthService.swift */,
-				E539D24A292F9629007D50FD /* KeyChainService.swift */,
-				E57918F329389B1200427F83 /* FIRStorageService.swift */,
-				E5B1209B29448267004E65AB /* ImagePickerManager.swift */,
-			);
-			path = Utility;
 			sourceTree = "<group>";
 		};
 		E5DC0FE729120C3300EB57FD /* RoomSpecCell */ = {
@@ -1349,10 +1349,10 @@
 				E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */,
 				E59B83152919FEE800F02CEC /* DateFormatter.swift in Sources */,
 				E5EEE21D2913B4F900CAAE84 /* ChatRoomCell.swift in Sources */,
-				E5604FE32918EC22007AE655 /* WebRTCClient.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
 				E560135A292771D600EE0083 /* LocationPickerViewController.swift in Sources */,
 				E5B018C02916351300A09788 /* RoomImagesCell.swift in Sources */,
+				E5B923AC294C7B80001062A8 /* ReservationService.swift in Sources */,
 				E593F013291012DF00B35550 /* OtherFeeHeaderCell.swift in Sources */,
 				E593F0092910065C00B35550 /* RulesCell.swift in Sources */,
 				E5872944291D022000C12E9E /* IntroCell.swift in Sources */,
@@ -1361,7 +1361,6 @@
 				E5B018AE2915692600A09788 /* OUTextCell.swift in Sources */,
 				E5B018CE2916475000A09788 /* RoomItemsCell.swift in Sources */,
 				E5B984C0291B6F04006DD8D7 /* BookingView.swift in Sources */,
-				E5DC0FE32911FFB300EB57FD /* LocationService.swift in Sources */,
 				E5B33772290F65D800467404 /* PostViewController.swift in Sources */,
 				E5D9C045291E4FF900F416E6 /* OUImageCell.swift in Sources */,
 				E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */,
@@ -1370,17 +1369,15 @@
 				E507B0C92923DE51002E501E /* RMSegmentedControl.swift in Sources */,
 				E5DEFD91291F3B0A0064E2C8 /* OUCallCell.swift in Sources */,
 				E5B018DD29175B7100A09788 /* FilterViewController.swift in Sources */,
-				E57918F429389B1200427F83 /* FIRStorageService.swift in Sources */,
 				E539D236292DF189007D50FD /* BlockViewController.swift in Sources */,
 				E539D244292F503E007D50FD /* AppConfig.swift in Sources */,
-				E539D24B292F962A007D50FD /* KeyChainService.swift in Sources */,
 				E5C9548C293E414E00FCB655 /* PostSection.swift in Sources */,
 				E5B018B82915F21E00A09788 /* CardView.swift in Sources */,
-				E5AE1FF9294A0F110006F940 /* FIRChatRoomService.swift in Sources */,
 				E507B0C72923BA03002E501E /* TagView.swift in Sources */,
 				E5604F7229178B1F007AE655 /* HomeViewController.swift in Sources */,
 				E5EEE2172913B2B800CAAE84 /* Message.swift in Sources */,
 				E587293B291CFFA100C12E9E /* IntroViewController.swift in Sources */,
+				E5B923AA294C7B80001062A8 /* AuthService.swift in Sources */,
 				E507B0CE292487A4002E501E /* LoginViewController.swift in Sources */,
 				E51419CB2920D7CC00813D25 /* LottieWrapper.swift in Sources */,
 				E5B018AA2915690C00A09788 /* CUTextCell.swift in Sources */,
@@ -1390,19 +1387,19 @@
 				E5B33762290E71A600467404 /* NumberPickerView.swift in Sources */,
 				E5B984C2291B7CA3006DD8D7 /* Date+Extension.swift in Sources */,
 				E5DEFD99291F5D810064E2C8 /* RoomFeeCell.swift in Sources */,
-				E5AE1FF4294A0CED0006F940 /* FIRFurnitureService.swift in Sources */,
 				E5EEE2192913B4D000CAAE84 /* ChatRoomListViewController.swift in Sources */,
 				E5D9C041291E4E3100F416E6 /* CUImageCell.swift in Sources */,
 				E5EEE2852913FA3E00CAAE84 /* UIImageView+Extension.swift in Sources */,
 				E5C5FE8A2910EF9E00DA91DF /* FeeDetailCell.swift in Sources */,
 				E539D251292FAA9E007D50FD /* RefreshToken.swift in Sources */,
 				E5A12A662910C7BF006907D9 /* EditFeeController.swift in Sources */,
+				E5B923A6294C7B80001062A8 /* FIRFurnitureService.swift in Sources */,
 				E5E64C8D290E1AA700F07286 /* RegionPickerCell.swift in Sources */,
 				E57918DF29387FB100427F83 /* FurnitureListViewController.swift in Sources */,
 				E5B984CA291BD3E4006DD8D7 /* Reservation.swift in Sources */,
 				E5DEFD8D291F3AF60064E2C8 /* CUCallCell.swift in Sources */,
 				E5C95488293E40B400FCB655 /* Double+Extension.swift in Sources */,
-				E5AE1FF7294A0EE00006F940 /* FIRRoomService.swift in Sources */,
+				E5B923A2294C7B80001062A8 /* ImagePickerManager.swift in Sources */,
 				E539D23A292DF1CD007D50FD /* BlockCell.swift in Sources */,
 				E560135029271DC500EE0083 /* ProfileItemCell.swift in Sources */,
 				E57918E32938809100427F83 /* FurnitureDisplayCell.swift in Sources */,
@@ -1413,10 +1410,11 @@
 				E597817929374EBB00ED8903 /* MeasureViewController.swift in Sources */,
 				E5B1209829423007004E65AB /* Region.swift in Sources */,
 				E5EEE20A2912BCC700CAAE84 /* RoomDetailViewController.swift in Sources */,
+				E5B923AD294C7B80001062A8 /* LocationService.swift in Sources */,
 				E5B1209629423007004E65AB /* RoomDetailSection.swift in Sources */,
+				E5B923A9294C7B80001062A8 /* FIRStorageService.swift in Sources */,
 				E5B1209729423007004E65AB /* Room.swift in Sources */,
 				E5119BA3291FDA8B00A632C9 /* RoomMapCell.swift in Sources */,
-				E5B1209C29448267004E65AB /* ImagePickerManager.swift in Sources */,
 				E5DEFDA2291F92870064E2C8 /* JGProgressHUDWrapper.swift in Sources */,
 				E507B0D829260FAC002E501E /* UserDefaults+Extension.swift in Sources */,
 				E5B33768290EA2FA00467404 /* RMBaseTextField.swift in Sources */,
@@ -1425,9 +1423,9 @@
 				E5B1209529423007004E65AB /* PostalCode.swift in Sources */,
 				E539D23D292DFD84007D50FD /* ReportEvent.swift in Sources */,
 				E5B120A42944D23B004E65AB /* NoDataDisplay.swift in Sources */,
-				E5EEE2072912AE3B00CAAE84 /* FirebaseService.swift in Sources */,
 				E5E2771C291E703D00E68D90 /* UIFont+Extension.swift in Sources */,
 				E5EEE1FA291218F300CAAE84 /* ExploreViewController.swift in Sources */,
+				E5B923AB294C7B80001062A8 /* WebRTCClient.swift in Sources */,
 				E5E143512930B8E400465B65 /* SettingCell.swift in Sources */,
 				E507B0C42923B08F002E501E /* ItemsCell.swift in Sources */,
 				E5EEE2132913B02600CAAE84 /* User.swift in Sources */,
@@ -1438,12 +1436,13 @@
 				E59B82F22919117300F02CEC /* CallViewController.swift in Sources */,
 				E5D76CFB291D0BA90074DFD7 /* FavoritesViewController.swift in Sources */,
 				E5E1435729336C3400465B65 /* FirestoreEndpoint.swift in Sources */,
-				E5ACE16D291BFC1C006CCF1A /* ReservationService.swift in Sources */,
-				E507B0CC292484FF002E501E /* AuthService.swift in Sources */,
+				E5B923A3294C7B80001062A8 /* FIRRoomService.swift in Sources */,
+				E5B923A4294C7B80001062A8 /* FIRChatRoomService.swift in Sources */,
+				E5B923A5294C7B80001062A8 /* FIRUserService.swift in Sources */,
 				E5DEFDA5291FC9550064E2C8 /* RoomDetailHeaderView.swift in Sources */,
+				E5B923A8294C7B80001062A8 /* KeyChainService.swift in Sources */,
 				E5C954902940993B00FCB655 /* IntroScenario.swift in Sources */,
 				E5B984C5291B905F006DD8D7 /* DateCell.swift in Sources */,
-				E5E14359293396C100465B65 /* FIRUserService.swift in Sources */,
 				E539D249292F5869007D50FD /* SwiftJWTWrapper.swift in Sources */,
 				E5E64C76290D6E3100F07286 /* RMTabBarController.swift in Sources */,
 				E5B33776290F668F00467404 /* PostBasicCell.swift in Sources */,
@@ -1453,6 +1452,7 @@
 				E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */,
 				E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */,
 				E57918F12938938300427F83 /* FurnitureViewController.swift in Sources */,
+				E5B923A7294C7B80001062A8 /* FirebaseService.swift in Sources */,
 				E5872932291CAA7300C12E9E /* OUReservationCell.swift in Sources */,
 				E5EEE2152913B26B00CAAE84 /* ChatRoom.swift in Sources */,
 				E5604F7A29179539007AE655 /* RoomDisplayCell.swift in Sources */,

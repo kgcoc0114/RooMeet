@@ -220,21 +220,3 @@ extension PostBasicCell: NumberPickerViewDelegate {
         }
     }
 }
-
-//extension PostBasicCell: PostCell {
-//    func configure(container: RMCellContainer) {
-//        guard let container = (container as? PostDataContainer) else {
-//            return
-//        }
-//
-//        postBasicData = container.postScenario.postBasicData ?? PostBasicData()
-//        let postScenario = container.postScenario
-//        titleTextField.text = postScenario.title
-//        addressTextField.text = postScenario.address
-//        regionSelectView.text = postScenario.region
-//        parlorCountView.quantityField.text = postScenario.parlor
-//        roomCountView.quantityField.text = postScenario.roomCount
-//        datePickerTextField.text = postScenario.movinDate
-//        leasePickerView.quantityField.text = postScenario.leaseMonth
-//    }
-//}
