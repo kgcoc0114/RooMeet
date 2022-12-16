@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class OUReservationCell: MessageBaseCell {
     @IBOutlet weak var denyButton: UIButton! {
@@ -169,7 +170,7 @@ extension OUReservationCell: ChatCell {
 
         switch acceptedStatus {
         case .waiting:
-            let currentDate = FirebaseService.shared.currentTimestamp
+            let currentDate = Timestamp()
             let expiredInd = requestTime.seconds >= currentDate.seconds
             titleLabel.text = "\(otherUser.name) " + (expiredInd == true ? "已發來預約" : "預約已過期")
             denyButton.isHidden = !expiredInd

@@ -213,7 +213,7 @@ enum PostScenario: Hashable {
     var createdTime: Timestamp {
         switch self {
         case .create:
-            return FirebaseService.shared.currentTimestamp
+            return Timestamp()
         case .edit(let room):
             return room.createdTime
         }

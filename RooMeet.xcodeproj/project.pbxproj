@@ -33,7 +33,6 @@
 		E539D249292F5869007D50FD /* SwiftJWTWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D248292F5869007D50FD /* SwiftJWTWrapper.swift */; };
 		E539D24B292F962A007D50FD /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D24A292F9629007D50FD /* KeyChainService.swift */; };
 		E539D251292FAA9E007D50FD /* RefreshToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = E539D250292FAA9E007D50FD /* RefreshToken.swift */; };
-		E55C0972290D628400DBF21B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C0971290D628400DBF21B /* Constants.swift */; };
 		E55E6FCB2914CA3000CBB0EB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */; };
 		E55E6FCC2914CA3000CBB0EB /* ChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */; };
 		E560135029271DC500EE0083 /* ProfileItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E560134E29271DC500EE0083 /* ProfileItemCell.swift */; };
@@ -136,7 +135,6 @@
 		E5B984DA291BD78A006DD8D7 /* BookingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B984D8291BD78A006DD8D7 /* BookingCell.xib */; };
 		E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */; };
 		E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */; };
-		E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB42290D0E2900F4A767 /* ViewController.swift */; };
 		E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5BDDB44290D0E2900F4A767 /* Main.storyboard */; };
 		E5BDDB4B290D0E2D00F4A767 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5BDDB49290D0E2D00F4A767 /* LaunchScreen.storyboard */; };
 		E5C5FE862910CB8000DA91DF /* FeeInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C5FE842910CB8000DA91DF /* FeeInfoCell.swift */; };
@@ -236,7 +234,6 @@
 		E539D248292F5869007D50FD /* SwiftJWTWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftJWTWrapper.swift; sourceTree = "<group>"; };
 		E539D24A292F9629007D50FD /* KeyChainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
 		E539D250292FAA9E007D50FD /* RefreshToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshToken.swift; sourceTree = "<group>"; };
-		E55C0971290D628400DBF21B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		E55E6FC92914CA3000CBB0EB /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		E55E6FCA2914CA3000CBB0EB /* ChatViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatViewController.xib; sourceTree = "<group>"; };
 		E560134E29271DC500EE0083 /* ProfileItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileItemCell.swift; sourceTree = "<group>"; };
@@ -340,7 +337,6 @@
 		E5BDDB3B290D0E2900F4A767 /* RooMeet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RooMeet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E5BDDB42290D0E2900F4A767 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E5BDDB45290D0E2900F4A767 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E5BDDB4A290D0E2D00F4A767 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E5BDDB4C290D0E2D00F4A767 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -510,6 +506,12 @@
 		E55C0963290D5C2D00DBF21B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E5BDDB49290D0E2D00F4A767 /* LaunchScreen.storyboard */,
+				E5BDDB44290D0E2900F4A767 /* Main.storyboard */,
+				E5E64C92290E3D3E00F07286 /* Home.storyboard */,
+				E5EEE1F7291214C300CAAE84 /* Explore.storyboard */,
+				E5EEE20C2913A8C900CAAE84 /* Chat.storyboard */,
+				E5B018D8291695CA00A09788 /* Profile.storyboard */,
 				E5872934291CF2F000C12E9E /* Profile */,
 				E5604FDF2918CF9C007AE655 /* Reservation */,
 				E5B018B9291631B400A09788 /* RoomDetail */,
@@ -524,15 +526,12 @@
 		E55C0970290D627000DBF21B /* Resource */ = {
 			isa = PBXGroup;
 			children = (
-				E5DEEEB42921150A00A649C1 /* Reservation.json */,
-				E51419C82920D52100813D25 /* CallWaitingView.json */,
+				E5EF07E1294B751900C1E528 /* Lottie */,
 				E5EEE20229129C6000CAAE84 /* PostalCode.json */,
-				E539D22E2929F189007D50FD /* LoginPageAnimation.json */,
-				E55C0971290D628400DBF21B /* Constants.swift */,
 				E5604FE42918EDD3007AE655 /* Config.swift */,
 				E5D9BF77291E26AA00F416E6 /* RMConstants.swift */,
 				E507B0D529253968002E501E /* Region.json */,
-				E5E14353293266F300465B65 /* Roommates.json */,
+				E597817B29375E5400ED8903 /* Assets.xcassets */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -743,7 +742,6 @@
 		E5B3376B290F639F00467404 /* AddRoom */ = {
 			isa = PBXGroup;
 			children = (
-				E5B33771290F65D800467404 /* PostViewController.xib */,
 				E5DC0FEE29120D1400EB57FD /* EditFee */,
 				E5E64C8F290E3B9300F07286 /* RegionPicker */,
 				E593F0152910ADC700B35550 /* Cell */,
@@ -778,24 +776,15 @@
 				E5DC0FE12911FF2700EB57FD /* Utility */,
 				E5E64C94290E3E0C00F07286 /* Extension */,
 				E55C0970290D627000DBF21B /* Resource */,
+				E5EF07E3294B76A900C1E528 /* Helper */,
 				E55C095B290D4F5800DBF21B /* Model */,
 				E55C0962290D5BF600DBF21B /* Controller */,
-				E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */,
-				E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */,
-				E5BDDB49290D0E2D00F4A767 /* LaunchScreen.storyboard */,
-				E5BDDB42290D0E2900F4A767 /* ViewController.swift */,
+				E5EF07E2294B759000C1E528 /* Application */,
 				E5DEEEC72922814900A649C1 /* Regions.plist */,
 				E5ACE16A291BFA79006CCF1A /* GoogleService-Info.plist */,
 				E539D241292F4FF3007D50FD /* AuthKey_7HW8LJJ2ZQ.p8 */,
 				E5BDDB4C290D0E2D00F4A767 /* Info.plist */,
 				E539D243292F503E007D50FD /* AppConfig.swift */,
-				E5A12A622910B8C4006907D9 /* NibLoadble.swift */,
-				E5BDDB44290D0E2900F4A767 /* Main.storyboard */,
-				E5E64C92290E3D3E00F07286 /* Home.storyboard */,
-				E5EEE1F7291214C300CAAE84 /* Explore.storyboard */,
-				E5EEE20C2913A8C900CAAE84 /* Chat.storyboard */,
-				E5B018D8291695CA00A09788 /* Profile.storyboard */,
-				E597817B29375E5400ED8903 /* Assets.xcassets */,
 			);
 			path = RooMeet;
 			sourceTree = "<group>";
@@ -806,6 +795,7 @@
 				E5601358292771D600EE0083 /* LocationPickerViewController.swift */,
 				E5A12A642910C7BF006907D9 /* EditFeeController.swift */,
 				E5B33770290F65D800467404 /* PostViewController.swift */,
+				E5B33771290F65D800467404 /* PostViewController.xib */,
 			);
 			path = AddRoom;
 			sourceTree = "<group>";
@@ -880,10 +870,9 @@
 		E5DC0FE12911FF2700EB57FD /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				E5DC0FE22911FFB300EB57FD /* LocationService.swift */,
 				E5AE1FF5294A0EBB0006F940 /* FirebaseService */,
+				E5DC0FE22911FFB300EB57FD /* LocationService.swift */,
 				E5604FE22918EC22007AE655 /* WebRTCClient.swift */,
-				E59B83142919FEE800F02CEC /* DateFormatter.swift */,
 				E5ACE16C291BFC1C006CCF1A /* ReservationService.swift */,
 				E507B0CB292484FF002E501E /* AuthService.swift */,
 				E539D24A292F9629007D50FD /* KeyChainService.swift */,
@@ -1101,6 +1090,35 @@
 				E539D248292F5869007D50FD /* SwiftJWTWrapper.swift */,
 			);
 			path = ThirdPartyWrapper;
+			sourceTree = "<group>";
+		};
+		E5EF07E1294B751900C1E528 /* Lottie */ = {
+			isa = PBXGroup;
+			children = (
+				E5DEEEB42921150A00A649C1 /* Reservation.json */,
+				E539D22E2929F189007D50FD /* LoginPageAnimation.json */,
+				E51419C82920D52100813D25 /* CallWaitingView.json */,
+				E5E14353293266F300465B65 /* Roommates.json */,
+			);
+			path = Lottie;
+			sourceTree = "<group>";
+		};
+		E5EF07E2294B759000C1E528 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */,
+				E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		E5EF07E3294B76A900C1E528 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				E59B83142919FEE800F02CEC /* DateFormatter.swift */,
+				E5A12A622910B8C4006907D9 /* NibLoadble.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1327,7 +1345,6 @@
 				E57918EB293882F300427F83 /* FurnitureDetailCell.swift in Sources */,
 				E57918EE2938887900427F83 /* Furniture.swift in Sources */,
 				E5D9BF78291E26AA00F416E6 /* RMConstants.swift in Sources */,
-				E5BDDB43290D0E2900F4A767 /* ViewController.swift in Sources */,
 				E560135D29277A7100EE0083 /* RMButtomSheetViewController.swift in Sources */,
 				E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */,
 				E59B83152919FEE800F02CEC /* DateFormatter.swift in Sources */,
@@ -1435,7 +1452,6 @@
 				E5E2771A291E6B3700E68D90 /* MessageBaseCell.swift in Sources */,
 				E587292E291CA7BF00C12E9E /* CUReservationCell.swift in Sources */,
 				E5B3377C290FAA4800467404 /* PostImageCell.swift in Sources */,
-				E55C0972290D628400DBF21B /* Constants.swift in Sources */,
 				E57918F12938938300427F83 /* FurnitureViewController.swift in Sources */,
 				E5872932291CAA7300C12E9E /* OUReservationCell.swift in Sources */,
 				E5EEE2152913B26B00CAAE84 /* ChatRoom.swift in Sources */,

@@ -21,9 +21,9 @@ class FavoritesViewController: UIViewController {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.collectionView.stopPullToRefresh()
-                self.updateDataSource()
                 self.noneLabel.isHidden = !self.rooms.isEmpty
                 self.goHomeButton.isHidden = self.noneLabel.isHidden
+                self.updateDataSource()
             }
         }
     }

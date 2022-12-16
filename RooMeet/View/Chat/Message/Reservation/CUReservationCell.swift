@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseFirestore
 
 class CUReservationCell: MessageBaseCell {
     @IBOutlet weak var messageView: UIView! {
@@ -163,7 +164,7 @@ extension CUReservationCell: ChatCell {
 
         switch acceptedStatus {
         case .waiting:
-            let currentDate = FirebaseService.shared.currentTimestamp
+            let currentDate = Timestamp()
             let expiredInd = requestTime.seconds >= currentDate.seconds
 
             if reservation.sender == UserDefaults.id {

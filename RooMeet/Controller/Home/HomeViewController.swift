@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: ViewController {
+class HomeViewController: UIViewController {
     enum Section {
         case main
         case guess

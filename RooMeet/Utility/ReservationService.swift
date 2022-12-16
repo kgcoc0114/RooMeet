@@ -44,7 +44,7 @@ class ReservationService {
             ) { [weak self] reservation, error in
                 guard let self = self else { return }
                 if error != nil {
-                    print("ERROR: insertReservation")
+                    debugPrint("ERROR: insertReservation")
                     return
                 }
 
@@ -61,7 +61,7 @@ class ReservationService {
                         status: .waiting,
                         reservation: reservation
                     ) { _ in
-                        print("insert message success")
+                        debugPrint("insert message success")
                     }
                 }
             }
@@ -130,7 +130,7 @@ class ReservationService {
         query.getDocuments { [weak self] querySnapshot, error in
             guard let self = self else { return }
             if error != nil {
-                print("ERROR: - fetch data error")
+                debugPrint("ERROR: - fetch data error")
             }
 
             if let querySnapshot = querySnapshot,
@@ -180,14 +180,14 @@ class ReservationService {
                     messageType: MessageType.reservation.rawValue,
                     sendBy: UserDefaults.id,
                     content: status.description,
-                    createdTime: FirebaseService.shared.currentTimestamp,
+                    createdTime: Timestamp(),
                     reservation: reservation
                 )
 
                 do {
                     try messageRef.setData(from: message)
                 } catch let error {
-                    print("Error writing Message to Firestore: \(error)")
+                    debugPrint("Error writing Message to Firestore: \(error)")
                 }
 
                 let chatRoomRef = FirestoreEndpoint.chatRoom.colRef.document(chatRoom.id)
@@ -363,7 +363,7 @@ class ReservationService {
                         break
                     }
                 } catch {
-                    print(error.localizedDescription)
+                    debugPrint(error.localizedDescription)
                 }
             }
         }
@@ -417,9 +417,9 @@ class ReservationService {
                 // Commit the batch
                 batch.commit { error in
                     if let error = error {
-                        print("Error writing batch \(error)")
+                        debugPrint("Error writing batch \(error)")
                     } else {
-                        print("Batch write succeeded.")
+                        debugPrint("Batch write succeeded.")
                     }
                 }
                 completion(expiredRsvn)

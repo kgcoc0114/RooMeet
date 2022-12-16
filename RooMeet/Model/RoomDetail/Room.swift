@@ -11,35 +11,35 @@ import FirebaseFirestoreSwift
 
 
 struct Room: Codable, Hashable {
-    var roomID: String? = nil
-    var userID: String = UserDefaults.id
-    var userData: User? = nil
-    var createdTime: Timestamp = FirebaseService.shared.currentTimestamp
-    var modifiedTime: Timestamp = FirebaseService.shared.currentTimestamp
-    var title: String = PostVCString.postTitle.rawValue
-    var roomImages: [URL] = []
-    var rooms: [RoomSpec] = [RoomSpec()]
-//    var roommateGender: Int // (0: male, 1: female, 2: nonBinary, 3: all)
-    var roomFeatures: [String] = []
-    var roomPetsRules: [String] = []
-    var roomHighLights: [String] = []
-    var roomGenderRules: [String] = []
-    var roomCookingRules: [String] = []
-    var roomElevatorRules: [String] = []
-    var roomBathroomRules: [String] = []
-    var town: String = PostVCString.town.rawValue
-    var county: String = PostVCString.county.rawValue
-    var address: String = ""
-    var lat: Double? = 0
-    var long: Double? = 0
-    var postalCode: String? = nil
-    var billInfo: BillInfo? = nil
-    var leaseMonth: Int = 0
-    var room: Int = 0
-    var parlor: Int = 0
-    var movinDate: Date = Date()
-    var otherDescriction: String? = nil
-    var isDeleted = false
+    var roomID: String?
+    var userID: String
+    var userData: User?
+    var createdTime: Timestamp
+    var modifiedTime: Timestamp
+    var title: String
+    var roomImages: [URL]
+    var rooms: [RoomSpec]
+    //    var roommateGender: Int // (0: male, 1: female, 2: nonBinary, 3: all)
+    var roomFeatures: [String]
+    var roomPetsRules: [String]
+    var roomHighLights: [String]
+    var roomGenderRules: [String]
+    var roomCookingRules: [String]
+    var roomElevatorRules: [String]
+    var roomBathroomRules: [String]
+    var town: String
+    var county: String
+    var address: String
+    var lat: Double?
+    var long: Double?
+    var postalCode: String?
+    var billInfo: BillInfo?
+    var leaseMonth: Int
+    var room: Int
+    var parlor: Int
+    var movinDate: Date
+    var otherDescriction: String?
+    var isDeleted: Bool = false
 
     var roomMinPrice: Int?
     var billInfoList: [RoomDetailFee]? {
@@ -73,6 +73,7 @@ struct Room: Codable, Hashable {
         return -1
     }
 }
+
 
 struct RoomSpec: Codable, Hashable {
     var roomType: String?

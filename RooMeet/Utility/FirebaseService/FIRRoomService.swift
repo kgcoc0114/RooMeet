@@ -245,6 +245,7 @@ class FIRRoomService {
         var rooms: [Room] = []
 
         let group = DispatchGroup()
+        print(user.favoriteRoomIDs)
         user.favoriteRoomIDs.forEach { roomID in
             group.enter()
             fetchRoomByRoomID(roomID: roomID, user: user) { room in
