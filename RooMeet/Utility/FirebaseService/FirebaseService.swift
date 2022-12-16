@@ -70,7 +70,7 @@ class FirebaseService {
         docRef.delete()
     }
 
-    func setData(_ documentData: [String : Any], at docRef: DocumentReference) {
+    func setData(_ documentData: [String: Any], at docRef: DocumentReference) {
         docRef.setData(documentData)
     }
 

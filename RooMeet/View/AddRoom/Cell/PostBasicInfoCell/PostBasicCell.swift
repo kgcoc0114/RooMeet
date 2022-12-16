@@ -155,11 +155,11 @@ class PostBasicCell: UICollectionViewCell {
         }
 
         if let parlor = postBasicData.parlor {
-            parlorCountView.quantityField.text = "\(parlor)"
+            parlorCountView.quantityField.text = parlor == 0 ? nil : "\(parlor)"
         }
 
         if let room = postBasicData.room {
-            roomCountView.quantityField.text = "\(room)"
+            parlorCountView.quantityField.text = room == 0 ? nil : "\(room)"
         }
 
         if let movinDate = postBasicData.movinDate {
@@ -171,7 +171,7 @@ class PostBasicCell: UICollectionViewCell {
                 let year = leaseMonth / 12
                 leasePickerView.quantityField.text = "\(year) 年"
             } else {
-                leasePickerView.quantityField.text = "\(leaseMonth) 月"
+                leasePickerView.quantityField.text = leaseMonth == 0 ? nil : "\(leaseMonth) 月"
             }
         }
     }
@@ -221,20 +221,20 @@ extension PostBasicCell: NumberPickerViewDelegate {
     }
 }
 
-extension PostBasicCell: PostCell {
-    func configure(container: RMCellContainer) {
-        guard let container = (container as? PostDataContainer) else {
-            return
-        }
-
-        postBasicData = container.postScenario.postBasicData ?? PostBasicData()
-        let postScenario = container.postScenario
-        titleTextField.text = postScenario.title
-        addressTextField.text = postScenario.address
-        regionSelectView.text = postScenario.region
-        parlorCountView.quantityField.text = postScenario.parlor
-        roomCountView.quantityField.text = postScenario.roomCount
-        datePickerTextField.text = postScenario.movinDate
-        leasePickerView.quantityField.text = postScenario.leaseMonth
-    }
-}
+//extension PostBasicCell: PostCell {
+//    func configure(container: RMCellContainer) {
+//        guard let container = (container as? PostDataContainer) else {
+//            return
+//        }
+//
+//        postBasicData = container.postScenario.postBasicData ?? PostBasicData()
+//        let postScenario = container.postScenario
+//        titleTextField.text = postScenario.title
+//        addressTextField.text = postScenario.address
+//        regionSelectView.text = postScenario.region
+//        parlorCountView.quantityField.text = postScenario.parlor
+//        roomCountView.quantityField.text = postScenario.roomCount
+//        datePickerTextField.text = postScenario.movinDate
+//        leasePickerView.quantityField.text = postScenario.leaseMonth
+//    }
+//}

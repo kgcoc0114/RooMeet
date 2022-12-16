@@ -128,6 +128,7 @@ class FilterViewController: RMButtomSheetViewController {
             .order(by: "createdTime")
 
         self.completion?(query)
-        dismiss(animated: true)
+        animateDismissView()
+//        dismiss(animated: true)
     }
 }

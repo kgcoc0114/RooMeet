@@ -41,7 +41,14 @@ extension PostImageCell: PostCell {
     func configure(container: RMCellContainer) {
         guard
             let container = (container as? PostDataContainer),
-            let indexPath = container.indexPath else { return }
-        imageView.image = container.postScenario.roomDisplayImages[indexPath.item]
+            let indexPath = container.indexPath
+        else { return }
+
+        imageView.loadImage(
+            indexPath.item >= container.data?.roomImages.count ?? 3
+            ? nil
+            : container.data?.roomImages[indexPath.item].absoluteString,
+            placeHolder: UIImage.asset(.add)
+        )
     }
 }

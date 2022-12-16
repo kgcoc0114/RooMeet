@@ -219,22 +219,22 @@ enum PostScenario: Hashable {
         }
     }
 
-    var roomDisplayImages: [UIImage] {
-        let addImage = UIImage.asset(.add)
-        var images = [addImage, addImage, addImage]
-        switch self {
-        case .create:
-            return images
-        case .edit(let room):
-            room.roomImages.enumerated().forEach { index, url in
-                if let imageData = try? Data(contentsOf: url),
-                   let loadedImage = UIImage(data: imageData) {
-                    images[index] = loadedImage
-                }
-            }
-            return images
-        }
-    }
+//    var roomDisplayImages: [UIImage] {
+//        let addImage = UIImage.asset(.add)
+//        var images = [addImage, addImage, addImage]
+//        switch self {
+//        case .create:
+//            return images
+//        case .edit(let room):
+//            room.roomImages.enumerated().forEach { index, url in
+//                if let imageData = try? Data(contentsOf: url),
+//                   let loadedImage = UIImage(data: imageData) {
+//                    images[index] = loadedImage
+//                }
+//            }
+//            return images
+//        }
+//    }
 }
 
 protocol PostCell: UICollectionViewCell {
@@ -244,35 +244,31 @@ protocol PostCell: UICollectionViewCell {
 protocol RMCellContainer {}
 
 struct PostDataContainer: RMCellContainer {
-    let postScenario: PostScenario
-    let section: PostSection?
+    let data: Room?
     let indexPath: IndexPath?
 
-    var tags: [String] {
-        section?.tags ?? []
-    }
-
-    var selectedTags: [String] {
-        switch section {
-        case .highLight:
-            return postScenario.roomHighLights
-        case .gender:
-            return postScenario.roomGenderRules
-        case .pet:
-            return postScenario.roomPetsRules
-        case .elevator:
-            return postScenario.roomElevatorRules
-        case .cooking:
-            return postScenario.roomCookingRules
-        case .bathroom:
-            return postScenario.roomBathroomRules
-        case .features:
-            return postScenario.roomFeatures
-        default:
-            return []
-        }
-    }
+//    var tags: [String] {
+//        section?.tags ?? []
+//    }
+//
+//    var selectedTags: [String] {
+//        switch section {
+//        case .highLight:
+//            return postScenario.roomHighLights
+//        case .gender:
+//            return postScenario.roomGenderRules
+//        case .pet:
+//            return postScenario.roomPetsRules
+//        case .elevator:
+//            return postScenario.roomElevatorRules
+//        case .cooking:
+//            return postScenario.roomCookingRules
+//        case .bathroom:
+//            return postScenario.roomBathroomRules
+//        case .features:
+//            return postScenario.roomFeatures
+//        default:
+//            return []
+//        }
+//    }
 }
-
-
-

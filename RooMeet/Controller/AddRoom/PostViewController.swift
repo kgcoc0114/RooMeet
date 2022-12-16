@@ -48,6 +48,7 @@ class PostViewController: UIViewController {
         UIImage.asset(.add),
         UIImage.asset(.add)
     ]
+
     var roomImagesStatus = [false, false, false]
 
     @IBOutlet weak var submitButton: UIButton! {
@@ -70,9 +71,9 @@ class PostViewController: UIViewController {
             collectionView.registerCellWithNib(reuseIdentifier: OtherFeeHeaderCell.reuseIdentifier, bundle: nil)
             collectionView.registerCellWithNib(reuseIdentifier: FeeDetailCell.reuseIdentifier, bundle: nil)
 
+            collectionView.collectionViewLayout = configureLayout()
             collectionView.dataSource = self
             collectionView.delegate = self
-            collectionView.collectionViewLayout = configureLayout()
             collectionView.keyboardDismissMode = .interactive
         }
     }
@@ -117,8 +118,6 @@ class PostViewController: UIViewController {
                 configureData(data: room)
             }
         }
-
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -160,17 +159,6 @@ class PostViewController: UIViewController {
             longitude = data.long
             postalCode = data.postalCode
             createdTime = data.createdTime
-
-            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                guard let self = self else { return }
-                data.roomImages.enumerated().forEach { index, url in
-                    if let imageData = try? Data(contentsOf: url) {
-                        if let loadedImage = UIImage(data: imageData) {
-                            self.roomImages[index] = loadedImage
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -376,36 +364,20 @@ extension PostViewController: UICollectionViewDataSource {
         cell.delegate = self
         cell.configureLayout(roomSpec: roomSpecList[indexPath.item], indexPath: indexPath)
 
-//        cell.addColumnAction = { [weak self] cell in
-//            guard
-//                let self = self,
-//                let indexPath = collectionView.indexPath(for: cell) else { return }
-//            let roomSpec = RoomSpec()
-//            roomSpecList.insert(roomSpec, at: indexPath.item + 1)
-//            self.collectionView.reloadData()
-//        }
-//
-//        cell.delectColumnAction = { [weak self] cell in
-//            guard
-//                let self = self,
-//                let indexPath = collectionView.indexPath(for: cell) else { return }
-//
-//            roomSpecList.remove(at: indexPath.item)
-//            self.collectionView.reloadData()
-//        }
         return cell
     }
 
     private func makePostImageCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
+        let postSection = PostSection.allCases[indexPath.section]
+        print(indexPath.item, postSection)
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: PostImageCell.reuseIdentifier,
+            withReuseIdentifier: postSection.cellIdentifier,
             for: indexPath
-        ) as? PostImageCell else {
+        ) as? PostCell else {
             fatalError("PostImageCell Error")
         }
-
-        cell.imageView.image = roomImages[indexPath.item]
-        cell.delegate = self
+        cell.configure(container: PostDataContainer(data: room, indexPath: indexPath))
+        (cell as? PostImageCell)?.delegate = self
         return cell
     }
 
@@ -501,7 +473,7 @@ extension PostViewController: PostImageCellDelegate {
     }
 }
 
-extension PostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension PostViewController {
     private func updateRoomImages(cell: PostImageCell, image: UIImage) {
         guard let indexPath = collectionView.indexPath(for: cell) else {
             return
