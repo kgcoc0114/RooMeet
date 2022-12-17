@@ -12,7 +12,6 @@ protocol ReservationDisplayCellDelegate: AnyObject {
 }
 
 class ReservationDisplayCell: UICollectionViewCell {
-    static let identifier = "ReservationDisplayCell"
     weak var delegate: ReservationDisplayCellDelegate?
 
     @IBOutlet weak var statusButton: UIButton! {

@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import FirebaseFirestore
-import FirebaseFirestoreSwift
 
 class ProfileRSVNViewController: UIViewController {
     enum Section {
@@ -18,6 +16,8 @@ class ProfileRSVNViewController: UIViewController {
     typealias ProfileRSVNDataSource = UICollectionViewDiffableDataSource<Section, Reservation>
     typealias ProfileRSVNSnapshot = NSDiffableDataSourceSnapshot<Section, Reservation>
     private var dataSource: ProfileRSVNDataSource!
+
+    private let viewModel = ReservationViewModel()
 
     var reservations: [Reservation] = [] {
         didSet {
@@ -64,6 +64,8 @@ class ProfileRSVNViewController: UIViewController {
 
         navigationItem.title = "Reservations"
 
+        configureDataBinding()
+
         collectionView.delegate = self
 
         configureCollectionView()
@@ -74,12 +76,20 @@ class ProfileRSVNViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        fetchReservations()
         RMLottie.shared.startAnimate(animationView: reservationAnimationView)
     }
 
-    deinit {
-        print("=== ProfileRSVNViewController deinit")
+    // MARK: - Data Binding
+    private func configureDataBinding() {
+        viewModel.reservationResults.bind { [weak self] reservations in
+            guard let self = self else { return }
+            self.reservations = reservations
+        }
+
+        viewModel.userResults.bind { [weak self] user in
+            guard let self = self else { return }
+            self.user = user
+        }
     }
 
     private func configureAnimationView() {
@@ -94,13 +104,13 @@ class ProfileRSVNViewController: UIViewController {
     }
 
     private func configureCollectionView() {
-        collectionView.register(
-            UINib(nibName: "ReservationDisplayCell", bundle: nil),
-            forCellWithReuseIdentifier: ReservationDisplayCell.identifier)
+        collectionView.registerCellWithNib(reuseIdentifier: ReservationDisplayCell.reuseIdentifier, bundle: nil)
+
+        collectionView.collectionViewLayout = createLayout()
 
         dataSource = ProfileRSVNDataSource(collectionView: collectionView) { collectionView, indexPath, reservation in
             guard let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: ReservationDisplayCell.identifier,
+                withReuseIdentifier: ReservationDisplayCell.reuseIdentifier,
                 for: indexPath) as? ReservationDisplayCell else {
                 return UICollectionViewCell()
             }
@@ -109,21 +119,9 @@ class ProfileRSVNViewController: UIViewController {
             return cell
         }
 
-        collectionView.collectionViewLayout = createLayout()
-
         collectionView.addPullToRefresh {[weak self] in
             guard let self = self else { return }
-            self.fetchReservations()
-        }
-    }
-
-    private func fetchReservations() {
-        FIRRoomService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations, user in
-            guard let self = self else { return }
-            self.user = user
-            self.reservations = reservations.sorted { rsvnA, rsvnB in
-                (rsvnA.requestTime ?? Timestamp()).seconds < (rsvnB.requestTime ?? Timestamp()).seconds
-            }
+            self.viewModel.fetchReservations()
         }
     }
 
@@ -217,7 +215,7 @@ extension ProfileRSVNViewController: UICollectionViewDelegate {
 
                 let cancelMenu = UIAction(
                     title: "取消預約",
-                    image: UIImage(systemName: "c.circle"),
+                    image: UIImage(systemName: "xmark.circle"),
                     identifier: nil
                 ) { [weak self] _ in
                     guard let self = self else { return }

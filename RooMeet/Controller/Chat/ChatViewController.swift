@@ -261,7 +261,7 @@ class ChatViewController: UIViewController {
 
             let blockUserID = blockUser.id
 
-            FirebaseService.shared.insertBlock(blockedUser: blockUserID)
+            FIRUserService.shared.insertBlock(blockedUser: blockUserID)
 
             RMProgressHUD.showSuccess()
             self.navigationController?.popViewController(animated: true)
