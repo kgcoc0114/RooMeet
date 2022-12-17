@@ -298,7 +298,7 @@ class RoomDetailViewController: UIViewController {
 
                 let reportEvent = ReportEvent(reportUser: UserDefaults.id, type: "post", reportedID: roomID, createdTime: Timestamp())
 
-                FirebaseService.shared.insertReportEvent(event: reportEvent) { error in
+                FIRUserService.shared.insertReportEvent(event: reportEvent) { error in
                     if error != nil {
                         RMProgressHUD.showFailure(text: "出點問題了，請稍後再試！")
                     } else {
