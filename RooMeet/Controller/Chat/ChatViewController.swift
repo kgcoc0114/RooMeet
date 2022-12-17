@@ -101,7 +101,6 @@ class ChatViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // listen
         guard let chatRoom = chatRoom else {
             print("ERROR: chatRoom is not exist.")
             return
@@ -224,7 +223,6 @@ class ChatViewController: UIViewController {
             return
         }
 
-        // 清空通話資料
         FirestoreEndpoint.call.colRef.document(chatRoom.id).delete { err in
             if let err = err {
                 print("Error removing document: \(err)")
@@ -344,7 +342,6 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
     ) {
         RMProgressHUD.show()
-        // 取得從 UIImagePickerController 選擇的檔案
         if let pickedImage = info[.originalImage] as? UIImage {
             FIRStorageService.shared.uploadImage(image: pickedImage, path: "ChatImages") { [weak self] imageURL, error in
                 guard

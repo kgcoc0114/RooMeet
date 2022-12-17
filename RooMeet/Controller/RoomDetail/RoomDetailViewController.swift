@@ -475,13 +475,11 @@ extension RoomDetailViewController {
 
 extension RoomDetailViewController: BookingDateCellDelegate {
     func didSelectedDate(_ cell: BookingDateCell, date: DateComponents) {
-        // 第一次選擇
         if selectedDateCell == nil {
             selectedDate = date
             selectedDateCell = cell
             selectedDateCell?.isSelected = true
         } else {
-            // 取消此次選擇
             if cell == selectedDateCell {
                 selectedDateCell?.isSelected = false
                 selectedDate = nil

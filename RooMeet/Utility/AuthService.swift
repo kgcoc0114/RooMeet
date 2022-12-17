@@ -100,14 +100,12 @@ class AuthService {
 
     func deleteAccount(credential: OAuthCredential, completion: @escaping ((Result<String>) -> Void)) {
         let group = DispatchGroup()
-
-        // delete data in firebase
         group.enter()
+
         FIRUserService.shared.deleteAccount(userID: UserDefaults.id) { _ in
             group.leave()
         }
 
-        //  delete user in firebase
         let user = auth.currentUser
 
         group.enter()
@@ -123,7 +121,6 @@ class AuthService {
         }
 
         group.enter()
-        // revoke apple account
         self.revokeToken { _ in
             group.leave()
         }

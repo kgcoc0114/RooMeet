@@ -60,7 +60,6 @@ class HomeViewController: UIViewController {
             target: self,
             action: #selector(showFilterPage))
 
-        // set title
         navigationItem.title = "RooMeet"
 
         collectionView.delegate = self

@@ -50,8 +50,7 @@ class FIRStorageService {
         if let uploadData = uploadData {
             storageRef.putData(uploadData) { _, error in
                 if let error = error {
-                    // TODO: Error Handle
-                    print("Error: \(error.localizedDescription)")
+                    debugPrint("Error: \(error.localizedDescription)")
                     completion(nil, error)
                     return
                 }

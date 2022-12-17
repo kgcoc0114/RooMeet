@@ -153,21 +153,6 @@ extension ItemsCell: IntroDataCell {
     }
 }
 
-//extension ItemsCell: PostCell {
-//    func configure(container: RMCellContainer) {
-//        guard let data = (container as? PostDataContainer) else { return }
-//        configureTagView(
-//            ruleType: data.section?.title ?? "",
-//            tags: data.tags,
-//            selectedTags: data.selectedTags,
-//            mainColor: .mainColor,
-//            lightColor: .mainLightColor,
-//            mainLightBackgroundColor: .mainBackgroundColor,
-//            enableTagSelection: true
-//        )
-//    }
-//}
-
 class RMTag: TTGTextTag {
     var title: String?
 }

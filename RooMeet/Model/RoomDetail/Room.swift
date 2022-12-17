@@ -93,12 +93,6 @@ struct Address: Codable {
     let long: Double
 }
 
-struct Transportation: Codable {
-    let transType: Int // (0: 公車站, 1: 捷運站）
-    let distance: Double
-    let site: String
-}
-
 struct BillInfo: Codable, Hashable {
     var water: FeeDetail
     var electricity: FeeDetail

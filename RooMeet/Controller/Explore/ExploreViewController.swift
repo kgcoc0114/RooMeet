@@ -74,7 +74,6 @@ class ExploreViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // set title
         navigationItem.title = "Explore"
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage.asset(.settings_sliders),
@@ -89,9 +88,8 @@ class ExploreViewController: UIViewController {
         locationManger.requestWhenInUseAuthorization()
         locationManger.delegate = self
         locationManger.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-
-        // get user current location
         locationManger.requestLocation()
+
         roomExploreMap.showsUserLocation = true
 
         fetchRooms()
@@ -139,14 +137,13 @@ class ExploreViewController: UIViewController {
         }
     }
 
-    // FIXME: 條件與滑動經緯度同時成立
     @objc private func showFilterPage() {
         guard let user = user else {
             return
         }
 
         guard let filterVC = UIStoryboard.home.instantiateViewController(
-            withIdentifier: "FilterViewController") as? FilterViewController else {
+            withIdentifier: FilterViewController.self) as? FilterViewController else {
             print("ERROR: FilterViewController Error")
             return
         }

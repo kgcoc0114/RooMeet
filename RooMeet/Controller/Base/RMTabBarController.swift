@@ -73,7 +73,6 @@ class RMTabBarController: UITabBarController {
         self.delegate = self
         listenPhoneCallEvent()
 
-        // get User Location
         locationManger.delegate = self
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let self = self else { return }

@@ -286,18 +286,18 @@ extension PostViewController: UICollectionViewDataSource {
         case .images:
             return makePostImageCell(collectionView: collectionView, indexPath: indexPath)
         case .feeHeader:
+            let postSection = PostSection.allCases[indexPath.section]
+
             guard
                 let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier,
-                    for: indexPath) as? OtherFeeHeaderCell,
-                let tag = PostSection.allCases.firstIndex(of: .feeHeader)
+                    withReuseIdentifier: postSection.cellIdentifier,
+                    for: indexPath) as? PostCell
             else {
                 fatalError("OtherFeeHeaderCell Error")
             }
 
-            cell.editAction.tag = tag
-            cell.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
-            cell.titleLabel.text = PostVCString.otherFee.rawValue
+            cell.configure(container: PostDataContainer(room: nil, indexPath: indexPath, roomSpecList: nil))
+            (cell as? OtherFeeHeaderCell)?.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
             return cell
         case .feeDetail:
             guard let cell = collectionView.dequeueReusableCell(
@@ -354,16 +354,16 @@ extension PostViewController: UICollectionViewDataSource {
     }
 
     private func makeRoomSpecCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
+        let postSection = PostSection.allCases[indexPath.section]
+
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: RoomSpecCell.reuseIdentifier,
+            withReuseIdentifier: postSection.cellIdentifier,
             for: indexPath
-        ) as? RoomSpecCell else {
+        ) as? PostCell else {
             fatalError("RoomSpecCell Error")
         }
-
-        cell.delegate = self
-        cell.configureLayout(roomSpec: roomSpecList[indexPath.item], indexPath: indexPath)
-
+        cell.configure(container: PostDataContainer(room: nil, indexPath: indexPath, roomSpecList: roomSpecList))
+        (cell as? RoomSpecCell)?.delegate = self
         return cell
     }
 
@@ -376,7 +376,7 @@ extension PostViewController: UICollectionViewDataSource {
         ) as? PostCell else {
             fatalError("PostImageCell Error")
         }
-        cell.configure(container: PostDataContainer(data: room, indexPath: indexPath))
+        cell.configure(container: PostDataContainer(room: room, indexPath: indexPath, roomSpecList: nil))
         (cell as? PostImageCell)?.delegate = self
         return cell
     }

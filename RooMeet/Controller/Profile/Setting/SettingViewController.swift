@@ -215,11 +215,6 @@ extension SettingViewController: ASAuthorizationControllerDelegate {
                 return
             }
 
-            // delete account
-            // 1. apple login
-            // 2. reauth firebase
-            // 3. delete firebase account
-            // 4. revoke sign in with apple
             if
                 let authorizationCode = appleIDCredential.authorizationCode,
                 let codeString = String(data: authorizationCode, encoding: .utf8) {
