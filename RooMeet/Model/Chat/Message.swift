@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 enum MessageType: Int, CaseIterable {
-    case text = 0
+    case text
     case image
     case call
     case reservation

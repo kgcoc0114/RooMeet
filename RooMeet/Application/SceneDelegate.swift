@@ -27,24 +27,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         window?.rootViewController = RMTabBarVC
         window?.makeKeyAndVisible()
-
-//        //  already login
-//        if AuthService.shared.isLogin() {
-//            guard let RMTabBarVC = storyBoard.instantiateViewController(
-//                withIdentifier: "RMTabBarController"
-//            ) as? RMTabBarController else {
-//                return
-//            }
-//
-//            window?.rootViewController = RMTabBarVC
-//            window?.makeKeyAndVisible()
-//        } else {
-//            let loginVC = storyBoard.instantiateViewController(
-//                withIdentifier: "LoginViewController"
-//            )
-//            window?.rootViewController = loginVC
-//            window?.makeKeyAndVisible()
-//        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {

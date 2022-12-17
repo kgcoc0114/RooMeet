@@ -16,7 +16,6 @@ struct PostBasicData {
     var parlor: Int?
     var leaseMonth: Int?
     var movinDate: Date?
-    var gender: Int?
 }
 
 protocol PostBasicCellDelegate: AnyObject {
@@ -106,12 +105,6 @@ class PostBasicCell: UICollectionViewCell {
         }
     }
 
-    @IBOutlet weak var genderSegmentControl: UISegmentedControl! {
-        didSet {
-            postBasicData.gender = genderSegmentControl.selectedSegmentIndex
-        }
-    }
-
     private var parlor: Int = 0
     private var room: Int = 0
 
@@ -156,11 +149,11 @@ class PostBasicCell: UICollectionViewCell {
         }
 
         if let parlor = postBasicData.parlor {
-            parlorCountView.quantityField.text = "\(parlor)"
+            parlorCountView.quantityField.text = parlor == 0 ? nil : "\(parlor)"
         }
 
         if let room = postBasicData.room {
-            roomCountView.quantityField.text = "\(room)"
+            parlorCountView.quantityField.text = room == 0 ? nil : "\(room)"
         }
 
         if let movinDate = postBasicData.movinDate {
@@ -172,7 +165,7 @@ class PostBasicCell: UICollectionViewCell {
                 let year = leaseMonth / 12
                 leasePickerView.quantityField.text = "\(year) 年"
             } else {
-                leasePickerView.quantityField.text = "\(leaseMonth) 月"
+                leasePickerView.quantityField.text = leaseMonth == 0 ? nil : "\(leaseMonth) 月"
             }
         }
     }

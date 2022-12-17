@@ -181,15 +181,14 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
     }
 
     @objc private func editIntro() {
-        let introductionVC = IntroViewController(entryType: EntryType.edit, user: user)
+        guard let user = user else {
+            return
+        }
+
+        let introductionVC = IntroViewController(IntroScenario.edit(user: user))
         introductionVC.completion = { [weak self] _ in
             guard let self = self else { return }
-
-            if UserDefaults.profilePhoto != "empty" {
-                self.profileImageView.loadImage(UserDefaults.profilePhoto, placeHolder: UIImage.asset(.roomeet))
-            } else {
-                self.profileImageView.image = UIImage.asset(.roomeet)
-            }
+            self.profileImageView.loadImage(UserDefaults.profilePhoto, placeHolder: UIImage.asset(.roomeet))
         }
 
         introductionVC.modalPresentationStyle = .fullScreen
@@ -264,10 +263,8 @@ extension ProfileViewController: UICollectionViewDelegate {
     private func showLoginVC() {
         DispatchQueue.main.async {
             self.navigationController?.tabBarController?.selectedIndex = 0
-
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyBoard.instantiateViewController(
-                withIdentifier: "LoginViewController"
+            let loginVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: LoginViewController.self)
             )
             loginVC.modalPresentationStyle = .fullScreen
             self.present(loginVC, animated: false)

@@ -13,9 +13,14 @@ private struct StoryboardCategory {
     static let explore = "Explore"
     static let chat = "Chat"
     static let profile = "Profile"
+    static let main = "Main"
 }
 
 extension UIStoryboard {
+    static var main: UIStoryboard {
+        return UIStoryboard(name: StoryboardCategory.main, bundle: nil)
+    }
+
     static var home: UIStoryboard {
         return UIStoryboard(name: StoryboardCategory.home, bundle: nil)
     }

@@ -11,6 +11,7 @@ import FirebaseFirestoreSwift
 
 class ReservationService {
     static let shared = ReservationService()
+    let firebaseService = FirebaseService.shared
 
     func upsertReservationData(
         status: AcceptedStatus,
@@ -43,7 +44,7 @@ class ReservationService {
             ) { [weak self] reservation, error in
                 guard let self = self else { return }
                 if error != nil {
-                    print("ERROR: insertReservation")
+                    debugPrint("ERROR: insertReservation")
                     return
                 }
 
@@ -60,7 +61,7 @@ class ReservationService {
                         status: .waiting,
                         reservation: reservation
                     ) { _ in
-                        print("insert message success")
+                        debugPrint("insert message success")
                     }
                 }
             }
@@ -81,13 +82,12 @@ class ReservationService {
             // 刪除發起者的 reservationID
             if status == .cancel {
                 deleteUserReservation(userID: sender, reservationID: reservation.id)
-
                 deleteUserReservation(userID: receiver, reservationID: reservation.id)
             }
 
             // 更新 message / last message
             insertMessage(senderID: sender, receiverID: receiver, status: status, reservation: reservation) { _ in
-                print("insert message success")
+                debugPrint("insert message success")
             }
         case .answer:
             break
@@ -105,22 +105,17 @@ class ReservationService {
     func deleteUserReservation(userID: String, reservationID: String) {
         let userQuery = FirestoreEndpoint.user.colRef.document(userID)
 
-        userQuery.getDocument { document, _ in
-            if let document = document, document.exists {
-                do {
-                    let user = try document.data(as: User.self)
-                    var reservations = user.reservations
-                    if let index = reservations.firstIndex(of: reservationID) {
-                        reservations.remove(at: index)
-                        userQuery.updateData([
-                            "reservations": reservations
-                        ])
-                    }
-                } catch {
-                    print("Error")
-                }
-            } else {
-                print("Document does not exist")
+        firebaseService.getDocument(userQuery) { (user: User?) in
+            guard let user = user else {
+                return
+            }
+
+            var reservations = user.reservations
+            if let index = reservations.firstIndex(of: reservationID) {
+                reservations.remove(at: index)
+                userQuery.updateData([
+                    "reservations": reservations
+                ])
             }
         }
     }
@@ -135,17 +130,13 @@ class ReservationService {
         query.getDocuments { [weak self] querySnapshot, error in
             guard let self = self else { return }
             if error != nil {
-                print("ERROR: - fetch data error")
+                debugPrint("ERROR: - fetch data error")
             }
 
             if let querySnapshot = querySnapshot,
-               let document = querySnapshot.documents.first {
-                do {
-                    if let message = try? document.data(as: Message.self) {
-                        self.updateLastMessage(chatRoomID: chatRoomID, message: message)
-                    }
-                } catch {
-                    print("ERROR: - \(error.localizedDescription)")
+                let document = querySnapshot.documents.first {
+                if let message = try? document.data(as: Message.self) {
+                    self.updateLastMessage(chatRoomID: chatRoomID, message: message)
                 }
             }
         }
@@ -176,55 +167,63 @@ class ReservationService {
         receiverID: String,
         status: AcceptedStatus,
         reservation: Reservation,
-        completion: @escaping ((String?) -> Void)
+        completion: @escaping ((Result<String>) -> Void)
     ) {
-        FirebaseService.shared.getChatRoomByUserID(userA: senderID, userB: receiverID) { chatRoom in
-            let messageRef = FirestoreEndpoint.chatRoom.colRef
-                .document(chatRoom.id)
-                .collection("Message")
-                .document()
+        let members = [senderID, receiverID]
+        FIRChatRoomService.shared.getChatRoomByMembers(members: members) { result in
+            switch result {
+            case .success(let chatRoom):
+                let messageRef = FirestoreEndpoint.message(chatRoom.id).colRef.document()
 
-            let message = Message(
-                id: messageRef.documentID,
-                messageType: MessageType.reservation.rawValue,
-                sendBy: UserDefaults.id,
-                content: status.description,
-                createdTime: Timestamp(),
-                reservation: reservation
-            )
+                let message = Message(
+                    id: messageRef.documentID,
+                    messageType: MessageType.reservation.rawValue,
+                    sendBy: UserDefaults.id,
+                    content: status.description,
+                    createdTime: Timestamp(),
+                    reservation: reservation
+                )
 
-            do {
-                try messageRef.setData(from: message)
-            } catch let error {
-                print("Error writing Message to Firestore: \(error)")
+                do {
+                    try messageRef.setData(from: message)
+                } catch let error {
+                    debugPrint("Error writing Message to Firestore: \(error)")
+                }
+
+                let chatRoomRef = FirestoreEndpoint.chatRoom.colRef.document(chatRoom.id)
+
+                let lastMessage = LastMessage(
+                    id: messageRef.documentID,
+                    content: status.content,
+                    createdTime: message.createdTime
+                )
+
+                chatRoomRef.updateData([
+                    "lastMessage": lastMessage.toDict,
+                    "lastUpdated": lastMessage.createdTime
+                ])
+
+                completion(Result.success(chatRoom.id))
+            case .failure(let error):
+                completion(Result.failure(error))
             }
-
-            let chatRoomRef = FirestoreEndpoint.chatRoom.colRef.document(chatRoom.id)
-
-            let lastMessage = LastMessage(
-                id: messageRef.documentID,
-                content: status.content,
-                createdTime: message.createdTime
-            )
-
-            chatRoomRef.updateData([
-                "lastMessage": lastMessage.toDict,
-                "lastUpdated": lastMessage.createdTime
-            ])
-
-            completion(chatRoom.id)
         }
     }
 
     // 更新已被回覆過的預約訊息狀態
     func updateCurrentMessageStatus(status: AcceptedStatus, currentUser: User, otherUser: User, message: Message) {
-        FirebaseService.shared.getChatRoomByUserID(userA: currentUser.id, userB: otherUser.id) { [weak self] chatroom in
-            guard let `self` = self else { return }
-            self.updateMessage(
-                chatRoomID: chatroom.id,
-                message: message,
-                status: status
-            )
+        FIRChatRoomService.shared.getChatRoomByMembers(members: [currentUser.id, otherUser.id]) { [weak self] result in
+            guard let self = self else { return }
+            switch result {
+            case .success(let chatRoom):
+                self.updateMessage(
+                    chatRoomID: chatRoom.id,
+                    message: message,
+                    status: status
+                )
+            case .failure(let error):
+                debugPrint("updateCurrentMessageStatus", error.localizedDescription)
+            }
         }
     }
 
@@ -240,7 +239,6 @@ class ReservationService {
             "content": status.description
         ])
     }
-
 
     func insertReservation(
         senderID: String,
@@ -308,10 +306,16 @@ class ReservationService {
                 return
             }
 
-            FirebaseService.shared.getChatRoomByUserID(userA: sender, userB: receiver) { [weak self] chatRoom in
+            FIRChatRoomService.shared.getChatRoomByMembers(members: [sender, receiver]) { [weak self] result in
                 guard let self = self else { return }
-                self.deleteRequestReservationMessage(chatRoomID: chatRoom.id, reservationID: reservation.id, status: .cancel)
-                completion(nil)
+                switch result {
+                case .success(let chatRoom):
+                    self.deleteRequestReservationMessage(chatRoomID: chatRoom.id, reservationID: reservation.id, status: .cancel)
+                    completion(nil)
+                case .failure(let error):
+                    debugPrint("replyReservation", error.localizedDescription)
+                    completion(nil)
+                }
             }
         } else {
             insertMessage(
@@ -319,22 +323,22 @@ class ReservationService {
                 receiverID: receiver,
                 status: status,
                 reservation: reservation
-            ) { [weak self] chatRoomID in
-                guard
-                    let self = self,
-                    let chatRoomID = chatRoomID else {
-                    return
+            ) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let chatRoomID):
+                    self.deleteRequestReservationMessage(chatRoomID: chatRoomID, reservationID: reservation.id, status: .answer)
+                    completion(nil)
+                case .failure(let error):
+                    debugPrint("replyReservation", error.localizedDescription)
+                    completion(nil)
                 }
-                self.deleteRequestReservationMessage(chatRoomID: chatRoomID, reservationID: reservation.id, status: .answer)
-                completion(nil)
             }
         }
     }
 
     func deleteRequestReservationMessage(chatRoomID: String, reservationID: String, status: AcceptedStatus) {
-        let query = FirestoreEndpoint.chatRoom.colRef
-            .document(chatRoomID)
-            .collection("Message")
+        let query = FirestoreEndpoint.message(chatRoomID).colRef
             .whereField("content", isEqualTo: "waiting")
             .whereField("messageType", isEqualTo: 3)
 
@@ -359,7 +363,7 @@ class ReservationService {
                         break
                     }
                 } catch {
-                    print(error.localizedDescription)
+                    debugPrint(error.localizedDescription)
                 }
             }
         }
@@ -368,22 +372,20 @@ class ReservationService {
     func deleteExpiredReservations() {
         var expiredRsvns: [String] = []
         let group = DispatchGroup()
+
         group.enter()
         let currentTimestamp = Timestamp()
-        let senderQuery = FirestoreEndpoint.reservation.colRef
-            .whereField("isDeleted", isEqualTo: false)
-            .whereField("requestTime", isLessThan: currentTimestamp)
-            .whereField("sender", isEqualTo: UserDefaults.id)
+        let senderQuery = genDeleteRSVNQuery(column: "sender", requestTime: currentTimestamp)
+
         batchDeleteReservation(query: senderQuery) { rsvns in
             expiredRsvns += rsvns
             group.leave()
         }
 
         group.enter()
-        let receiverQuery = FirestoreEndpoint.reservation.colRef
-            .whereField("isDeleted", isEqualTo: false)
-            .whereField("requestTime", isLessThan: currentTimestamp)
-            .whereField("receiver", isEqualTo: UserDefaults.id)
+
+        let receiverQuery = genDeleteRSVNQuery(column: "receiver", requestTime: currentTimestamp)
+
         batchDeleteReservation(query: receiverQuery) { rsvns in
             expiredRsvns += rsvns
             group.leave()
@@ -394,9 +396,17 @@ class ReservationService {
         }
     }
 
+    private func genDeleteRSVNQuery(column: String, requestTime: Timestamp) -> Query {
+        return FirestoreEndpoint.reservation.colRef
+            .whereField("isDeleted", isEqualTo: false)
+            .whereField("requestTime", isLessThan: requestTime)
+            .whereField("receiver", isEqualTo: UserDefaults.id)
+    }
+
     private func batchDeleteReservation(query: Query, completion: @escaping (([String]) -> Void)) {
         let batch = Firestore.firestore().batch()
         var expiredRsvn: [String] = []
+
         query.getDocuments { querySnapshot, error in
             if let querySnapshot = querySnapshot {
                 querySnapshot.documents.forEach { document in
@@ -407,9 +417,9 @@ class ReservationService {
                 // Commit the batch
                 batch.commit { error in
                     if let error = error {
-                        print("Error writing batch \(error)")
+                        debugPrint("Error writing batch \(error)")
                     } else {
-                        print("Batch write succeeded.")
+                        debugPrint("Batch write succeeded.")
                     }
                 }
                 completion(expiredRsvn)

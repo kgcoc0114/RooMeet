@@ -37,7 +37,7 @@ class BlockViewController: UIViewController {
         didSet {
             noneLabel.font = UIFont.regularSubTitle()
             noneLabel.textColor = .mainDarkColor
-            noneLabel.text = "Tips: 尊重 友善 包容 不被黑名單"
+            noneLabel.text = NoDataDisplay.blockade.displayString
             noneLabel.isHidden = true
         }
     }

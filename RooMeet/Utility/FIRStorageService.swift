@@ -9,10 +9,30 @@ import Foundation
 import UIKit
 import FirebaseStorage
 
+enum FIRStorageEndpoint {
+    case chatImages
+    case furnitureImages
+    case profile
+    case roomImages
+
+    var path: String {
+        switch self {
+        case .profile:
+            return "Profile"
+        case .chatImages:
+            return "ChatImages"
+        case .furnitureImages:
+            return "FurnitureImages"
+        case .roomImages:
+            return "RoomImages"
+        }
+    }
+}
+
 class FIRStorageService {
     static let shared = FIRStorageService()
 
-    func uploadImage(image: UIImage, path: String, completion: @escaping (String?, Error?) -> Void) {
+    func uploadImage(image: UIImage, path: String, completion: @escaping (URL?, Error?) -> Void) {
         var uploadData: Data?
 
         let uniqueString = NSUUID().uuidString
@@ -40,7 +60,7 @@ class FIRStorageService {
                     guard let downloadURL = url else {
                         return
                     }
-                    completion(downloadURL.absoluteString, nil)
+                    completion(downloadURL, nil)
                 }
             }
         } else {

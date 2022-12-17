@@ -15,6 +15,12 @@ struct ChatMember: Codable, Hashable {
     let name: String
 }
 
+struct ChatData: Codable, Hashable {
+    let message: Message
+    let otherUser: ChatMember?
+    let currentUser: ChatMember?
+}
+
 struct LastMessage: Codable, Hashable {
     let id: String
     let content: String

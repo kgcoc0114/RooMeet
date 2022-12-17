@@ -49,3 +49,7 @@ extension FeeDetailCell: UITextViewDelegate {
         self.completion?(textView.text)
     }
 }
+
+extension FeeDetailCell: PostCell {
+    func configure(container: RMCellContainer) {}
+}

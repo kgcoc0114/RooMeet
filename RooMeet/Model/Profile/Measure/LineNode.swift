@@ -25,7 +25,7 @@ class LineNode: NSObject {
     ) {
         self.sceneView = scnView
 
-        let scale = 1 / 400.0 // 缩放比例
+        let scale = 1 / 400.0
         let scaleVector = SCNVector3(scale, scale, scale)
 
         func buildSCNSphere(color: UIColor) -> SCNSphere {
@@ -84,7 +84,7 @@ class LineNode: NSObject {
 
         let length = endPos.distance(from: startNode.position)
         text.string = String(format: "%.0f", length * 100) + "cm"
-        textNode.setPivot()
+        textNode.setTextPivot()
         textNode.position = middle
         if textNode.parent == nil {
             sceneView?.scene.rootNode.addChildNode(textNode)
@@ -115,8 +115,8 @@ class LineNode: NSObject {
             parent: sceneView.scene.rootNode,
             vector1: nodeA.position,
             vector2: nodeB.position,
-            radius: 0.001, // 圆形截面的半径
-            radSegmentCount: 16,// 圓柱體的斷面，越多越平滑
+            radius: 0.001,
+            radSegmentCount: 16,
             color: UIColor.white
         )
     }
@@ -176,10 +176,9 @@ class CylinderLine: SCNNode {
 }
 
 extension SCNNode {
-    func setPivot() { // 旋轉文字方向
+    func setTextPivot() {
         let minVec = self.boundingBox.min
         let maxVec = self.boundingBox.max
-        // SCNVector3Make only works with Float
         let bound = SCNVector3Make(maxVec.x - minVec.x, maxVec.y - minVec.y, maxVec.z - minVec.z)
         self.pivot = SCNMatrix4MakeTranslation(bound.x / 2, bound.y, bound.z / 2)
     }

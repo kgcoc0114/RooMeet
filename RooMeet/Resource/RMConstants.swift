@@ -11,7 +11,7 @@ import MapKit
 class RMConstants {
     static let shared = RMConstants()
 
-    var currentPosition: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 25.03320617048529, longitude: 121.56449873729362)
+    var currentPosition = CLLocationCoordinate2D(latitude: 25.03320617048529, longitude: 121.56449873729362)
 
     let screenVerticalPadding: CGFloat = 30
 
@@ -20,10 +20,11 @@ class RMConstants {
     let tagCornerRadius: CGFloat = 8
     let reservationDays: Int = 6
     let mapCenterButtonWidth: CGFloat = 36
-    // MARK: -- Intorduction Page
+
+    // MARK: - Intorduction Page
     let profileImageWidth: CGFloat = 120
 
-    // MARK: -- message
+    // MARK: - message
     let avatarImageWidth: CGFloat = 40
     let messageImageWidth: CGFloat = 120
     let messageCornerRadius: CGFloat = 10
@@ -85,9 +86,9 @@ enum EntryPage {
     var noneLabelString: String {
         switch self {
         case .fav:
-            return "按下愛心加入我的最愛"
+            return NoDataDisplay.favorite.displayString
         case .ownPost:
-            return "還沒有貼文唷！可到首頁新增房源找室友！"
+            return NoDataDisplay.post.displayString
         }
     }
 

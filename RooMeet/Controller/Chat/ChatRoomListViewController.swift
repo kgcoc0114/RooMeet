@@ -45,7 +45,7 @@ class ChatRoomListViewController: UIViewController {
         didSet {
             noneLabel.font = UIFont.regularSubTitle()
             noneLabel.textColor = .mainDarkColor
-            noneLabel.text = "目前還沒有聊天室唷！"
+            noneLabel.text = NoDataDisplay.chatRoom.displayString
             noneLabel.isHidden = true
         }
     }
@@ -59,7 +59,7 @@ class ChatRoomListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        FirebaseService.shared.listenToChatRoomUpdate {[weak self] chatRooms, error in
+        FIRChatRoomService.shared.listenToChatRoomUpdate {[weak self] chatRooms, error in
             if let error = error {
                 print(
                     "ERROR: FirebaseService listenToChatRoomUpdate",

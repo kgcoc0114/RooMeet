@@ -41,7 +41,7 @@ class ProfileRSVNViewController: UIViewController {
         didSet {
             noneLabel.font = UIFont.regularSubTitle()
             noneLabel.textColor = .mainDarkColor
-            noneLabel.text = "目前沒有看房預約唷！"
+            noneLabel.text = NoDataDisplay.reservation.displayString
             noneLabel.isHidden = true
         }
     }
@@ -118,8 +118,7 @@ class ProfileRSVNViewController: UIViewController {
     }
 
     private func fetchReservations() {
-        print(UserDefaults.id)
-        FirebaseService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations, user in
+        FIRRoomService.shared.fetchReservationRoomsByUserID(userID: UserDefaults.id) { [weak self] reservations, user in
             guard let self = self else { return }
             self.user = user
             self.reservations = reservations.sorted { rsvnA, rsvnB in

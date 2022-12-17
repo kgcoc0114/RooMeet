@@ -12,7 +12,6 @@ protocol RoomBasicCellDelegate: AnyObject {
 }
 
 class RoomBasicCell: UICollectionViewCell {
-    static let identifier = "RoomBasicCell"
     weak var delegate: RoomBasicCellDelegate?
 
     var isLike = false {
@@ -102,5 +101,25 @@ class RoomBasicCell: UICollectionViewCell {
 
     @IBAction func likeAction(_ sender: Any) {
         delegate?.didClickedLike(self, like: !isLike)
+    }
+}
+
+extension RoomBasicCell: RoomDetailCell {
+    func configure(container: RoomDetailContainer) {
+
+        
+
+        guard let room = (container as? RoomContainer)?.room else {
+            return
+        }
+
+        priceLabel.text = genPriceString(data: room)
+        regionLabel.text = "\(room.county)\(room.town)"
+        titleLabel.text = room.title
+        if let otherDesc = room.otherDescriction {
+            otherDescTextView.text = otherDesc
+        } else {
+            otherDescTextView.isHidden = true
+        }
     }
 }

@@ -4,6 +4,7 @@
 //
 //  Created by kgcoc on 2022/11/16.
 //
+
 import FirebaseAuth
 import SwiftJWT
 
@@ -60,17 +61,16 @@ class AuthService {
     func getFirebaseUserInfo(actionType: String = "signIn", completion: @escaping ((Result<String>) -> Void)) {
         let currentUser = auth.currentUser
         guard let currentUser = currentUser else {
-            print("無法取得使用者資料")
+            debugPrint("無法取得使用者資料")
             return
         }
         print(currentUser)
         let uid = currentUser.uid
         let email = currentUser.email
 
-        print("使用者資料 uid:\(uid) email:\(String(describing: email))")
         UserDefaults.id = uid
 
-        FirebaseService.shared.upsertUser(uid: uid, email: email) { [weak self] isNewUser, user in
+        FIRUserService.shared.upsertUser(userID: uid, email: email) { [weak self] isNewUser, user in
             guard let self = self else { return }
             if isNewUser {
                 let user = User(id: uid, email: email, favoriteRooms: [], reservations: [], chatRooms: [])
@@ -86,8 +86,7 @@ class AuthService {
     func logOut(completion: @escaping ((Result<Bool>) -> Void)) {
         do {
             try auth.signOut()
-            print("登出中...")
-            print(auth.currentUser as Any)
+            debugPrint("登出中...")
             completion(Result.success(true))
         } catch let signOutError as NSError {
             completion(Result.failure(signOutError))
@@ -104,8 +103,7 @@ class AuthService {
 
         // delete data in firebase
         group.enter()
-        FirebaseService.shared.deleteAccount(userID: UserDefaults.id) { _ in
-            print("deleteAccount")
+        FIRUserService.shared.deleteAccount(userID: UserDefaults.id) { _ in
             group.leave()
         }
 
@@ -116,12 +114,10 @@ class AuthService {
         user?.delete { [weak self] error in
             guard let self = self else { return }
             if error != nil {
-                print("reauthenticateFIR")
                 self.reauthenticateFIR(credential: credential) {
                     group.leave()
                 }
             } else {
-                print("// Account deleted.")
                 group.leave()
             }
         }
@@ -129,7 +125,6 @@ class AuthService {
         group.enter()
         // revoke apple account
         self.revokeToken { _ in
-            print("revokeToken")
             group.leave()
         }
 
@@ -143,16 +138,12 @@ class AuthService {
     private func reauthenticateFIR(credential: OAuthCredential, completion: @escaping (() -> Void)) {
         let user = auth.currentUser
         user?.reauthenticate(with: credential) { result, error in
-            print("user?.reauthenticate")
             if let error = error {
                 completion()
-                print("reauthenticate error", error)
             } else {
-                print("reauthenticate success")
                 user?.delete { error in
                     if let error = error {
-                        print("user?.delete { error")
-                        print(error)
+                        debugPrint(error)
                     }
                     completion()
                 }
@@ -181,10 +172,10 @@ class AuthService {
                     let jwtSigner = JWTSigner.es256(privateKey: data)
                     signedJWT = try jwt.sign(using: jwtSigner)
                 } catch {
-                    print("There was an error getting the key...\(error)")
+                    debugPrint("ERROR: - Getting the key...\(error)")
                 }
             } catch {
-                print("ERROR: - Read Auth Key P8 file Error")
+                debugPrint("ERROR: - Read Auth Key P8 file Error")
             }
         }
         return signedJWT
@@ -205,7 +196,7 @@ class AuthService {
                 let response = response as? HTTPURLResponse,
                 response.statusCode == 200 else {
                 completion(Result.failure(RMError.responseError))
-                print("ERROR: - Get Refresh Token Error")
+                debugPrint("ERROR: - Get Refresh Token Error")
                 return
             }
 
@@ -232,14 +223,14 @@ class AuthService {
         request.httpMethod = "POST"
         let task = URLSession.shared.dataTask(with: request) { _, response, error in
             if error != nil {
-                print("ERROR: - Can't revoke apple account.")
+                debugPrint("ERROR: - Can't revoke apple account.")
                 completion(Result.failure(RMError.responseError))
             }
 
             guard
                 let response = response as? HTTPURLResponse,
                 response.statusCode == 200 else {
-                print("ERROR: - Revoke Response Error")
+                debugPrint("ERROR: - Revoke Response Error")
                 completion(Result.failure(RMError.responseError))
                 return
             }

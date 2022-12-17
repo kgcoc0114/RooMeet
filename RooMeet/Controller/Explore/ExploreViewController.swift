@@ -154,7 +154,7 @@ class ExploreViewController: UIViewController {
         filterVC.blockUserIDs = user.blocks ?? []
 
         filterVC.completion = { query in
-            FirebaseService.shared.fetchRoomDatabyQuery(user: user, query: query) { rooms in
+            FIRRoomService.shared.fetchRoomDataByQuery(user: user, query: query) { rooms in
                 self.rooms = rooms
             }
             self.isFilter = true
@@ -191,7 +191,7 @@ extension ExploreViewController: CLLocationManagerDelegate {
         )
 
         if !isFilter {
-            FirebaseService.shared.fetchRoomByCoordinate(
+            FIRRoomService.shared.fetchRoomByCoordinate(
                 northWest: northWestCoordinate,
                 southEast: southEastCoordinate,
                 userBlocks: user?.blocks ?? []

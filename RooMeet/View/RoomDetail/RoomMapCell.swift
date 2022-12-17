@@ -9,7 +9,6 @@ import UIKit
 import MapKit
 
 class RoomMapCell: UICollectionViewCell {
-    static let identifier = "RoomMapCell"
     private var location: CLLocationCoordinate2D?
 
     @IBOutlet weak var mapView: MKMapView! {
@@ -61,5 +60,27 @@ class RoomMapCell: UICollectionViewCell {
             return
         }
         mapView.setCenter(location, animated: true)
+    }
+}
+
+extension RoomMapCell: RoomDetailCell {
+    func configure(container: RoomDetailContainer) {
+        guard
+            let room = (container as? RoomContainer)?.room,
+            let latitude = room.lat,
+            let longitude = room.long
+        else {
+            return
+        }
+
+        let location = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        self.location = location
+        LocationService.shared.setCenterRegion(position: location, mapView: mapView)
+
+        let annotation = RMAnnotation()
+        annotation.coordinate = location
+        DispatchQueue.main.async { [self] in
+            mapView.addAnnotation(annotation)
+        }
     }
 }

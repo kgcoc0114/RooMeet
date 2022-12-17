@@ -21,9 +21,9 @@ class FavoritesViewController: UIViewController {
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 self.collectionView.stopPullToRefresh()
-                self.updateDataSource()
                 self.noneLabel.isHidden = !self.rooms.isEmpty
                 self.goHomeButton.isHidden = self.noneLabel.isHidden
+                self.updateDataSource()
             }
         }
     }
@@ -130,13 +130,13 @@ class FavoritesViewController: UIViewController {
         }
 
         if entryPage == .fav {
-            FirebaseService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms, favoriteRooms in
+            FIRRoomService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms, favoriteRooms in
                 guard let self = self else { return }
                 self.rooms = rooms
                 self.favoriteRooms = favoriteRooms
             }
         } else {
-            FirebaseService.shared.fetchRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
+            FIRRoomService.shared.fetchRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
                 guard let self = self else { return }
                 self.rooms = rooms
             }

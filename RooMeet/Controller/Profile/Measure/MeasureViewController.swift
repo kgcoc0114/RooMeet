@@ -11,18 +11,6 @@ import ARKit
 import Photos
 
 class MeasureViewController: UIViewController {
-    enum MeasurementMode {
-        case length
-        case area
-        func toAttrStr() -> NSAttributedString {
-            let str = "長度"
-            return NSAttributedString(string: str, attributes: [
-                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20),
-                NSAttributedString.Key.foregroundColor: UIColor.black
-            ])
-        }
-    }
-
     @IBOutlet weak var targetView: UIImageView!
 
     @IBOutlet weak var resultBackgroundView: UIView! {
@@ -97,7 +85,6 @@ class MeasureViewController: UIViewController {
 
     @IBOutlet weak var sceneView: ARSCNView!
 
-    private var mode = MeasurementMode.length
     private var finishButtonState = false
     var startValue = SCNVector3()
     var endValue = SCNVector3()
@@ -116,7 +103,7 @@ class MeasureViewController: UIViewController {
                     unit: "cm"
                 )
             } else {
-                resultLabel.attributedText = mode.toAttrStr()
+                resultLabel.attributedText = resultStr()
             }
         }
     }
@@ -147,9 +134,16 @@ class MeasureViewController: UIViewController {
             configuration,
             options: [.resetTracking, .removeExistingAnchors]
         )
-        resultLabel.attributedText = mode.toAttrStr()
+        resultLabel.attributedText = resultStr()
     }
 
+    func resultStr() -> NSAttributedString {
+        let str = "長度"
+        return NSAttributedString(string: str, attributes: [
+            NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 20),
+            NSAttributedString.Key.foregroundColor: UIColor.black
+        ])
+    }
 
     func updateLine() {
         if let startPos = sceneView.realWorldVector(screenPos: view.center) {

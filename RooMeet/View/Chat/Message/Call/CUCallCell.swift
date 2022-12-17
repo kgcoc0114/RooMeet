@@ -47,11 +47,12 @@ class CUCallCell: MessageBaseCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
+}
 
-    override func configureLayout() {
-        if let message = message {
-            callTimeLabel.text = message.content
-            assignDatetime(messageDate: message.createdTime.dateValue())
-        }
+extension CUCallCell: ChatCell {
+    func configure(for data: ChatData) {
+        let message = data.message
+        callTimeLabel.text = message.content
+        assignDatetime(messageDate: message.createdTime.dateValue())
     }
 }

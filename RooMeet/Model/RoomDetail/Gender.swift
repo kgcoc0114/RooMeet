@@ -41,6 +41,17 @@ enum RoomType: String, CaseIterable {
             return "entirePlace"
         }
     }
+
+    var index: Int {
+        switch self {
+        case .studio:
+            return 0
+        case .privateRoom:
+            return 1
+        case .entirePlace:
+            return 2
+        }
+    }
 }
 
 

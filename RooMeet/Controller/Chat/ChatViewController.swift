@@ -13,12 +13,8 @@ class ChatViewController: UIViewController {
         case message
     }
 
-    enum Item: Hashable {
-        case message(Message)
-    }
-
-    typealias DataSource = UITableViewDiffableDataSource<Section, Item>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+    typealias DataSource = UITableViewDiffableDataSource<Section, ChatItem>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<Section, ChatItem>
     private var dataSource: DataSource!
 
     lazy var imagePickerController = UIImagePickerController()
@@ -33,8 +29,11 @@ class ChatViewController: UIViewController {
 
     var messages: [Message] = [] {
         didSet {
-            updateDataSource()
-            scrollToButtom(animated: false)
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.updateDataSource()
+                self.scrollToButtom(animated: false)
+            }
         }
     }
 
@@ -51,7 +50,7 @@ class ChatViewController: UIViewController {
             contentTextField.placeholder = " Aa"
         }
     }
-    
+
     @IBOutlet weak var sendButton: UIButton! {
         didSet {
             sendButton.setTitle("", for: .normal)
@@ -108,7 +107,7 @@ class ChatViewController: UIViewController {
             return
         }
 
-        FirebaseService.shared.listenToMessageUpdate(roomID: chatRoom.id) { [weak self] messages, error in
+        FIRChatRoomService.shared.listenToMessageUpdate(chatRoomID: chatRoom.id) { [weak self] messages, error in
             guard let self = self else { return }
             if let error = error {
                 print("Error getting documents: \(error)")
@@ -212,7 +211,6 @@ class ChatViewController: UIViewController {
         imagePickerAlertController.addAction(cancelAction)
 
         present(imagePickerAlertController, animated: true, completion: nil)
-
     }
 
     @objc private func backAction() {
@@ -227,7 +225,7 @@ class ChatViewController: UIViewController {
         }
 
         // 清空通話資料
-        FirestoreEndpoint.call.colRef.document(chatRoom.id).delete() { err in
+        FirestoreEndpoint.call.colRef.document(chatRoom.id).delete { err in
             if let err = err {
                 print("Error removing document: \(err)")
             } else {
@@ -292,161 +290,28 @@ extension ChatViewController {
         tableView.registerCellWithNib(identifier: OUImageCell.identifier, bundle: nil)
 
         dataSource = DataSource(tableView: tableView) { [unowned self] tableView, indexPath, item in
-            switch item {
-            case .message(let data):
-                let message = data
-                let messageType = MessageType.allCases[message.messageType]
-                let sendByMe = message.sendBy == currentUserData.id
-
-                switch messageType {
-                case .text:
-                    if sendByMe {
-                        return configureCurrentUserCell(tableView: tableView, indexPath: indexPath, message: data)
-                    } else {
-                        return configureOtherUserCell(tableView: tableView, indexPath: indexPath, message: data)
-                    }
-                case .image:
-                    if sendByMe {
-                        return configureCUImageCell(tableView: tableView, indexPath: indexPath, message: data)
-                    } else {
-                        return configureOUImageCell(tableView: tableView, indexPath: indexPath, message: data)
-                    }
-                case .call:
-                    if sendByMe {
-                        return configureCUCallCell(tableView: tableView, indexPath: indexPath, message: data)
-                    } else {
-                        return configureOUCallCell(tableView: tableView, indexPath: indexPath, message: data)
-                    }
-                case .reservation:
-                    if sendByMe {
-                        return configureCUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
-                    } else {
-                        return configureOUReservationCell(tableView: tableView, indexPath: indexPath, message: data)
-                    }
-                }
+            guard let cell = tableView.dequeueReusableCell(
+                withIdentifier: item.cellIdentifier,
+                for: indexPath
+            ) as? ChatCell else {
+                return UITableViewCell()
             }
+
+            cell.configure(for: item.chatData)
+            let messageType = MessageType(rawValue: item.chatData.message.messageType)
+
+            switch messageType {
+            case .image:
+                if item.chatData.message.sendBy == UserDefaults.id {
+                    (cell as? CUImageCell)?.delegate = self
+                } else {
+                    (cell as? OUImageCell)?.delegate = self
+                }
+            default:
+                print("")
+            }
+            return cell
         }
-    }
-
-    private func configureCUCallCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CUCallCell.identifier,
-            for: indexPath
-        ) as? CUCallCell else {
-            return UITableViewCell()
-        }
-
-        cell.sendByMe = true
-        cell.sendBy = currentUserData
-        cell.message = message
-        cell.configureLayout()
-        return cell
-    }
-
-
-    private func configureOUCallCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: OUCallCell.identifier,
-            for: indexPath
-        ) as? OUCallCell else {
-            return UITableViewCell()
-        }
-
-        cell.sendByMe = false
-        cell.sendBy = otherData
-        cell.message = message
-        cell.configureLayout()
-        return cell
-    }
-
-    private func configureCUReservationCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CUReservationCell.identifier,
-            for: indexPath
-        ) as? CUReservationCell else {
-            return UITableViewCell()
-        }
-        cell.otherUser = otherData
-        cell.currentUser = currentUserData
-        cell.message = message
-        cell.configureLayout()
-        return cell
-    }
-
-    private func configureOUReservationCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: OUReservationCell.identifier,
-            for: indexPath
-        ) as? OUReservationCell else {
-            return UITableViewCell()
-        }
-        cell.otherUser = otherData
-        cell.currentUser = currentUserData
-        cell.message = message
-        cell.configureLayout()
-        return cell
-    }
-
-    private func configureCurrentUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CUTextCell.identifier,
-            for: indexPath
-        ) as? CUTextCell else {
-            return UITableViewCell()
-        }
-
-        cell.msgType = .currentUser
-        cell.sendBy = currentUserData
-        cell.message = message
-        cell.configureLayout()
-        return cell
-    }
-
-    private func configureCUImageCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: CUImageCell.identifier,
-            for: indexPath
-        ) as? CUImageCell else {
-            return UITableViewCell()
-        }
-
-        cell.msgType = .currentUser
-        cell.sendBy = currentUserData
-        cell.message = message
-        cell.configureLayout()
-        cell.delegate = self
-        return cell
-    }
-
-    private func configureOUImageCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: OUImageCell.identifier,
-            for: indexPath
-        ) as? OUImageCell else {
-            return UITableViewCell()
-        }
-
-        cell.msgType = .other
-        cell.sendBy = otherData
-        cell.message = message
-        cell.configureLayout()
-        cell.delegate = self
-        return cell
-    }
-
-    private func configureOtherUserCell(tableView: UITableView, indexPath: IndexPath, message: Message) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: OUTextCell.identifier,
-            for: indexPath
-        ) as? OUTextCell else {
-            return UITableViewCell()
-        }
-
-        cell.msgType = .other
-        cell.sendBy = otherData
-        cell.message = message
-        cell.configureLayout()
-        return cell
     }
 }
 
@@ -454,7 +319,11 @@ extension ChatViewController {
     private func updateDataSource() {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
-        newSnapshot.appendItems(messages.map { Item.message($0) }, toSection: .message)
+
+        newSnapshot.appendItems(messages.map { ChatItem.message(
+            ChatData(message: $0, otherUser: otherData, currentUser: currentUserData)
+        ) }, toSection: .message)
+
         dataSource.apply(newSnapshot, animatingDifferences: false)
     }
 }
@@ -487,7 +356,7 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
                 if error != nil {
                     RMProgressHUD.showFailure(text: "傳送圖片出現問題")
                 } else {
-                    self.sendMessage(content: imageURL, messageType: .image)
+                    self.sendMessage(content: imageURL.absoluteString, messageType: .image)
                 }
             }
         }
