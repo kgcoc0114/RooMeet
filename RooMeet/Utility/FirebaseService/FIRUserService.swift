@@ -58,7 +58,7 @@ class FIRUserService {
         group.enter()
         deleteRoomPosts(userID: userID) { result in
             switch result {
-            case .success(_):
+            case .success:
                 print("SUCCESS: - Delete Room Posts")
             case .failure(let error):
                 print("ERROR: - Delete Room Posts, \(error.localizedDescription)")
@@ -69,7 +69,7 @@ class FIRUserService {
         group.enter()
         deleteReservations(userID: userID) { result in
             switch result {
-            case .success(_):
+            case .success:
                 print("SUCCESS: - Delete Reservations")
             case .failure(let error):
                 print("ERROR: - Delete Reservations, \(error.localizedDescription)")
@@ -168,10 +168,7 @@ class FIRUserService {
             }
         }
     }
-}
-
-// MARK: - User Action
-extension FirebaseService {
+    // MARK: - Block Users
     func fatchBlockUsers(completion: @escaping (([User], Error?) -> Void)) {
         let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)
         query.getDocument { document, error in
@@ -189,7 +186,7 @@ extension FirebaseService {
 
                         blocks.forEach { blockID in
                             group.enter()
-                            self.fetchUserByID(userID: blockID) { user, _ in
+                            self.firebaseService.fetchUserByID(userID: blockID) { user, _ in
                                 guard let user = user else {
                                     return
                                 }
@@ -225,6 +222,7 @@ extension FirebaseService {
         ])
     }
 
+    // MARK: - Report Event
     func insertReportEvent(event: ReportEvent, completion: @escaping ((Error?) -> Void)) {
         let query = FirestoreEndpoint.reportEvent.colRef.document()
         do {

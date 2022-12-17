@@ -330,7 +330,6 @@ extension RoomDetailViewController {
         collectionView.registerCellWithNib(reuseIdentifier: RoomImagesCell.reuseIdentifier, bundle: nil)
         collectionView.registerCellWithNib(reuseIdentifier: RoomBasicCell.reuseIdentifier, bundle: nil)
         collectionView.registerCellWithNib(reuseIdentifier: RoomFeeCell.reuseIdentifier, bundle: nil)
-        collectionView.registerCellWithNib(reuseIdentifier: BookingCell.reuseIdentifier, bundle: nil)
         collectionView.registerCellWithNib(reuseIdentifier: ItemsCell.reuseIdentifier, bundle: nil)
         collectionView.registerCellWithNib(reuseIdentifier: BookingDateCell.reuseIdentifier, bundle: nil)
         collectionView.registerCellWithNib(reuseIdentifier: BookingPeriodCell.reuseIdentifier, bundle: nil)

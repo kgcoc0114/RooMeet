@@ -142,25 +142,19 @@ import UIKit
             button.topAnchor.constraint(equalTo: mainView.topAnchor, constant: padding).isActive = true
             button.bottomAnchor.constraint(equalTo: mainView.bottomAnchor, constant: -padding).isActive = true
 
-            // set leading constraint
             if index == 0 {
-                // set first item leading anchor to mainView
                 button.leadingAnchor.constraint(equalTo: mainView.leadingAnchor, constant: padding).isActive = true
             } else {
                 let prevButton: UIView = items[index - 1]
                 let firstItem: UIView = items[0]
 
-                // set remaining items to previous view and set width the same as first view
                 button.leadingAnchor.constraint(equalTo: prevButton.trailingAnchor, constant: padding).isActive = true
                 button.widthAnchor.constraint(equalTo: firstItem.widthAnchor).isActive = true
             }
 
-            // set trailing constraint
             if index == items.count - 1 {
-                // set last item trailing anchor to mainView
                 button.trailingAnchor.constraint(equalTo: mainView.trailingAnchor, constant: -padding).isActive = true
             } else {
-                // set remaining item trailing anchor to next view
                 let nextButton: UIView = items[index + 1]
                 button.trailingAnchor.constraint(equalTo: nextButton.leadingAnchor, constant: -padding).isActive = true
             }

@@ -63,21 +63,6 @@ class OUImageCell: MessageBaseCell {
         super.setSelected(selected, animated: animated)
     }
 
-//    override func configureLayout() {
-//        if
-//            let message = message,
-//            let sendBy = sendBy {
-//            if let profilePhoto = sendBy.profilePhoto {
-//                avatarView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
-//            } else {
-//                avatarView.image = UIImage.asset(.roomeet)
-//            }
-//            imageURL = message.content
-//            photoView.loadImage(message.content, placeHolder: UIImage.asset(.room_placeholder))
-//            assignDatetime(messageDate: message.createdTime.dateValue())
-//        }
-//    }
-
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         guard let imageURL = imageURL else { return }
         delegate?.didClickImageView(self, imageURL: imageURL)

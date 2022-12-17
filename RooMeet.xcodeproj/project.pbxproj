@@ -89,8 +89,6 @@
 		E5B018C12916351300A09788 /* RoomImagesCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018BF2916351300A09788 /* RoomImagesCell.xib */; };
 		E5B018C62916354600A09788 /* RoomBasicCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018C42916354600A09788 /* RoomBasicCell.swift */; };
 		E5B018C72916354600A09788 /* RoomBasicCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018C52916354600A09788 /* RoomBasicCell.xib */; };
-		E5B018CE2916475000A09788 /* RoomItemsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018CC2916475000A09788 /* RoomItemsCell.swift */; };
-		E5B018CF2916475100A09788 /* RoomItemsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B018CD2916475000A09788 /* RoomItemsCell.xib */; };
 		E5B018D9291695CA00A09788 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5B018D8291695CA00A09788 /* Profile.storyboard */; };
 		E5B018DB29174CAB00A09788 /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018DA29174CAB00A09788 /* UICollectionView+Extension.swift */; };
 		E5B018DD29175B7100A09788 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B018DC29175B7100A09788 /* FilterViewController.swift */; };
@@ -128,14 +126,10 @@
 		E5B923AB294C7B80001062A8 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9239F294C7B80001062A8 /* WebRTCClient.swift */; };
 		E5B923AC294C7B80001062A8 /* ReservationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923A0294C7B80001062A8 /* ReservationService.swift */; };
 		E5B923AD294C7B80001062A8 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923A1294C7B80001062A8 /* LocationService.swift */; };
-		E5B984BE291B6EF1006DD8D7 /* BookingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B984BD291B6EF1006DD8D7 /* BookingView.xib */; };
-		E5B984C0291B6F04006DD8D7 /* BookingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984BF291B6F04006DD8D7 /* BookingView.swift */; };
 		E5B984C2291B7CA3006DD8D7 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */; };
 		E5B984C5291B905F006DD8D7 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984C3291B905F006DD8D7 /* DateCell.swift */; };
 		E5B984C6291B905F006DD8D7 /* DateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B984C4291B905F006DD8D7 /* DateCell.xib */; };
 		E5B984CA291BD3E4006DD8D7 /* Reservation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984C9291BD3E4006DD8D7 /* Reservation.swift */; };
-		E5B984D9291BD78A006DD8D7 /* BookingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984D7291BD78A006DD8D7 /* BookingCell.swift */; };
-		E5B984DA291BD78A006DD8D7 /* BookingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B984D8291BD78A006DD8D7 /* BookingCell.xib */; };
 		E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */; };
 		E5BDDB41290D0E2900F4A767 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */; };
 		E5BDDB46290D0E2900F4A767 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E5BDDB44290D0E2900F4A767 /* Main.storyboard */; };
@@ -290,8 +284,6 @@
 		E5B018BF2916351300A09788 /* RoomImagesCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomImagesCell.xib; sourceTree = "<group>"; };
 		E5B018C42916354600A09788 /* RoomBasicCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomBasicCell.swift; sourceTree = "<group>"; };
 		E5B018C52916354600A09788 /* RoomBasicCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomBasicCell.xib; sourceTree = "<group>"; };
-		E5B018CC2916475000A09788 /* RoomItemsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomItemsCell.swift; sourceTree = "<group>"; };
-		E5B018CD2916475000A09788 /* RoomItemsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RoomItemsCell.xib; sourceTree = "<group>"; };
 		E5B018D8291695CA00A09788 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		E5B018DA29174CAB00A09788 /* UICollectionView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extension.swift"; sourceTree = "<group>"; };
 		E5B018DC29175B7100A09788 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
@@ -329,14 +321,10 @@
 		E5B9239F294C7B80001062A8 /* WebRTCClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
 		E5B923A0294C7B80001062A8 /* ReservationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReservationService.swift; sourceTree = "<group>"; };
 		E5B923A1294C7B80001062A8 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
-		E5B984BD291B6EF1006DD8D7 /* BookingView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookingView.xib; sourceTree = "<group>"; };
-		E5B984BF291B6F04006DD8D7 /* BookingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingView.swift; sourceTree = "<group>"; };
 		E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		E5B984C3291B905F006DD8D7 /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		E5B984C4291B905F006DD8D7 /* DateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateCell.xib; sourceTree = "<group>"; };
 		E5B984C9291BD3E4006DD8D7 /* Reservation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reservation.swift; sourceTree = "<group>"; };
-		E5B984D7291BD78A006DD8D7 /* BookingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookingCell.swift; sourceTree = "<group>"; };
-		E5B984D8291BD78A006DD8D7 /* BookingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BookingCell.xib; sourceTree = "<group>"; };
 		E5BDDB3B290D0E2900F4A767 /* RooMeet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RooMeet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5BDDB3E290D0E2900F4A767 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E5BDDB40290D0E2900F4A767 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -454,15 +442,6 @@
 			path = Info;
 			sourceTree = "<group>";
 		};
-		E5119BA7291FDAAB00A632C9 /* New Group */ = {
-			isa = PBXGroup;
-			children = (
-				E5B018CC2916475000A09788 /* RoomItemsCell.swift */,
-				E5B018CD2916475000A09788 /* RoomItemsCell.xib */,
-			);
-			path = "New Group";
-			sourceTree = "<group>";
-		};
 		E539D240292DFFC7007D50FD /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -539,8 +518,6 @@
 		E5604FDF2918CF9C007AE655 /* Reservation */ = {
 			isa = PBXGroup;
 			children = (
-				E5B984BD291B6EF1006DD8D7 /* BookingView.xib */,
-				E5B984BF291B6F04006DD8D7 /* BookingView.swift */,
 				E5B984C3291B905F006DD8D7 /* DateCell.swift */,
 				E5B984C4291B905F006DD8D7 /* DateCell.xib */,
 				E574A6902920EC1800EB8E5E /* ReservationDisplayCell.swift */,
@@ -692,9 +669,6 @@
 			children = (
 				E5119BA5291FDA9600A632C9 /* Image */,
 				E5119BA6291FDA9F00A632C9 /* Info */,
-				E5119BA7291FDAAB00A632C9 /* New Group */,
-				E5B984D7291BD78A006DD8D7 /* BookingCell.swift */,
-				E5B984D8291BD78A006DD8D7 /* BookingCell.xib */,
 				E5DEFD97291F5D810064E2C8 /* RoomFeeCell.swift */,
 				E5DEFD98291F5D810064E2C8 /* RoomFeeCell.xib */,
 				E5DEFDA0291F81F10064E2C8 /* Booking */,
@@ -1192,7 +1166,6 @@
 				E5872945291D022000C12E9E /* IntroCell.xib in Resources */,
 				E5DEFD8E291F3AF60064E2C8 /* CUCallCell.xib in Resources */,
 				E5EEE20329129C6000CAAE84 /* PostalCode.json in Resources */,
-				E5B984BE291B6EF1006DD8D7 /* BookingView.xib in Resources */,
 				E5B018D9291695CA00A09788 /* Profile.storyboard in Resources */,
 				E5D9C046291E4FF900F416E6 /* OUImageCell.xib in Resources */,
 				E5ACE16B291BFA79006CCF1A /* GoogleService-Info.plist in Resources */,
@@ -1234,7 +1207,6 @@
 				E593F014291012DF00B35550 /* OtherFeeHeaderCell.xib in Resources */,
 				E597817C29375E5500ED8903 /* Assets.xcassets in Resources */,
 				E597817A29374EBB00ED8903 /* MeasureViewController.xib in Resources */,
-				E5B984DA291BD78A006DD8D7 /* BookingCell.xib in Resources */,
 				E593F00A2910065C00B35550 /* RulesCell.xib in Resources */,
 				E57918E42938809100427F83 /* FurnitureDisplayCell.xib in Resources */,
 				E5D9C042291E4E3100F416E6 /* CUImageCell.xib in Resources */,
@@ -1246,7 +1218,6 @@
 				E5C5FE872910CB8000DA91DF /* FeeInfoCell.xib in Resources */,
 				E5DEFD92291F3B0A0064E2C8 /* OUCallCell.xib in Resources */,
 				E5DEFDA6291FC9550064E2C8 /* RoomDetailHeaderView.xib in Resources */,
-				E5B018CF2916475100A09788 /* RoomItemsCell.xib in Resources */,
 				E5B3376F290F64D800467404 /* RoomSpecCell.xib in Resources */,
 				E5C5FE8B2910EF9E00DA91DF /* FeeDetailCell.xib in Resources */,
 				E5DEFD9A291F5D810064E2C8 /* RoomFeeCell.xib in Resources */,
@@ -1359,8 +1330,6 @@
 				E5E143492930B85700465B65 /* SettingViewController.swift in Sources */,
 				E5C5FE862910CB8000DA91DF /* FeeInfoCell.swift in Sources */,
 				E5B018AE2915692600A09788 /* OUTextCell.swift in Sources */,
-				E5B018CE2916475000A09788 /* RoomItemsCell.swift in Sources */,
-				E5B984C0291B6F04006DD8D7 /* BookingView.swift in Sources */,
 				E5B33772290F65D800467404 /* PostViewController.swift in Sources */,
 				E5D9C045291E4FF900F416E6 /* OUImageCell.swift in Sources */,
 				E5B3376E290F64D800467404 /* RoomSpecCell.swift in Sources */,
@@ -1429,7 +1398,6 @@
 				E5E143512930B8E400465B65 /* SettingCell.swift in Sources */,
 				E507B0C42923B08F002E501E /* ItemsCell.swift in Sources */,
 				E5EEE2132913B02600CAAE84 /* User.swift in Sources */,
-				E5B984D9291BD78A006DD8D7 /* BookingCell.swift in Sources */,
 				E5EEE2832913F97800CAAE84 /* KingfisherWrapper.swift in Sources */,
 				E5B33780290FB61900467404 /* OtherFeeCell.swift in Sources */,
 				E5872936291CF32D00C12E9E /* ProfileCell.swift in Sources */,

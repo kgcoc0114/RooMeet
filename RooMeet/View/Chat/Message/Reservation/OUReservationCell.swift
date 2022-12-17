@@ -90,7 +90,7 @@ class OUReservationCell: MessageBaseCell {
             let reservation = message.reservation else {
             return
         }
-        updateCurrentMessageStatus(status: .answer)
+        answerReservationMessage(status: .answer)
 
         ReservationService.shared.upsertReservationData(status: .cancel, reservation: reservation)
     }
@@ -101,13 +101,13 @@ class OUReservationCell: MessageBaseCell {
             let reservation = message.reservation else {
             return
         }
-        updateCurrentMessageStatus(status: .answer)
+
+        answerReservationMessage(status: .answer)
 
         ReservationService.shared.upsertReservationData(status: .accept, reservation: reservation)
     }
 
-    // 更新已被回覆過的預約訊息狀態
-    func updateCurrentMessageStatus(status: AcceptedStatus) {
+    func answerReservationMessage(status: AcceptedStatus) {
         guard
             let message = message,
             let currentUser = currentUser,
@@ -131,7 +131,6 @@ class OUReservationCell: MessageBaseCell {
         }
     }
 
-    // 更新已被回覆過的預約訊息狀態
     func updateMessage(chatRoomID: String, message: Message, status: AcceptedStatus) {
         let messageRef = FirestoreEndpoint.chatRoom.colRef
             .document(chatRoomID)

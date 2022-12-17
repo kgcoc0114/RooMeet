@@ -54,16 +54,6 @@ class CUImageCell: MessageBaseCell {
         super.setSelected(selected, animated: animated)
     }
 
-//    override func configureLayout() {
-//        if let message = message,
-//           let _ = sendBy {
-//            imageURL = message.content
-//
-//            photoView.loadImage(imageURL, placeHolder: UIImage.asset(.room_placeholder))
-//            assignDatetime(messageDate: message.createdTime.dateValue())
-//        }
-//    }
-
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         guard let imageURL = imageURL else { return }
         delegate?.didClickImageView(self, imageURL: imageURL)

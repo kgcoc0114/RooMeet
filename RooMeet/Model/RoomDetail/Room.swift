@@ -19,7 +19,6 @@ struct Room: Codable, Hashable {
     var title: String
     var roomImages: [URL]
     var rooms: [RoomSpec]
-    //    var roommateGender: Int // (0: male, 1: female, 2: nonBinary, 3: all)
     var roomFeatures: [String]
     var roomPetsRules: [String]
     var roomHighLights: [String]
