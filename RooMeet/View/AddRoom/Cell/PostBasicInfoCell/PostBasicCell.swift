@@ -105,12 +105,6 @@ class PostBasicCell: UICollectionViewCell {
         }
     }
 
-//    @IBOutlet weak var genderSegmentControl: UISegmentedControl! {
-//        didSet {
-//            postBasicData.gender = genderSegmentControl.selectedSegmentIndex
-//        }
-//    }
-
     private var parlor: Int = 0
     private var room: Int = 0
 

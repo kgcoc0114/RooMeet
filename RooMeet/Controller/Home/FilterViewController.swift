@@ -129,6 +129,5 @@ class FilterViewController: RMButtomSheetViewController {
 
         self.completion?(query)
         animateDismissView()
-//        dismiss(animated: true)
     }
 }
