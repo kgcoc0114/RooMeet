@@ -126,6 +126,8 @@
 		E5B923AB294C7B80001062A8 /* WebRTCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B9239F294C7B80001062A8 /* WebRTCClient.swift */; };
 		E5B923AC294C7B80001062A8 /* ReservationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923A0294C7B80001062A8 /* ReservationService.swift */; };
 		E5B923AD294C7B80001062A8 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923A1294C7B80001062A8 /* LocationService.swift */; };
+		E5B923B1294D88DA001062A8 /* ReservationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923B0294D88DA001062A8 /* ReservationViewModel.swift */; };
+		E5B923B5294D946C001062A8 /* FavoriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923B4294D946C001062A8 /* FavoriteViewModel.swift */; };
 		E5B984C2291B7CA3006DD8D7 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */; };
 		E5B984C5291B905F006DD8D7 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984C3291B905F006DD8D7 /* DateCell.swift */; };
 		E5B984C6291B905F006DD8D7 /* DateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B984C4291B905F006DD8D7 /* DateCell.xib */; };
@@ -321,6 +323,8 @@
 		E5B9239F294C7B80001062A8 /* WebRTCClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebRTCClient.swift; sourceTree = "<group>"; };
 		E5B923A0294C7B80001062A8 /* ReservationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReservationService.swift; sourceTree = "<group>"; };
 		E5B923A1294C7B80001062A8 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
+		E5B923B0294D88DA001062A8 /* ReservationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationViewModel.swift; sourceTree = "<group>"; };
+		E5B923B4294D946C001062A8 /* FavoriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewModel.swift; sourceTree = "<group>"; };
 		E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		E5B984C3291B905F006DD8D7 /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		E5B984C4291B905F006DD8D7 /* DateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateCell.xib; sourceTree = "<group>"; };
@@ -738,6 +742,23 @@
 			path = FirebaseService;
 			sourceTree = "<group>";
 		};
+		E5B923AE294D8845001062A8 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E5B923AF294D88C2001062A8 /* Profile */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E5B923AF294D88C2001062A8 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				E5B923B0294D88DA001062A8 /* ReservationViewModel.swift */,
+				E5B923B4294D946C001062A8 /* FavoriteViewModel.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
 		E5BDDB32290D0E2900F4A767 = {
 			isa = PBXGroup;
 			children = (
@@ -762,6 +783,7 @@
 				E507B0CA2924848F002E501E /* RooMeet.entitlements */,
 				E5EEE2812913F94600CAAE84 /* ThirdPartyWrapper */,
 				E55C0963290D5C2D00DBF21B /* View */,
+				E5B923AE294D8845001062A8 /* ViewModel */,
 				E5E64C94290E3E0C00F07286 /* Extension */,
 				E55C0970290D627000DBF21B /* Resource */,
 				E5EF07E3294B76A900C1E528 /* Helper */,
@@ -1319,6 +1341,7 @@
 				E560135D29277A7100EE0083 /* RMButtomSheetViewController.swift in Sources */,
 				E5DC0FE5291204D200EB57FD /* UIImage+Extension.swift in Sources */,
 				E59B83152919FEE800F02CEC /* DateFormatter.swift in Sources */,
+				E5B923B5294D946C001062A8 /* FavoriteViewModel.swift in Sources */,
 				E5EEE21D2913B4F900CAAE84 /* ChatRoomCell.swift in Sources */,
 				E5BDDB3F290D0E2900F4A767 /* AppDelegate.swift in Sources */,
 				E560135A292771D600EE0083 /* LocationPickerViewController.swift in Sources */,
@@ -1406,6 +1429,7 @@
 				E5E1435729336C3400465B65 /* FirestoreEndpoint.swift in Sources */,
 				E5B923A3294C7B80001062A8 /* FIRRoomService.swift in Sources */,
 				E5B923A4294C7B80001062A8 /* FIRChatRoomService.swift in Sources */,
+				E5B923B1294D88DA001062A8 /* ReservationViewModel.swift in Sources */,
 				E5B923A5294C7B80001062A8 /* FIRUserService.swift in Sources */,
 				E5DEFDA5291FC9550064E2C8 /* RoomDetailHeaderView.swift in Sources */,
 				E5B923A8294C7B80001062A8 /* KeyChainService.swift in Sources */,

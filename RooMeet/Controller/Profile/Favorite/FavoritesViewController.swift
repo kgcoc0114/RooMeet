@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 class FavoritesViewController: UIViewController {
     enum Section {
@@ -15,6 +16,9 @@ class FavoritesViewController: UIViewController {
     typealias FavoriteDataSource = UICollectionViewDiffableDataSource<Section, Room>
     typealias FavoriteSnapshot = NSDiffableDataSourceSnapshot<Section, Room>
     private var dataSource: FavoriteDataSource!
+
+    private let viewModel = FavoriteViewModel()
+    private lazy var subscriptions = Set<AnyCancellable>()
 
     var rooms: [Room] = [] {
         didSet {
@@ -28,7 +32,7 @@ class FavoritesViewController: UIViewController {
         }
     }
 
-    var user: User?
+    var user = User(id: UserDefaults.id)
 
     var favoriteRooms: [FavoriteRoom] = []
 
@@ -69,6 +73,18 @@ class FavoritesViewController: UIViewController {
         noneLabel.text = entryPage.noneLabelString
         goHomeButton.setTitle(entryPage.goHomeButtonTitle, for: .normal)
 
+        viewModel.$rooms
+            .assign(to: \.rooms, on: self)
+            .store(in: &subscriptions)
+
+        viewModel.$user
+            .assign(to: \.user, on: self)
+            .store(in: &subscriptions)
+
+        viewModel.$favoriteRooms
+            .assign(to: \.favoriteRooms, on: self)
+            .store(in: &subscriptions)
+
         collectionView.delegate = self
 
         configureCollectionView()
@@ -86,14 +102,13 @@ class FavoritesViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchRooms()
+        viewModel.fetchRooms(entryPage: entryPage)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if shouldUpdate {
-            FirebaseService.shared.updateUserFavoriteRoomsData(favoriteRooms: favoriteRooms)
-        }
+        viewModel.favoriteRooms = favoriteRooms
+        viewModel.updateUserFavRoomsData(shouldUpdate: true)
     }
 
     private func configureCollectionView() {
@@ -119,27 +134,7 @@ class FavoritesViewController: UIViewController {
 
         collectionView.addPullToRefresh {[weak self] in
             guard let self = self else { return }
-            self.fetchRooms()
-        }
-    }
-
-    private func fetchRooms() {
-        FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
-            guard let self = self else { return }
-            self.user = user
-        }
-
-        if entryPage == .fav {
-            FIRRoomService.shared.fetchFavoriteRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms, favoriteRooms in
-                guard let self = self else { return }
-                self.rooms = rooms
-                self.favoriteRooms = favoriteRooms
-            }
-        } else {
-            FIRRoomService.shared.fetchRoomsByUserID(userID: UserDefaults.id) { [weak self] rooms in
-                guard let self = self else { return }
-                self.rooms = rooms
-            }
+            self.viewModel.fetchRooms(entryPage: self.entryPage)
         }
     }
 
