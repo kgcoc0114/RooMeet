@@ -185,8 +185,9 @@ class MeasureViewController: UIViewController {
 // MARK: - ARSCNViewDelegate
 extension MeasureViewController: ARSCNViewDelegate {
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
-        DispatchQueue.main.async { [unowned self] in
-            updateLine()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.updateLine()
         }
     }
 }

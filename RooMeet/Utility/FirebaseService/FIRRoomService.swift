@@ -279,8 +279,8 @@ class FIRRoomService {
     }
 
     func fetchFavoriteRoomsByUserID(userID: String, completion: @escaping (([Room], [FavoriteRoom]) -> Void)) {
-        firebaseService.fetchUserByID(userID: userID) { [unowned self] user, _ in
-            guard let user = user else {
+        firebaseService.fetchUserByID(userID: userID) { [weak self] user, _ in
+            guard let self = self, let user = user else {
                 completion([], [])
                 return
             }

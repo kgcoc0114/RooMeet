@@ -207,10 +207,11 @@ class PostViewController: UIViewController {
         let deleteAction = UIAlertAction(
             title: PostVCString.deleteActionTitle.rawValue,
             style: .destructive
-        ) { [unowned self] _ in
+        ) { [weak self] _ in
             RMProgressHUD.show()
             guard
-                let roomID = room?.roomID else {
+                let self = self,
+                let roomID = self.room?.roomID else {
                 return
             }
 
@@ -305,7 +306,8 @@ extension PostViewController: UICollectionViewDataSource {
                 for: indexPath) as? FeeDetailCell else {
                 fatalError("FeeDetailCell Error")
             }
-            cell.completion = { [unowned self] otherDesc in
+            cell.completion = { [weak self] otherDesc in
+                guard let self = self else { return }
                 self.otherDescriction = otherDesc
             }
             return cell

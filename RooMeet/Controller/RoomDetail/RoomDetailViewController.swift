@@ -399,8 +399,8 @@ extension RoomDetailViewController {
     }
 
     private func createLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { [unowned self] index, env in
-            return self.sectionFor(index: index, environment: env)
+        return UICollectionViewCompositionalLayout { [weak self] index, env in
+            return self?.sectionFor(index: index, environment: env)
         }
     }
 }

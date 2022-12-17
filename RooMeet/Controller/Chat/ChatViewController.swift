@@ -287,7 +287,7 @@ extension ChatViewController {
         tableView.registerCellWithNib(identifier: CUImageCell.identifier, bundle: nil)
         tableView.registerCellWithNib(identifier: OUImageCell.identifier, bundle: nil)
 
-        dataSource = DataSource(tableView: tableView) { [unowned self] tableView, indexPath, item in
+        dataSource = DataSource(tableView: tableView) { [weak self] tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: item.cellIdentifier,
                 for: indexPath
@@ -317,10 +317,14 @@ extension ChatViewController {
     private func updateDataSource() {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
-
-        newSnapshot.appendItems(messages.map { ChatItem.message(
-            ChatData(message: $0, otherUser: otherData, currentUser: currentUserData)
-        ) }, toSection: .message)
+        newSnapshot.appendItems(
+            messages.map {
+                ChatItem.message(
+                    ChatData(message: $0, otherUser: otherData, currentUser: currentUserData)
+                )
+            },
+            toSection: .message
+        )
 
         dataSource.apply(newSnapshot, animatingDifferences: false)
     }
@@ -343,7 +347,10 @@ extension ChatViewController: UIImagePickerControllerDelegate, UINavigationContr
     ) {
         RMProgressHUD.show()
         if let pickedImage = info[.originalImage] as? UIImage {
-            FIRStorageService.shared.uploadImage(image: pickedImage, path: "ChatImages") { [weak self] imageURL, error in
+            FIRStorageService.shared.uploadImage(
+                image: pickedImage,
+                path: FIRStorageEndpoint.chatImages.path
+            ) { [weak self] imageURL, error in
                 guard
                     let self = self,
                     let imageURL = imageURL else {
