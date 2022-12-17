@@ -143,7 +143,9 @@ class ExploreViewController: UIViewController {
         }
 
         guard let filterVC = UIStoryboard.home.instantiateViewController(
-            withIdentifier: FilterViewController.self) as? FilterViewController else {
+            withIdentifier: String(describing: FilterViewController.self)
+        ) as? FilterViewController
+        else {
             print("ERROR: FilterViewController Error")
             return
         }

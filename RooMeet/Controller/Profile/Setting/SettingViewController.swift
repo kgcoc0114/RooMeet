@@ -222,14 +222,14 @@ extension SettingViewController: ASAuthorizationControllerDelegate {
                     guard let self = self else { return }
 
                     switch result {
-                    case .success(_):
+                    case .success:
                         AuthService.shared.firebaseSignInWithApple(
                             idToken: idTokenString,
                             nonce: nonce,
                             actionType: "delete"
                         ) { result in
                             switch result {
-                            case .success(_):
+                            case .success:
                                 print("SUCCESS: - Firebase Sign In With Apple")
                             case .failure(let error):
                                 print("ERROR: - \(error.localizedDescription)")
