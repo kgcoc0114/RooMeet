@@ -49,10 +49,8 @@ class ReservationService {
                 }
 
                 if let reservation = reservation {
-                    // sender user reservation array
                     self.addUserReservation(userID: senderID, reservationID: reservation.id)
 
-                    // receiver user reservation array
                     self.addUserReservation(userID: receiverID, reservationID: reservation.id)
 
                     self.insertMessage(
@@ -66,7 +64,6 @@ class ReservationService {
                 }
             }
         case .cancel, .accept:
-            // 你發起 我取消
             guard
                 var reservation = reservation,
                 let receiver = reservation.receiver,
@@ -79,13 +76,11 @@ class ReservationService {
 
             updateReservationStatus(status: status, reservation: reservation)
 
-            // 刪除發起者的 reservationID
             if status == .cancel {
                 deleteUserReservation(userID: sender, reservationID: reservation.id)
                 deleteUserReservation(userID: receiver, reservationID: reservation.id)
             }
 
-            // 更新 message / last message
             insertMessage(senderID: sender, receiverID: receiver, status: status, reservation: reservation) { _ in
                 debugPrint("insert message success")
             }
@@ -210,7 +205,6 @@ class ReservationService {
         }
     }
 
-    // 更新已被回覆過的預約訊息狀態
     func updateCurrentMessageStatus(status: AcceptedStatus, currentUser: User, otherUser: User, message: Message) {
         FIRChatRoomService.shared.getChatRoomByMembers(members: [currentUser.id, otherUser.id]) { [weak self] result in
             guard let self = self else { return }
@@ -227,7 +221,6 @@ class ReservationService {
         }
     }
 
-    // 更新已被回覆過的預約訊息狀態
     func updateMessage(chatRoomID: String, message: Message, status: AcceptedStatus) {
         let messageRef = Firestore.firestore()
             .collection("ChatRoom")
@@ -291,13 +284,11 @@ class ReservationService {
 
         updateReservationStatus(status: status, reservation: reservation)
 
-        // 刪除發起者的 reservationID
         if status == .cancel {
             deleteUserReservation(userID: sender, reservationID: reservation.id)
             deleteUserReservation(userID: receiver, reservationID: reservation.id)
         }
 
-        // 更新 message / last message
         if sender == UserDefaults.id && status == .cancel && oriStatus == .waiting {
             guard
                 let sender = reservation.sender,
@@ -414,7 +405,6 @@ class ReservationService {
                     expiredRsvn.append(document.documentID)
                 }
 
-                // Commit the batch
                 batch.commit { error in
                     if let error = error {
                         debugPrint("Error writing batch \(error)")

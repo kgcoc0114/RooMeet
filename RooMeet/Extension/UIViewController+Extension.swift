@@ -27,4 +27,32 @@ extension UIViewController {
 
         completion?()
     }
+
+    func presentAlertVC(title: String, message: String, mainAction: UIAlertAction, showDismissHUD: Bool = false, hasCancelAction: Bool) {
+        let alertController = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+
+        alertController.addAction(mainAction)
+
+        if hasCancelAction {
+            let cancelAction = UIAlertAction(title: PostVCString.cancel.rawValue, style: .cancel) { _ in
+                if showDismissHUD {
+                    RMProgressHUD.dismiss()
+                }
+                alertController.dismiss(animated: true)
+            }
+            alertController.addAction(cancelAction)
+        }
+
+        present(alertController, animated: true)
+    }
+}
+
+struct AlertAction {
+    let title: String
+    let style: UIAlertAction.Style
+    let handler: ((UIAlertAction) -> Void)?
 }

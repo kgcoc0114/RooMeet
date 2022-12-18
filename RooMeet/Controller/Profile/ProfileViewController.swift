@@ -128,7 +128,12 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
         }
     }
 
-    private var user: User?
+    private var user: User? {
+        didSet {
+            profileImageView.loadImage(self.user?.profilePhoto, placeHolder: UIImage.asset(.roomeet))
+            userNameLabel.text = self.user?.name
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,7 +159,6 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("UserDefaults.id = ", UserDefaults.id)
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
             guard
                 let self = self,
@@ -164,14 +168,6 @@ class ProfileViewController: UIViewController, SFSafariViewControllerDelegate {
 
             self.user = user
         }
-
-        if UserDefaults.profilePhoto != "empty" {
-            profileImageView.loadImage(UserDefaults.profilePhoto, placeHolder: UIImage.asset(.roomeet))
-        } else {
-            profileImageView.image = UIImage.asset(.roomeet)
-        }
-
-        userNameLabel.text = UserDefaults.name
 
         collectionView.reloadData()
     }

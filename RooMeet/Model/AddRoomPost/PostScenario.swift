@@ -101,22 +101,6 @@ enum PostScenario: Hashable {
         }
     }
 
-//    var editFeeScenario: EditFeeScenario {
-//        let billInfo = billInfo ?? BillInfo(
-//            water: FeeDetail(),
-//            electricity: FeeDetail(),
-//            cable: FeeDetail(),
-//            internet: FeeDetail(),
-//            management: FeeDetail()
-//        )
-//        switch self {
-//        case .create:
-//            return EditFeeScenario.create(billInfo)
-//        case .edit:
-//            return EditFeeScenario.edit(billInfo)
-//        }
-//    }
-
     var postBasicData: PostBasicData? {
         switch self {
         case .create:
@@ -218,23 +202,6 @@ enum PostScenario: Hashable {
             return room.createdTime
         }
     }
-
-//    var roomDisplayImages: [UIImage] {
-//        let addImage = UIImage.asset(.add)
-//        var images = [addImage, addImage, addImage]
-//        switch self {
-//        case .create:
-//            return images
-//        case .edit(let room):
-//            room.roomImages.enumerated().forEach { index, url in
-//                if let imageData = try? Data(contentsOf: url),
-//                   let loadedImage = UIImage(data: imageData) {
-//                    images[index] = loadedImage
-//                }
-//            }
-//            return images
-//        }
-//    }
 }
 
 protocol PostCell: UICollectionViewCell {
@@ -244,31 +211,7 @@ protocol PostCell: UICollectionViewCell {
 protocol RMCellContainer {}
 
 struct PostDataContainer: RMCellContainer {
-    let data: Room?
-    let indexPath: IndexPath?
-
-//    var tags: [String] {
-//        section?.tags ?? []
-//    }
-//
-//    var selectedTags: [String] {
-//        switch section {
-//        case .highLight:
-//            return postScenario.roomHighLights
-//        case .gender:
-//            return postScenario.roomGenderRules
-//        case .pet:
-//            return postScenario.roomPetsRules
-//        case .elevator:
-//            return postScenario.roomElevatorRules
-//        case .cooking:
-//            return postScenario.roomCookingRules
-//        case .bathroom:
-//            return postScenario.roomBathroomRules
-//        case .features:
-//            return postScenario.roomFeatures
-//        default:
-//            return []
-//        }
-//    }
+    let room: Room?
+    let indexPath: IndexPath
+    let roomSpecList: [RoomSpec]?
 }

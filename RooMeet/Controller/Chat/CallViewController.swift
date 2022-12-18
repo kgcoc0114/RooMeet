@@ -11,7 +11,6 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class CallViewController: UIViewController {
-    // for webRTC
     private var webRTCClient: WebRTCClient! = WebRTCClient(iceServers: Config.default.webRTCIceServers)
 
     private var hasLocalSdp = false
@@ -25,7 +24,7 @@ class CallViewController: UIViewController {
     var callerData: ChatMember?
     var calleeData: ChatMember?
 
-    var callType: CallType = .offer // offer: 自己主動播 answer: 對方播
+    var callType: CallType = .offer
     var roomId: String?
 
     var startTime: Timestamp?
@@ -292,14 +291,11 @@ class CallViewController: UIViewController {
             self.webRTCClient.closeConnection()
         }
 
-        // 自播自己取消
         if callStatus == "offer" && callType == .offer {
             updateCallData(status: "cancel", content: "通話已取消")
-            // 掛對方來電
         } else if callStatus == "offer" && callType == .answer {
             updateCallData(status: "cancel", content: "通話已取消")
         } else {
-            // 正常通話結束
             if callStatus != "close" {
                 dealWithHangUp()
             }

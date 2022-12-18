@@ -19,7 +19,6 @@ class FIRUserService {
         self.firebaseService.getDocument(docRef) { (fetchedUser: User?) in
             if fetchedUser != nil {
                 guard let user = user else {
-                    // get user info
                     self.firebaseService.fetchUserByID(userID: userID) { user, _ in
                         if let user = user {
                             UserDefaults.id = user.id
@@ -30,7 +29,6 @@ class FIRUserService {
                 }
                 docRef.updateData(user.dictionary)
             } else {
-                // create new user
                 var updateData = [
                     "id": userID
                 ]
@@ -41,7 +39,6 @@ class FIRUserService {
 
                 docRef.setData(updateData)
 
-                // new user -> should present information page
                 completion(true, nil)
             }
         }
@@ -94,16 +91,14 @@ class FIRUserService {
 
     func deleteReservations(userID: String, completion: @escaping ((Result<String>) -> Void)) {
         let group = DispatchGroup()
-        // get sender user's reservations
         group.enter()
+
         let senderRef = FirestoreEndpoint.reservation.colRef.whereField("sender", isEqualTo: userID)
 
         batchDeleteReservation(query: senderRef) { _ in
             group.leave()
         }
 
-
-        // get receiver user's reservations
         group.enter()
         let receiverRef = FirestoreEndpoint.reservation.colRef.whereField("receiver", isEqualTo: userID)
         batchDeleteReservation(query: receiverRef) { _ in
@@ -127,7 +122,6 @@ class FIRUserService {
                 batch.updateData(["isDeleted": true], forDocument: document.reference)
             }
 
-            // Commit the batch
             batch.commit { error in
                 if let error = error {
                     print("Error writing batch \(error)")
@@ -141,10 +135,8 @@ class FIRUserService {
     }
 
     func deleteRoomPosts(userID: String, completion: @escaping ((Result<String>) -> Void)) {
-        // Get new write batch
         let batch = Firestore.firestore().batch()
 
-        // get user's room posts
         let roomRef = FirestoreEndpoint.room.colRef.whereField("userID", isEqualTo: userID)
 
         roomRef.getDocuments { snapshot, _ in
@@ -156,7 +148,6 @@ class FIRUserService {
                 batch.updateData(["isDeleted": true], forDocument: document.reference)
             }
 
-            // Commit the batch
             batch.commit { error in
                 if let error = error {
                     print("Error writing batch \(error)")
@@ -168,6 +159,7 @@ class FIRUserService {
             }
         }
     }
+
     // MARK: - Block Users
     func fatchBlockUsers(completion: @escaping (([User], Error?) -> Void)) {
         let query = FirestoreEndpoint.user.colRef.document(UserDefaults.id)

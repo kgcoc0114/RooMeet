@@ -219,7 +219,7 @@ class RoomDetailViewController: UIViewController {
         guard
             let selectedPeriod = selectedPeriod,
             var selectedDate = selectedDate else {
-            RMProgressHUD.showFailure(text: "請選擇預約時間")
+            RMProgressHUD.showFailure(text: ReservationString.timeSelection.rawValue)
             reservationButton.isEnabled.toggle()
             return
         }
@@ -252,7 +252,7 @@ class RoomDetailViewController: UIViewController {
             self.user?.reservations.append(roomID)
             RMProgressHUD.showSuccess()
         } else {
-            RMProgressHUD.showFailure(text: "已預約過此房源")
+            RMProgressHUD.showFailure(text: ReservationString.reserved.rawValue)
         }
         reservationButton.isEnabled = true
     }
@@ -284,13 +284,10 @@ class RoomDetailViewController: UIViewController {
 
     @objc private func userAction(_ sender: Any) {
         if AuthService.shared.isLogin() {
-            let userActionAlertController = UIAlertController(
-                title: "檢舉",
-                message: "確定檢舉此則貼文，你的檢舉將被匿名。",
-                preferredStyle: .actionSheet
-            )
-
-            let reportPostAction = UIAlertAction(title: "檢舉貼文", style: .destructive) { [weak self] _ in
+            let reportPostAction = UIAlertAction(
+                title: ReportString.actionTitle.rawValue,
+                style: .destructive
+            ) { [weak self] _ in
                 guard
                     let self = self,
                     let roomID = self.room?.roomID
@@ -300,21 +297,19 @@ class RoomDetailViewController: UIViewController {
 
                 FIRUserService.shared.insertReportEvent(event: reportEvent) { error in
                     if error != nil {
-                        RMProgressHUD.showFailure(text: "出點問題了，請稍後再試！")
+                        RMProgressHUD.showFailure(text: ReportString.failure.rawValue)
                     } else {
-                        RMProgressHUD.showSuccess(text: "成功送出檢舉！")
+                        RMProgressHUD.showSuccess(text: ReportString.success.rawValue)
                     }
                 }
             }
 
-            let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-                userActionAlertController.dismiss(animated: true)
-            }
-
-            userActionAlertController.addAction(reportPostAction)
-            userActionAlertController.addAction(cancelAction)
-
-            present(userActionAlertController, animated: true, completion: nil)
+            presentAlertVC(
+                title: ReportString.title.rawValue,
+                message: ReportString.message.rawValue,
+                mainAction: reportPostAction,
+                hasCancelAction: true
+            )
         } else {
             let loginVC = UIStoryboard.main.instantiateViewController(
                 withIdentifier: String(describing: LoginViewController.self)
@@ -367,9 +362,9 @@ extension RoomDetailViewController {
                         }
                     }
                 }
-            case .reservationDays(_):
+            case .reservationDays:
                 (cell as? BookingDateCell)?.delegate = self
-            case .reservationPeriod(_):
+            case .reservationPeriod:
                 (cell as? BookingPeriodCell)?.delegate = self
             default:
                 print("")
@@ -399,8 +394,8 @@ extension RoomDetailViewController {
     }
 
     private func createLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { [unowned self] index, env in
-            return self.sectionFor(index: index, environment: env)
+        return UICollectionViewCompositionalLayout { [weak self] index, env in
+            return self?.sectionFor(index: index, environment: env)
         }
     }
 }
@@ -475,13 +470,11 @@ extension RoomDetailViewController {
 
 extension RoomDetailViewController: BookingDateCellDelegate {
     func didSelectedDate(_ cell: BookingDateCell, date: DateComponents) {
-        // 第一次選擇
         if selectedDateCell == nil {
             selectedDate = date
             selectedDateCell = cell
             selectedDateCell?.isSelected = true
         } else {
-            // 取消此次選擇
             if cell == selectedDateCell {
                 selectedDateCell?.isSelected = false
                 selectedDate = nil

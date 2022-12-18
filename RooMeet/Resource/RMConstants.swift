@@ -118,3 +118,23 @@ enum PostVCString: String {
     case postTitle = "房間出租"
     case cancel = "取消"
 }
+
+enum ReportString: String {
+    case actionTitle = "檢舉貼文"
+    case title = "檢舉"
+    case message = "確定檢舉此則貼文，你的檢舉將被匿名。"
+    case failure = "出點問題了，請稍後再試！"
+    case success = "成功送出檢舉！"
+}
+
+enum ReservationString: String {
+    case timeSelection = "請選擇預約時間"
+    case reserved = "已預約過此房源"
+}
+
+enum AccountString: String {
+    case deleteTitle = "刪除帳號"
+    case deleteMsg = "刪除帳號是永久設定，您的貼文資訊和相片都將刪除，基於安全性，將請您重新登入。"
+    case blockTitle = "封鎖用戶"
+    case blockMsg = "他們將無法在 RooMeet 發訊息給你或找到你的貼文。你封鎖用戶時，對方不會收到通知。"
+}

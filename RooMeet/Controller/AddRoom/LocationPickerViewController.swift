@@ -8,7 +8,6 @@
 import UIKit
 
 class LocationPickerViewController: RMButtomSheetViewController {
-    // define lazy views
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "選擇地區"
@@ -72,18 +71,15 @@ class LocationPickerViewController: RMButtomSheetViewController {
         countyTableView.translatesAutoresizingMaskIntoConstraints = false
         townTableView.translatesAutoresizingMaskIntoConstraints = false
 
-
-        // Set static constraints
         NSLayoutConstraint.activate([
-            // titleLabel
             titleLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 16),
-            // countyTableView
+
             countyTableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             countyTableView.trailingAnchor.constraint(equalTo: containerView.centerXAnchor),
             countyTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             countyTableView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor),
-            // townTableView
+
             townTableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             townTableView.leadingAnchor.constraint(equalTo: containerView.centerXAnchor),
             townTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),

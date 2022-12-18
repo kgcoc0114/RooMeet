@@ -48,7 +48,6 @@ class LocationService {
         return nil
     }()
 
-    // getCoordinates
     func getCoordinates(fullAddress: String = "台北市中正區仁愛路二段99號", handler: @escaping ((CLLocationCoordinate2D) -> Void)) {
         CLGeocoder().geocodeAddressString(fullAddress) { placemark, error in
             if let error = error {
@@ -97,7 +96,6 @@ class LocationService {
     }
 
     func setCenterRegion(position: CLLocationCoordinate2D, mapView: MKMapView) {
-        // set current location in map
         let region = MKCoordinateRegion(
             center: position,
             latitudinalMeters: 3000,

@@ -17,7 +17,9 @@ class ChatViewController: UIViewController {
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, ChatItem>
     private var dataSource: DataSource!
 
-    lazy var imagePickerController = UIImagePickerController()
+    lazy var imagePicker: ImagePickerManager = {
+        return ImagePickerManager(presentationController: self)
+    }()
 
     var chatRoom: ChatRoom?
     var otherData: ChatMember?
@@ -73,6 +75,7 @@ class ChatViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        imagePicker.delegate = self
 
         let phoneBarButton = UIBarButtonItem(
             image: UIImage.asset(.circle_phone).withRenderingMode(.alwaysOriginal),
@@ -101,7 +104,6 @@ class ChatViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // listen
         guard let chatRoom = chatRoom else {
             print("ERROR: chatRoom is not exist.")
             return
@@ -180,37 +182,7 @@ class ChatViewController: UIViewController {
     }
 
     @IBAction func addImageAction(_ sender: Any) {
-        imagePickerController.delegate = self
-
-        let imagePickerAlertController = UIAlertController(
-            title: "上傳圖片",
-            message: "請選擇要上傳的圖片",
-            preferredStyle: .actionSheet
-        )
-
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                self.imagePickerController.sourceType = .photoLibrary
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
-        }
-        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                self.imagePickerController.sourceType = .camera
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
-        }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            imagePickerAlertController.dismiss(animated: true, completion: nil)
-        }
-
-        imagePickerAlertController.addAction(imageFromLibAction)
-        imagePickerAlertController.addAction(imageFromCameraAction)
-        imagePickerAlertController.addAction(cancelAction)
-
-        present(imagePickerAlertController, animated: true, completion: nil)
+        imagePicker.present(from: self.view)
     }
 
     @objc private func backAction() {
@@ -224,7 +196,6 @@ class ChatViewController: UIViewController {
             return
         }
 
-        // 清空通話資料
         FirestoreEndpoint.call.colRef.document(chatRoom.id).delete { err in
             if let err = err {
                 print("Error removing document: \(err)")
@@ -247,13 +218,7 @@ class ChatViewController: UIViewController {
     }
 
     @objc private func userAction(_ sender: Any) {
-        let userActionAlertController = UIAlertController(
-            title: "封鎖 \(otherData?.name ?? "") ?",
-            message: "他們將無法在 RooMeet 發訊息給你或找到你的貼文。你封鎖用戶時，對方不會收到通知。",
-            preferredStyle: .actionSheet
-        )
-
-        let blockUserAction = UIAlertAction(title: "封鎖用戶", style: .destructive) { [weak self] _ in
+        let blockUserAction = UIAlertAction(title: AccountString.blockTitle.rawValue, style: .destructive) { [weak self] _ in
             guard
                 let self = self,
                 let blockUser = self.otherData
@@ -267,14 +232,12 @@ class ChatViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
 
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            userActionAlertController.dismiss(animated: true)
-        }
-
-        userActionAlertController.addAction(blockUserAction)
-        userActionAlertController.addAction(cancelAction)
-
-        present(userActionAlertController, animated: true, completion: nil)
+        presentAlertVC(
+            title: "封鎖 \(otherData?.name ?? "") ?",
+            message: AccountString.blockMsg.rawValue,
+            mainAction: blockUserAction,
+            hasCancelAction: true
+        )
     }
 }
 
@@ -289,7 +252,7 @@ extension ChatViewController {
         tableView.registerCellWithNib(identifier: CUImageCell.identifier, bundle: nil)
         tableView.registerCellWithNib(identifier: OUImageCell.identifier, bundle: nil)
 
-        dataSource = DataSource(tableView: tableView) { [unowned self] tableView, indexPath, item in
+        dataSource = DataSource(tableView: tableView) { [weak self] tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(
                 withIdentifier: item.cellIdentifier,
                 for: indexPath
@@ -319,10 +282,14 @@ extension ChatViewController {
     private func updateDataSource() {
         var newSnapshot = Snapshot()
         newSnapshot.appendSections(Section.allCases)
-
-        newSnapshot.appendItems(messages.map { ChatItem.message(
-            ChatData(message: $0, otherUser: otherData, currentUser: currentUserData)
-        ) }, toSection: .message)
+        newSnapshot.appendItems(
+            messages.map {
+                ChatItem.message(
+                    ChatData(message: $0, otherUser: otherData, currentUser: currentUserData)
+                )
+            },
+            toSection: .message
+        )
 
         dataSource.apply(newSnapshot, animatingDifferences: false)
     }
@@ -334,47 +301,15 @@ extension ChatViewController: UITableViewDelegate {
     }
 }
 
-extension ChatViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true)
-    }
-
-    func imagePickerController(
-        _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
-    ) {
-        RMProgressHUD.show()
-        // 取得從 UIImagePickerController 選擇的檔案
-        if let pickedImage = info[.originalImage] as? UIImage {
-            FIRStorageService.shared.uploadImage(image: pickedImage, path: "ChatImages") { [weak self] imageURL, error in
-                guard
-                    let self = self,
-                    let imageURL = imageURL else {
-                    return
-                }
-
-                if error != nil {
-                    RMProgressHUD.showFailure(text: "傳送圖片出現問題")
-                } else {
-                    self.sendMessage(content: imageURL.absoluteString, messageType: .image)
-                }
-            }
-        }
-
-        picker.dismiss(animated: true)
-    }
-
+// MARK: - Send Message
+extension ChatViewController {
     private func sendMessage(content: String, messageType: MessageType) {
         guard let room = chatRoom else {
             print("ERROR: chatRoom is not exist.")
             return
         }
 
-        let messageRef = Firestore.firestore()
-            .collection("ChatRoom")
-            .document(room.id)
-            .collection("Message")
-            .document()
+        let messageRef = FirestoreEndpoint.message(room.id).colRef.document()
 
         let message = Message(
             id: messageRef.documentID,
@@ -425,10 +360,34 @@ extension ChatViewController: OUImageCellDelegate {
     }
 }
 
+// MARK: - Display Image Delegate
 extension ChatViewController: CUImageCellDelegate {
     func didClickImageView(_ cell: CUImageCell, imageURL: String) {
         let imageViewVC = ChatImageViewController(imageURL: imageURL)
         imageViewVC.modalPresentationStyle = .fullScreen
         self.present(imageViewVC, animated: false)
+    }
+}
+
+// MARK: - Image Picker Delegate
+extension ChatViewController: ImagePickerManagerDelegate {
+    func imagePickerController(didSelect: UIImage?) {
+        guard let image = didSelect else { return }
+        FIRStorageService.shared.uploadImage(
+            image: image,
+            path: FIRStorageEndpoint.chatImages.path
+        ) { [weak self] imageURL, error in
+            guard
+                let self = self,
+                let imageURL = imageURL else {
+                return
+            }
+
+            if error != nil {
+                RMProgressHUD.showFailure(text: "傳送圖片出現問題")
+            } else {
+                self.sendMessage(content: imageURL.absoluteString, messageType: .image)
+            }
+        }
     }
 }

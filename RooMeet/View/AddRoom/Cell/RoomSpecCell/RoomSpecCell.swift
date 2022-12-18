@@ -183,23 +183,22 @@ extension RoomSpecCell: UITextFieldDelegate {
     }
 }
 
-//extension RoomSpecCell: PostCell {
-//    func configure(container: RMCellContainer) {
-//        guard
-//            let container = (container as? PostDataContainer),
-//            let indexPath = container.indexPath else { return }
-//
-//        self.indexPath = indexPath
-//        self.roomSpec = container.postScenario.roomSpecList[indexPath.item]
-//
-//        if let roomSpec = self.roomSpec {
-//            priceTextField.text = setTextFieldDisplay(data: roomSpec.price)
-//            spaceTextField.text = setTextFieldDisplay(data: roomSpec.space)
-//            if let dataRoomType = roomSpec.roomType,
-//               let roomType = RoomType(rawValue: dataRoomType) {
-//                segmentControl.selectedIndex = roomType.index
-//            }
-//        }
-//        setButtonStatus(deleteIsHidden: indexPath.item == 0, addIsHidden: false)
-//    }
-//}
+extension RoomSpecCell: PostCell {
+    func configure(container: RMCellContainer) {
+        guard
+            let container = (container as? PostDataContainer)
+        else { return }
+
+        indexPath = container.indexPath
+        roomSpec = container.roomSpecList?[container.indexPath.item]
+        if let roomSpec = self.roomSpec {
+            priceTextField.text = setTextFieldDisplay(data: roomSpec.price)
+            spaceTextField.text = setTextFieldDisplay(data: roomSpec.space)
+            if let dataRoomType = roomSpec.roomType,
+               let roomType = RoomType(rawValue: dataRoomType) {
+                segmentControl.selectedIndex = roomType.index
+            }
+        }
+        setButtonStatus(deleteIsHidden: container.indexPath.item == 0, addIsHidden: false)
+    }
+}

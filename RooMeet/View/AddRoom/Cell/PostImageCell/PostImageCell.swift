@@ -40,14 +40,13 @@ class PostImageCell: UICollectionViewCell {
 extension PostImageCell: PostCell {
     func configure(container: RMCellContainer) {
         guard
-            let container = (container as? PostDataContainer),
-            let indexPath = container.indexPath
+            let container = (container as? PostDataContainer)
         else { return }
 
         imageView.loadImage(
-            indexPath.item >= container.data?.roomImages.count ?? 3
+            container.indexPath.item >= container.room?.roomImages.count ?? 3
             ? nil
-            : container.data?.roomImages[indexPath.item].absoluteString,
+            : container.room?.roomImages[container.indexPath.item].absoluteString,
             placeHolder: UIImage.asset(.add)
         )
     }
