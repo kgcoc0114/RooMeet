@@ -295,7 +295,7 @@ extension PostViewController: UICollectionViewDataSource {
                 fatalError("OtherFeeHeaderCell Error")
             }
 
-            cell.configure(container: PostDataContainer(room: nil, indexPath: indexPath, roomSpecList: nil))
+            cell.configure(container: PostDataContainer(indexPath: indexPath))
             (cell as? OtherFeeHeaderCell)?.editAction.addTarget(
                 self,
                 action: #selector(showMultiChoosePage),
@@ -366,7 +366,7 @@ extension PostViewController: UICollectionViewDataSource {
         ) as? PostCell else {
             fatalError("RoomSpecCell Error")
         }
-        cell.configure(container: PostDataContainer(room: nil, indexPath: indexPath, roomSpecList: roomSpecList))
+        cell.configure(container: PostDataContainer(roomImages: nil, indexPath: indexPath, roomSpecList: roomSpecList))
         (cell as? RoomSpecCell)?.delegate = self
         return cell
     }
@@ -380,7 +380,12 @@ extension PostViewController: UICollectionViewDataSource {
         ) as? PostCell else {
             fatalError("PostImageCell Error")
         }
-        cell.configure(container: PostDataContainer(room: room, indexPath: indexPath, roomSpecList: nil))
+        cell.configure(container: PostDataContainer(
+            roomImages: roomImages,
+            roomImagesURL: roomImagesUrl,
+            indexPath: indexPath,
+            roomSpecList: nil
+        ))
         (cell as? PostImageCell)?.delegate = self
         return cell
     }
@@ -466,7 +471,9 @@ extension PostViewController: RoomSpecCellDelegate {
 
     func didChangeData(_ cell: RoomSpecCell, data: RoomSpec) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        roomSpecList[indexPath.item] = data
+        if roomSpecList.count > indexPath.item {
+            roomSpecList[indexPath.item] = data
+        }
     }
 }
 
