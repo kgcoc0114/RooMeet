@@ -23,7 +23,7 @@ class AuthService {
     weak var delegate: UserServiceDelegate?
 
     func isLogin() -> Bool {
-        return auth.currentUser != nil
+        return auth.currentUser != nil && UserDefaults.id != "testUser"
     }
 
     func firebaseSignInWithApple(
