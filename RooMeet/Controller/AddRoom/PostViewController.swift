@@ -162,48 +162,50 @@ class PostViewController: UIViewController {
         }
     }
 
+    func isSavable() -> (Bool, String) {
+        var isSavable = true
+        var message = PostVCString.addMessage.rawValue
+
+        guard let postBasicData = self.postBasicData else {
+            return (false, message)
+        }
+
+        if postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
+            self.roomSpecList.isEmpty {
+            return (false, message)
+        }
+
+        for roomSpec in roomSpecList {
+            if roomSpec.price == nil || roomSpec.space == nil {
+                isSavable = false
+                message = PostVCString.roomSpecAlertMessage.rawValue
+                break
+            }
+        }
+
+        return (isSavable, message)
+    }
+
     @IBAction func submitAction(_ sender: Any) {
-        RMProgressHUD.show()
+        let isSavable = isSavable()
+        if isSavable.0 {
+            RMProgressHUD.show()
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                guard let self = self else { return }
 
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let self = self else { return }
-
-            var alert = false
-            guard let postBasicData = self.postBasicData else {
-                self.showAlert()
-                return
-            }
-
-            if postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
-                self.roomSpecList.isEmpty {
-                self.showAlert()
-            } else {
-                self.roomSpecList.forEach { roomSpec in
-                    if roomSpec.price == nil || roomSpec.space == nil {
-                        alert = true
-                        self.showAlert(message: PostVCString.roomSpecAlertMessage.rawValue)
-                    }
-                }
-
-                if alert == false {
-                    if self.roomImages.isEmpty {
-                        self.room?.roomImages = []
-                        self.saveData()
-                    } else {
-                        self.uploadImages(images: self.roomImages)
-                    }
+                if self.roomImages.isEmpty {
+                    self.room?.roomImages = []
+                    self.saveData()
+                } else {
+                    self.uploadImages(images: self.roomImages)
                 }
             }
+        } else {
+            showAlert(message: isSavable.1)
         }
     }
 
     @objc private func deletePostAction() {
-        let alertController = UIAlertController(
-            title: PostVCString.delete.rawValue,
-            message: PostVCString.deleteMessage.rawValue,
-            preferredStyle: .alert
-        )
-
         let deleteAction = UIAlertAction(
             title: PostVCString.deleteActionTitle.rawValue,
             style: .destructive
@@ -220,30 +222,26 @@ class PostViewController: UIViewController {
             self.navigationController?.popViewController(animated: true)
         }
 
-        let cancelAction = UIAlertAction(title: PostVCString.cancel.rawValue, style: .cancel) { _ in
-            alertController.dismiss(animated: true)
-        }
-
-        alertController.addAction(deleteAction)
-        alertController.addAction(cancelAction)
-
-        present(alertController, animated: true)
+        self.presentAlertVC(
+            title: PostVCString.delete.rawValue,
+            message: PostVCString.deleteMessage.rawValue,
+            mainAction: deleteAction,
+            hasCancelAction: true
+        )
     }
 
     private func showAlert(message: String = PostVCString.addMessage.rawValue) {
         DispatchQueue.main.async { [weak self] in
+            RMProgressHUD.dismiss()
             guard let self = self else { return }
-            let alertController = UIAlertController(
+            let alertAction = UIAlertAction(title: PostVCString.confirm.rawValue, style: .default)
+
+            self.presentAlertVC(
                 title: PostVCString.add.rawValue,
                 message: message,
-                preferredStyle: .alert
+                mainAction: alertAction,
+                hasCancelAction: false
             )
-
-            let alertAction = UIAlertAction(title: PostVCString.confirm.rawValue, style: .default) { _ in
-                RMProgressHUD.dismiss()
-            }
-            alertController.addAction(alertAction)
-            self.present(alertController, animated: false)
         }
     }
 }
@@ -298,7 +296,11 @@ extension PostViewController: UICollectionViewDataSource {
             }
 
             cell.configure(container: PostDataContainer(room: nil, indexPath: indexPath, roomSpecList: nil))
-            (cell as? OtherFeeHeaderCell)?.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
+            (cell as? OtherFeeHeaderCell)?.editAction.addTarget(
+                self,
+                action: #selector(showMultiChoosePage),
+                for: .touchUpInside
+            )
             return cell
         case .feeDetail:
             guard let cell = collectionView.dequeueReusableCell(
