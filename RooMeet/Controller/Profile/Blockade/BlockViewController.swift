@@ -37,7 +37,7 @@ class BlockViewController: UIViewController {
         didSet {
             noneLabel.font = UIFont.regularSubTitle()
             noneLabel.textColor = .mainDarkColor
-            noneLabel.text = "Tips: 尊重 友善 包容 不被黑名單"
+            noneLabel.text = NoDataDisplay.blockade.displayString
             noneLabel.isHidden = true
         }
     }
@@ -86,7 +86,7 @@ class BlockViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        FirebaseService.shared.fatchBlockUsers { [weak self] users, error in
+        FIRUserService.shared.fatchBlockUsers { [weak self] users, error in
             guard let self = self else { return }
             self.users = users
         }
@@ -94,7 +94,7 @@ class BlockViewController: UIViewController {
 
     @IBAction func unlockAction(_ sender: Any) {
         if !toBeUnlock.isEmpty {
-            FirebaseService.shared.deleteBlock(blockedUsers: toBeUnlock)
+            FIRUserService.shared.deleteBlock(blockedUsers: toBeUnlock)
             RMProgressHUD.showSuccess()
             self.navigationController?.popViewController(animated: true)
         }

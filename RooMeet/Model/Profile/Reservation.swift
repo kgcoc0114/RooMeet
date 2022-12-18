@@ -25,9 +25,9 @@ struct Reservation: Codable, Hashable {
 
 enum AcceptedStatus: String, CaseIterable {
     case waiting
-    case cancel // 取消邀請
-    case accept // 同意
-    case answer // 回覆過的 waiting 訊息
+    case cancel
+    case accept
+    case answer
 
     var description: String {
         switch self {
@@ -51,7 +51,7 @@ enum AcceptedStatus: String, CaseIterable {
         case .accept:
             return "預約已接受"
         case .answer:
-            return "answer"
+            return "預約已回覆"
         }
     }
 

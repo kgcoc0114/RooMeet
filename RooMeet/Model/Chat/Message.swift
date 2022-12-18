@@ -10,7 +10,7 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 enum MessageType: Int, CaseIterable {
-    case text = 0
+    case text
     case image
     case call
     case reservation
@@ -18,8 +18,8 @@ enum MessageType: Int, CaseIterable {
 
 struct Message: Codable, Hashable {
     let id: String
-    let messageType: Int // (0: text, 1: image, 2: call）
-    let sendBy: String // userID
+    let messageType: Int
+    let sendBy: String
     let content: String
     let createdTime: Timestamp
     var reservation: Reservation?

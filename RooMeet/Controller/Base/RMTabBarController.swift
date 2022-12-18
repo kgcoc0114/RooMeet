@@ -73,7 +73,6 @@ class RMTabBarController: UITabBarController {
         self.delegate = self
         listenPhoneCallEvent()
 
-        // get User Location
         locationManger.delegate = self
         DispatchQueue.global(qos: .background).async { [weak self] in
             guard let self = self else { return }
@@ -140,9 +139,8 @@ extension RMTabBarController: UITabBarControllerDelegate {
                 if AuthService.shared.isLogin() {
                     return true
                 } else {
-                    let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-                    let loginVC = storyBoard.instantiateViewController(
-                        withIdentifier: "LoginViewController"
+                    let loginVC = UIStoryboard.main.instantiateViewController(
+                        withIdentifier: String(describing: LoginViewController.self)
                     )
                     loginVC.modalPresentationStyle = .overCurrentContext
                     self.present(loginVC, animated: false)

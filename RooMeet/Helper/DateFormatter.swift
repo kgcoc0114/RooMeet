@@ -12,7 +12,6 @@ import FirebaseFirestoreSwift
 class RMDateFormatter {
     static let shared = RMDateFormatter()
 
-    //    formatter.string(from: timeInterval)
     let currentTimestamp = Timestamp()
     let formatter = DateComponentsFormatter()
 
@@ -72,7 +71,6 @@ class RMDateFormatter {
 
         let diffDays = Calendar.current.dateComponents([.day], from: currentTime, to: messageTime)
 
-        // 昨天
         let lastDateTime = currentTime.addingTimeInterval(-(24 * 60 * 60))
 
         let messageDateString = dateString(date: messageTime)

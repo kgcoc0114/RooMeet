@@ -65,6 +65,11 @@ class FilterViewController: RMButtomSheetViewController {
         configureLayout()
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        dismiss(animated: false)
+    }
+
     func configureLayout() {
         containerView.addSubview(titleLabel)
         containerView.addSubview(applyButton)
@@ -128,6 +133,6 @@ class FilterViewController: RMButtomSheetViewController {
             .order(by: "createdTime")
 
         self.completion?(query)
-        dismiss(animated: true)
+        animateDismissView()
     }
 }

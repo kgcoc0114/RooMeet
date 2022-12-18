@@ -12,6 +12,16 @@ class OtherFeeHeaderCell: UICollectionViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+    }
+}
+
+extension OtherFeeHeaderCell: PostCell {
+    func configure(container: RMCellContainer) {
+        guard
+            let container = (container as? PostDataContainer),
+            let tag = PostSection.allCases.firstIndex(of: .feeHeader)
+        else { return }
+        editAction.tag = tag
+        titleLabel.text = PostVCString.otherFee.rawValue
     }
 }

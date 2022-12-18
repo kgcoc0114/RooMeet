@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import FirebaseStorage
+import FirebaseFirestore
 
 class PostViewController: UIViewController {
     private var roomSpecList: [RoomSpec] = [RoomSpec()]
@@ -27,17 +27,29 @@ class PostViewController: UIViewController {
 
     var waitForUpdateImageCell: PostImageCell?
 
-    var roomImagesUrl: [URL] = []
-    var oriRoomImagesUrl: [URL] = []
-    var roomImages: [UIImage] = []
-
     var otherDescriction: String?
     var latitude: Double?
     var longitude: Double?
     var postalCode: String?
-    var createdTime = FirebaseService.shared.currentTimestamp
+    var createdTime = Timestamp()
     var isDeleted = false
     var room: Room?
+
+    lazy var imagePicker: ImagePickerManager = {
+        let imagePicker = ImagePickerManager(presentationController: self)
+        imagePicker.delegate = self
+        return imagePicker
+    }()
+
+    var roomImagesUrl: [URL] = []
+    var oriRoomImagesUrl: [URL] = []
+    var roomImages: [UIImage] = [
+        UIImage.asset(.add),
+        UIImage.asset(.add),
+        UIImage.asset(.add)
+    ]
+
+    var roomImagesStatus = [false, false, false]
 
     @IBOutlet weak var submitButton: UIButton! {
         didSet {
@@ -50,10 +62,6 @@ class PostViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            collectionView.dataSource = self
-            collectionView.delegate = self
-            collectionView.collectionViewLayout = configureLayout()
-
             collectionView.registerCellWithNib(reuseIdentifier: PostBasicCell.reuseIdentifier, bundle: nil)
             collectionView.registerCellWithNib(reuseIdentifier: RoomSpecCell.reuseIdentifier, bundle: nil)
             collectionView.registerCellWithNib(reuseIdentifier: OtherFeeCell.reuseIdentifier, bundle: nil)
@@ -62,6 +70,11 @@ class PostViewController: UIViewController {
             collectionView.registerCellWithNib(reuseIdentifier: ItemsCell.reuseIdentifier, bundle: nil)
             collectionView.registerCellWithNib(reuseIdentifier: OtherFeeHeaderCell.reuseIdentifier, bundle: nil)
             collectionView.registerCellWithNib(reuseIdentifier: FeeDetailCell.reuseIdentifier, bundle: nil)
+
+            collectionView.collectionViewLayout = configureLayout()
+            collectionView.dataSource = self
+            collectionView.delegate = self
+            collectionView.keyboardDismissMode = .interactive
         }
     }
 
@@ -71,6 +84,11 @@ class PostViewController: UIViewController {
         super.init(nibName: "PostViewController", bundle: nil)
 
         self.entryType = entryType
+
+        guard let data = data else {
+            return
+        }
+
         self.room = data
     }
 
@@ -80,7 +98,8 @@ class PostViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.keyboardDismissMode = .interactive
+        imagePicker.delegate = self
+
         navigationItem.title = entryType.title + PostVCString.title.rawValue
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -95,10 +114,9 @@ class PostViewController: UIViewController {
                 style: .plain,
                 target: self,
                 action: #selector(deletePostAction))
-        }
-
-        if let room = room {
-            configureData(data: room)
+            if let room = room {
+                configureData(data: room)
+            }
         }
     }
 
@@ -132,8 +150,7 @@ class PostViewController: UIViewController {
                 room: data.room,
                 parlor: data.parlor,
                 leaseMonth: data.leaseMonth,
-                movinDate: data.movinDate,
-                gender: nil
+                movinDate: data.movinDate
             )
             oriRoomImagesUrl = data.roomImages
             roomImagesUrl = data.roomImages
@@ -142,92 +159,90 @@ class PostViewController: UIViewController {
             longitude = data.long
             postalCode = data.postalCode
             createdTime = data.createdTime
-
-            data.roomImages.forEach { url in
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    if let imageData = try? Data(contentsOf: url) {
-                        if let loadedImage = UIImage(data: imageData) {
-                            self.roomImages.append(loadedImage)
-                        } else {
-                            self.roomImages.append(UIImage.asset(.add))
-                        }
-                    }
-                }
-            }
         }
     }
 
-    @IBAction func submitAction(_ sender: Any) {
-        var alert = false
-        guard let postBasicData = postBasicData else {
-            showAlert()
-            return
+    func isSavable() -> (Bool, String) {
+        var isSavable = true
+        var message = PostVCString.addMessage.rawValue
+
+        guard let postBasicData = self.postBasicData else {
+            return (false, message)
         }
-        
+
         if postBasicData.title == nil || postBasicData.county == nil || postBasicData.movinDate == nil ||
-            roomSpecList.isEmpty {
-            showAlert()
-        } else {
-            roomSpecList.forEach { roomSpec in
-                if roomSpec.price == nil || roomSpec.space == nil {
-                    alert = true
-                    showAlert(message: PostVCString.roomSpecAlertMessage.rawValue)
-                }
+            self.roomSpecList.isEmpty {
+            return (false, message)
+        }
+
+        for roomSpec in roomSpecList {
+            if roomSpec.price == nil || roomSpec.space == nil {
+                isSavable = false
+                message = PostVCString.roomSpecAlertMessage.rawValue
+                break
             }
-            if alert == false {
-                if roomImages.isEmpty {
-                    room?.roomImages = []
-                    saveData()
+        }
+
+        return (isSavable, message)
+    }
+
+    @IBAction func submitAction(_ sender: Any) {
+        let isSavable = isSavable()
+        if isSavable.0 {
+            RMProgressHUD.show()
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                guard let self = self else { return }
+
+                if self.roomImages.isEmpty {
+                    self.room?.roomImages = []
+                    self.saveData()
                 } else {
-                    uploadImages(images: roomImages)
+                    self.uploadImages(images: self.roomImages)
                 }
             }
+        } else {
+            showAlert(message: isSavable.1)
         }
     }
 
     @objc private func deletePostAction() {
-        let alertController = UIAlertController(
-            title: PostVCString.delete.rawValue,
-            message: PostVCString.deleteMessage.rawValue,
-            preferredStyle: .alert
-        )
-
         let deleteAction = UIAlertAction(
             title: PostVCString.deleteActionTitle.rawValue,
             style: .destructive
-        ) { [unowned self] _ in
+        ) { [weak self] _ in
             RMProgressHUD.show()
             guard
-                let room = room,
-                let roomID = room.roomID else {
+                let self = self,
+                let roomID = self.room?.roomID else {
                 return
             }
 
-            FirebaseService.shared.deletePost(roomID: roomID)
+            FIRRoomService.shared.deletePost(roomID: roomID)
             RMProgressHUD.dismiss()
             self.navigationController?.popViewController(animated: true)
         }
 
-        let cancelAction = UIAlertAction(title: PostVCString.cancel.rawValue, style: .cancel) { _ in
-            alertController.dismiss(animated: true)
-        }
-
-        alertController.addAction(deleteAction)
-        alertController.addAction(cancelAction)
-
-        present(alertController, animated: true)
+        self.presentAlertVC(
+            title: PostVCString.delete.rawValue,
+            message: PostVCString.deleteMessage.rawValue,
+            mainAction: deleteAction,
+            hasCancelAction: true
+        )
     }
 
     private func showAlert(message: String = PostVCString.addMessage.rawValue) {
-        let alertController = UIAlertController(
-            title: PostVCString.add.rawValue,
-            message: message,
-            preferredStyle: .alert
-        )
-        let alertAction = UIAlertAction(title: PostVCString.confirm.rawValue, style: .default)
-        alertController.addAction(alertAction)
-        present(alertController, animated: false)
+        DispatchQueue.main.async { [weak self] in
+            RMProgressHUD.dismiss()
+            guard let self = self else { return }
+            let alertAction = UIAlertAction(title: PostVCString.confirm.rawValue, style: .default)
+
+            self.presentAlertVC(
+                title: PostVCString.add.rawValue,
+                message: message,
+                mainAction: alertAction,
+                hasCancelAction: false
+            )
+        }
     }
 }
 
@@ -270,18 +285,22 @@ extension PostViewController: UICollectionViewDataSource {
         case .images:
             return makePostImageCell(collectionView: collectionView, indexPath: indexPath)
         case .feeHeader:
+            let postSection = PostSection.allCases[indexPath.section]
+
             guard
                 let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: OtherFeeHeaderCell.reuseIdentifier,
-                    for: indexPath) as? OtherFeeHeaderCell,
-                let tag = PostSection.allCases.firstIndex(of: .feeHeader)
-                else {
+                    withReuseIdentifier: postSection.cellIdentifier,
+                    for: indexPath) as? PostCell
+            else {
                 fatalError("OtherFeeHeaderCell Error")
             }
 
-            cell.editAction.tag = tag
-            cell.editAction.addTarget(self, action: #selector(showMultiChoosePage), for: .touchUpInside)
-            cell.titleLabel.text = PostVCString.otherFee.rawValue
+            cell.configure(container: PostDataContainer(indexPath: indexPath))
+            (cell as? OtherFeeHeaderCell)?.editAction.addTarget(
+                self,
+                action: #selector(showMultiChoosePage),
+                for: .touchUpInside
+            )
             return cell
         case .feeDetail:
             guard let cell = collectionView.dequeueReusableCell(
@@ -289,7 +308,8 @@ extension PostViewController: UICollectionViewDataSource {
                 for: indexPath) as? FeeDetailCell else {
                 fatalError("FeeDetailCell Error")
             }
-            cell.completion = { [unowned self] otherDesc in
+            cell.completion = { [weak self] otherDesc in
+                guard let self = self else { return }
                 self.otherDescriction = otherDesc
             }
             return cell
@@ -338,67 +358,35 @@ extension PostViewController: UICollectionViewDataSource {
     }
 
     private func makeRoomSpecCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
+        let postSection = PostSection.allCases[indexPath.section]
+
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: RoomSpecCell.reuseIdentifier,
+            withReuseIdentifier: postSection.cellIdentifier,
             for: indexPath
-        ) as? RoomSpecCell else {
+        ) as? PostCell else {
             fatalError("RoomSpecCell Error")
         }
-
-        cell.delegate = self
-        cell.configureLayout(roomSpec: roomSpecList[indexPath.item], indexPath: indexPath)
-
-        cell.addColumnAction = { [weak self] cell in
-            guard
-                let self = self,
-                let indexPath = collectionView.indexPath(for: cell) else { return }
-            let roomSpec = RoomSpec()
-            self.roomSpecList.insert(roomSpec, at: indexPath.item + 1)
-            self.collectionView.reloadData()
-        }
-
-        cell.delectColumnAction = { [weak self] cell in
-            guard
-                let self = self,
-                let indexPath = collectionView.indexPath(for: cell) else { return }
-
-            self.roomSpecList.remove(at: indexPath.item)
-            self.collectionView.reloadData()
-            print(self.roomSpecList)
-        }
+        cell.configure(container: PostDataContainer(roomImages: nil, indexPath: indexPath, roomSpecList: roomSpecList))
+        (cell as? RoomSpecCell)?.delegate = self
         return cell
     }
 
     private func makePostImageCell(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
+        let postSection = PostSection.allCases[indexPath.section]
+        print(indexPath.item, postSection)
         guard let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: PostImageCell.reuseIdentifier,
+            withReuseIdentifier: postSection.cellIdentifier,
             for: indexPath
-        ) as? PostImageCell else {
+        ) as? PostCell else {
             fatalError("PostImageCell Error")
         }
-        print(indexPath.item, roomImages.count)
-        if entryType == .new {
-            if roomImages.count - 1 >= indexPath.item {
-                cell.imageView.image = roomImages[indexPath.item]
-            } else {
-                cell.imageView.image = UIImage.asset(.add)
-            }
-        } else {
-            if let room = room,
-                room.roomImages.count - 1 >= indexPath.item {
-                if roomImages.count - 1 >= indexPath.item {
-                    cell.imageView.image = roomImages[indexPath.item]
-                } else {
-                    cell.imageView.loadImage(
-                        room.roomImages[indexPath.item].absoluteString,
-                        placeHolder: UIImage.asset(.add)
-                    )
-                }
-            } else {
-                cell.imageView.image = UIImage.asset(.add)
-            }
-        }
-        cell.delegate = self
+        cell.configure(container: PostDataContainer(
+            roomImages: roomImages,
+            roomImagesURL: roomImagesUrl,
+            indexPath: indexPath,
+            roomSpecList: nil
+        ))
+        (cell as? PostImageCell)?.delegate = self
         return cell
     }
 
@@ -430,45 +418,7 @@ extension PostViewController: UICollectionViewDelegate {
 extension PostViewController {
     private func configureLayout() -> UICollectionViewCompositionalLayout {
         UICollectionViewCompositionalLayout { sectionIndex, _ in
-            switch PostSection.allCases[sectionIndex] {
-            case .images:
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(0.33),
-                    heightDimension: .absolute(100))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1.0),
-                    heightDimension: .absolute(100))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 20, bottom: 10, trailing: 20)
-                return section
-            case .roomSpec:
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(120))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(120))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
-                return section
-            default:
-                let itemSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(1))
-                let item = NSCollectionLayoutItem(layoutSize: itemSize)
-                let groupSize = NSCollectionLayoutSize(
-                    widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(1))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                let section = NSCollectionLayoutSection(group: group)
-                section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 20, bottom: 10, trailing: 20)
-                return section
-            }
+            return PostSection.allCases[sectionIndex].sectionLayout
         }
     }
 }
@@ -494,8 +444,7 @@ extension PostViewController: PostBasicCellDelegate {
         cell.regionSelectView.resignFirstResponder()
         cell.endEditing(true)
         let regionPickerVC = LocationPickerViewController()
-        regionPickerVC.modalPresentationStyle = .overCurrentContext
-        // FIXME:
+
         regionPickerVC.completion = { county, town in
             cell.county = county
             cell.town = town
@@ -506,121 +455,67 @@ extension PostViewController: PostBasicCellDelegate {
 }
 
 extension PostViewController: RoomSpecCellDelegate {
+    func addSpec(_ cell: RoomSpecCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+
+        roomSpecList.insert(RoomSpec(), at: indexPath.item + 1)
+        collectionView.reloadData()
+    }
+
+    func deleteSpec(_ cell: RoomSpecCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+
+        roomSpecList.remove(at: indexPath.item)
+        collectionView.reloadData()
+    }
+
     func didChangeData(_ cell: RoomSpecCell, data: RoomSpec) {
         guard let indexPath = collectionView.indexPath(for: cell) else { return }
-        roomSpecList[indexPath.item] = data
+        if roomSpecList.count > indexPath.item {
+            roomSpecList[indexPath.item] = data
+        }
     }
 }
 
 extension PostViewController: PostImageCellDelegate {
     func didClickImageView(_ cell: PostImageCell) {
         waitForUpdateImageCell = cell
-        imagePickerController.delegate = self
-
-        let imagePickerAlertController = UIAlertController(
-            title: "上傳圖片",
-            message: "請選擇要上傳的圖片",
-            preferredStyle: .actionSheet
-        )
-
-        let imageFromLibAction = UIAlertAction(title: "照片圖庫", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            if UIImagePickerController.isSourceTypeAvailable(.photoLibrary) {
-                self.imagePickerController.sourceType = .photoLibrary
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
-        }
-        let imageFromCameraAction = UIAlertAction(title: "相機", style: .default) { _ in
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                self.imagePickerController.sourceType = .camera
-                self.present(self.imagePickerController, animated: true, completion: nil)
-            }
-        }
-
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            imagePickerAlertController.dismiss(animated: true, completion: nil)
-        }
-
-        imagePickerAlertController.addAction(imageFromLibAction)
-        imagePickerAlertController.addAction(imageFromCameraAction)
-        imagePickerAlertController.addAction(cancelAction)
-
-        present(imagePickerAlertController, animated: true, completion: nil)
+        imagePicker.present(from: cell)
     }
 }
 
-extension PostViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true)
-    }
-
-    func imagePickerController(
-        _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
-    ) {
-        // 取得從 UIImagePickerController 選擇的檔案
-        if let pickedImage = info[.originalImage] as? UIImage {
-            waitForUpdateImageCell?.imageView.image = pickedImage
-            guard let cell = self.waitForUpdateImageCell else {
-                return
-            }
-            self.insertRoomImages(cell: cell, image: pickedImage)
-        }
-
-        picker.dismiss(animated: true)
-    }
-
-    private func insertRoomImages(cell: UICollectionViewCell, image: UIImage) {
+extension PostViewController {
+    private func updateRoomImages(cell: PostImageCell, image: UIImage) {
         guard let indexPath = collectionView.indexPath(for: cell) else {
             return
         }
-
-        if roomImages.count - 1 < indexPath.item {
-            roomImages.append(image)
-        } else {
-            roomImages[indexPath.item] = image
-        }
-        print(roomImages)
+        roomImages[indexPath.item] = image
+        roomImagesStatus[indexPath.item] = true
     }
 
     private func uploadImages(images: [UIImage]) {
-        RMProgressHUD.show()
         let group = DispatchGroup()
 
         roomImagesUrl = []
 
-        images.forEach { image in
-            group.enter()
-            var uploadData: Data?
+        roomImagesUrl = oriRoomImagesUrl
 
-            let uniqueString = NSUUID().uuidString
-
-            let imageSize = image.getSizeIn(.kilobyte)
-            if imageSize > RMConstants.shared.compressSizeGap {
-                let factor = RMConstants.shared.compressSizeGap / imageSize
-                uploadData = image.jpegData(compressionQuality: factor)
-            } else {
-                uploadData = image.pngData()
-            }
-
-            let storageRef = Storage.storage().reference(withPath: "RoomImages").child("\(uniqueString).png")
-
-            if let uploadData = uploadData {
-                storageRef.putData(uploadData) { [weak self] _, error in
-                    if let error = error {
-                        // TODO: Error Handle
-                        print("Error: \(error.localizedDescription)")
+        roomImagesStatus.enumerated().forEach { index, status in
+            if status && images[index] != UIImage.asset(.add) {
+                group.enter()
+                FIRStorageService.shared.uploadImage(
+                    image: images[index],
+                    path: FIRStorageEndpoint.roomImages.path
+                ) { [weak self] url, _ in
+                    guard let self = self, let url = url else {
                         return
                     }
-
-                    storageRef.downloadURL { [weak self] url, _ in
-                        guard let self = self else { return }
-                        guard let downloadURL = url else {
-                            return
-                        }
-                        self.roomImagesUrl.append(downloadURL)
-                        group.leave()
+                    if self.oriRoomImagesUrl.count > index {
+                        self.roomImagesUrl[index] = url
+                    } else {
+                        self.roomImagesUrl.append(url)
                     }
+                    group.leave()
                 }
             }
         }
@@ -631,7 +526,6 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
             self.saveData()
         }
     }
-
 
     private func saveData() {
         guard let postBasicData = postBasicData else {
@@ -668,31 +562,28 @@ extension PostViewController: UIImagePickerControllerDelegate, UINavigationContr
         inputRoom.roomMinPrice = inputRoom.getRoomMinPrice()
 
         if entryType == .new {
-            FirebaseService.shared.insertRoom(room: inputRoom) { error in
-                RMProgressHUD.dismiss()
-
-                if error != nil {
-                    RMProgressHUD.showFailure()
-                } else {
-                    RMProgressHUD.showSuccess()
-                }
-                self.navigationController?.popViewController(animated: true)
+            FIRRoomService.shared.insertRoom(room: inputRoom) { [weak self] error in
+                guard let self = self else { return }
+                self.dealWithUpdateResult(error: error)
             }
         } else {
             if let room = room,
                 let roomID = room.roomID {
-                FirebaseService.shared.updateRoomInfo(roomID: roomID, room: inputRoom) { error in
-                    RMProgressHUD.dismiss()
-
-                    if error != nil {
-                        RMProgressHUD.showFailure()
-                    } else {
-                        RMProgressHUD.showSuccess()
-                    }
-                    self.navigationController?.popViewController(animated: true)
+                FIRRoomService.shared.updateRoomInfo(roomID: roomID, room: inputRoom) { [weak self] error in
+                    guard let self = self else { return }
+                    self.dealWithUpdateResult(error: error)
                 }
             }
         }
+    }
+
+    private func dealWithUpdateResult(error: Error?) {
+        if error != nil {
+            RMProgressHUD.showFailure()
+        } else {
+            RMProgressHUD.showSuccess()
+        }
+        self.navigationController?.popViewController(animated: true)
     }
 }
 
@@ -716,5 +607,17 @@ extension PostViewController: ItemsCellDelegate {
         default:
             break
         }
+    }
+}
+
+// MARK: - Profile Image Picker Delegate
+extension PostViewController: ImagePickerManagerDelegate {
+    func imagePickerController(didSelect: UIImage?) {
+        guard
+            let image = didSelect,
+            let waitForUpdateImageCell = waitForUpdateImageCell
+        else { return }
+        waitForUpdateImageCell.imageView.image = image
+        updateRoomImages(cell: waitForUpdateImageCell, image: image)
     }
 }

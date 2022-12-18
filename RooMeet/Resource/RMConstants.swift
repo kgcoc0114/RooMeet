@@ -11,7 +11,7 @@ import MapKit
 class RMConstants {
     static let shared = RMConstants()
 
-    var currentPosition: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: 25.03320617048529, longitude: 121.56449873729362)
+    var currentPosition = CLLocationCoordinate2D(latitude: 25.03320617048529, longitude: 121.56449873729362)
 
     let screenVerticalPadding: CGFloat = 30
 
@@ -20,10 +20,11 @@ class RMConstants {
     let tagCornerRadius: CGFloat = 8
     let reservationDays: Int = 6
     let mapCenterButtonWidth: CGFloat = 36
-    // MARK: -- Intorduction Page
+
+    // MARK: - Intorduction Page
     let profileImageWidth: CGFloat = 120
 
-    // MARK: -- message
+    // MARK: - message
     let avatarImageWidth: CGFloat = 40
     let messageImageWidth: CGFloat = 120
     let messageCornerRadius: CGFloat = 10
@@ -85,9 +86,9 @@ enum EntryPage {
     var noneLabelString: String {
         switch self {
         case .fav:
-            return "按下愛心加入我的最愛"
+            return NoDataDisplay.favorite.displayString
         case .ownPost:
-            return "還沒有貼文唷！可到首頁新增房源找室友！"
+            return NoDataDisplay.post.displayString
         }
     }
 
@@ -116,4 +117,24 @@ enum PostVCString: String {
     case county = "臺北市"
     case postTitle = "房間出租"
     case cancel = "取消"
+}
+
+enum ReportString: String {
+    case actionTitle = "檢舉貼文"
+    case title = "檢舉"
+    case message = "確定檢舉此則貼文，你的檢舉將被匿名。"
+    case failure = "出點問題了，請稍後再試！"
+    case success = "成功送出檢舉！"
+}
+
+enum ReservationString: String {
+    case timeSelection = "請選擇預約時間"
+    case reserved = "已預約過此房源"
+}
+
+enum AccountString: String {
+    case deleteTitle = "刪除帳號"
+    case deleteMsg = "刪除帳號是永久設定，您的貼文資訊和相片都將刪除，基於安全性，將請您重新登入。"
+    case blockTitle = "封鎖用戶"
+    case blockMsg = "他們將無法在 RooMeet 發訊息給你或找到你的貼文。你封鎖用戶時，對方不會收到通知。"
 }

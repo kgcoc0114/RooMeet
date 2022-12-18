@@ -76,3 +76,42 @@ extension RoomImagesCell {
         pageControl.numberOfPages = images.isEmpty ? 1 : images.count
     }
 }
+
+// MARK: - Configure Layout
+extension RoomImagesCell: RoomDetailCell {
+    func configure(container: RoomDetailContainer) {
+        guard let room = (container as? RoomContainer)?.room else {
+            return
+        }
+
+        room.roomImages.forEach { imageURL in
+            let imageView = UIImageView()
+            imageView.loadImage(imageURL.absoluteString, placeHolder: UIImage.asset(.room_placeholder))
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
+
+            stackView.addArrangedSubview(imageView)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                imageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 4 / 3 )
+            ])
+        }
+
+        if stackView.arrangedSubviews.isEmpty {
+            let imageView = UIImageView()
+            imageView.image = UIImage.asset(.room_placeholder)
+            imageView.contentMode = .scaleAspectFill
+            imageView.clipsToBounds = true
+
+            stackView.addArrangedSubview(imageView)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                imageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width),
+                imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: 4 / 3 )
+            ])
+        }
+
+        pageControl.numberOfPages = room.roomImages.isEmpty ? 1 : room.roomImages.count
+    }
+}

@@ -74,7 +74,6 @@ class ExploreViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // set title
         navigationItem.title = "Explore"
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage.asset(.settings_sliders),
@@ -89,9 +88,8 @@ class ExploreViewController: UIViewController {
         locationManger.requestWhenInUseAuthorization()
         locationManger.delegate = self
         locationManger.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-
-        // get user current location
         locationManger.requestLocation()
+
         roomExploreMap.showsUserLocation = true
 
         fetchRooms()
@@ -139,14 +137,15 @@ class ExploreViewController: UIViewController {
         }
     }
 
-    // FIXME: 條件與滑動經緯度同時成立
     @objc private func showFilterPage() {
         guard let user = user else {
             return
         }
 
         guard let filterVC = UIStoryboard.home.instantiateViewController(
-            withIdentifier: "FilterViewController") as? FilterViewController else {
+            withIdentifier: String(describing: FilterViewController.self)
+        ) as? FilterViewController
+        else {
             print("ERROR: FilterViewController Error")
             return
         }
@@ -154,7 +153,7 @@ class ExploreViewController: UIViewController {
         filterVC.blockUserIDs = user.blocks ?? []
 
         filterVC.completion = { query in
-            FirebaseService.shared.fetchRoomDatabyQuery(user: user, query: query) { rooms in
+            FIRRoomService.shared.fetchRoomDataByQuery(user: user, query: query) { rooms in
                 self.rooms = rooms
             }
             self.isFilter = true
@@ -191,7 +190,7 @@ extension ExploreViewController: CLLocationManagerDelegate {
         )
 
         if !isFilter {
-            FirebaseService.shared.fetchRoomByCoordinate(
+            FIRRoomService.shared.fetchRoomByCoordinate(
                 northWest: northWestCoordinate,
                 southEast: southEastCoordinate,
                 userBlocks: user?.blocks ?? []

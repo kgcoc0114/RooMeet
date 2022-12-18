@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: ViewController {
+class HomeViewController: UIViewController {
     enum Section {
         case main
         case guess
@@ -32,7 +32,7 @@ class HomeViewController: ViewController {
         didSet {
             noneLabel.font = UIFont.regularSubTitle()
             noneLabel.textColor = .mainDarkColor
-            noneLabel.text = "目前沒有相關房源"
+            noneLabel.text = NoDataDisplay.home.displayString
             noneLabel.isHidden = true
         }
     }
@@ -60,7 +60,6 @@ class HomeViewController: ViewController {
             target: self,
             action: #selector(showFilterPage))
 
-        // set title
         navigationItem.title = "RooMeet"
 
         collectionView.delegate = self
@@ -70,7 +69,6 @@ class HomeViewController: ViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
 
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
             guard let self = self else { return }
@@ -104,7 +102,7 @@ class HomeViewController: ViewController {
     }
 
     private func fetchRooms() {
-        FirebaseService.shared.fetchRooms(user: self.user) { [weak self] rooms in
+        FIRRoomService.shared.fetchRooms(user: self.user) { [weak self] rooms in
             guard let self = self else { return }
             self.rooms = rooms
         }
@@ -115,9 +113,8 @@ class HomeViewController: ViewController {
             let postViewController = PostViewController(entryType: .new, data: nil)
             navigationController?.pushViewController(postViewController, animated: true)
         } else {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyBoard.instantiateViewController(
-                withIdentifier: "LoginViewController"
+            let loginVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: LoginViewController.self)
             )
             loginVC.modalPresentationStyle = .overFullScreen
             present(loginVC, animated: false)
@@ -138,7 +135,7 @@ class HomeViewController: ViewController {
         filterVC.blockUserIDs = user.blocks ?? []
 
         filterVC.completion = { query in
-            FirebaseService.shared.fetchRoomDatabyQuery(user: user, query: query) { rooms in
+            FIRRoomService.shared.fetchRoomDataByQuery(user: user, query: query) { rooms in
                 self.rooms = rooms
             }
         }

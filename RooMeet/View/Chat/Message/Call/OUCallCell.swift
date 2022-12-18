@@ -8,7 +8,6 @@
 import UIKit
 
 class OUCallCell: MessageBaseCell {
-
     override func awakeFromNib() {
         super.awakeFromNib()
         msgType = .other
@@ -60,19 +59,15 @@ class OUCallCell: MessageBaseCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
+}
 
-    override func configureLayout() {
-        if let message = message {
-            callTimeLabel.text = message.content
-            assignDatetime(messageDate: message.createdTime.dateValue())
-        }
+extension OUCallCell: ChatCell {
+    func configure(for data: ChatData) {
+        guard let sendBy = data.otherUser else { return }
 
-        if let sendBy = sendBy {
-            if let profilePhoto = sendBy.profilePhoto {
-                avatarView.loadImage(profilePhoto, placeHolder: UIImage.asset(.roomeet))
-            } else {
-                avatarView.image = UIImage.asset(.roomeet)
-            }
-        }
+        let message = data.message
+        callTimeLabel.text = message.content
+        assignDatetime(messageDate: message.createdTime.dateValue())
+        avatarView.loadImage(sendBy.profilePhoto, placeHolder: UIImage.asset(.roomeet))
     }
 }

@@ -8,8 +8,6 @@
 import UIKit
 
 class RoomFeeCell: UICollectionViewCell {
-    static let identifier = "RoomFeeCell"
-
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.textColor = UIColor.mainDarkColor
@@ -17,7 +15,7 @@ class RoomFeeCell: UICollectionViewCell {
         }
     }
 
-    @IBOutlet weak var affordTypeLabel: UILabel!  {
+    @IBOutlet weak var affordTypeLabel: UILabel! {
         didSet {
             affordTypeLabel.textColor = UIColor.mainDarkColor
             affordTypeLabel.font = UIFont.regularSubTitle()
@@ -59,6 +57,39 @@ class RoomFeeCell: UICollectionViewCell {
 
         let separateString = data.affordType == "separate" ? billType.separateString : "總費用均分"
 
+        affordTypeLabel.text = separateString
+    }
+}
+
+extension RoomFeeCell: RoomDetailCell {
+    func configure(container: RoomDetailContainer) {
+        guard let roomDetailFee = (container as? FeeDetailContainer)?.roomDetailFee else {
+            return
+        }
+
+        let billType = roomDetailFee.billType
+        let feeDatail = roomDetailFee.feeDatail
+
+        iconImageView.image = billType.image
+        titleLabel.text = "\(billType.title)"
+
+        if
+            let isGov = feeDatail.isGov,
+            isGov == true {
+            feeLabel.text = "台\(billType.title)"
+        } else {
+            guard let fee = feeDatail.fee else {
+                feeLabel.text = ""
+                return
+            }
+
+            if billType != .electricity {
+                feeLabel.text = "$ \(Int(fee)) \(billType.unitString)"
+            } else {
+                feeLabel.text = "$ \(fee) \(billType.unitString)"
+            }
+        }
+        let separateString = AffordType(rawValue: feeDatail.affordType)?.description
         affordTypeLabel.text = separateString
     }
 }

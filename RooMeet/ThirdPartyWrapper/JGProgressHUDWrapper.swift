@@ -57,7 +57,6 @@ class RMProgressHUD {
             DispatchQueue.main.async {
                 showFailure(text: text)
             }
-
             return
         }
 
@@ -72,7 +71,6 @@ class RMProgressHUD {
             DispatchQueue.main.async {
                 show()
             }
-
             return
         }
 
@@ -88,6 +86,7 @@ class RMProgressHUD {
             }
             return
         }
+
         shared.hud.dismiss()
     }
 }

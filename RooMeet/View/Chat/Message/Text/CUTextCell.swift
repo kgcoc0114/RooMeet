@@ -8,8 +8,6 @@
 import UIKit
 
 class CUTextCell: MessageBaseCell {
-    static let reuseIdentifier = "\(CUTextCell.self)"
-
     @IBOutlet weak var contentTextView: UITextView! {
         didSet {
             contentTextView.translatesAutoresizingMaskIntoConstraints = false
@@ -18,7 +16,7 @@ class CUTextCell: MessageBaseCell {
             contentTextView.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
             contentTextView.isScrollEnabled = false
             contentTextView.isEditable = false
-            contentTextView.font = UIFont.regularText()
+            contentTextView.font = UIFont.regularSubTitle()
         }
     }
 
@@ -47,10 +45,13 @@ class CUTextCell: MessageBaseCell {
         super.setSelected(selected, animated: animated)
     }
 
-    override func configureLayout() {
-        if let message = message {
-            contentTextView.text = message.content
-            assignDatetime(messageDate: message.createdTime.dateValue())
-        }
+}
+
+
+extension CUTextCell: ChatCell {
+    func configure(for data: ChatData) {
+        let message = data.message
+        contentTextView.text = message.content
+        assignDatetime(messageDate: message.createdTime.dateValue())
     }
 }

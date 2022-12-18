@@ -27,7 +27,32 @@ class PostImageCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFill
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+    }
+
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer) {
         delegate?.didClickImageView(self)
+    }
+}
+
+extension PostImageCell: PostCell {
+    func configure(container: RMCellContainer) {
+        guard
+            let container = (container as? PostDataContainer)
+        else { return }
+
+        let index = container.indexPath.item
+        if container.roomImages?[index] != UIImage.asset(.add) {
+            imageView.image = container.roomImages?[index] ?? UIImage.asset(.add)
+        } else {
+            imageView.loadImage(
+                index >= container.roomImagesURL?.count ?? 3
+                ? nil
+                : container.roomImagesURL?[index].absoluteString,
+                placeHolder: UIImage.asset(.add)
+            )
+        }
     }
 }

@@ -15,4 +15,5 @@ enum RMError: String, Error {
     case noData = "沒有資料"
     case responseError = ""
     case signOutError = "登出失敗"
+    case parameterError = "參數有誤"
 }

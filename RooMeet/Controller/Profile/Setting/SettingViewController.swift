@@ -215,11 +215,6 @@ extension SettingViewController: ASAuthorizationControllerDelegate {
                 return
             }
 
-            // delete account
-            // 1. apple login
-            // 2. reauth firebase
-            // 3. delete firebase account
-            // 4. revoke sign in with apple
             if
                 let authorizationCode = appleIDCredential.authorizationCode,
                 let codeString = String(data: authorizationCode, encoding: .utf8) {
@@ -227,14 +222,14 @@ extension SettingViewController: ASAuthorizationControllerDelegate {
                     guard let self = self else { return }
 
                     switch result {
-                    case .success(_):
+                    case .success:
                         AuthService.shared.firebaseSignInWithApple(
                             idToken: idTokenString,
                             nonce: nonce,
                             actionType: "delete"
                         ) { result in
                             switch result {
-                            case .success(_):
+                            case .success:
                                 print("SUCCESS: - Firebase Sign In With Apple")
                             case .failure(let error):
                                 print("ERROR: - \(error.localizedDescription)")
@@ -266,13 +261,7 @@ extension SettingViewController: ASAuthorizationControllerPresentationContextPro
 
 extension SettingViewController {
     private func deleteAccountAction() {
-        let userActionAlertController = UIAlertController(
-            title: "刪除帳號",
-            message: "刪除帳號是永久設定，您的貼文資訊和相片都將刪除，基於安全性，將請您重新登入。",
-            preferredStyle: .actionSheet
-        )
-
-        let deleteUserAction = UIAlertAction(title: "刪除帳號", style: .destructive) { [weak self] _ in
+        let deleteUserAction = UIAlertAction(title: AccountString.deleteTitle.rawValue, style: .destructive) { [weak self] _ in
             guard let self = self else { return }
 
             RMProgressHUD.show()
@@ -280,22 +269,19 @@ extension SettingViewController {
             self.signInWithApple()
         }
 
-        let cancelAction = UIAlertAction(title: "取消", style: .cancel) { _ in
-            RMProgressHUD.dismiss()
-            userActionAlertController.dismiss(animated: true)
-        }
-
-        userActionAlertController.addAction(deleteUserAction)
-        userActionAlertController.addAction(cancelAction)
-
-        present(userActionAlertController, animated: true, completion: nil)
+        presentAlertVC(
+            title: AccountString.deleteTitle.rawValue,
+            message: AccountString.deleteMsg.rawValue,
+            mainAction: deleteUserAction,
+            showDismissHUD: true,
+            hasCancelAction: true
+        )
     }
 
     private func showLoginVC() {
         DispatchQueue.main.async {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let loginVC = storyBoard.instantiateViewController(
-                withIdentifier: "LoginViewController"
+            let loginVC = UIStoryboard.main.instantiateViewController(
+                withIdentifier: String(describing: LoginViewController.self)
             )
             loginVC.modalPresentationStyle = .fullScreen
             self.present(loginVC, animated: false)

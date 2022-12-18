@@ -72,12 +72,12 @@ class ChatImageViewController: UIViewController {
             backButton.heightAnchor.constraint(equalToConstant: 45),
             backButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            // Pin the scrollView to the view
+
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            // Pin the imageView to the scrollView's content edges
+
             imageView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
             imageView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             imageView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
@@ -87,17 +87,16 @@ class ChatImageViewController: UIViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Set min zoom at the point where the image just fits within the view
+
         scrollView.minimumZoomScale = min(scrollView.bounds.width / imageView.bounds.width, 1)
-        // Set max zoom at the point where the image just fills the scroll content vertically
+
         scrollView.maximumZoomScale = min(scrollView.bounds.height / imageView.bounds.height, 1)
-        // Begin at min zoom
+
         scrollView.setZoomScale(scrollView.minimumZoomScale, animated: false)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        // show entire image
         updateZoomSizeFor(size: view.bounds.size)
     }
 
@@ -116,10 +115,8 @@ class ChatImageViewController: UIViewController {
     @objc private func onImageDoubleTap(tapGestureRecognizer: UITapGestureRecognizer) {
         guard tapGestureRecognizer.state == .ended else { return }
         if scrollView.zoomScale < scrollView.maximumZoomScale {
-            // Zoom in when not yet fully zoomed in
             scrollView.setZoomScale(scrollView.maximumZoomScale, animated: true)
         } else {
-            // Zoom out
             scrollView.setZoomScale(scrollView.minimumZoomScale, animated: true)
         }
     }
@@ -136,13 +133,11 @@ extension ChatImageViewController: UIScrollViewDelegate {
         scrollView.contentInset = .init(top: max(topInset, 0), left: max(leftInset, 0), bottom: 0, right: 0)
     }
 
-    // set imageView as zoom object
     func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
 
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset _: UnsafeMutablePointer<CGPoint>) {
-        // swipe to dismiss
         let absV: (x: CGFloat, y: CGFloat) = (abs(velocity.x), abs(velocity.y))
 
         let verticallyBouncing: Bool = absV.y > absV.x && scrollView.contentOffset.y < 0

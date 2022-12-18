@@ -217,7 +217,7 @@ extension LoginViewController: ASAuthorizationControllerPresentationContextProvi
 extension LoginViewController: UserServiceDelegate {
     func userService(isNewUser: Bool, user: User) {
         if isNewUser {
-            let profileVC = IntroViewController(entryType: EntryType.new, user: user)
+            let profileVC = IntroViewController(IntroScenario.create(user: user))
             profileVC.modalPresentationStyle = .overCurrentContext
             present(profileVC, animated: true)
         } else {

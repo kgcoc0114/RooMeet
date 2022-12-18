@@ -92,28 +92,14 @@ class FurnitureDetailCell: UITableViewCell {
         widthTextField.delegate = self
     }
 
-    func configureCell() {
-        if let title = funiture?.title {
-            titleTextField.text = title
-        }
+    func configure(scenario: FurnitureScenario) {
+        self.funiture = scenario.furniture
 
-        if let length = funiture?.length {
-            lengthTextField.text = "\(length)cm"
-        }
-
-        if let height = funiture?.height {
-            heightTextField.text = "\(height)cm"
-        }
-
-        if let width = funiture?.width {
-            widthTextField.text = "\(width)cm"
-        }
-
-        if let imageURL = funiture?.imageURL {
-            photoImageView.loadImage(imageURL, placeHolder: UIImage.asset(.add))
-        } else {
-            photoImageView.image = UIImage.asset(.add)
-        }
+        titleTextField.text = funiture?.title
+        lengthTextField.text = scenario.lengthString
+        heightTextField.text = scenario.heightString
+        widthTextField.text = scenario.widthString
+        photoImageView.loadImage(funiture?.imageURL, placeHolder: UIImage.asset(.add))
     }
 
     override func prepareForReuse() {
