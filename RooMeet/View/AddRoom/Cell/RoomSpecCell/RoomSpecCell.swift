@@ -151,16 +151,15 @@ class RoomSpecCell: UICollectionViewCell {
     }
 
     private func passData() {
-        guard priceTextField.text != nil,
-            let price = priceTextField.text,
-            spaceTextField.text != nil,
-            let space = spaceTextField.text,
-            let price = Int(price),
-            let space = Double(space) else {
+        guard let priceText = priceTextField.text,
+            let spaceText = spaceTextField.text else {
             return
         }
 
+        let price = priceText.isEmpty ? nil : Int(priceText)
+        let space = spaceText.isEmpty ? nil : Double(spaceText)
         let roomType = RoomType.allCases[segmentControl.selectedIndex].rawValue
+
         delegate?.didChangeData(self, data: RoomSpec(roomType: roomType, price: price, space: space))
     }
 

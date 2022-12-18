@@ -43,11 +43,16 @@ extension PostImageCell: PostCell {
             let container = (container as? PostDataContainer)
         else { return }
 
-        imageView.loadImage(
-            container.indexPath.item >= container.room?.roomImages.count ?? 3
-            ? nil
-            : container.room?.roomImages[container.indexPath.item].absoluteString,
-            placeHolder: UIImage.asset(.add)
-        )
+        let index = container.indexPath.item
+        if container.roomImages?[index] != UIImage.asset(.add) {
+            imageView.image = container.roomImages?[index] ?? UIImage.asset(.add)
+        } else {
+            imageView.loadImage(
+                index >= container.roomImagesURL?.count ?? 3
+                ? nil
+                : container.roomImagesURL?[index].absoluteString,
+                placeHolder: UIImage.asset(.add)
+            )
+        }
     }
 }

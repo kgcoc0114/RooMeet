@@ -6,6 +6,7 @@
 //
 
 import FirebaseFirestore
+import UIKit
 
 enum PostScenario: Hashable {
     case create
@@ -211,7 +212,8 @@ protocol PostCell: UICollectionViewCell {
 protocol RMCellContainer {}
 
 struct PostDataContainer: RMCellContainer {
-    let room: Room?
+    var roomImages: [UIImage]? = nil
+    var roomImagesURL: [URL]? = nil
     let indexPath: IndexPath
-    let roomSpecList: [RoomSpec]?
+    var roomSpecList: [RoomSpec]? = nil
 }
