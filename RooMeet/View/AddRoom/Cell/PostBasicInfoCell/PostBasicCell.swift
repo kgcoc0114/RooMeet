@@ -153,7 +153,7 @@ class PostBasicCell: UICollectionViewCell {
         }
 
         if let room = postBasicData.room {
-            parlorCountView.quantityField.text = room == 0 ? nil : "\(room)"
+            roomCountView.quantityField.text = room == 0 ? nil : "\(room)"
         }
 
         if let movinDate = postBasicData.movinDate {
