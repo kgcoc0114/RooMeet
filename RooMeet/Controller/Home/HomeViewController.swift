@@ -70,7 +70,6 @@ class HomeViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-
         FirebaseService.shared.fetchUserByID(userID: UserDefaults.id) { [weak self] user, _ in
             guard let self = self else { return }
             self.user = user
