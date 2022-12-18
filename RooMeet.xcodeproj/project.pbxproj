@@ -128,6 +128,7 @@
 		E5B923AD294C7B80001062A8 /* LocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923A1294C7B80001062A8 /* LocationService.swift */; };
 		E5B923B1294D88DA001062A8 /* ReservationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923B0294D88DA001062A8 /* ReservationViewModel.swift */; };
 		E5B923B5294D946C001062A8 /* FavoriteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923B4294D946C001062A8 /* FavoriteViewModel.swift */; };
+		E5B923B7294EC565001062A8 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B923B6294EC565001062A8 /* Observable.swift */; };
 		E5B984C2291B7CA3006DD8D7 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */; };
 		E5B984C5291B905F006DD8D7 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B984C3291B905F006DD8D7 /* DateCell.swift */; };
 		E5B984C6291B905F006DD8D7 /* DateCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5B984C4291B905F006DD8D7 /* DateCell.xib */; };
@@ -325,6 +326,7 @@
 		E5B923A1294C7B80001062A8 /* LocationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationService.swift; sourceTree = "<group>"; };
 		E5B923B0294D88DA001062A8 /* ReservationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReservationViewModel.swift; sourceTree = "<group>"; };
 		E5B923B4294D946C001062A8 /* FavoriteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteViewModel.swift; sourceTree = "<group>"; };
+		E5B923B6294EC565001062A8 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		E5B984C1291B7CA3006DD8D7 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		E5B984C3291B905F006DD8D7 /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
 		E5B984C4291B905F006DD8D7 /* DateCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DateCell.xib; sourceTree = "<group>"; };
@@ -1113,6 +1115,7 @@
 			children = (
 				E59B83142919FEE800F02CEC /* DateFormatter.swift */,
 				E5A12A622910B8C4006907D9 /* NibLoadble.swift */,
+				E5B923B6294EC565001062A8 /* Observable.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -1427,6 +1430,7 @@
 				E59B82F22919117300F02CEC /* CallViewController.swift in Sources */,
 				E5D76CFB291D0BA90074DFD7 /* FavoritesViewController.swift in Sources */,
 				E5E1435729336C3400465B65 /* FirestoreEndpoint.swift in Sources */,
+				E5B923B7294EC565001062A8 /* Observable.swift in Sources */,
 				E5B923A3294C7B80001062A8 /* FIRRoomService.swift in Sources */,
 				E5B923A4294C7B80001062A8 /* FIRChatRoomService.swift in Sources */,
 				E5B923B1294D88DA001062A8 /* ReservationViewModel.swift in Sources */,
