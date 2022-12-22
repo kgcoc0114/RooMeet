@@ -14,6 +14,9 @@ protocol UserServiceDelegate: AnyObject {
 
 class AuthService {
     static let shared = AuthService()
+
+    private init(){}
+
     var currentNonce: String?
 
     private var auth = Auth.auth()

@@ -94,6 +94,19 @@ class IntroCell: UICollectionViewCell {
         }
     }
 
+    @IBOutlet weak var regionSelectionButton: UIButton! {
+        didSet {
+            regionSelectionButton.titleLabel?.font = UIFont.regularText()
+            regionSelectionButton.backgroundColor = .mainLightColor
+            regionSelectionButton.tintColor = .mainDarkColor
+            regionSelectionButton.layer.cornerRadius = RMConstants.shared.messageCornerRadius
+            regionSelectionButton.contentEdgeInsets = UIEdgeInsets(top: 5, left: 10, bottom: 5, right: 10)
+        }
+    }
+
+    var lastTextField: UITextField?
+    var lastTextView: UITextView?
+
     var county: String? {
         didSet {
             if
@@ -190,13 +203,25 @@ class IntroCell: UICollectionViewCell {
         guard let user = user else { return }
         delegate?.passData(cell: self, data: user)
     }
+
+    @IBAction func regionSelectionAction(_ sender: Any) {
+        if lastTextField != nil {
+            lastTextField?.resignFirstResponder()
+            lastTextField = nil
+        }
+
+        if lastTextView != nil {
+            lastTextView?.resignFirstResponder()
+            lastTextView = nil
+        }
+
+        delegate?.showRegionPickerView(cell: self)
+    }
 }
 
 extension IntroCell: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField == regionTextField {
-            delegate?.showRegionPickerView(cell: self)
-        }
+        lastTextField = textField
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
@@ -208,6 +233,10 @@ extension IntroCell: UITextFieldDelegate {
 
 // MARK: - UITextViewDelegate
 extension IntroCell: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        lastTextView = textView
+    }
+
     func textViewDidChange(_ textView: UITextView) {
         user?.introduction = textView.text
         guard let user = user else { return }

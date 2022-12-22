@@ -11,6 +11,8 @@ import FirebaseFirestoreSwift
 class FIRUserService {
     static let shared = FIRUserService()
 
+    private init(){}
+
     let firebaseService = FirebaseService.shared
 
     func upsertUser(userID: String, email: String?, user: User? = nil, completion: @escaping ((Bool, User?) -> Void)) {

@@ -11,6 +11,9 @@ import FirebaseFirestoreSwift
 
 class ReservationService {
     static let shared = ReservationService()
+
+    private init(){}
+
     let firebaseService = FirebaseService.shared
 
     func upsertReservationData(

@@ -16,6 +16,8 @@ class FIRRoomService {
 
     let firebaseService = FirebaseService.shared
 
+    private init(){}
+
     func fetchRoomsByUserID(userID: String, completion: @escaping (([Room]) -> Void)) {
         let query = FirestoreEndpoint.room.colRef
             .whereField("userID", isEqualTo: userID)

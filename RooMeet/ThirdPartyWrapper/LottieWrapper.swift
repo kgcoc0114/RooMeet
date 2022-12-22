@@ -11,6 +11,8 @@ import Lottie
 class RMLottie {
     static let shared = RMLottie()
 
+    private init(){}
+
     lazy var callAnimationView: LottieAnimationView = {
         let animationView = LottieAnimationView(name: "CallWaitingView")
 
