@@ -148,6 +148,7 @@ extension RMTabBarController: UITabBarControllerDelegate {
                 }
             }
         }
+        tabBarController.selectedViewController?.backToRoot()
         return true
     }
 }
