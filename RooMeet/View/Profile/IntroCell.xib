@@ -22,7 +22,7 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LSP-KD-9Hr">
                         <rect key="frame" x="0.0" y="0.0" width="641" height="1147"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Nickname" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v2J-De-T6e" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                            <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Nickname" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="v2J-De-T6e" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="206" width="641" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="nhn-4C-cgP"/>
@@ -30,7 +30,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Birthday" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xXk-xq-vLz">
+                            <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Birthday" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xXk-xq-vLz" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="842.5" width="641" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="98g-zY-fAp"/>
@@ -46,14 +46,25 @@
                                     <constraint firstAttribute="width" secondItem="9Gw-fm-qea" secondAttribute="height" multiplier="1:1" id="ojD-YR-z69"/>
                                 </constraints>
                             </imageView>
-                            <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="預設地區" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ecO-sh-Cbm">
-                                <rect key="frame" x="0.0" y="945.5" width="641" height="50"/>
+                            <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="預設地區" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ecO-sh-Cbm" customClass="RMBaseTextField" customModule="RooMeet" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="945.5" width="544" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="jkx-Ip-CXf"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qkI-bG-Qtr">
+                                <rect key="frame" x="564" y="953" width="77" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="35" id="yLI-pf-Y7l"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="請選擇地區"/>
+                                <connections>
+                                    <action selector="regionSelectionAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="qYI-JV-xgX"/>
+                                </connections>
+                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="暱稱" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e0v-vb-33E">
                                 <rect key="frame" x="0.0" y="168" width="37" height="22"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="18"/>
@@ -124,7 +135,6 @@
                             <constraint firstItem="6VK-Ib-R2p" firstAttribute="leading" secondItem="LSP-KD-9Hr" secondAttribute="leading" id="Dw4-Bl-MQZ"/>
                             <constraint firstAttribute="trailing" secondItem="xXk-xq-vLz" secondAttribute="trailing" id="KZD-eS-sHj"/>
                             <constraint firstItem="6VK-Ib-R2p" firstAttribute="top" secondItem="ecO-sh-Cbm" secondAttribute="bottom" constant="16" id="LWt-Hg-KwN"/>
-                            <constraint firstAttribute="trailing" secondItem="ecO-sh-Cbm" secondAttribute="trailing" id="ML1-DQ-ttA"/>
                             <constraint firstItem="fnI-hU-Ghk" firstAttribute="leading" secondItem="LSP-KD-9Hr" secondAttribute="leading" id="NSZ-7t-N8h"/>
                             <constraint firstItem="bJb-Mv-Mzg" firstAttribute="top" secondItem="zRd-rA-mG8" secondAttribute="bottom" constant="16" id="Njr-27-yDo"/>
                             <constraint firstItem="zRd-rA-mG8" firstAttribute="top" secondItem="fnI-hU-Ghk" secondAttribute="bottom" constant="16" id="OIq-vN-zQz"/>
@@ -133,10 +143,13 @@
                             <constraint firstItem="v2J-De-T6e" firstAttribute="leading" secondItem="LSP-KD-9Hr" secondAttribute="leading" id="b9Y-9B-1Sd"/>
                             <constraint firstItem="xXk-xq-vLz" firstAttribute="top" secondItem="bJb-Mv-Mzg" secondAttribute="bottom" constant="16" id="bI0-Yh-JIP"/>
                             <constraint firstItem="fnI-hU-Ghk" firstAttribute="top" secondItem="v2J-De-T6e" secondAttribute="bottom" constant="16" id="bTS-gI-Ghg"/>
+                            <constraint firstItem="qkI-bG-Qtr" firstAttribute="centerY" secondItem="ecO-sh-Cbm" secondAttribute="centerY" id="bd7-aN-ZQf"/>
                             <constraint firstItem="e0v-vb-33E" firstAttribute="top" secondItem="9Gw-fm-qea" secondAttribute="bottom" constant="20" id="c9d-Rw-6bk"/>
                             <constraint firstItem="HzL-uG-4mI" firstAttribute="leading" secondItem="LSP-KD-9Hr" secondAttribute="leading" id="dPb-vb-f5r"/>
                             <constraint firstItem="VrU-xe-N20" firstAttribute="centerX" secondItem="9Gw-fm-qea" secondAttribute="trailing" id="e5a-h0-Tci"/>
+                            <constraint firstItem="qkI-bG-Qtr" firstAttribute="leading" secondItem="ecO-sh-Cbm" secondAttribute="trailing" constant="20" id="e9L-Bk-Bp9"/>
                             <constraint firstItem="ecO-sh-Cbm" firstAttribute="leading" secondItem="LSP-KD-9Hr" secondAttribute="leading" id="fdE-74-d9Y"/>
+                            <constraint firstAttribute="trailing" secondItem="qkI-bG-Qtr" secondAttribute="trailing" id="lcA-g7-nhk"/>
                             <constraint firstItem="9Gw-fm-qea" firstAttribute="centerX" secondItem="LSP-KD-9Hr" secondAttribute="centerX" id="prY-K6-zyb"/>
                             <constraint firstItem="VrU-xe-N20" firstAttribute="centerY" secondItem="9Gw-fm-qea" secondAttribute="centerY" id="qRj-z2-dhJ"/>
                             <constraint firstItem="7uy-pb-v0w" firstAttribute="leading" secondItem="LSP-KD-9Hr" secondAttribute="leading" id="v30-i1-hg2"/>
@@ -167,6 +180,7 @@
                 <outlet property="introTextView" destination="7uy-pb-v0w" id="cFd-2M-pTo"/>
                 <outlet property="nameLabel" destination="e0v-vb-33E" id="jMi-bo-Huy"/>
                 <outlet property="nameTextField" destination="v2J-De-T6e" id="OnP-sH-EPo"/>
+                <outlet property="regionSelectionButton" destination="qkI-bG-Qtr" id="CHS-hC-93a"/>
                 <outlet property="regionTextField" destination="ecO-sh-Cbm" id="Pxp-9M-1nu"/>
             </connections>
             <point key="canvasLocation" x="-538.40579710144937" y="380.69196428571428"/>

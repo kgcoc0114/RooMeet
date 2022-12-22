@@ -64,6 +64,12 @@ class ProfileRSVNViewController: UIViewController {
 
         navigationItem.title = "Reservations"
 
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: self,
+            action: #selector(backAction))
+
         configureDataBinding()
 
         collectionView.delegate = self
@@ -130,6 +136,10 @@ class ProfileRSVNViewController: UIViewController {
             guard let self = self else { return }
             self.navigationController?.tabBarController?.selectedIndex = 0
         }
+    }
+
+    @objc private func backAction() {
+        navigationController?.popViewController(animated: false)
     }
 }
 
