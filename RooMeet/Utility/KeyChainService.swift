@@ -11,6 +11,8 @@ import KeychainAccess
 class KeyChainService {
     static let shared = KeyChainService()
 
+    private init(){}
+
     private let service: Keychain
 
     private let serverTokenKey: String = "RooMeetRefreshToken"

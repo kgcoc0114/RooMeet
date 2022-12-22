@@ -12,6 +12,8 @@ import FirebaseFirestoreSwift
 class RMDateFormatter {
     static let shared = RMDateFormatter()
 
+    private init(){}
+
     let currentTimestamp = Timestamp()
     let formatter = DateComponentsFormatter()
 

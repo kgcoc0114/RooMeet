@@ -11,6 +11,8 @@ class FIRChatRoomService {
 
     let firebaseService = FirebaseService.shared
 
+    private init(){}
+
     // MARK: - Chat Room
     func fetchChatRoomsByUserID(userID: String, completion: @escaping (([ChatRoom]) -> Void)) {
         let query = FirestoreEndpoint.chatRoom.colRef.whereField("members", arrayContains: UserDefaults.id)
