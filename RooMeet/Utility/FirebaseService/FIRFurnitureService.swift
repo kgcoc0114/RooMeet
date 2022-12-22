@@ -10,6 +10,8 @@ import Foundation
 class FIRFurnitureService {
     static let shared = FIRFurnitureService()
 
+    private init(){}
+
     let firebaseService = FirebaseService.shared
 
     func fetchFurnituresByUserID(userID: String = UserDefaults.id, completion: @escaping (([Furniture]) -> Void)) {

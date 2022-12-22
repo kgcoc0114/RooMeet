@@ -48,6 +48,8 @@ enum FirestoreEndpoint {
 class FirebaseService {
     static let shared = FirebaseService()
 
+    private init(){}
+
     var currentTimestamp = Timestamp()
 
     var database = Firestore.firestore()

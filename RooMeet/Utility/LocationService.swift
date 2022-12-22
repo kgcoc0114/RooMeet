@@ -11,6 +11,8 @@ import MapKit
 class LocationService {
     static let shared = LocationService()
 
+    private init(){}
+
     var locationManger: CLLocationManager = {
         let locationManger = CLLocationManager()
         locationManger.requestWhenInUseAuthorization()

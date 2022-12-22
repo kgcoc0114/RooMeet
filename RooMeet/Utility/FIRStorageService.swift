@@ -32,6 +32,8 @@ enum FIRStorageEndpoint {
 class FIRStorageService {
     static let shared = FIRStorageService()
 
+    private init(){}
+
     func uploadImage(image: UIImage, path: String, completion: @escaping (URL?, Error?) -> Void) {
         var uploadData: Data?
 
