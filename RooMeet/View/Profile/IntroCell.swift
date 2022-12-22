@@ -222,10 +222,6 @@ class IntroCell: UICollectionViewCell {
 extension IntroCell: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         lastTextField = textField
-//
-//        if textField == regionTextField {
-//            delegate?.showRegionPickerView(cell: self)
-//        }
     }
 
     func textFieldDidEndEditing(_ textField: UITextField) {
