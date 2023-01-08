@@ -97,6 +97,8 @@ class ChatViewController: UIViewController {
 
         navigationItem.rightBarButtonItems = [infoBarButton, phoneBarButton]
 
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+
         tableView.delegate = self
         configureDataSource()
     }
