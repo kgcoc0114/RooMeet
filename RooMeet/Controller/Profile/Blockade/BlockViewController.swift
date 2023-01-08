@@ -74,14 +74,19 @@ class BlockViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         configureCollectionView()
         collectionView.collectionViewLayout = createLayout()
+
         navigationItem.title = "解除封鎖"
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
             style: .plain,
             target: self,
             action: #selector(backAction))
+
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+
     }
 
     override func viewWillAppear(_ animated: Bool) {

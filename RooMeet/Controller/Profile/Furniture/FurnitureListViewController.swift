@@ -47,6 +47,9 @@ class FurnitureListViewController: UIViewController {
             action: #selector(addFurnitures))
 
         navigationItem.title = "My Furnitures"
+
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+
         configureTableView()
     }
 
