@@ -55,6 +55,8 @@ class FurnitureViewController: UIViewController {
         )
 
         navigationItem.title = "Add / Edit"
+
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
     }
 
     @objc private func backAction() {

@@ -70,6 +70,8 @@ class ProfileRSVNViewController: UIViewController {
             target: self,
             action: #selector(backAction))
 
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+
         configureDataBinding()
 
         collectionView.delegate = self

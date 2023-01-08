@@ -108,6 +108,8 @@ class PostViewController: UIViewController {
             target: self,
             action: #selector(backAction))
 
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+
         if entryType == .edit {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 image: UIImage.asset(.trash).withRenderingMode(.alwaysOriginal),

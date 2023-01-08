@@ -70,6 +70,8 @@ class FavoritesViewController: UIViewController {
             action: #selector(backAction))
 
         navigationItem.title = entryPage.title
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+
         noneLabel.text = entryPage.noneLabelString
         goHomeButton.setTitle(entryPage.goHomeButtonTitle, for: .normal)
 
@@ -108,7 +110,7 @@ class FavoritesViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         viewModel.favoriteRooms = favoriteRooms
-        viewModel.updateUserFavRoomsData(shouldUpdate: true)
+        viewModel.updateUserFavRoomsData(shouldUpdate: entryPage == .fav)
     }
 
     private func configureCollectionView() {

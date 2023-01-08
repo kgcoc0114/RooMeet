@@ -58,12 +58,16 @@ class SettingViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+
         navigationItem.title = "Setting"
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage.asset(.back).withRenderingMode(.alwaysOriginal),
             style: .plain,
             target: self,
             action: #selector(backAction))
+
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+
         configureTableView()
     }
 

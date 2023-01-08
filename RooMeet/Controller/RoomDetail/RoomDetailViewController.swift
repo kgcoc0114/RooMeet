@@ -113,6 +113,8 @@ class RoomDetailViewController: UIViewController {
 
         navigationItem.title = "RooMeet"
 
+        navigationController?.interactivePopGestureRecognizer?.delegate = nil
+
         configureCollectionView()
     }
 
